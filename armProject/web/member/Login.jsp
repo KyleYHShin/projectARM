@@ -554,7 +554,7 @@
 	</div><!-- 카테고리 -->
 	<div id = "searchbox">
 	<form>
-	<input type="text" id = "search" name = "search" placeholder = "검색하세요!">&nbsp;&nbsp;<input type="image" id = "schBtn" src = "images/search2_small.png" width ="25px" height = "25px";>
+	<input type="text" id = "search" name = "search" placeholder = "검색하세요!">&nbsp;&nbsp;<input type="image" id = "schBtn" src = "/arm/img/search2_small.png" width ="25px" height = "25px";>
 	</form>
 	</div><!-- 검색 -->
 
@@ -609,7 +609,7 @@
 	
 	<!-- top버튼 -->
 	<div style="position:fixed; bottom:10px; right:10px; z-index : 9999;">
-	 <a href="#top"><img src="images/top3.png" width="51" height="51" border="0" title="위로 이동"></a> <!-- 위에있는 이름 top에 있는 위치로 이동함 -->
+	 <a href="#top"><img src="/arm/img/top3.png" width="51" height="51" border="0" title="위로 이동"></a> <!-- 위에있는 이름 top에 있는 위치로 이동함 -->
 	</div>
 
 	<!-- 푸터 -->

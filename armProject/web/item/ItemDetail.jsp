@@ -134,8 +134,8 @@
 
 			if(opt1 != null && opt2 != null){
 				var html = "<tr><td>" + new_td + 
-				"</td><td><input type='number' class='Qty' name='Qty' min='1' width='10'>" 
-				+ "</td><td><button class='remove_order'>X</button>" + "</td></tr>";
+				"</td><td><input type='number' class='Qty' name='Qty' min='1' width='10' value='1'>" 
+				+ "</td><td><button class='remove_order'><img src ='/arm/img/delete.png'></button>" + "</td></tr>";
 
 				$('.p_selection').append(html);
 				$('.p_selection button').attr('class', 'remove_order');
@@ -524,8 +524,16 @@
 		border : 0px;
 		text-align: right;
 	}
-	.p_selection {
+	.p_selection{
 		width : 95%;
+	}
+	.p_selection button{
+		background : none;
+		border : none;
+	}
+	.p_selection button img{
+		height : 15px;
+		width : 15px;
 	}
 
 	/* 미디어쿼리 */
@@ -537,9 +545,6 @@
 			width : 50%;	
 			margin-bottom : 20px;
 			min-width : 102px;
-		}
-		.pTable table{
-			width : 100%;
 		}
 		.pImage img {
 			min-width : 102px;
@@ -926,7 +931,7 @@
 	</div><!-- 카테고리 -->
 	<div id = "searchbox">
 	<form>
-	<input type="text" id = "search" name = "search" placeholder = "검색하세요!">&nbsp;&nbsp;<input type="image" id = "schBtn" src = "images/search2_small.png" width ="25px" height = "25px";>
+	<input type="text" id = "search" name = "search" placeholder = "검색하세요!">&nbsp;&nbsp;<input type="image" id = "schBtn" src = "/arm/img/search2_small.png" width ="25px" height = "25px";>
 	</form>
 	</div>
 
@@ -1149,7 +1154,7 @@
 	
 	<!-- top버튼 -->
 	<div style="position:fixed; bottom:10px; right:10px; z-index : 9999;">
-	 <a href="#top"><img src="images/top.png" width="51" height="51" border="0" title="위로 이동"></a> <!-- 위에있는 이름 top에 있는 위치로 이동함 -->
+	 <a href="#top"><img src="/arm/img/top3.png" width="51" height="51" border="0" title="위로 이동"></a> <!-- 위에있는 이름 top에 있는 위치로 이동함 -->
 	</div><!--top버튼 끝-->
 
 	<!-- 푸터 -->
