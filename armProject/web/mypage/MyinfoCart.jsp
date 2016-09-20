@@ -5,7 +5,7 @@
   <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-   <title>MyPage</title>
+   <title>MyPage:Cart</title>
 
   
     <link href="/arm/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -17,36 +17,6 @@
   
   <script type="text/javascript" src = "/arm/js/jquery-3.1.0.min.js"></script>
   <script type="text/javascript">
-
-		//고객센터 메뉴 클릭시 보이는 div 처리
-		function showUser(){
-			/*$("#contents").load("/arm/mypage/MyinfoDetail.jsp");*/
-			$("#t_purchase").hide();
-			$("#t_cart").hide();
-			$("#t_myInfo").show();
-			$("#t_myQ").hide();
-		
-		};
-		function showCart(){
-			$("#t_purchase").hide();
-			$("#t_cart").show();
-			$("#t_myInfo").hide();
-			$("#t_myQ").hide();
-		};
-
-		function showBuyList(){
-			$("#t_purchase").show();
-			$("#t_cart").hide();
-			$("#t_myInfo").hide();
-			$("#t_myQ").hide();
-		};
-
-		function showQnA(){
-			$("#t_purchase").hide();
-			$("#t_cart").hide();
-			$("#t_myInfo").hide();
-			$("#t_myQ").show();
-		};
 
  	$(function(){
 		//퀵바 토글 - 퀵바 고정위치를 클릭시마다 바뀌게 하면서 trasition효과
@@ -72,39 +42,6 @@
 			$("#recent_list").slideUp("fast");
 			$("#cart_list").slideDown("fast");
 		});
-		//공지글,faq 제목 클릭시 내용 슬라이드
-		$(".notice .question").click(function(){
-			$(this).next().slideToggle();
-		});
-		$(".faq .question").click(function(){
-			$(this).next().slideToggle();
-		});
-
-		$("#u_btn").click(function(){
-			$("#u_btn").css("background", "red").css("color","white");
-			$("#c_btn").css("background", "").css("color","");
-			$("#bl_btn").css("background", "").css("color","");
-			$("#qa_btn").css("background", "").css("color","");
-		});
-		$("#c_btn").click(function(){
-			$("#u_btn").css("background", "").css("color","");
-			$("#c_btn").css("background", "red").css("color","white");
-			$("#bl_btn").css("background", "").css("color","");
-			$("#qa_btn").css("background", "").css("color","");
-		});
-		$("#bl_btn").click(function(){
-			$("#u_btn").css("background", "").css("color","");
-			$("#c_btn").css("background", "").css("color","");
-			$("#bl_btn").css("background", "red").css("color","white");
-			$("#qa_btn").css("background", "").css("color","");
-		});
-		$("#qa_btn").click(function(){
-			$("#u_btn").css("background", "").css("color","");
-			$("#c_btn").css("background", "").css("color","");
-			$("#bl_btn").css("background", "").css("color","");
-			$("#qa_btn").css("background", "red").css("color","white");
-		});
-
 		/*x버튼누르면 해당 행 삭제 css에서만... */
 		$(document).on('click','.remove', function(){
 			$(this).parent().parent().remove();
@@ -274,6 +211,10 @@
 		background : rgba(255,0,0,0.8);
 		cursor : pointer;
 	}
+	#c_btn {
+		color : white;
+		background : red;
+	}
 	@media all and (max-width: 1000px){
 		.cs_navi li a{
 			font-size : 17px;
@@ -292,58 +233,6 @@
 			font-size : 11px;
 			padding : 10px 0;
 		}	
-	}
-
-	
-	/* 미디어쿼리 이용하여 글자크기 조정 */
-	@media all and (max-width: 750px){
-		.direct_q tr th{
-			font-size : 10pt;
-		}
-	}
-
-	@media all and (max-width: 300px){
-		.direct_q tr th{
-			font-size : 3pt;
-		}
-	
-	}
-	 .direct_q tr td{
-		BORDER-BOTTOM: 1px solid #d9d9d9;
-		padding : 10px;
-		text-align : left;
-	}
-	.direct_q tr td:nth-child(2n+1), .direct_q tr th:nth-child(2n+1){
-		background: #ebebeb;
-	}
-	.direct_q select {
-		width : 30%;
-	}
-	input[name*="title"]{
-		width : 98%;
-	}
-	textarea{
-		width : 98%;
-		height : 200px;
-	}
-	#direct_q #dqBtn {
-		background : red;
-		border :1px solid red;
-		color : white;
-		font-size : 12pt;
-	}
-	@media all and (max-width: 1000px){
-		#wrapper{
-			font-size 
-		}
-	}
-
-	 @media all and (max-width: 750px){}
-
-	@media all and (max-width: 300px){
-		#wrapper h1{
-			font-size : 20pt
-		}
 	}
 
 	#contents {
@@ -394,6 +283,9 @@
 		color : white;
 		float : left;
 	}
+	button#continue_btn {
+		font-size : 1.4em;
+	}	
 	#pay button#purchase_btn {
 		border : 1px solid red;
 		background : red;
@@ -408,67 +300,7 @@
 		font-weight : 900;
 	}
 	/*-------장바구니끝-----------*/
-	/* 영수증부분----------------------- */
-
-	#t_purchase {width:500px; min-width : 200px; border:1px solid #5263bd; margin:auto; display:none;}
-
-	@media all and (max-width: 1000px){
-      #t_purchase {
-         width:500px;
-      }
-   }
-
-    @media all and (max-width: 750px){
-      #t_purchase {
-         width:60%;
-      }
-	 }
-   @media all and (max-width: 300px){
-      #t_purchase  {
-         width:30%;
-      }
-   }
-
-
-	.basicDiv {border:1px solid #5263bd; padding:7px 0; color:#5f6fc2;  text-align:left; }
-
-	.tblTop {border-collapse: collapse; border:1px solid #5263bd; border-bottom:0px;}
-
-	.tblTop td {padding:5px 0 10px 30px; font:bold 24px gulim; color:#5263bd; text-align:center;}
-	.titstxt {font:bold 12px gulim; color:#5263bd;}
-
-	.tbl {border-collapse: collapse; border:1px solid #5263bd;}
-	.tbl td {border:1px solid #5263bd; padding:4px;}
-	.tbl td.titTd {font:bold 14px gulim; color:#5263bd;}
-	.tbl th {font:bold 13px gulim; color:#5263bd; border:1px solid #5263bd; background:#f0f1f9; padding:4px;}
-
-
-	.tbl2 {border-collapse: collapse; border:1px solid #5263bd;}
-	.tbl2 .del {font:bold 17px gulim; text-align:right; padding-right:10px; padding-top:7px;}
-	.tbl2 .tsum {font:bold 20px gulim; text-align:right; padding-right:10px; padding-top:7px; padding-bottom:7px;}
-
-	.tbl3 {border-collapse: collapse; border:1px solid #5263bd;}
-	.tbl3 .sta{font:bold 17px gulim; text-align:left; padding-left:10px; padding-top:7px; color: #5f6fc2;}
-	.tbl3 .sta2{font:bold 20px gulim; text-align:right; padding-right:10px; padding-top:7px; padding-bottom: 10px;}
-
-	.tbl .item {font:13px gulim; padding-left:15px;}
-	.tbl .article {font:13px gulim; text-align:center;}
-	.tbl .sum {font:bold 13px gulim; color:#4b4b4b; text-align:right; padding-right:7px;}
-	.tbl .date {font:bold 13px gulim; color:#4b4b4b; text-align:center;}
-	.tbl .total {font:bold 13px gulim; color:#4b4b4b; text-align:center; padding-right:7px; }
-
-	/*-------영수증 끝*/
 	
-	/*-------문의내역-----------*/
-	#t_myQ {
-		display : none;
-	}
-	/*-------문의내역끝-----------*/
-	/*-------회원정보-----------*/
-	#t_myInfo {
-		display : none;
-	}
-	/*-------회원정보끝-----------*/
 /*---------------------------내용 부분 끝--------------------------------- */
 	/* 푸터 */
 	footer {
@@ -519,9 +351,10 @@
    <nav id="topMenu" >
         <ul>
 			<li class="topMenuLi"><a class="menuLink" href="/arm/notice/notice.jsp">고객센터</a></li>
-			<li class="topMenuLi"><a class="menuLink" href="">장바구니</a></li>
+			<li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">장바구니</a></li>
             <li class="topMenuLi"><a class="menuLink" href="">회원가입</a></li>
-            <li class="topMenuLi"><a class="menuLink" href="">로그인</a></li>
+            <li class="topMenuLi"><a class="menuLink" href="/arm/member/Login.jsp">로그인</a></li>
+        </ul>
 	</nav>
  
  </div>
@@ -563,16 +396,16 @@
  <!-- 배너 -->
  <div id ="banner">
 	<!-- 배너클릭시 시작페이지로! -->
-	<a href="/arm/Main.jsp"><img src="images/베너.png"></a>
+	<a href="/arm/Main.jsp"><img src="/arm/img/banner.png" alt = "시작페이지로"></a>
  </div>
 <!-- ---------------------------내용 부분------------------------------------ -->
 <div id="wrapper">
 	<div id = "cs_menu">
 		<ul class = "cs_navi">
-			<li><a onclick="showCart();" id = "c_btn">장바구니</a></li>
-			<li><a onclick="showBuyList();" id = "bl_btn">구매 내역</a></li>
-			<li><a onclick="showQnA();" id = "qa_btn">문의 내역</a></li>
-			<li><a onclick="showUser();" id = "u_btn">회원정보</a></li>
+			<li><a href="/arm/mypage/MyinfoCart.jsp" id = "c_btn">장바구니</a></li>
+			<li><a href="/arm/mypage/MyinfoPurchase.jsp" id = "bl_btn">구매 내역</a></li>
+			<li><a href="/arm/mypage/MyinfoQuestion.jsp" id = "qa_btn">문의 내역</a></li>
+			<li><a href="/arm/mypage/MyinfoDetail.jsp" id = "u_btn">회원정보</a></li>
 		</ul>
 	</div><!-- cs_menu -->
 
@@ -624,118 +457,8 @@
 <button id = "purchase_btn">구매 하기</button>
 </div>
 </div><!-- 장바구니끝 -->
-<!-- ---------------------------영수증부분------------------------------------ -->
-<div id="t_purchase">
- <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tblTop">
-    <tr>
-      <td>영 수 증</td>
-	</tr>
-  </table>
-  
- <table width="100%" cellpadding="0" cellspacing="0" class="tbl stamp">
-    <tr>
-       <th width="20%">주문번호</th>
-      <td colspan="3" class="txt1">777-77-12345</td>
-    </tr>
-
-    <tr>
-      <th>성명</th>
-      <td colspan="3" align="center">[Gold]김동녕</td>
-     </tr>
-    
-	<tr>
-      <th>휴대전화</th>
-      <td colspan="3">010-2468-2028</td>
-    </tr>
- 
-    <tr>
-      <th>이메일</th>
-      <td colspan="3">doxdoxdox@naver.com</td>
-    </tr>
-	
-	<tr>
-		<th>거래일시</th>
-		<td colspan="3">2016년 9월 9일</td>
-	</tr>
-</table>
-
-  
-  <table width="100%" cellspacing="0" cellpadding="0" class="tbl">
-    <tr>
-      <th>품목</th>
-      <th>수량</th>
-      
-      <th>금액(원)</th>
-    </tr>
-    <tr>
-      <td class="item">컴퓨터</td>
-      <td class="article">2</td>
-      <td class="sum">1,050,000</td>
-    </tr>
- <tr>
-      <td class="item">아이패드</td>
-      <td class="article">1</td>
-      <td class="sum">500,000</td>
- </tr>
- <tr>
-      <td class="item"></td>
-      <td class="article">&nbsp;</td>
-      <td class="sum"></td>
-  </tr>
- <tr>
-      <td class="item"></td>
-      <td class="article">&nbsp;</td>
-      <td class="sum"></td>
-  </tr>
- <tr>
-      <td class="item"></td>
-      <td class="article">&nbsp;</td>
-      <td class="sum"></td>
-  </tr>
- <tr>
-      <td class="item"></td>
-      <td class="article">&nbsp;</td>
-      <td class="sum"></td>
- </tr>
- <tr>
-      <td class="item"></td>
-      <td class="article">&nbsp;</td>
-      <td class="sum"></td>
- </tr>
-  </table>
-
-<table width="100%" cellspacing="0" cellpadding="0" class="tbl2">
-<tr>
-	<td class = "del">배송비 : 5000원</td>
-</tr>
-<tr>
-	<td class = "tsum">총 결제금액 : 1,550,000원</td>
-</tr>
-</table>
-
-<table width="100%" cellpadding="0" cellspacing="0" class="tbl stamp">
-   	  <tr>
-      <th width="20%">주소</th>
-      <td colspan="3" align="center">경기도 성남시 분당구 정자로56 106동303호</td>
-     </tr>
-</table>
-
-<table width="100%" cellspacing="0" cellpadding="0" class="tbl3">
-<tr>
-	<td class = "sta">거래상태</td>
-</tr>
-<tr>
-	<td class = "sta2">결제완료</td>
-</tr>
-</table>
-
-  
-</div><!-----------------------------------------------------t_purchase 끝-->
-
-<div id = "t_myInfo">회원정보</div>
-<div id = "t_myQ">문의내역</div>
 </div><!--contents끝-->
-</div><!--wrapper 끝-->
+</div><!--wrapper:menu+contents 끝-->
 
 <!-- ---------------------------내용 부분 끝---------------------------------- -->
 	<!-- top버튼 -->
