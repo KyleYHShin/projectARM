@@ -473,7 +473,7 @@
 	.item_name, .item_price{
 		font-size: 0.9em;
 	}
-	
+	gggg
   }
   /*휴대폰*/
   @media all and (max-width: 750px){
