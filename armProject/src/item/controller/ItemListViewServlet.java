@@ -49,11 +49,13 @@ public class ItemListViewServlet extends HttpServlet {
 			//불러오는데 성공했을 경우
 			view = request.getRequestDispatcher("Main.jsp");
 			request.setAttribute("list", list);
+			request.setAttribute("status", "all");
 			view.forward(request, response);
 			
 		}else{
 			//불러오는데 실패했거나 조회결과가 없거나.
 			view = request.getRequestDispatcher("Main.jsp");
+			request.setAttribute("status", "err");
 			view.forward(request, response);
 			System.out.println("[servlet] 조회 실패...");
 		}

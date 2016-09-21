@@ -4,6 +4,8 @@
 <% 
 ArrayList<Item> list = (ArrayList<Item>)request.getAttribute("list");
 String msg = (String)request.getAttribute("msg");
+String status = (String)request.getAttribute("status");
+String keyword = (String)request.getAttribute("keyword");
  %>
 <!doctype html>
 <html lang="ko">
@@ -612,10 +614,10 @@ String msg = (String)request.getAttribute("msg");
 	</div><!-- 검색 -->
 
 	<div id = "sort">
-		<a href="isort?list=<%=list%>&sortno=1">최신등록순</a>&nbsp;&nbsp; 
-		<a href="isort?list=<%=list%>&sortno=2">높은조회순</a>&nbsp;&nbsp;
-		<a href="isort?list=<%=list%>&sortno=3">높은가격순</a>&nbsp;&nbsp;
-		<a href="isort?list=<%=list%>&sortno=4">낮은가격순</a>&nbsp;&nbsp;
+		<a href="isort?status=<%=status%>&keyword=<%= keyword %>&sortno=1">최신등록순</a>&nbsp;&nbsp; 
+		<a href="isort?status=<%=status%>&keyword=<%= keyword %>&sortno=2">높은조회순</a>&nbsp;&nbsp;
+		<a href="isort?status=<%=status%>&keyword=<%= keyword %>&sortno=3">높은가격순</a>&nbsp;&nbsp;
+		<a href="isort?status=<%=status%>&keyword=<%= keyword %>&sortno=4">낮은가격순</a>&nbsp;&nbsp;
 	</div><!-- sort -->
 	
 	</div><!-- fix_menu(카테고리+검색+정렬) -->

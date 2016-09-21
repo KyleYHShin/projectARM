@@ -48,11 +48,13 @@ public class ItemCategoryListViewServlet extends HttpServlet {
 			//조회성공시
 			view = request.getRequestDispatcher("SubPage.jsp");
 			request.setAttribute("list", list);
+			request.setAttribute("status", String.valueOf(categoryNo));
 			view.forward(request, response);
 		}else{
 			//조회실패시 어떻게 처리할까
 			view = request.getRequestDispatcher("SubPage.jsp");
 			request.setAttribute("msg", "해당하는 상품이 없어요! 죄송..");
+			request.setAttribute("status", "err");
 			view.forward(request, response);
 			System.out.println("[category servlet] 조회실패..");
 		}

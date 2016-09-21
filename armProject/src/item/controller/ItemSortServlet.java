@@ -19,6 +19,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import item.model.service.ItemService;
 import item.model.vo.Item;
 
 /**
@@ -46,7 +47,60 @@ public class ItemSortServlet extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html; charset=utf-8");
 		
-		 
+		String status = (String)request.getParameter("status");
+		
+		ArrayList<Item> list = null;
+		//status에 따라 다른 list를 가짐
+		
+		RequestDispatcher view = null;
+		view = request.getRequestDispatcher("SubPage.jsp");
+		
+		if(status.equals("all")){
+			list = new ItemService().selectAllList();
+			request.setAttribute("status", status);
+		}else if(status.equals("search")){
+			String keyword = (String)request.getParameter("keyword");
+			list = new ItemService().searchItem(keyword);
+			request.setAttribute("status", status);
+			request.setAttribute("keyword", keyword);
+		}else if(status.equals("err")){
+			request.setAttribute("msg", "정렬할 상품이 존재하지 않아요!");
+		}else{
+			int categoryNo = Integer.parseInt(status);
+			list = new ItemService().selectCategoryList(categoryNo);
+			request.setAttribute("status", status);
+		}
+		
+		int sortNo = Integer.parseInt(request.getParameter("sortno"));
+		
+		if(list != null){
+		switch(sortNo){
+		case 1://최신상품(update날짜순)
+			list.sort(new DescDate());
+			System.out.println("날짜 내림차순..");
+			break;
+		case 2://조회수
+			list.sort(new DescCount());
+			System.out.println("조회수 내림차순..");
+			break;
+		case 3://가격높은순
+			list.sort(new DescPrice());
+			System.out.println("가격 내림차순..");
+			break;
+		case 4://가격낮은순
+			list.sort(new AscPrice());
+			System.out.println("가격 오름차순..");
+			break;
+		}
+		request.setAttribute("list", list);
+		view.forward(request, response);
+		}else{
+			view = request.getRequestDispatcher("SubPage.jsp");
+			request.setAttribute("msg", "정렬할 상품이 존재하지 않아요!");
+			request.setAttribute("status", "err");
+			view.forward(request, response);
+		}
+		/* 
 		//list.toString으로 받는다
 		String data = request.getParameter("list");
 		//정렬방식
@@ -122,6 +176,7 @@ public class ItemSortServlet extends HttpServlet {
 			request.setAttribute("msg", "정렬할 상품이 존재하지 않아요!");
 			view.forward(request, response);
 		}
+		*/
 	}
 
 	/**

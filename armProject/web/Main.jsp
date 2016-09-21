@@ -2,7 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ page import="java.util.ArrayList, item.model.vo.Item"%>
 <%
-	ArrayList<Item> list = (ArrayList<Item>) request.getAttribute("list");
+ArrayList<Item> list = (ArrayList<Item>) request.getAttribute("list");
+String status = (String)request.getAttribute("status");
 %>
 
 <!doctype html>
@@ -488,7 +489,6 @@ nav#topMenu {
 	background: white;
 	display: inline-block;
 }
-
 .item_box img {
 	width: 100%;
 }
@@ -552,6 +552,9 @@ nav#topMenu {
 	}
 }
 
+	#pageNo{
+		float : bottom;
+	}
 /* 푸터 */
 footer {
 	BORDER-TOP: 1px solid gray;
@@ -743,10 +746,10 @@ footer #fwrap {
 			<!-- 검색 -->
 
 			<div id="sort">
-				<a href="isort?list=<%=list%>&sortno=1">최신등록순</a>&nbsp;&nbsp; <a
-					href="isort?list=<%=list%>&sortno=2">높은조회순</a>&nbsp;&nbsp; <a
-					href="isort?list=<%=list%>&sortno=3">높은가격순</a>&nbsp;&nbsp; <a
-					href="isort?list=<%=list%>&sortno=4">낮은가격순</a>&nbsp;&nbsp;
+				<a href="isort?status=<%=status%>&sortno=1">최신등록순</a>&nbsp;&nbsp; <a
+					href="isort?status=<%=status%>&sortno=2">높은조회순</a>&nbsp;&nbsp; <a
+					href="isort?status=<%=status%>&sortno=3">높은가격순</a>&nbsp;&nbsp; <a
+					href="isort?status=<%=status%>&sortno=4">낮은가격순</a>&nbsp;&nbsp;
 			</div>
 			<!-- sort -->
 
@@ -779,6 +782,8 @@ footer #fwrap {
 				}
 				}
 			%>
+			<!-- 페이징처리할때 ------------------------------------------------------ -->
+			<div id = "pageNo"><< 1 2 3 4 5 >></div>
 		</div>
 		<!-- contents -->
 
