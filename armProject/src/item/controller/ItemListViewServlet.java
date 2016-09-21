@@ -49,7 +49,7 @@ public class ItemListViewServlet extends HttpServlet {
 			//불러오는데 성공했을 경우
 			view = request.getRequestDispatcher("Main.jsp");
 			request.setAttribute("list", list);
-			request.setAttribute("status", "all");
+			request.setAttribute("status", "main");
 			view.forward(request, response);
 			
 		}else{

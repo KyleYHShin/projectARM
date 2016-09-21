@@ -55,7 +55,7 @@ public class ItemSortServlet extends HttpServlet {
 		view = request.getRequestDispatcher("SubPage.jsp");
 		
 		//status에 따라 다른 list를 가짐
-		if(status.equals("all")){
+		if(status.equals("main")){
 			list = new ItemService().selectMainList();
 			request.setAttribute("status", status);
 		}else if(status.equals("search")){
