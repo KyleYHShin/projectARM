@@ -56,7 +56,7 @@ public class ItemSortServlet extends HttpServlet {
 		
 		//status에 따라 다른 list를 가짐
 		if(status.equals("all")){
-			list = new ItemService().selectAllList();
+			list = new ItemService().selectMainList();
 			request.setAttribute("status", status);
 		}else if(status.equals("search")){
 			String keyword = (String)request.getParameter("keyword");

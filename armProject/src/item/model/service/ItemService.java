@@ -11,10 +11,10 @@ public class ItemService {
 
 	public ItemService(){}
 
-	public ArrayList<Item> selectAllList() {
+	public ArrayList<Item> selectMainList() {
 		Connection con = getConnection();
 		
-		ArrayList<Item> list = new ItemDao().selectAllList(con);
+		ArrayList<Item> list = new ItemDao().selectMainList(con);
 		System.out.println("service실행..");
 		
 		close(con);

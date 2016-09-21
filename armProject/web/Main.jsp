@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="java.util.ArrayList, item.model.vo.Item"%>
+<%@ page import="java.util.ArrayList, item.model.vo.Item, member.model.vo.User"%>
 <%
+User loginUser = (User)session.getAttribute("loginUser");
 ArrayList<Item> list = (ArrayList<Item>) request.getAttribute("list");
 String status = (String)request.getAttribute("status");
 %>
@@ -505,7 +506,7 @@ nav#topMenu {
 	color : red;
 }
 .item_name, .item_price {
-	font-size: 0.8em;
+	font-size: 0.9em;
 	text-align: center;
 }
 
@@ -776,10 +777,19 @@ footer #fwrap {
 							<td class="item_price"><%=i.getItemPrice()%>원
 							<td>
 						</tr>
+						<% if (loginUser != null) {%>
+						<tr>
+							<td class="item_price" style = "color : black; font-weight : 600; text-decoration : line-through;"><%=i.getItemPrice()%>원
+							<td>
+						</tr>
+						<tr>
+							<td class="item_price" style = "color : red; font-weight : 800;"><%= "계산값" %>원
+							<td>
+						</tr>
+						<% } %>
 					</table></a>
 			</section>
-			<%
-				}
+			<% }
 				}
 			%>
 			<!-- 페이징처리할때 ------------------------------------------------------ -->

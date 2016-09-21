@@ -9,14 +9,14 @@ public class ItemDao {
 
 	public ItemDao(){}
 
-	public ArrayList<Item> selectAllList(Connection con) {
+	public ArrayList<Item> selectMainList(Connection con) {
 		//전체상품목록 불러오기
 		ArrayList<Item> list = null;
 		Statement stmt = null;
 		ResultSet rset = null;
 		
 		
-		String query = "select * from item";
+		String query = "select * from product_main p left join item i on(p.PRM_ITEM_NO = i.ITEM_NO) order by prm_no";
 		
 		try {
 			stmt = con.createStatement();

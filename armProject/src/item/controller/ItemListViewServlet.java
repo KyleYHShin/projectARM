@@ -41,7 +41,7 @@ public class ItemListViewServlet extends HttpServlet {
 		
 		
 		System.out.println("메인서블릿 구동..");
-		ArrayList<Item> list = new ItemService().selectAllList();
+		ArrayList<Item> list = new ItemService().selectMainList();
 		System.out.println(list);
 		
 		RequestDispatcher view = null;
