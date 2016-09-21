@@ -492,11 +492,23 @@ nav#topMenu {
 .item_box img {
 	width: 100%;
 }
-
+.item_box a{
+	color : black;
+	text-decoration : none;
+}
+.item_box a:hover .item_name {
+	text-decoration : underline;
+	color : red;
+}
+.item_price {
+	font-weight : 700;
+	color : red;
+}
 .item_name, .item_price {
 	font-size: 0.8em;
 	text-align: center;
 }
+
 /*태블릿 용*/
 @media all and (max-width: 1000px) {
 	.contents {
@@ -687,7 +699,7 @@ footer #fwrap {
 		<div id="fix_menu">
 			<div id="category">
 				<ul class="navi">
-					<li><a href="">손</a>
+					<li><a href="/arm/catlist?categoryno=100">손</a>
 					<!-- 100 -->
 						<ul>
 							<li><a href="">반지</a></li>
@@ -695,21 +707,21 @@ footer #fwrap {
 						</ul></li>
 					<!-- 손 -->
 
-					<li><a href="">손목</a>
+					<li><a href="/arm/catlist?categoryno=200">손목</a>
 					<!-- 200 -->
 						<ul>
 							<li><a href="">팔찌/시계</a></li>
 							<li><a href="">의료/건강</a></li>
 						</ul></li>
 					<!-- 손목 -->
-					<li><a href="">팔목</a>
+					<li><a href="/arm/catlist?categoryno=300">팔목</a>
 					<!-- 300 -->
 						<ul>
 							<li><a href="">팔찌/시계</a></li>
 							<li><a href="">의료/건강</a></li>
 						</ul></li>
 					<!-- 팔목 -->
-					<li><a href="">어깨</a>
+					<li><a href="/arm/catlist?categoryno=400">어깨</a>
 					<!-- 400 -->
 						<ul>
 							<li><a href="">의류</a></li>
@@ -731,10 +743,10 @@ footer #fwrap {
 			<!-- 검색 -->
 
 			<div id="sort">
-				<a href="isort?list=<%=list%>&sortno=1">최신순</a>&nbsp;&nbsp; <a
-					href="isort?list=<%=list%>&sortno=2">조회수순</a>&nbsp;&nbsp; <a
-					href="isort?list=<%=list%>&sortno=3">가격높은순</a>&nbsp;&nbsp; <a
-					href="isort?list=<%=list%>&sortno=4">가격낮은순</a>&nbsp;&nbsp;
+				<a href="isort?list=<%=list%>&sortno=1">최신등록순</a>&nbsp;&nbsp; <a
+					href="isort?list=<%=list%>&sortno=2">높은조회순</a>&nbsp;&nbsp; <a
+					href="isort?list=<%=list%>&sortno=3">높은가격순</a>&nbsp;&nbsp; <a
+					href="isort?list=<%=list%>&sortno=4">낮은가격순</a>&nbsp;&nbsp;
 			</div>
 			<!-- sort -->
 
@@ -758,7 +770,7 @@ footer #fwrap {
 							<td>
 						</tr>
 						<tr>
-							<td class="item_price"><%=i.getItemPrice()%>
+							<td class="item_price"><%=i.getItemPrice()%>원
 							<td>
 						</tr>
 					</table></a>

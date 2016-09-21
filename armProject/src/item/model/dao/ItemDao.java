@@ -59,7 +59,7 @@ public class ItemDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
-		String query = "selet * from item where item_cat_no = ?";
+		String query = "select * from item where item_cat_no = ?";
 		try {
 			pstmt = con.prepareStatement(query);
 			pstmt.setInt(1, categoryNo);
