@@ -26,39 +26,6 @@ ArrayList<Item> list = (ArrayList<Item>)request.getAttribute("list");
   
   <script type="text/javascript" src = "js/jquery-3.1.0.min.js"></script>
   <script type="text/javascript">
-	function test(){
-		var arr = new Array();
-  		
-  		<% for(Item i : list){ %>
-  			var item = new Object();
-  			item.itemNo = <%= i.getItemNo() %>;
-  			item.itemName = '<%= i.getItemName() %>';
-  			item.itemCatNo = <%= i.getItemCatNo() %>;
-  			item.itemPrice = <%= i.getItemPrice() %>;
-  			item.itemCount = <%= i.getItemCount() %>;
-  			item.itemDate = "<%= i.getItemUpdate() %>";
-  			item.itemTH = "<%= i.getItemTH() %>";
-  			item.itemImg = "<%= i.getItemImg() %>";
-  			item.itemImgDt = "<%= i.getItemImgDt() %>";
-  			
-  			arr.push(item);
-  		<% } %>
-  		
-  		alert(arr.length);
-  		$.ajax({
-  			url : "isort",
-  			type : "get",/* post로는 안보내진다! */
-  			data: { test : JSON.stringify(arr) },
-  			dataType: "json",
-  			contentType: "application/json",
-  			success: function(data){
-  				alert(data);
-  			},error:function(data){
-  				alert("오류오류");
-  				alert(JSON.stringify(arr));
-  			}
-		});
-	};
 	$(function(){
 		
 		//스크롤시 카테고리고정
@@ -479,8 +446,8 @@ ArrayList<Item> list = (ArrayList<Item>)request.getAttribute("list");
 		display: table;
 		width: 100%;
 		max-width: 1000px;
+		min-height : 500px;
 		padding:1%;
-
 		text-align : center;
 	}
 	.item_box{
@@ -636,9 +603,9 @@ ArrayList<Item> list = (ArrayList<Item>)request.getAttribute("list");
 	<button>◀</button> 1/5 <button>▶</button>
  </div>
 <!-- 배너 -->
- <div id ="banner">
+ <div id ="mainlist">
 	<!-- 배너클릭시 시작페이지로! -->
-	<a href="/arm/Main.jsp"><img src="/arm/img/banner.png" alt = "시작페이지로"></a>
+	<a href="/arm/mainlist"><img src="/arm/img/banner.png" alt = "시작페이지로"></a>
  </div>
 
  <div id = "ad">
@@ -715,16 +682,18 @@ ArrayList<Item> list = (ArrayList<Item>)request.getAttribute("list");
 	</div><!-- 검색 -->
 
 	<div id = "sort">
-	<a href="isort?list=<%= list %>&sortno=1">인기도순</a>&nbsp;&nbsp;
-	<a href="#">조회수순</a>&nbsp;&nbsp;
-	<a href="#">가격높은순</a>&nbsp;&nbsp;
-	<a href="#">가격낮은순</a>&nbsp;&nbsp;
+	<a href="isort?list=<%= list %>&sortno=1">최신순</a>&nbsp;&nbsp;
+	<a href="isort?list=<%= list %>&sortno=2">조회수순</a>&nbsp;&nbsp;
+	<a href="isort?list=<%= list %>&sortno=3">가격높은순</a>&nbsp;&nbsp;
+	<a href="isort?list=<%= list %>&sortno=4">가격낮은순</a>&nbsp;&nbsp;
 	</div><!-- sort -->
 	
 	</div><!-- fix_menu(카테고리+검색+정렬) -->
 	
     <div class="contents">
-     		<%for(Item i : list){ %>
+     		 <%
+           if(list != null){
+           for(Item i : list){ %>
             <section class="item_box">
 			<!-- 클릭시 상세 페이지로 이동하도록. -->
                 <a href = "/arm/item/ItemDetail.jsp"><table>
@@ -733,7 +702,8 @@ ArrayList<Item> list = (ArrayList<Item>)request.getAttribute("list");
                     <tr> <td class="item_price"><%= i.getItemPrice() %><td></tr>
                 </table></a>
             </section>
-            <% } %>
+            <% }
+            }%>
     </div><!-- contents -->
 
 

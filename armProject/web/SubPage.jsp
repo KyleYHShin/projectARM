@@ -393,6 +393,7 @@ String msg = (String)request.getAttribute("msg");
 		display: table;
 		width: 100%;
 		max-width: 1000px;
+		min-height : 500px;
 		padding:1%;
 
 		text-align : center;
@@ -552,7 +553,7 @@ String msg = (String)request.getAttribute("msg");
 <!-- 배너 -->
  <div id ="banner">
 	<!-- 배너클릭시 시작페이지로! -->
-	<a href="/arm/Main.jsp"><img src="/arm/img/banner.png" alt = "시작페이지로"></a>
+	<a href="/arm/mainlist"><img src="/arm/img/banner.png" alt = "시작페이지로"></a>
  </div>
 <!-- 카테고리 ~ item 목록 -->
  <div id="wrapper">
@@ -596,9 +597,10 @@ String msg = (String)request.getAttribute("msg");
 	</div><!-- 검색 -->
 
 	<div id = "sort">
-	<a href="#">인기도순</a>&nbsp;&nbsp;
-	<a href="#">가격높은순</a>&nbsp;&nbsp;
-	<a href="#">가격낮은순</a>&nbsp;&nbsp;
+	<a href="isort?list=<%= list %>&sortno=1">최신순</a>&nbsp;&nbsp;
+	<a href="isort?list=<%= list %>&sortno=2">조회수순</a>&nbsp;&nbsp;
+	<a href="isort?list=<%= list %>&sortno=3">가격높은순</a>&nbsp;&nbsp;
+	<a href="isort?list=<%= list %>&sortno=4">가격낮은순</a>&nbsp;&nbsp;
 	</div><!-- sort -->
 	
 	</div><!-- fix_menu(카테고리+검색+정렬) -->
@@ -619,7 +621,7 @@ String msg = (String)request.getAttribute("msg");
             <% }
             }else{ %>
             
-            <h3><%= msg %>검색결과가아아아아아!!</h3>
+            <h3><%= msg %></h3>
             
             <% } %>
     </div><!-- contents-->

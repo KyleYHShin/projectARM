@@ -515,7 +515,7 @@
 <!-- 배너 -->
  <div id ="banner">
 	<!-- 배너클릭시 시작페이지로! -->
-	<a href="/arm/Main.jsp"><img src="/arm/img/banner.png" alt = "시작페이지로"></a>
+	<a href="/arm/mainlist"><img src="/arm/img/banner.png" alt = "시작페이지로"></a>
  </div>
 <!-- 카테고리 ~ item 목록 -->
  <div id="wrapper">
@@ -557,13 +557,7 @@
 	<input type="text" id = "search" name = "search" placeholder = "검색하세요!">&nbsp;&nbsp;<input type="image" id = "schBtn" src = "/arm/img/search2_small.png" width ="25px" height = "25px";>
 	</form>
 	</div><!-- 검색 -->
-
-	<div id = "sort">
-	<a href="#">인기도순</a>&nbsp;&nbsp;
-	<a href="#">가격높은순</a>&nbsp;&nbsp;
-	<a href="#">가격낮은순</a>&nbsp;&nbsp;
-	</div><!-- sort -->
-	
+	<!-- 로그인페이지에서는 정렬 안보이게 -->
 	</div><!-- fix_menu(카테고리+검색+정렬) -->
 
     <div class="contents">

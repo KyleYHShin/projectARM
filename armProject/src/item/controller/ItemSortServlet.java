@@ -2,6 +2,7 @@ package item.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -46,59 +47,81 @@ public class ItemSortServlet extends HttpServlet {
 		response.setContentType("text/html; charset=utf-8");
 		
 		 
-		//json으로 보낸 값을 string으로 받는다
+		//list.toString으로 받는다
 		String data = request.getParameter("list");
-		//받은 값 확인
-		
-		System.out.println(data);
-		StringTokenizer st = new StringTokenizer(data, "[], ");
-		
-		System.out.println(st.countTokens());
-		int j = 0;
-		while(st.hasMoreTokens()){
-			System.out.println(st.nextToken());
-			switch(j%10){
-			case 1://itemNo
-			case 2://itemName
-			case 3://itemCatNo
-			case 4://itemPrice
-			case 5://itemCount
-			case 6://itemUpdate
-			case 7://itemTH
-			case 8://itemImg
-			case 9://itemImgDt
-			}	
-			j++;
-		}
-		
-		/*
-		//정렬을 누른 화면에서 setAttribute("list",list)처리 해주면 제대로 받을 수 있는거냐..
-		ArrayList<Item> list = (ArrayList<Item>)request.getAttribute("list");
-		//제대로안받아짐.. 어떡하지...
-		
-		System.out.println("sort서블릿구동");
-		System.out.println(list.toString());
-		//제대로 받아진다는 가정아래,
+		//정렬방식
 		int sortNo = Integer.parseInt(request.getParameter("sortno"));
+		//받은 값 확인
+		System.out.println(data);
 		
-		switch(sortNo){
-		case 1://신상품(update날짜순)
+		RequestDispatcher view = null;
+		if(!data.equals("null")){
+			//분리, 변수명=값 으로 추출
+			StringTokenizer st = new StringTokenizer(data, "[], ");
+			//총 토큰수 확인
+			System.out.println(st.countTokens());
 			
-			break;
-		case 2://조회수
-			break;
-		case 3://가격높은순
-			break;
-		case 4://가격낮은순
-			break;
+			//토근 string 배열에 값만 담기. 단, i%10==0 은 Item객체명.(객체하나당 10개 토큰)
+			String[] stArr = new String[st.countTokens()];
+			for(int i = 0; i < stArr.length; i ++){
+				if(i%10 != 0){
+					String temp = st.nextToken().split("=")[1];
+					stArr[i] = temp;
+					System.out.println(stArr[i]);
+				}else{
+					stArr[i] = st.nextToken();
+					System.out.println(stArr[i]);
+				}
+			}
+			
+			//ArrayList<Item>형태로 담기
+			ArrayList<Item> list = new ArrayList<Item>();
+			for(int i = 0; i < stArr.length/10; i++){
+				Item item = new Item();
+				item.setItemNo(Integer.parseInt(stArr[1+(i*10)]));
+				item.setItemName(stArr[2+(i*10)]);
+				item.setItemCatNo(Integer.parseInt(stArr[3+(i*10)]));
+				item.setItemPrice(Integer.parseInt(stArr[4+(i*10)]));
+				item.setItemCount(Integer.parseInt(stArr[5+(i*10)]));
+				//item.setItemUpdate(Date.valueOf(stArr[6+(i*10)]));
+				item.setItemTH(stArr[7+(i*10)]);
+				item.setItemImg(stArr[8+(i*10)]);
+				item.setItemImgDt(stArr[9+(i*10)]);
+				list.add(item);
+				
+				System.out.println(item.toString());
+				System.out.println("arrayList에담기.."+i);
+			}
+			
+			//정렬방식대 따른 정렬
+			switch(sortNo){
+			case 1://최신상품(update날짜순)
+				list.sort(new DescDate());
+				System.out.println("날짜 내림차순..");
+				break;
+			case 2://조회수
+				list.sort(new DescCount());
+				System.out.println("조회수 내림차순..");
+				break;
+			case 3://가격높은순
+				list.sort(new DescPrice());
+				System.out.println("가격 내림차순..");
+				break;
+			case 4://가격낮은순
+				list.sort(new AscPrice());
+				System.out.println("가격 오름차순..");
+				break;
+			}
+			
+			//정렬한 arraylist 보냄
+			view = request.getRequestDispatcher("SubPage.jsp");
+			request.setAttribute("list", list);
+			view.forward(request, response);
+		}else{
+			view = request.getRequestDispatcher("SubPage.jsp");
+			request.setAttribute("msg", "정렬할 상품이 존재하지 않아요!");
+			view.forward(request, response);
 		}
-		//이게 구현가능한 경우, 각각 comparator상속받은 클래스 하나씩 생성
-		
-		//정렬한 arraylist 보냄
-		RequestDispatcher view = request.getRequestDispatcher("SubPage.jsp");
-		request.setAttribute("list", list);
-		view.forward(request, response);
-		*/
 	}
 
 	/**

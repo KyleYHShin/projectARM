@@ -38,6 +38,7 @@ public class ItemCategoryListViewServlet extends HttpServlet {
 		
 		System.out.println("category servlet 구동..");
 		
+		//카테고리no
 		int categoryNo = Integer.parseInt(request.getParameter("categoryno"));
 		
 		ArrayList<Item> list = new ItemService().selectCategoryList(categoryNo);
