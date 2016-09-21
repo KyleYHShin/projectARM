@@ -15,7 +15,10 @@ public class ItemService {
 		Connection con = getConnection();
 		
 		ArrayList<Item> list = new ItemDao().selectAllList(con);
-				
+		System.out.println("service실행..");
+		
+		close(con);
+		
 		return list;
 	}
 
@@ -24,13 +27,16 @@ public class ItemService {
 		
 		ArrayList<Item> list = new ItemDao().selectCategoryList(con, categoryNo);
 		
+		close(con);
 		return list;
 	}
 
 	public ArrayList<Item> searchItem(String keyword) {
-Connection con = getConnection();
+		Connection con = getConnection();
 		
 		ArrayList<Item> list = new ItemDao().searchItem(con, keyword);
+		
+		close(con);
 		return list;
 	}
 

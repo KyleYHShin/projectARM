@@ -41,14 +41,8 @@ public class ItemListViewServlet extends HttpServlet {
 		
 		
 		System.out.println("메인서블릿 구동..");
-		//ArrayList<Item> list = new ItemService().selectAllList();
-		
-		//시험용 데이터 생성
-		ArrayList<Item> list = new ArrayList<Item>();
-		for(int i = 0; i<10; i++){
-			Item item = new Item(i, "상품"+i, 10+i, 5000+i, 0, null, "0001.jpg", "1001.jpg", "2001.jpg");
-			list.add(item);
-		}
+		ArrayList<Item> list = new ItemService().selectAllList();
+		System.out.println(list);
 		
 		RequestDispatcher view = null;
 		if(list != null){

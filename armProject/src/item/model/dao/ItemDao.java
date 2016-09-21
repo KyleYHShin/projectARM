@@ -15,6 +15,7 @@ public class ItemDao {
 		Statement stmt = null;
 		ResultSet rset = null;
 		
+		
 		String query = "select * from item";
 		
 		try {
@@ -36,12 +37,13 @@ public class ItemDao {
 				item.setItemPrice(rset.getInt("item_price"));
 				item.setItemCount(rset.getInt("item_count"));
 				item.setItemUpdate(rset.getDate("item_update"));
-				item.setItemTH(rset.getString("item_th"));
-				item.setItemImg(rset.getString("item_image"));
+				item.setItemTH(rset.getString("item_img_mini"));
+				item.setItemImg(rset.getString("item_img"));
 				item.setItemImgDt(rset.getString("item_img_detail"));
 				
 				list.add(item);
 			}
+			System.out.println("dao : "+list);
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("dao조회실패...");
@@ -79,8 +81,8 @@ public class ItemDao {
 				item.setItemPrice(rset.getInt("item_price"));
 				item.setItemCount(rset.getInt("item_count"));
 				item.setItemUpdate(rset.getDate("item_update"));
-				item.setItemTH(rset.getString("item_th"));
-				item.setItemImg(rset.getString("item_image"));
+				item.setItemTH(rset.getString("item_img_mini"));
+				item.setItemImg(rset.getString("item_img"));
 				item.setItemImgDt(rset.getString("item_img_detail"));
 				
 				list.add(item);
@@ -101,7 +103,7 @@ public class ItemDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
-		String query = "selet * from item where item_tag like ?";
+		String query = "select * from item where item_tag like ?";
 		try {
 			pstmt = con.prepareStatement(query);
 			pstmt.setString(1, "%"+keyword+"%");
@@ -123,8 +125,8 @@ public class ItemDao {
 				item.setItemPrice(rset.getInt("item_price"));
 				item.setItemCount(rset.getInt("item_count"));
 				item.setItemUpdate(rset.getDate("item_update"));
-				item.setItemTH(rset.getString("item_th"));
-				item.setItemImg(rset.getString("item_image"));
+				item.setItemTH(rset.getString("item_img_mini"));
+				item.setItemImg(rset.getString("item_img"));
 				item.setItemImgDt(rset.getString("item_img_detail"));
 				
 				list.add(item);

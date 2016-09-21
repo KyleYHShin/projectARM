@@ -57,7 +57,7 @@ public class ItemSortServlet extends HttpServlet {
 		RequestDispatcher view = null;
 		if(!data.equals("null")){
 			//분리, 변수명=값 으로 추출
-			StringTokenizer st = new StringTokenizer(data, "[], ");
+			StringTokenizer st = new StringTokenizer(data, "[],");
 			//총 토큰수 확인
 			System.out.println(st.countTokens());
 			
@@ -83,7 +83,7 @@ public class ItemSortServlet extends HttpServlet {
 				item.setItemCatNo(Integer.parseInt(stArr[3+(i*10)]));
 				item.setItemPrice(Integer.parseInt(stArr[4+(i*10)]));
 				item.setItemCount(Integer.parseInt(stArr[5+(i*10)]));
-				//item.setItemUpdate(Date.valueOf(stArr[6+(i*10)]));
+				item.setItemUpdate(Date.valueOf(stArr[6+(i*10)]));
 				item.setItemTH(stArr[7+(i*10)]);
 				item.setItemImg(stArr[8+(i*10)]);
 				item.setItemImgDt(stArr[9+(i*10)]);

@@ -33,6 +33,8 @@ public class ItemSearchServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//검색처리 서블릿
+		System.out.println("검색 servlet 구동..");
+		
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html; charset=utf-8");
 		
@@ -50,6 +52,7 @@ public class ItemSearchServlet extends HttpServlet {
 			//조회된 내용이 없거나 실패시
 			view = request.getRequestDispatcher("SubPage.jsp");
 			request.setAttribute("msg", "해당 키워드로 검색된 상품이 없어요!");
+			view.forward(request, response);
 			System.out.println("조회자료 없거나 실패...");
 		}
 	}

@@ -591,9 +591,11 @@ String msg = (String)request.getAttribute("msg");
 		</ul>
 	</div><!-- 카테고리 -->
 	<div id = "searchbox">
-	<form>
-	<input type="text" id = "search" name = "search" placeholder = "검색하세요!">&nbsp;&nbsp;<input type="image" id = "schBtn" src = "/arm/img/search2_small.png" width ="25px" height = "25px";>
-	</form>
+		<form action="/arm/isearch" method="post">
+			<input type="text" id="search" name="keyword" placeholder="검색하세요!">&nbsp;&nbsp;
+			<input type="image" id="schBtn" src="/arm/img/search2_small.png"
+				width="25px" height="25px">
+		</form>
 	</div><!-- 검색 -->
 
 	<div id = "sort">
