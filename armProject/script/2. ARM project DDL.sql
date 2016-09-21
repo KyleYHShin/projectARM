@@ -85,7 +85,7 @@ commit;
 
 ------------------------------------------------------------------------
 --1.생성
-drop table vender;
+--drop table vender;
 create table vender(
   ven_id     number,
   ven_name   varchar2(20 char) not null,
@@ -101,7 +101,7 @@ COMMENT ON COLUMN vender.ven_name IS '공급업체 명';
 COMMENT ON COLUMN vender.ven_phone IS '공급업체 전화번호';
 
 --3.시퀀스
-drop sequence seq_vender_id;
+--drop sequence seq_vender_id;
 create sequence seq_vender_id
   start with 1
   increment by 1
@@ -113,7 +113,7 @@ create sequence seq_vender_id
 
 ------------------------------------------------------------------------
 --1.생성
-drop table item_category;
+--drop table item_category;
 create table item_category(
   item_category_no   number(3),
   item_category_name varchar2(15 char) not null,
@@ -135,7 +135,7 @@ insert into item_category values( 400, '어깨');
 
 ------------------------------------------------------------------------
 --1.생성
-drop table item;
+--drop table item;
 create table item(
   item_no          number, 
   item_name        varchar2(20 char) not null,
@@ -170,7 +170,7 @@ COMMENT ON COLUMN item.item_img IS '메인 이미지 주소';
 COMMENT ON COLUMN item.item_img_detail IS '상품 설명 이미지 주소';
 
 --3-1.시퀀스
-drop sequence seq_item_no;
+--drop sequence seq_item_no;
 create sequence seq_item_no
   start with 1
   increment by 1
@@ -182,7 +182,7 @@ create sequence seq_item_no
 
 ------------------------------------------------------------------------
 --1.생성
-drop table product_main;
+--drop table product_main;
 create table product_main(
   prm_no      number(3),
   prm_item_no number,
@@ -198,7 +198,7 @@ COMMENT ON COLUMN product_main.prm_item_no IS '메인페이지 상품 ID';
 
 ------------------------------------------------------------------------
 --1.생성
-drop table item_sub;
+--drop table item_sub;
 create table item_sub(
   item_sub_no     number,
   item_sub_name   varchar2(20 char),
@@ -215,7 +215,7 @@ COMMENT ON COLUMN item_sub.item_sub_price IS '제품 가격';
 COMMENT ON COLUMN item_sub.quantity IS '재고 수량';
 
 --3.시퀀스
-drop sequence seq_item_sub_no;
+--drop sequence seq_item_sub_no;
 create sequence seq_item_sub_no
   start with 1
   increment by 1
@@ -229,7 +229,7 @@ create sequence seq_item_sub_no
 
 ------------------------------------------------------------------------
 --1.생성
-drop table item_bridge;
+--drop table item_bridge;
 create table item_bridge(
   item_no     number not null,
   item_sub_no number not null,
@@ -248,7 +248,7 @@ COMMENT ON COLUMN item_bridge.item_sub_no IS '제품 ID';
 COMMENT ON COLUMN item_bridge.item_no IS '상품 ID';
 
 --3.프로시저 : item_sub 데이터 입력시 사용
-drop procedure insert_item_sub;
+--drop procedure insert_item_sub;
 CREATE OR REPLACE PROCEDURE insert_item_sub
 (
     item_no         IN  NUMBER,
@@ -278,7 +278,7 @@ END;
 
 ------------------------------------------------------------------------
 --1.생성
-drop table grade;
+--drop table grade;
 create table grade(
   g_no        number(2),
   g_name      varchar2(10 char),
@@ -304,7 +304,7 @@ insert into grade values(6, '다이아몬드', 1000000, 0.05);
 
 ------------------------------------------------------------------------
 --1.생성
-drop table member;
+--drop table member;
 create table member(
   m_id        varchar2(15),--숫자,영문자,기호만 가능
   m_pw        varchar2(20) not null,--숫자,영문자,기호만 가능
@@ -339,7 +339,7 @@ COMMENT ON COLUMN member.m_joindate IS '가입 날짜';
 
 ------------------------------------------------------------------------
 --1.생성
-drop table users;
+--drop table users;
 create table users(
   user_id     varchar2(15),
   user_pw     varchar2(20) not null,
@@ -360,7 +360,7 @@ COMMENT ON COLUMN users.grade_name IS '등급';
 COMMENT ON COLUMN users.discount IS '할인율';
 
 --3.트리거 : users 입력
-drop trigger trigger_insert_users;
+--drop trigger trigger_insert_users;
 create or replace trigger trigger_insert_users
 after insert on member
 for each row
@@ -374,7 +374,7 @@ end;
 /
 
 --3.트리거2 : users 수정
-drop trigger trigger_update_users;
+--drop trigger trigger_update_users;
 create or replace trigger trigger_update_users
 before update on member
 for each row
@@ -404,7 +404,7 @@ insert into member values('user03','pwd03','테스트03',sysdate,'M','010-3333-3333
 
 ------------------------------------------------------------------------
 --1.생성
-drop table cart;
+--drop table cart;
 create table cart(
   cart_no           number(10),
   cart_m_id         varchar2(15) not null,
@@ -429,7 +429,7 @@ COMMENT ON COLUMN cart.cart_item_sub_no IS '하위 제품 ID';
 COMMENT ON COLUMN cart.cart_qty IS '제품 수량';
 
 --3.시퀀스
-drop sequence seq_cart_no;
+--drop sequence seq_cart_no;
 create sequence seq_cart_no
   start with 1
   increment by 1
@@ -446,7 +446,7 @@ insert into cart values
 
 ------------------------------------------------------------------------
 --1.생성
-drop table payment;
+--drop table payment;
 create table payment(
   payment_no      number(9),
   payment_m_id    varchar2(15),
@@ -475,7 +475,7 @@ COMMENT ON COLUMN payment.payment_price IS '결제 금액';
 COMMENT ON COLUMN payment.payment_date IS '결제 일자';
 
 --3-1.시퀀스
-drop sequence seq_payment_no;
+--drop sequence seq_payment_no;
 create sequence seq_payment_no
   start with 1
   increment by 1
@@ -486,7 +486,7 @@ create sequence seq_payment_no
 ;
 
 --3-2.트리거 : 사용자 정보 수정시 결제 정보 자동 수정
-drop trigger trigger_update_payment;
+--drop trigger trigger_update_payment;
 create or replace trigger trigger_update_payment
 before update on member
 for each row
@@ -502,7 +502,7 @@ end;
 
 ------------------------------------------------------------------------
 --1.생성
-drop table purchase;
+--drop table purchase;
 create table purchase(
   purchase_no         number(9),
   purchase_m_id       varchar2(15),
@@ -527,7 +527,7 @@ COMMENT ON COLUMN purchase.purchase_date IS '주문 날짜';
 COMMENT ON COLUMN purchase.purchase_payment_no IS '해당 주문 결제 번호';
 
 --3-1.시퀀스
-drop sequence seq_purchase_no;
+--drop sequence seq_purchase_no;
 create sequence seq_purchase_no
   start with 1
   increment by 1
@@ -538,7 +538,7 @@ create sequence seq_purchase_no
 ;
 
 --3-2.프로시저 : 결제완료 시 payment 생성 후 purchase update
-DROP PROCEDURE insert_payment;
+--DROP PROCEDURE insert_payment;
 CREATE OR REPLACE PROCEDURE insert_payment
 (
     origin_purchase_no  IN number,
@@ -572,7 +572,7 @@ END;
 
 ------------------------------------------------------------------------
 --1.생성
-drop table orders;
+--drop table orders;
 create table orders(
   order_no          number(10),
   order_purchase_no number(9) not null,
@@ -593,7 +593,7 @@ COMMENT ON COLUMN orders.order_item_sub_no IS '제품 ID';
 COMMENT ON COLUMN orders.order_qty IS '수량';
 
 --3-1.시퀀스
-drop sequence seq_order_no;
+--drop sequence seq_order_no;
 create sequence seq_order_no
   start with 1
   increment by 1
@@ -604,7 +604,7 @@ create sequence seq_order_no
 ;
 
 --3-2.트리거 : 주문 완료 후에 재고수량 감소
-drop trigger trigger_insert_order;
+--drop trigger trigger_insert_order;
 create or replace trigger trigger_insert_order
 after insert on orders
 for each row
@@ -618,7 +618,7 @@ end;
 /
 
 --3-3.트리거 : 주문 취소 후에 재고수량 추가
-drop trigger trigger_delete_order;
+--drop trigger trigger_delete_order;
 create or replace trigger trigger_delete_order
 after delete on orders
 for each row
@@ -647,7 +647,7 @@ EXECUTE insert_payment
 
 ------------------------------------------------------------------------
 --1.생성
-drop table question;
+--drop table question;
 create table question(
   question_no           number(9),
   question_m_id         varchar2(15) not null,
@@ -674,7 +674,7 @@ COMMENT ON COLUMN question.question_content IS '문의 내용';
 COMMENT ON COLUMN question.question_date IS '문의 날짜';
 
 --3.시퀀스
-drop sequence seq_question_no;
+--drop sequence seq_question_no;
 create sequence seq_question_no
   start with 1
   increment by 1
@@ -691,7 +691,7 @@ insert into question values
 
 ------------------------------------------------------------------------
 --1.생성
-drop table answer;
+--drop table answer;
 create table answer(
   answer_no           number(9),
   answer_question_no  number(9) not null,
@@ -711,7 +711,7 @@ COMMENT ON COLUMN answer.answer_content IS '답변 내용';
 COMMENT ON COLUMN answer.answer_date IS '답변 날짜';
 
 --3.시퀀스
-drop sequence seq_answer_no;
+--drop sequence seq_answer_no;
 create sequence seq_answer_no
   start with 1
   increment by 1
@@ -728,7 +728,7 @@ insert into answer values
 
 ------------------------------------------------------------------------
 --1.생성
-drop table review_head;
+--drop table review_head;
 create table review_head(
   review_head_no      number(1),
   review_head_content varchar2(10 char),
@@ -750,7 +750,7 @@ insert into review_head values(5, '강추!!!');
 
 ------------------------------------------------------------------------
 --1.생성
-drop table review;
+--drop table review;
 create table review(
   review_no           number(9),
   review_m_id      varchar2(15) not null,
@@ -781,7 +781,7 @@ COMMENT ON COLUMN review.review_content IS '후기 내용';
 COMMENT ON COLUMN review.review_date IS '후기 작성 날짜';
 
 --3.시퀀스
-drop sequence seq_review_no;
+--drop sequence seq_review_no;
 create sequence seq_review_no
   start with 1
   increment by 1
@@ -793,7 +793,7 @@ create sequence seq_review_no
 
 ------------------------------------------------------------------------
 --1.생성
-drop table FAQ_category;
+--drop table FAQ_category;
 create table FAQ_category(
   FAQ_category_no     number(2),
   FAQ_category_name   varchar2(10 char) not null,
@@ -815,7 +815,7 @@ insert into FAQ_category values(5, '기타');
 
 ------------------------------------------------------------------------
 --1.생성
-drop table FAQ;
+--drop table FAQ;
 create table FAQ(
   FAQ_no        number,
   FAQ_cat_no    number(2) not null,
@@ -836,7 +836,7 @@ COMMENT ON COLUMN FAQ.FAQ_content IS 'FAQ 글 내용';
 COMMENT ON COLUMN FAQ.FAQ_date IS 'FAQ 작성날짜';
 
 --3.시퀀스
-drop sequence seq_FAQ_no;
+--drop sequence seq_FAQ_no;
 create sequence seq_FAQ_no
   start with 1
   increment by 1
@@ -848,7 +848,7 @@ create sequence seq_FAQ_no
 
 ------------------------------------------------------------------------
 --1.생성
-drop table notice_category;
+--drop table notice_category;
 create table notice_category(
   notice_category_no    number(2),
   notice_category_name  varchar2(10 char) not null,
@@ -869,7 +869,7 @@ insert into notice_category values(4, '시스템');
 
 ------------------------------------------------------------------------
 --1.생성
-drop table notice;
+--drop table notice;
 create table notice(
   notice_no       number,
   notice_cat_no   number(2) not null,
@@ -892,7 +892,7 @@ COMMENT ON COLUMN notice.notice_file IS '공지 첨부파일 주소';
 COMMENT ON COLUMN notice.notice_date IS '공지 작성날짜';
 
 --3.시퀀스
-drop sequence seq_notice_no;
+--drop sequence seq_notice_no;
 create sequence seq_notice_no
   start with 1
   increment by 1
