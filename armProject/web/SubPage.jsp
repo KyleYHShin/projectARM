@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import = "java.util.ArrayList, item.model.vo.Item"%>
+<% 
+ArrayList<Item> list = (ArrayList<Item>)request.getAttribute("list");
+String msg = (String)request.getAttribute("msg");
+ %>
 <!doctype html>
 <html lang="ko">
   <meta charset="utf-8">
@@ -600,64 +605,23 @@
 	
 	
      <div class="contents">
+           <%
+           if(list != null){
+           for(Item i : list){ %>
             <section class="item_box">
 			<!-- 클릭시 상세 페이지로 이동하도록. -->
-                <a href = "#"><table>
-                    <tr> <td class="item_img"><img src="items/01.jpg"><td></tr>
-                    <tr> <td class="item_name">아이템 이름1<td></tr>
-                    <tr> <td class="item_price">Price1<td></tr>
+                <a href = "/arm/item/ItemDetail.jsp"><table>
+                    <tr> <td class="item_img"><img src=<%= i.getItemTH() %>><td></tr>
+                    <tr> <td class="item_name"><%= i.getItemName() %><td></tr>
+                    <tr> <td class="item_price"><%= i.getItemPrice() %><td></tr>
                 </table></a>
             </section>
-            <section class="item_box"">
-                <table>
-                    <tr> <td><img src="items/02.jpg"><td></tr>
-                    <tr> <td class="item_name">아이템 이름2<td></tr>
-                    <tr> <td class="item_price">Price2<td></tr>
-                </table>
-            </section>
-            <section class="item_box"">
-                <table>
-                    <tr> <td><img src="items/03.jpg"><td></tr>
-                    <tr> <td class="item_name">아이템 이름3<td></tr>
-                    <tr> <td class="item_price">Price3<td></tr>
-                </table>
-            </section>
-        </section>
-        <section class="item_box"">
-            <table>
-                <tr> <td><img src="items/04.jpg"><td></tr>
-                <tr> <td class="item_name">아이템 이름4<td></tr>
-                <tr> <td class="item_price">Price4<td></tr>
-            </table>
-        </section>
-        <section class="item_box"">
-            <table>
-                <tr> <td><img src="items/05.jpg"><td></tr>
-                <tr> <td class="item_name">아이템 이름5<td></tr>
-                <tr> <td class="item_price">Price5<td></tr>
-            </table>
-        </section>
-        <section class="item_box"">
-            <table>
-                <tr> <td><img src="items/06.jpg"><td></tr>
-                <tr> <td class="item_name">아이템 이름6<td></tr>
-                <tr> <td class="item_price">Price6<td></tr>
-            </table>
-        </section>
-        <section class="item_box"">
-            <table>
-                <tr> <td><img src="items/07.jpg"><td></tr>
-                <tr> <td class="item_name">아이템 이름7<td></tr>
-                <tr> <td class="item_price">Price7<td></tr>
-            </table>
-        </section>
-        <section class="item_box"">
-            <table>
-                <tr> <td><img src="items/08.jpg"><td></tr>
-                <tr> <td class="item_name">아이템 이름8<td></tr>
-                <tr> <td class="item_price">Price8<td></tr>
-            </table>
-        </section>
+            <% }
+            }else{ %>
+            
+            <h3><%= msg %>검색결과가아아아아아!!</h3>
+            
+            <% } %>
     </div><!-- contents-->
 
 

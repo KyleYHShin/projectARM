@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import = "java.util.ArrayList, item.model.vo.Item"%>
+<% 
+ArrayList<Item> list = (ArrayList<Item>)request.getAttribute("list"); 
+%>
+
 <!doctype html>
 <html lang="ko">
   <meta charset="utf-8">
@@ -21,7 +26,41 @@
   
   <script type="text/javascript" src = "js/jquery-3.1.0.min.js"></script>
   <script type="text/javascript">
+	function test(){
+		var arr = new Array();
+  		
+  		<% for(Item i : list){ %>
+  			var item = new Object();
+  			item.itemNo = <%= i.getItemNo() %>;
+  			item.itemName = '<%= i.getItemName() %>';
+  			item.itemCatNo = <%= i.getItemCatNo() %>;
+  			item.itemPrice = <%= i.getItemPrice() %>;
+  			item.itemCount = <%= i.getItemCount() %>;
+  			item.itemDate = "<%= i.getItemUpdate() %>";
+  			item.itemTH = "<%= i.getItemTH() %>";
+  			item.itemImg = "<%= i.getItemImg() %>";
+  			item.itemImgDt = "<%= i.getItemImgDt() %>";
+  			
+  			arr.push(item);
+  		<% } %>
+  		
+  		alert(arr.length);
+  		$.ajax({
+  			url : "isort",
+  			type : "get",/* post로는 안보내진다! */
+  			data: { test : JSON.stringify(arr) },
+  			dataType: "json",
+  			contentType: "application/json",
+  			success: function(data){
+  				alert(data);
+  			},error:function(data){
+  				alert("오류오류");
+  				alert(JSON.stringify(arr));
+  			}
+		});
+	};
 	$(function(){
+		
 		//스크롤시 카테고리고정
 		var menupos = $("#fix_menu").offset().top;
 		$(window).scroll(function(){
@@ -639,26 +678,26 @@
  	<div id = "fix_menu">
 	<div id ="category">
 		<ul class = "navi">
-			<li><a href ="">손</a>
+			<li><a href ="">손</a><!-- 100 -->
 				<ul>
 					<li><a href ="">반지</a></li>
 					<li><a href ="">의료/건강</a></li>
 				</ul>
 			</li><!-- 손 -->
 
-			<li><a href ="">손목</a>
+			<li><a href ="">손목</a><!-- 200 -->
 				<ul>
 					<li><a href ="">팔찌/시계</a></li>
 					<li><a href ="">의료/건강</a></li>
 				</ul>
 			</li><!-- 손목 -->
-			<li><a href ="">팔목</a>
+			<li><a href ="">팔목</a><!-- 300 -->
 				<ul>
 					<li><a href ="">팔찌/시계</a></li>
 					<li><a href ="">의료/건강</a></li>
 				</ul>
 			</li><!-- 팔목 -->
-			<li><a href ="">어깨</a>
+			<li><a href ="">어깨</a><!-- 400 -->
 				<ul>
 					<li><a href ="">의류</a></li>
 					<li><a href ="">의료/건강</a></li>
@@ -676,73 +715,25 @@
 	</div><!-- 검색 -->
 
 	<div id = "sort">
-	<a href="#">인기도순</a>&nbsp;&nbsp;
+	<a href="isort?list=<%= list %>&sortno=1">인기도순</a>&nbsp;&nbsp;
+	<a href="#">조회수순</a>&nbsp;&nbsp;
 	<a href="#">가격높은순</a>&nbsp;&nbsp;
 	<a href="#">가격낮은순</a>&nbsp;&nbsp;
 	</div><!-- sort -->
 	
 	</div><!-- fix_menu(카테고리+검색+정렬) -->
 	
-	
-     <div class="contents">
+    <div class="contents">
+     		<%for(Item i : list){ %>
             <section class="item_box">
 			<!-- 클릭시 상세 페이지로 이동하도록. -->
                 <a href = "/arm/item/ItemDetail.jsp"><table>
-                    <tr> <td class="item_img"><img src="items/01.jpg"><td></tr>
-                    <tr> <td class="item_name">아이템 이름1<td></tr>
-                    <tr> <td class="item_price">Price1<td></tr>
+                    <tr> <td class="item_img"><img src=<%= i.getItemTH() %>><td></tr>
+                    <tr> <td class="item_name"><%= i.getItemName() %><td></tr>
+                    <tr> <td class="item_price"><%= i.getItemPrice() %><td></tr>
                 </table></a>
             </section>
-            <section class="item_box"">
-                <table>
-                    <tr> <td><img src="items/02.jpg"><td></tr>
-                    <tr> <td class="item_name">아이템 이름2<td></tr>
-                    <tr> <td class="item_price">Price2<td></tr>
-                </table>
-            </section>
-            <section class="item_box"">
-                <table>
-                    <tr> <td><img src="items/03.jpg"><td></tr>
-                    <tr> <td class="item_name">아이템 이름3<td></tr>
-                    <tr> <td class="item_price">Price3<td></tr>
-                </table>
-            </section>
-        </section>
-        <section class="item_box"">
-            <table>
-                <tr> <td><img src="items/04.jpg"><td></tr>
-                <tr> <td class="item_name">아이템 이름4<td></tr>
-                <tr> <td class="item_price">Price4<td></tr>
-            </table>
-        </section>
-        <section class="item_box"">
-            <table>
-                <tr> <td><img src="items/05.jpg"><td></tr>
-                <tr> <td class="item_name">아이템 이름5<td></tr>
-                <tr> <td class="item_price">Price5<td></tr>
-            </table>
-        </section>
-        <section class="item_box"">
-            <table>
-                <tr> <td><img src="items/06.jpg"><td></tr>
-                <tr> <td class="item_name">아이템 이름6<td></tr>
-                <tr> <td class="item_price">Price6<td></tr>
-            </table>
-        </section>
-        <section class="item_box"">
-            <table>
-                <tr> <td><img src="items/07.jpg"><td></tr>
-                <tr> <td class="item_name">아이템 이름7<td></tr>
-                <tr> <td class="item_price">Price7<td></tr>
-            </table>
-        </section>
-        <section class="item_box"">
-            <table>
-                <tr> <td><img src="items/08.jpg"><td></tr>
-                <tr> <td class="item_name">아이템 이름8<td></tr>
-                <tr> <td class="item_price">Price8<td></tr>
-            </table>
-        </section>
+            <% } %>
     </div><!-- contents -->
 
 
