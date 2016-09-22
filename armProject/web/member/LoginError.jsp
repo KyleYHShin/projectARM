@@ -1,12 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
 <!doctype html>
 <html lang="ko">
   <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Main</title>
+    <title>Login</title>
 
     <!-- Bootstrap -->
     <link href="/arm/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -22,6 +23,7 @@
   <script type="text/javascript" src = "js/jquery-3.1.0.min.js"></script>
   <script type="text/javascript">
 	$(function(){
+	
 		//스크롤시 카테고리고정
 		var menupos = $("#fix_menu").offset().top;
 		$(window).scroll(function(){
@@ -135,13 +137,9 @@
 			line-height : 25px;
 		}
 	}
-	/*.topMenuLi:hover .menuLink {
+
+    .topMenuLi:hover .menuLink {
         color: red;
-        cursor : pointer;
-    } 계속 해서 오류 안나면 지움*/ 
-    .menuLink:hover {
-        color: red;
-        cursor : pointer;
     }
 	/*------------------- 최상단 메뉴 끝 -----------*/
 
@@ -154,55 +152,6 @@
 	 max-height:100px;
 	 border:0;
 	}
-
-	/*----광고----------------------------------*/
-
-	.adv-img {
-		width: 100%; /* 이미지 크기 반응형으로 작성 */
-	}
-
-	#ad {
-		margin: 5px auto;
-		width: 100%;
-		max-width: 700px;
-	}
-
-	.carousel-indicators {
-	  bottom: 2px;
-	}
-	.carousel-indicators li {
-	  width: 11px;
-	  height: 11px;
-	  border: 2px solid rgba(255, 255, 255, 0.3);
-	}
-	.carousel-indicators .active {
-	  width: 14px;
-	  height: 14px;
-	  border: 0px;
-	  background-color: rgba(255, 255, 255, 0.7);
-	}
-
-	/* None:hidden, Hover:visible */
-	.carousel .carousel-control{
-		visibility: hidden;
-	}
-	.carousel-indicators{
-		visibility: hidden;
-	}
-	.carousel:hover .carousel-control{
-		visibility: visible;
-	}
-	.carousel:hover .carousel-indicators{
-		visibility: visible;
-	}
-	/* 그라데이션 지우기 */
-	.carousel-control.left {
-	  background-image: none;
-	 }
-	.carousel-control.right {
-	  background-image:none;
-	}
-
 	/*-------------- 퀵바 ----------------------*/
 	#quick_bar {
 		width : 120px;
@@ -433,76 +382,43 @@
 	#fix_menu #sort a:hover{
 		text-decoration : underline;
 	}
-	/* 상품목록------------------------------------- */
-	  /*데스크탑*/
-	.contents{
-		margin: 0 auto;
-		display: table;
-		width: 100%;
-		max-width: 1000px;
-		padding:1%;
+	/* 로그인 */
+	div#loginDiv{
+		text-align : left;
+		width : 200pt;
+		margin : 0 auto;
+	}
+	label#ckauto {
+		font-size : 11pt;
+	}
+	span {
+		font-size : 9pt;
+	}
 
-		text-align : center;
-	}
-	.item_box{
-		/*float: left;*/
-		max-width:23%;
-		margin:0.5%;
-		padding:0.5%;
-		background: white;
-		display : inline-block;
-	}
-	.item_box img{
-		width:100%;
-	}	
-	.item_name, .item_price{
-		font-size: 0.8em;
-		text-align: center;
-	}
-/*태블릿 용*/
-  @media all and (max-width: 1000px){
-	 .contents{
-		padding : 0.5%;
-		padding-left : 3.3%
-		padding-right : 0;
-	}
-	.item_box{
-		 max-width:31%;
-		 background: #ccffcc;
-	}
-	.item_name, .item_price{
-		font-size: 0.9em;
+	#login_btn {
+		background : red;
+		border : 1px solid red;
+		color : white;
 	}
 	
-  }
-  /*휴대폰*/
-  @media all and (max-width: 750px){
-	.contents{
-		padding:1%;
-		padding-left : 2.2%
+	#sch_id {
+		background : white;
+		border : 1px solid green;
+		color : black;
 	}
-	.item_box{
-		max-width: 47%;
-		margin:0.8%;
-		padding:0.5%;
-		background: #ffccff;
+	#sch_pwd {
+		background : white;
+		border : 1px solid green;
+		color : black;
 	}
-	.item_name, .item_price{
-		font-size: 1em;
+	#join_btn{
+		background :white;
+		border : 1px solid green;
+		color : black;
 	}
-  }  
-  /*기타 기기(스마트워치 등)*/
-  @media all and (max-width: 300px){
-	 .item_box{
-		 max-width: 100%;
-		 margin:0;
-		 padding:0;
-		 background: #99ffff;
-	 }
-	.item_name, .item_price{
-		font-size: 0.7em;
+	#loginTb td{
+		padding : 10px;
 	}
-  }
 
 	/* 푸터 */
 	footer {
@@ -544,7 +460,10 @@
 	.footMenu a:hover {
 		text-decoration : underline;
 	}
-
+	h2{
+		font-size : 12pt;
+		color : gray;
+	}
   </style>
   
  </head>
@@ -553,9 +472,9 @@
  <div id = "top_menu">
    <nav id="topMenu" >
         <ul>
-			<li class="topMenuLi"><a class="menuLink" href="nlist">고객센터</a></li>
+			<li class="topMenuLi"><a class="menuLink" href="/arm/notice/notice.jsp">고객센터</a></li>
 			<li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">장바구니</a></li>
-            <li class="topMenuLi"><a class="menuLink" href="/arm/member/MemberJoin.jsp">회원가입</a></li>
+            <li class="topMenuLi"><a class="menuLink" href="">회원가입</a></li>
             <li class="topMenuLi"><a class="menuLink" href="/arm/member/Login.jsp">로그인</a></li>
         </ul>
 	</nav>
@@ -601,38 +520,6 @@
 	<!-- 배너클릭시 시작페이지로! -->
 	<a href="/arm/Main.jsp"><img src="/arm/img/banner.png" alt = "시작페이지로"></a>
  </div>
-
- <div id = "ad">
-		<!-- 작성 필요 -->
-		<div id="advTimebar"></div>
-		<div id="mainAdv" class="carousel slide" data-ride="carousel"
-			data-interval="3500">
-			<ol class="carousel-indicators">
-				<li data-target="#mainAdv" data-slide-to="0" class="active"></li>
-				<li data-target="#mainAdv" data-slide-to="1" class=""></li>
-				<li data-target="#mainAdv" data-slide-to="2" class=""></li>
-			</ol>
-			<!-- role 이 애니메이션 효과 -->
-			<div class="carousel-inner" role="listbox">
-				<div class="item active">
-					<img class="adv-img" src="images/1.png">
-				</div>
-				<div class="item">
-					<img class="adv-img" src="images/2.jpg">
-				</div>
-				<div class="item">
-					<img class="adv-img" src="images/3.png">
-				</div>
-			</div>
-
-			<a class="left carousel-control" href="#mainAdv" data-slide="prev">
-				<span class="icon-prev"></span>
-			</a> <a class="right carousel-control" href="#mainAdv" data-slide="next">
-				<span class="icon-next"></span>
-			</a>
-		</div>
- </div>
-
 <!-- 카테고리 ~ item 목록 -->
  <div id="wrapper">
 
@@ -670,8 +557,7 @@
 	</div><!-- 카테고리 -->
 	<div id = "searchbox">
 	<form>
-	<input type="text" id = "search" name = "search" placeholder = "검색하세요!">&nbsp;&nbsp;
-	<input type="image" id = "schBtn" src = "/arm/img/search2_small.png" width ="25px" height = "25px";>
+	<input type="text" id = "search" name = "search" placeholder = "검색하세요!">&nbsp;&nbsp;<input type="image" id = "schBtn" src = "/arm/img/search2_small.png" width ="25px" height = "25px";>
 	</form>
 	</div><!-- 검색 -->
 
@@ -682,68 +568,45 @@
 	</div><!-- sort -->
 	
 	</div><!-- fix_menu(카테고리+검색+정렬) -->
+
+    <div class="contents">
+    <h1>로 그 인</h1>
+     <h2>로그인이 실패했습니다. 다시 입력해주세요</h2>
+	<div id = "loginDiv" class="form">
+    <form action = "../login" method="post">
+	<table id = "loginTb" border = "0">
+	<tr><td>
+      <input type="text" style="width:200pt; height:30pt" name = "userid" placeholder="아 이 디"/>
+	  </td></tr>
+	<tr><td>
+      <input type="password" style="width:200pt; height:30pt" name = "userpwd" placeholder="비 밀 번 호"/><br>
+	  <label id = "ckauto"><input type="checkbox" align="left"> 자동 로그인</label><br>
+	  <span>개인 PC가 아닐 경우 주의하세요!</span><br>
+	  </td></tr>
+	    <tr><td>
+		</td></tr>
+	<tr><td>
+      <input id = "login_btn" type="submit" style="WIDTH: 200pt; HEIGHT: 30pt" value="Log in"><br></td></tr>
+	    <tr><td>
+		</td></tr>
+	 <tr><td><input id = "sch_id" type="button" style="width: 100pt; height:20pt" value="ID 찾기"><input id = "sch_pwd" type="button" style="width: 100pt; height:20pt" value="비밀번호 찾기"><br>
 	
+	  <input id = "join_btn" type="button" style="width: 200pt; height:30pt" value="회원가입" onClick="location.href='member/MemberJoin.jsp';">
+	   </td></tr>
+
+	 </table>
+    </form>
 	
-     <div class="contents">
-            <section class="item_box">
-			<!-- 클릭시 상세 페이지로 이동하도록. -->
-                <a href = "/arm/item/ItemDetail.jsp"><table>
-                    <tr> <td class="item_img"><img src="items/01.jpg"><td></tr>
-                    <tr> <td class="item_name">아이템 이름1<td></tr>
-                    <tr> <td class="item_price">Price1<td></tr>
-                </table></a>
-            </section>
-            <section class="item_box"">
-                <table>
-                    <tr> <td><img src="items/02.jpg"><td></tr>
-                    <tr> <td class="item_name">아이템 이름2<td></tr>
-                    <tr> <td class="item_price">Price2<td></tr>
-                </table>
-            </section>
-            <section class="item_box"">
-                <table>
-                    <tr> <td><img src="items/03.jpg"><td></tr>
-                    <tr> <td class="item_name">아이템 이름3<td></tr>
-                    <tr> <td class="item_price">Price3<td></tr>
-                </table>
-            </section>
-        </section>
-        <section class="item_box"">
-            <table>
-                <tr> <td><img src="items/04.jpg"><td></tr>
-                <tr> <td class="item_name">아이템 이름4<td></tr>
-                <tr> <td class="item_price">Price4<td></tr>
-            </table>
-        </section>
-        <section class="item_box"">
-            <table>
-                <tr> <td><img src="items/05.jpg"><td></tr>
-                <tr> <td class="item_name">아이템 이름5<td></tr>
-                <tr> <td class="item_price">Price5<td></tr>
-            </table>
-        </section>
-        <section class="item_box"">
-            <table>
-                <tr> <td><img src="items/06.jpg"><td></tr>
-                <tr> <td class="item_name">아이템 이름6<td></tr>
-                <tr> <td class="item_price">Price6<td></tr>
-            </table>
-        </section>
-        <section class="item_box"">
-            <table>
-                <tr> <td><img src="items/07.jpg"><td></tr>
-                <tr> <td class="item_name">아이템 이름7<td></tr>
-                <tr> <td class="item_price">Price7<td></tr>
-            </table>
-        </section>
-        <section class="item_box"">
-            <table>
-                <tr> <td><img src="items/08.jpg"><td></tr>
-                <tr> <td class="item_name">아이템 이름8<td></tr>
-                <tr> <td class="item_price">Price8<td></tr>
-            </table>
-        </section>
-    </div><!-- contents -->
+	</div>
+	<br><br><br><br>
+	<form>
+	<a href="http://www.naver.com"><img src="images/button.jpg" width="300" height="300" border="0" alt="">
+	<a href="http://www.naver.com"><img src="images/button.jpg" width="300" height="300" border="0" alt="">
+	<a href="http://www.naver.com"><img src="images/button.jpg" width="300" height="300" border="0" alt="">
+	<a href="http://www.naver.com"><img src="images/button.jpg" width="300" height="300" border="0" alt="">
+	</form>
+
+    </div><!-- contents-->
 
 
 	</div><!-- fix+item_list -->

@@ -1,16 +1,22 @@
 package admin.notice.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import admin.notice.model.service.NoticeService;
+import admin.notice.model.vo.Notice;
+
 /**
  * Servlet implementation class NoticeListServlet
  */
-@WebServlet("/NoticeListServlet")
+@WebServlet("/nlist")
 public class NoticeListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -26,8 +32,24 @@ public class NoticeListServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		//공지글 전체 조회 처리용 컨트롤러
+		System.out.println("구동...");
+		request.setCharacterEncoding("utf-8");
+		response.setContentType("text/html; charset=utf-8");
+		
+		ArrayList<Notice> list = new NoticeService().selectAll();
+		System.out.println(list);
+		RequestDispatcher view = null;
+		if(list != null) {
+			view = request.getRequestDispatcher("notice/notice.jsp");
+			
+			request.setAttribute("list", list);
+			view.forward(request, response);
+		}else {
+			view = request.getRequestDispatcher("notice/noticeError.jsp");
+			request.setAttribute("code", "nlist");
+			view.forward(request, response);
+		}
 	}
 
 	/**

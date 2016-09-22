@@ -569,13 +569,13 @@
     <div class="contents">
     <h1>로 그 인</h1>
 	<div id = "loginDiv" class="form">
-    <form>
+    <form action = "../login" method="post">
 	<table id = "loginTb" border = "0">
 	<tr><td>
-      <input type="text" style="width:200pt; height:30pt" placeholder="아 이 디"/>
+      <input type="text" style="width:200pt; height:30pt" name = "userid" placeholder="아 이 디"/>
 	  </td></tr>
 	<tr><td>
-      <input type="password" style="width:200pt; height:30pt" placeholder="비 밀 번 호"/><br>
+      <input type="password" style="width:200pt; height:30pt" name = "userpwd" placeholder="비 밀 번 호"/><br>
 	  <label id = "ckauto"><input type="checkbox" align="left"> 자동 로그인</label><br>
 	  <span>개인 PC가 아닐 경우 주의하세요!</span><br>
 	  </td></tr>
@@ -587,7 +587,7 @@
 		</td></tr>
 	 <tr><td><input id = "sch_id" type="button" style="width: 100pt; height:20pt" value="ID 찾기"><input id = "sch_pwd" type="button" style="width: 100pt; height:20pt" value="비밀번호 찾기"><br>
 	
-	  <input id = "join_btn" type="button" style="width: 200pt; height:30pt" value="회원가입">
+	  <input id = "join_btn" type="button" style="width: 200pt; height:30pt" value="회원가입" onClick="self.location='MemberJoin.jsp';">
 	   </td></tr>
 
 	 </table>

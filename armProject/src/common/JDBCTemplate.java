@@ -23,6 +23,7 @@ public class JDBCTemplate {
 			// 자동 커밋 방지!! 잊지 말기!!
 			con.setAutoCommit(false);
 		} catch (Exception e) {
+			System.out.println("오라클 연결 실패");
 			e.printStackTrace();
 		}
 		return con;

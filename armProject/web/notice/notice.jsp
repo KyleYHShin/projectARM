@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ page import="java.util.ArrayList, admin.notice.model.vo.Notice" %>
+    <%
+    	ArrayList<Notice> list = (ArrayList<Notice>)request.getAttribute("list");
+    %>
 <!doctype html>
 <html lang="ko">
   <meta charset="utf-8">
@@ -565,10 +569,13 @@
 		<tr>
 			<th width = "10%">No.</th><th>공지사항/이벤트</th><th width = "15%">작성일</th>
 		</tr>
-		<tr class = "question"><td>2</td><td>[이벤트] 이벤트이벤트이벤트</td><td>2016.09.07</td></tr>
-		<tr class = "answer"><td></td><td colspan = "2">이벤트내용111</td></tr>
-		<tr class = "question"><td>1</td><td>[공지] 공지공지공지</td><td>2016.09.07</td></tr>
-		<tr class = "answer"><td></td><td colspan ="2">공지내용11111</td></tr>
+		<%
+			for(Notice n:list){
+		%>
+		<tr class = "question"><td><%=n.getNoticeNo() %></td><td><%=n.getNoticeTitle() %></td><td><%=String.valueOf(n.getNoticeDate())%></td></tr>
+		<tr class = "answer"><td></td><td colspan ="2"></td><%=n.getContent() %></tr>
+								<td></td><td colspan ="2">첨부파일</td></tr>
+		<% } %>
 		</table>
 		</div>
 

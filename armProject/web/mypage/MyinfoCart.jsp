@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="member.model.vo.User"%>
+   <%
+   	User loginUser = (User)session.getAttribute("loginUser");
+   %>
 <!doctype html>
 <html lang="ko">
   <meta charset="utf-8">
@@ -352,8 +355,8 @@
         <ul>
 			<li class="topMenuLi"><a class="menuLink" href="/arm/notice/notice.jsp">고객센터</a></li>
 			<li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">장바구니</a></li>
-            <li class="topMenuLi"><a class="menuLink" href="">회원가입</a></li>
-            <li class="topMenuLi"><a class="menuLink" href="/arm/member/Login.jsp">로그인</a></li>
+            <li class="topMenuLi"><a class="menuLink" href="../logout">로그아웃</a></li>
+            <li class="topMenuLi"><a class="menuLink" >환영합니다! <%=loginUser.getUserName() %>님</a></li>
         </ul>
 	</nav>
  
@@ -396,7 +399,7 @@
  <!-- 배너 -->
  <div id ="banner">
 	<!-- 배너클릭시 시작페이지로! -->
-	<a href="/arm/Main.jsp"><img src="/arm/img/banner.png" alt = "시작페이지로"></a>
+	<a href="/arm/MainLogin.jsp"><img src="/arm/img/banner.png" alt = "시작페이지로"></a>
  </div>
 <!-- ---------------------------내용 부분------------------------------------ -->
 <div id="wrapper">
@@ -405,7 +408,7 @@
 			<li><a href="/arm/mypage/MyinfoCart.jsp" id = "c_btn">장바구니</a></li>
 			<li><a href="/arm/mypage/MyinfoPurchase.jsp" id = "bl_btn">구매 내역</a></li>
 			<li><a href="/arm/mypage/MyinfoQuestion.jsp" id = "qa_btn">문의 내역</a></li>
-			<li><a href="/arm/mypage/MyinfoDetail.jsp" id = "u_btn">회원정보</a></li>
+			<li><a href="../myinfo?userid=<%= loginUser.getUserId() %>" id = "u_btn">회원정보</a></li>
 		</ul>
 	</div><!-- cs_menu -->
 

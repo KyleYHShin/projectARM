@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="member.model.vo.User, member.model.vo.Member, java.sql.Date"%>
+   <%
+   	User loginUser = (User)session.getAttribute("loginUser");
+   Member member = (Member)request.getAttribute("member");
+   %>
 <!doctype html>
 <html lang="ko">
   <meta charset="utf-8">
@@ -296,8 +300,8 @@
         <ul>
 			<li class="topMenuLi"><a class="menuLink" href="/arm/notice/notice.jsp">고객센터</a></li>
 			<li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">장바구니</a></li>
-            <li class="topMenuLi"><a class="menuLink" href="">회원가입</a></li>
-            <li class="topMenuLi"><a class="menuLink" href="/arm/member/Login.jsp">로그인</a></li>
+            <li class="topMenuLi"><a class="menuLink" href="../logout">로그아웃</a></li>
+            <li class="topMenuLi"><a class="menuLink" >환영합니다! <%=loginUser.getUserName() %>님</a></li>
         </ul>
 	</nav>
  
@@ -340,7 +344,7 @@
  <!-- 배너 -->
  <div id ="banner">
 	<!-- 배너클릭시 시작페이지로! -->
-	<a href="/arm/Main.jsp"><img src="/arm/img/banner.png" alt = "시작페이지로"></a>
+	<a href="/arm/MainLogin.jsp"><img src="/arm/img/banner.png" alt = "시작페이지로"></a>
  </div>
 <!-- ---------------------------내용 부분------------------------------------ -->
 <div id="wrapper">
@@ -349,7 +353,7 @@
 			<li><a href="/arm/mypage/MyinfoCart.jsp" id = "c_btn">장바구니</a></li>
 			<li><a href="/arm/mypage/MyinfoPurchase.jsp" id = "bl_btn">구매 내역</a></li>
 			<li><a href="/arm/mypage/MyinfoQuestion.jsp" id = "qa_btn">문의 내역</a></li>
-			<li><a href="/arm/mypage/MyinfoDetail.jsp" id = "u_btn">회원정보</a></li>
+			<li><a href="../myinfo?userid=<%= loginUser.getUserId() %>" id = "u_btn">회원정보</a></li>
 		</ul>
 	</div><!-- cs_menu -->
 
@@ -357,7 +361,38 @@
 <div id = "contents">
 <!-- ---------------------------내용부분------------------------------------ -->
 <!-- 내용을 여기에 입력해 주세요 -->
-회원정보수정/탈퇴 페이지
+	
+	<h1>My Page</h1>
+	<table border = "1" width="500" bgcolor="yellow">
+	<tr><td width="150">이 름 </td><td width="350"><%= member.getUserName() %></td></tr>
+	<tr><td>아이디 : </td><td><%=member.getUserId() %></td></tr>
+	<tr><td>생 일 :  </td><td><%=member.getBirthDate() %></td></tr>
+	<tr><td>전화번호 : </td><td><%=member.getPhone() %></td></tr>
+	<tr><td>이메일 : </td><td><%=member.getEmail() %></td></tr>
+	<tr><td>성 별 : </td><td><%=member.getGender() %></td></tr>
+	<tr><td>우편번호 : </td><td><%=member.getZipCode() %></td></tr>
+	<tr><td>주 소 : </td><td><%=member.getAddress() %></td></tr>
+	<tr><td>회원등급 : </td><td><%
+			String gradeString= null;
+			switch(member.getGrade()){
+			case 1 : gradeString = "일반 회원"; break;
+			case 2 : gradeString = "브론즈 회원"; break;
+			case 3 : gradeString = "실버 회원"; break;
+			case 4 : gradeString = "골드 회원"; break;
+			case 5 : gradeString = "플레티넘 회원"; break;
+			case 6 : gradeString = "다이아몬드 회원"; break;
+			default : gradeString = "새싹"; break;
+			}%>
+			
+			 <%= gradeString %></td></tr>
+	<tr><td>가입일 : </td><td><%=member.getJoinDate() %></td></tr>
+	<tr><td colspan="2" align = "center">
+		<a href="mupView?userid=<%= member.getUserId() %>">수정페이지로 이동</a>
+		&nbsp;&nbsp; <a href="/arm/MainLogin.jsp">처음페이지로</a>
+	</td></tr>
+	
+	</table>
+
 
 <!-----------------------------------------------------내용 끝-->
 </div><!--contents끝-->
