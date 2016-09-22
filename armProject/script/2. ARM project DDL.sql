@@ -14,8 +14,8 @@
     - '2. ARM project DDL.sql' 파일을 열어
       테이블/시퀀스/프로시저 등의 정의(DDL)를 확인하다.
   
-  3. 모든 사항을 처리했는데도 문제가 해결되지 않을 경우
-    - 콘솔창에 무결성(Integrity)이나 삭제 참조(Refferences) 에러 출력과 같이 
+  4. 모든 사항을 처리했는데도 문제가 해결되지 않을 경우
+    - 콘솔창에 무결성(Integrity)이나 삭제 참조(References) 에러 출력과 같이 
       DDL 문장 자체에 오류가 존재하는 경우를 뜻한다.
       팀장에게 연락한다.
 
@@ -139,7 +139,7 @@ insert into item_category values( 400, '어깨');
 create table item(
   item_no          number, 
   item_name        varchar2(20 char) not null,
-  item_cat_no      number(3) not null,
+  item_cat_no      number(3),
   item_price       number not null,
   item_count       number default 0,
   item_update      date default sysdate,

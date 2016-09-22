@@ -2,12 +2,12 @@
     pageEncoding="UTF-8"%>
 <!doctype html>
 <html lang="ko">
+<head>
   <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Main</title>
-
     <!-- Bootstrap -->
     <link href="/arm/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -546,15 +546,16 @@
 	}
 
   </style>
-  
- </head>
+</head>
  <body>
 <!--  최상단 기본메뉴 -->
  <div id = "top_menu">
    <nav id="topMenu" >
         <ul>
 			<li class="topMenuLi"><a class="menuLink" href="/arm/notice/notice.jsp">고객센터</a></li>
-			<li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">장바구니</a></li>
+					<!-- ---------------------------작성 부분------------------------------------ -->
+			<li class="topMenuLi"><a class="menuLink" href="/arm/CartView?userId=user01">장바구니</a></li>
+					<!-- ---------------------------작성 부분 끝------------------------------------ -->
             <li class="topMenuLi"><a class="menuLink" href="">회원가입</a></li>
             <li class="topMenuLi"><a class="menuLink" href="/arm/member/Login.jsp">로그인</a></li>
         </ul>

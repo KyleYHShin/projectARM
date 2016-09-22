@@ -14,8 +14,8 @@
     - '2. ARM project DDL.sql' 파일을 열어
       테이블/시퀀스/프로시저 등의 정의(DDL)를 확인하다.
   
-  3. 모든 사항을 처리했는데도 문제가 해결되지 않을 경우
-    - 콘솔창에 무결성(Integrity)이나 삭제 참조(Refferences) 에러 출력과 같이 
+  4. 모든 사항을 처리했는데도 문제가 해결되지 않을 경우
+    - 콘솔창에 무결성(Integrity)이나 삭제 참조(References) 에러 출력과 같이 
       DDL 문장 자체에 오류가 존재하는 경우를 뜻한다.
       팀장에게 연락한다.
 
@@ -29,10 +29,10 @@ insert into vender values(seq_vender_id.nextval, '(주)영진상사', '02-5636-8228')
 --item 테스트용 데이터
 insert into item values
 (seq_item_no.nextval, '눈속임 깁스', 300, 20000, 0, sysdate, 1, '팔,깁스,명절,주부',
-'섬네일 이미지 주소', '메인 이미지 주소', '설명 이미지 주소');
+'/item/img/1_mini.jpg', '메인 이미지 주소', '설명 이미지 주소');
 insert into item values
 (seq_item_no.nextval, '일개미 팔찌', 200, 1500, 0, sysdate, 2, '악세사리,소품',
-'섬네일 이미지 주소', '메인 이미지 주소', '설명 이미지 주소');
+'/item/img/2_mini.jpg', '메인 이미지 주소', '설명 이미지 주소');
 insert into item values
 (seq_item_no.nextval, '스마트폰 터치 보온 장갑', 100, 9900, 0, sysdate, 3, '겨울,보온,터치',
 '섬네일 이미지 주소', '메인 이미지 주소', '설명 이미지 주소');
@@ -134,7 +134,11 @@ commit;
 ---------------------------------------------------------------------
 --개인용 DML(구문) 작성--
 
-
-
-
-
+select cart_no, 
+        cart_item_no, item_name, item_img_mini, item_price, 
+        cart_item_sub_no, item_sub_name, item_sub_price,
+        cart_qty
+from cart
+left join item on(cart.cart_item_no = item.item_no)
+left join item_sub on(cart.cart_item_sub_no = item_sub.item_sub_no)
+where cart_m_id = 'user01';
