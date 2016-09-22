@@ -1,9 +1,8 @@
-/item/
-/controller/
-/common/
-/member/
 /admin/
 /cart/
-/purchase/
+/common/
+/item/
+/member/
 /order/
 /payment/
+/purchase/
