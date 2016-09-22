@@ -5,6 +5,9 @@
 ArrayList<Item> list = (ArrayList<Item>)request.getAttribute("list");
 String msg = (String)request.getAttribute("msg");
 String status = (String)request.getAttribute("status");
+int totalCount = (int)request.getAttribute("totalCount");
+int pageNo = (int)request.getAttribute("page");
+int sortNo = (int)request.getAttribute("sortNo");
 String keyword = (String)request.getAttribute("keyword");
  %>
 <!doctype html>
@@ -28,6 +31,54 @@ String keyword = (String)request.getAttribute("keyword");
   
   <script type="text/javascript" src = "js/jquery-3.1.0.min.js"></script>
   <script type="text/javascript">
+//------------------------------------------------------------------------------------------이슬 끗
+	//전체 줄 수(reqeust로 전달받음)
+	var totalCount = <%= totalCount %>;
+	//페이지 수 : 한 페이지에 15줄 출력경우
+	var totalPage = Math.ceil(totalCount/2);
+	var PageNum;
+	//현재 페이지(request로 전달받음)
+	var page;
+
+	//페이지 넘버링 출력
+	$(function drawPage(goTo){
+		//페이지 그룹 넘버링 : 한번에 보여줄 페이지 넘버의 갯수
+		if(goTo *= null){
+			page = goTo;
+		}else{
+			page = <%= pageNo %>;
+		}
+		var pageGroup = Math.ceil(page/10);
+		var next = pageGroup*10;
+		var prev = next-9;
+		
+		var goNext = next+1;
+		if(prev-1<=0){
+			var goPrev = 1;
+		}else{
+			var goPrev = prev-1;
+		}
+		
+		if(next>totalPage){
+			var goNext = totalPage;
+			next = totalPage;
+		}else{
+			var goNext = next+1;
+		}
+		
+		var prevStep = "<a href='javascript:drawPage("+goPrev+");'>"+"<<"+"</a>";
+		var nextStep = "<a href='javascript:drawPage("+goNext+");'>"+">>"+"</a>";
+		
+		$("#pageNo").empty();
+		$("#pageNo").append(prevStep);
+		for(var i=prev; i<=next; i++){
+			
+			PageNum = "<a href='/arm/ipage?status=<%= status %>&page="+i+"&sortno="+<%= sortNo %>+"&keyword="+<%= keyword %>+"'>"+i+"</a>";
+			$("#pageNo").append(PageNum);
+		}
+		$("#pageNo").append(nextStep);
+	});
+	//------------------------------------------------------------------------------------------이슬 끗
 	$(function(){
 	
 		//스크롤시 카테고리고정
@@ -472,7 +523,29 @@ String keyword = (String)request.getAttribute("keyword");
 		font-size: 0.7em;
 	}
   }
-
+  /*---------------------------------------------------------------------------------이슬*/
+  
+  		#pageNo{
+			margin : 10px auto;
+			display : table;
+			border-spacing : 2px;
+		}
+		#pageNo a{
+			display : table-cell;
+			vertical-align : middle;
+			text-align : center;
+			border : 1px solid red;
+			color : red;
+			background : white;
+			text-decoration : none;
+			width : 30px;
+			height : 30px;
+		}
+		#pageNo a:hover{
+			color : white;
+			background : red;
+		}
+  /*---------------------------------------------------------------------------------이슬끗*/
 	/* 푸터 */
 	footer {
 		BORDER-TOP : 1px solid gray;
@@ -641,6 +714,9 @@ String keyword = (String)request.getAttribute("keyword");
             <h3><%= msg %></h3>
             
             <% } %>
+          <!-- 페이징처리할때 ------------------------------------------------------ -->
+			<div id = "pageNo"></div>
+		<!-- --------------------------------------------------------------요까지이슬----------------- -->
     </div><!-- contents-->
 
 

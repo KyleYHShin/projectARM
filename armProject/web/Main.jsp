@@ -3,603 +3,670 @@
 <%@ page import="java.util.ArrayList, item.model.vo.Item, member.model.vo.User"%>
 <%
 User loginUser = (User)session.getAttribute("loginUser");
-ArrayList<Item> list = (ArrayList<Item>) request.getAttribute("list");
+ArrayList<Item> list = (ArrayList<Item>)request.getAttribute("list");
+int totalCount = (int)request.getAttribute("totalCount");
+int pageNo = (int)request.getAttribute("page");
 String status = (String)request.getAttribute("status");
 %>
 
 <!doctype html>
 <html lang="ko">
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-<title>Main</title>
-
-<!-- Bootstrap -->
-<link href="/arm/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-<!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="/arm/bootstrap/js/bootstrap.min.js"></script>
-
-<script type="text/javascript" src="js/jquery-3.1.0.min.js"></script>
-<script type="text/javascript">
-	$(function() {
-
-		//스크롤시 카테고리고정
-		var menupos = $("#fix_menu").offset().top;
-		$(window).scroll(function() {
-			if ($(window).scrollTop() >= menupos) {
-				$("#fix_menu").css("position", "fixed").css("top", "0");
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+	<title>Main</title>
+	
+	<!-- Bootstrap -->
+	<link href="/arm/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	
+	<!--[if lt IE 9]>
+	      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+	      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	    <![endif]-->
+	
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="/arm/bootstrap/js/bootstrap.min.js"></script>
+	
+	<script type="text/javascript" src="js/jquery-3.1.0.min.js"></script>
+	<script type="text/javascript">
+	//-- ----------------------------------------------------------이슬작성----------------- -
+		//전체 줄 수(reqeust로 전달받음)
+		var totalCount = <%= totalCount %>;
+		//페이지 수 : 한 페이지에 15줄 출력경우
+		var totalPage = Math.ceil(totalCount/2);
+		var PageNum;
+		//현재 페이지(request로 전달받음)
+		var page;
+	
+		//페이지 넘버링 출력
+		$(function drawPage(goTo){
+			//페이지 그룹 넘버링 : 한번에 보여줄 페이지 넘버의 갯수
+			if(goTo *= null){
+				page = goTo;
+			}else{
+				page = <%= pageNo %>;
+			}
+			var pageGroup = Math.ceil(page/10);
+			var next = pageGroup*10;
+			var prev = next-9;
+			
+			var goNext = next+1;
+			if(prev-1<=0){
+				var goPrev = 1;
+			}else{
+				var goPrev = prev-1;
+			}
+			
+			if(next>totalPage){
+				var goNext = totalPage;
+				next = totalPage;
+			}else{
+				var goNext = next+1;
+			}
+			
+			var prevStep = "<a href='javascript:drawPage("+goPrev+");'>"+"<<"+"</a>";
+			var nextStep = "<a href='javascript:drawPage("+goNext+");'>"+">>"+"</a>";
+			
+			$("#pageNo").empty();
+			$("#pageNo").append(prevStep);
+			for(var i=prev; i<=next; i++){
+				
+				PageNum = "<a href='/arm/ipage?status=<%= status %>&page="+i+"'>"+i+"</a>";
+				$("#pageNo").append(PageNum);
+			}
+			$("#pageNo").append(nextStep);
+		});
+		//-- ----------------------------------------------------------이슬작성----------------- -->
+		$(function() {
+			//스크롤시 카테고리고정
+			var menupos = $("#fix_menu").offset().top;
+			$(window).scroll(function() {
+				if ($(window).scrollTop() >= menupos) {
+					$("#fix_menu").css("position", "fixed").css("top", "0");
+					$("#fix_menu").width($("#wrapper").width());
+					//스크롤시 fix_menu에 가려지는 부분 응급처리
+					$("body").css("position", "relative").css("top", "65px");
+				} else {
+					$("#fix_menu").css("position", "relative").css("top", "");
+					$("body").css("position", "relative").css("top", "0");
+				}
+			});
+			//브라우저 크기변화시 카테고리 크기
+			$(window).resize(function() {
 				$("#fix_menu").width($("#wrapper").width());
-				//스크롤시 fix_menu에 가려지는 부분 응급처리
-				$("body").css("position", "relative").css("top", "65px");
-			} else {
-				$("#fix_menu").css("position", "relative").css("top", "");
-				$("body").css("position", "relative").css("top", "0");
-			}
+			});
+	
+			//검색창 슬라이드토글
+			var sonoff = 0;
+			$("#sch").click(function() {
+				$("#searchbox").slideToggle("fast");
+				if (sonoff == 0) {
+					$("#sch").css("background", "red").css("color", "white");
+					sonoff = 1;
+				} else if (sonoff == 1) {
+					$("#sch").css("background", "").css("color", "");
+					sonoff = 0;
+				}
+			});
+	
+			//퀵바 토글 - 퀵바 고정위치를 클릭시마다 바뀌게 하면서 trasition효과
+			var onoff = 0;
+			$("#qBtn").click(
+					function() {
+						if (onoff == 1) {
+							$("#quick_bar").css("right", "-122px").css(
+									"transition", "all 0.5s");
+							$("#qBtn").css("right", "-14px").css("transition",
+									"all 0.5s");
+							onoff = 0;
+						} else if (onoff == 0) {
+							$("#quick_bar").css("right", "0").css("transition",
+									"all 0.5s");
+							$("#qBtn").css("right", "106px").css("transition",
+									"all 0.5s");
+							onoff = 1;
+						}
+						;
+					});
+			//퀵바 장바구니, 최근 본 목록 슬라이드 처리
+			$("#recent").click(function() {
+				$("#recent_list").slideDown("fast");
+				$("#cart_list").slideUp("fast");
+			});
+			$("#cart").click(function() {
+				$("#recent_list").slideUp("fast");
+				$("#cart_list").slideDown("fast");
+			});
+	
 		});
-		//브라우저 크기변화시 카테고리 크기
-		$(window).resize(function() {
-			$("#fix_menu").width($("#wrapper").width());
-		});
-
-		//검색창 슬라이드토글
-		var sonoff = 0;
-		$("#sch").click(function() {
-			$("#searchbox").slideToggle("fast");
-			if (sonoff == 0) {
-				$("#sch").css("background", "red").css("color", "white");
-				sonoff = 1;
-			} else if (sonoff == 1) {
-				$("#sch").css("background", "").css("color", "");
-				sonoff = 0;
-			}
-		});
-
-		//퀵바 토글 - 퀵바 고정위치를 클릭시마다 바뀌게 하면서 trasition효과
-		var onoff = 0;
-		$("#qBtn").click(
-				function() {
-					if (onoff == 1) {
-						$("#quick_bar").css("right", "-122px").css(
-								"transition", "all 0.5s");
-						$("#qBtn").css("right", "-14px").css("transition",
-								"all 0.5s");
-						onoff = 0;
-					} else if (onoff == 0) {
-						$("#quick_bar").css("right", "0").css("transition",
-								"all 0.5s");
-						$("#qBtn").css("right", "106px").css("transition",
-								"all 0.5s");
-						onoff = 1;
-					}
-					;
-				});
-
-		//퀵바 장바구니, 최근 본 목록 슬라이드 처리
-		$("#recent").click(function() {
-			$("#recent_list").slideDown("fast");
-			$("#cart_list").slideUp("fast");
-		});
-		$("#cart").click(function() {
-			$("#recent_list").slideUp("fast");
-			$("#cart_list").slideDown("fast");
-		});
-
-	});
-</script>
-<style type="text/css">
-body {
-	min-width: 240px;
-}
-
-div {
-	text-align: center;
-	vertical-align: middle;
-}
-
-/* 기본메뉴(최상단) */
-nav#topMenu {
-	height: 30px;
-	width: 100%;
-	background-color: yellow; /*메인 메뉴 색깔 fc3*/
-	padding-right: 2%;
-	max-width: 100%;
-}
-
-#topMenu ul {
-	list-style-type: none;
-	padding: 0px;
-	margin: 0;
-}
-
-#topMenu ul li {
-	background-color: yellow;
-	float: right;
-	line-height: 30px;
-	padding: 0 5px;
-	text-align: center;
-}
-
-.menuLink {
-	color: black;
-	text-decoration: none;
-}
-
-.topMenuLi a {
-	BORDER-LEFT: 1px solid black;
-	padding-left: 10px;
-}
-
-@media all and (max-width: 1000px) {
-}
-
-@media all and (max-width: 750px) {
+	</script>
+	<style type="text/css">
+	body {
+		min-width: 240px;
+	}
+	
+	div {
+		text-align: center;
+		vertical-align: middle;
+	}
+	
+	/* 기본메뉴(최상단) */
+	nav#topMenu {
+		height: 30px;
+		width: 100%;
+		background-color: yellow; /*메인 메뉴 색깔 fc3*/
+		padding-right: 2%;
+		max-width: 100%;
+	}
+	
+	#topMenu ul {
+		list-style-type: none;
+		padding: 0px;
+		margin: 0;
+	}
+	
+	#topMenu ul li {
+		background-color: yellow;
+		float: right;
+		line-height: 30px;
+		padding: 0 5px;
+		text-align: center;
+	}
+	
+	.menuLink {
+		color: black;
+		text-decoration: none;
+	}
+	
 	.topMenuLi a {
-		font-size: 9pt;
-		line-height: 25px;
+		BORDER-LEFT: 1px solid black;
+		padding-left: 10px;
 	}
-}
-
-@media all and (max-width: 300px) {
-	.topMenuLi a {
-		font-size: 3pt;
-		line-height: 25px;
+	
+	@media all and (max-width: 1000px) {
 	}
-}
-/*.topMenuLi:hover .menuLink {
-        color: red;
-        cursor : pointer;
-    } 계속 해서 오류 안나면 지움*/
-.menuLink:hover {
-	color: red;
-	cursor: pointer;
-}
-/*------------------- 최상단 메뉴 끝 -----------*/
-#banner {
-	margin: 10px auto;
-}
-/*상단 배너 크기*/
-#banner a img {
-	max-width: 100%;
-	max-height: 100px;
-	border: 0;
-}
-
-/*----광고----------------------------------*/
-.adv-img {
-	width: 100%; /* 이미지 크기 반응형으로 작성 */
-}
-
-#ad {
-	margin: 5px auto;
-	width: 100%;
-	max-width: 700px;
-}
-
-.carousel-indicators {
-	bottom: 2px;
-}
-
-.carousel-indicators li {
-	width: 11px;
-	height: 11px;
-	border: 2px solid rgba(255, 255, 255, 0.3);
-}
-
-.carousel-indicators .active {
-	width: 14px;
-	height: 14px;
-	border: 0px;
-	background-color: rgba(255, 255, 255, 0.7);
-}
-
-/* None:hidden, Hover:visible */
-.carousel .carousel-control {
-	visibility: hidden;
-}
-
-.carousel-indicators {
-	visibility: hidden;
-}
-
-.carousel:hover .carousel-control {
-	visibility: visible;
-}
-
-.carousel:hover .carousel-indicators {
-	visibility: visible;
-}
-/* 그라데이션 지우기 */
-.carousel-control.left {
-	background-image: none;
-}
-
-.carousel-control.right {
-	background-image: none;
-}
-
-/*-------------- 퀵바 ----------------------*/
-#quick_bar {
-	width: 120px;
-	height: auto;
-	border: 1px solid yellow;
-	background: #feffd0;
-	background: white;
-	z-index: 9999;
-	position: fixed;
-	right: -122px;
-	top: 170px;
-}
-
-#qBtn {
-	position: fixed;
-	right: -14px;
-	bottom: 310px;
-	z-index: 9999;
-	display: block;
-	border: 1px solid #ffcc00;
-	transform: rotate(270deg);
-	background: yellow;
-	font-size: 12pt;
-}
-
-#quick_bar a {
-	padding: 16px;
-	display: block;
-	transition: all 0.3s ease;
-	font-size: 15px;
-	position: relative;
-}
-
-#quick_bar #cart_list {
-	display: none;
-}
-
-#quick_bar #cart_list table {
-	margin: 3px auto;
-}
-
-#quick_bar #recent_list table {
-	margin: 3px auto;
-}
-
-#quick_bar .btn {
-	width: 100%;
-}
-
-#quick_bar .btn:focus, #quick_bar .btn:hover, #quick_bar .btn:active:focus,
-	#quick_bar .btn.active:focus, #quick_bar .btn.focus, #quick_bar .btn:active.focus,
-	#quick_bar .btn.active.focus {
-	background: white;
-}
-
-/* 카테고리 ~ item창까지------------------------*/
-#wrapper {
-	margin: 0 auto;
-	padding: 0;
-	max-width: 1000px;
-}
-
-#fix_menu {
-	width: 100%;
-	z-index: 9990;
-}
-
-#fix_menu #category {
-	width: 100%;
-	height: 50px;
-	background: #ffff00;
-}
-/* 메뉴구현 */
-.navi {
-	list-style-type: none;
-	padding: 0;
-	margin: 0;
-}
-
-.navi li {
-	float: left;
-	position: relative;
-	padding: 0;
-	line-height: 40px;
-	width: 20%;
-	background: rgba(255, 255, 0, 0.5);
-}
-
-.navi li a {
-	display: block;
-	font-weight: 900;
-	font-size: 20px;
-	padding: 5px 25px;
-	color: black;
-	text-decoration: none;
-}
-/* 미디어쿼리 */
-@media all and (max-width: 1000px) {
-	.navi li a {
-		font-size: 20px;
-		padding: 5px 20px;
+	
+	@media all and (max-width: 750px) {
+		.topMenuLi a {
+			font-size: 9pt;
+			line-height: 25px;
+		}
 	}
-}
-
-@media all and (max-width: 750px) {
-	.navi li a {
+	
+	@media all and (max-width: 300px) {
+		.topMenuLi a {
+			font-size: 3pt;
+			line-height: 25px;
+		}
+	}
+	/*------------------------------------------------------------이슬작성-----------------*/
+	/*.topMenuLi:hover .menuLink {
+	        color: red;
+	        cursor : pointer;
+	    } 계속 해서 오류 안나면 지움*/
+	.menuLink:hover {
+		color: red;
+		cursor: pointer;
+	}
+	/*----------------------------------------------------------------------------------*/
+	/*------------------- 최상단 메뉴 끝 -----------*/
+	#banner {
+		margin: 10px auto;
+	}
+	/*상단 배너 크기*/
+	#banner a img {
+		max-width: 100%;
+		max-height: 100px;
+		border: 0;
+	}
+	
+	/*----광고----------------------------------*/
+	.adv-img {
+		width: 100%; /* 이미지 크기 반응형으로 작성 */
+	}
+	
+	#ad {
+		margin: 5px auto;
+		width: 100%;
+		max-width: 700px;
+	}
+	
+	.carousel-indicators {
+		bottom: 2px;
+	}
+	
+	.carousel-indicators li {
+		width: 11px;
+		height: 11px;
+		border: 2px solid rgba(255, 255, 255, 0.3);
+	}
+	
+	.carousel-indicators .active {
+		width: 14px;
+		height: 14px;
+		border: 0px;
+		background-color: rgba(255, 255, 255, 0.7);
+	}
+	
+	/* None:hidden, Hover:visible */
+	.carousel .carousel-control {
+		visibility: hidden;
+	}
+	
+	.carousel-indicators {
+		visibility: hidden;
+	}
+	
+	.carousel:hover .carousel-control {
+		visibility: visible;
+	}
+	
+	.carousel:hover .carousel-indicators {
+		visibility: visible;
+	}
+	/* 그라데이션 지우기 */
+	.carousel-control.left {
+		background-image: none;
+	}
+	
+	.carousel-control.right {
+		background-image: none;
+	}
+	
+	/*-------------- 퀵바 ----------------------*/
+	#quick_bar {
+		width: 120px;
+		height: auto;
+		border: 1px solid yellow;
+		background: #feffd0;
+		background: white;
+		z-index: 9999;
+		position: fixed;
+		right: -122px;
+		top: 170px;
+	}
+	
+	#qBtn {
+		position: fixed;
+		right: -14px;
+		bottom: 310px;
+		z-index: 9999;
+		display: block;
+		border: 1px solid #ffcc00;
+		transform: rotate(270deg);
+		background: yellow;
+		font-size: 12pt;
+	}
+	
+	#quick_bar a {
+		padding: 16px;
+		display: block;
+		transition: all 0.3s ease;
 		font-size: 15px;
-		padding: 5px 0px;
+		position: relative;
 	}
-}
-
-@media all and (max-width: 300px) {
-	.navi li a {
-		font-size: 15px;
-		padding: 1px 0px;
+	
+	#quick_bar #cart_list {
+		display: none;
 	}
+	
+	#quick_bar #cart_list table {
+		margin: 3px auto;
+	}
+	
+	#quick_bar #recent_list table {
+		margin: 3px auto;
+	}
+	
+	#quick_bar .btn {
+		width: 100%;
+	}
+	
+	#quick_bar .btn:focus, #quick_bar .btn:hover, #quick_bar .btn:active:focus,
+		#quick_bar .btn.active:focus, #quick_bar .btn.focus, #quick_bar .btn:active.focus,
+		#quick_bar .btn.active.focus {
+		background: white;
+	}
+	
+	/* 카테고리 ~ item창까지------------------------*/
+	#wrapper {
+		margin: 0 auto;
+		padding: 0;
+		max-width: 1000px;
+	}
+	
+	#fix_menu {
+		width: 100%;
+		z-index: 9990;
+	}
+	
+	#fix_menu #category {
+		width: 100%;
+		height: 50px;
+		background: #ffff00;
+	}
+	/* 메뉴구현 */
+	.navi {
+		list-style-type: none;
+		padding: 0;
+		margin: 0;
+	}
+	
 	.navi li {
-		line-height: 50px;
+		float: left;
+		position: relative;
+		padding: 0;
+		line-height: 40px;
+		width: 20%;
+		background: rgba(255, 255, 0, 0.5);
 	}
-}
-
-.navi li a:hover {
-	color: #fff;
-	background: red;
-}
-
-.navi li ul {
-	opacity: 0;
-	position: absolute;
-	left: 0;
-	width: 100%;
-	min-width: 102px;
-	/*background : red;*/
-	list-style-type: none;
-	padding: 0;
-	margin: 0;
-	border: 1px solid red;
-}
-
-.navi li:hover ul {
-	opacity: 1;
-}
-
-.navi li ul li {
-	float: none;
-	height: 0;
-	line-height: 0;
-	background: none;
-	width: 100%;
-	position: relative;
-	top: -10px;
-}
-
-.navi li:hover ul li {
-	height: auto;
-	line-height: 30px;
-	padding: 0;
-	position: relative;
-	top: 0;
-}
-
-.navi li ul li a {
-	background: white;
-	font-weight: 900;
-	font-size: 15px;
-	color: #ff0000;
-	min-width: 100px;
-}
-
-.navi li {
-	/*나타날때*/
-	transition: all 0.1s;
-	-webkit-transition: all 0.1s;
-}
-
-.navi li a {
-	transition: all 0.2s;
-	-webkit-transition: all 0.2s;
-}
-
-.navi li ul {
-	/*사라질 때*/
-	transition: all 0.1s;
-	-webkit-transition: all 0.1s;
-}
-
-.navi li ul li {
-	transition: all 0.2s;
-	-webkit-transition: all 0.2s;
-}
-/* 검색 ---------------------------------------------*/
-#fix_menu #searchbox {
-	border: 1px solid red;
-	background: white;
-	text-align: center;
-	vertical-align: middle;
-	padding: 5px;
-	display: none;
-	/*처음 시작시 안보이게*/
-}
-
-#fix_menu #searchbox #search {
-	border: 0;
-	BORDER-BOTTOM: 1px solid #ffe217;
-	BORDER-BOTTOM: 1px solid red;
-	text-align: center;
-	width: 300px;
-	height: 20px;
-}
-
-@media all and (max-width: 750px) {
+	
+	.navi li a {
+		display: block;
+		font-weight: 900;
+		font-size: 20px;
+		padding: 5px 25px;
+		color: black;
+		text-decoration: none;
+	}
+	/* 미디어쿼리 */
+	@media all and (max-width: 1000px) {
+		.navi li a {
+			font-size: 20px;
+			padding: 5px 20px;
+		}
+	}
+	
+	@media all and (max-width: 750px) {
+		.navi li a {
+			font-size: 15px;
+			padding: 5px 0px;
+		}
+	}
+	
+	@media all and (max-width: 300px) {
+		.navi li a {
+			font-size: 15px;
+			padding: 1px 0px;
+		}
+		.navi li {
+			line-height: 50px;
+		}
+	}
+	
+	.navi li a:hover {
+		color: #fff;
+		background: red;
+	}
+	
+	.navi li ul {
+		opacity: 0;
+		position: absolute;
+		left: 0;
+		width: 100%;
+		min-width: 102px;
+		/*background : red;*/
+		list-style-type: none;
+		padding: 0;
+		margin: 0;
+		border: 1px solid red;
+	}
+	
+	.navi li:hover ul {
+		opacity: 1;
+	}
+	
+	.navi li ul li {
+		float: none;
+		height: 0;
+		line-height: 0;
+		background: none;
+		width: 100%;
+		position: relative;
+		top: -10px;
+	}
+	
+	.navi li:hover ul li {
+		height: auto;
+		line-height: 30px;
+		padding: 0;
+		position: relative;
+		top: 0;
+	}
+	
+	.navi li ul li a {
+		background: white;
+		font-weight: 900;
+		font-size: 15px;
+		color: #ff0000;
+		min-width: 100px;
+	}
+	
+	.navi li {
+		/*나타날때*/
+		transition: all 0.1s;
+		-webkit-transition: all 0.1s;
+	}
+	
+	.navi li a {
+		transition: all 0.2s;
+		-webkit-transition: all 0.2s;
+	}
+	
+	.navi li ul {
+		/*사라질 때*/
+		transition: all 0.1s;
+		-webkit-transition: all 0.1s;
+	}
+	
+	.navi li ul li {
+		transition: all 0.2s;
+		-webkit-transition: all 0.2s;
+	}
+	/* 검색 ---------------------------------------------*/
+	#fix_menu #searchbox {
+		border: 1px solid red;
+		background: white;
+		text-align: center;
+		vertical-align: middle;
+		padding: 5px;
+		display: none;
+		/*처음 시작시 안보이게*/
+	}
+	
 	#fix_menu #searchbox #search {
-		width: 230px;
+		border: 0;
+		BORDER-BOTTOM: 1px solid #ffe217;
+		BORDER-BOTTOM: 1px solid red;
+		text-align: center;
+		width: 300px;
+		height: 20px;
 	}
-}
-
-@media all and (max-width: 300px) {
-	#fix_menu #searchbox #search {
-		width: 180px;
+	
+	@media all and (max-width: 750px) {
+		#fix_menu #searchbox #search {
+			width: 230px;
+		}
 	}
-}
-
-#fix_menu #sch:hover {
-	cursor: pointer;
-}
-
-/* 정렬---------------------------------------------------*/
-#fix_menu #sort {
-	width: auto;
-	padding: 1px;
-	background: white;
-	BORDER-BOTTOM: 1px solid yellow;
-	text-align: right;
-	margin-bottom: 5px;
-}
-
-#fix_menu #sort a {
-	text-decoration: none;
-	color: black;
-	font-size: 10pt;
-}
-
-#fix_menu #sort a:hover {
-	text-decoration: underline;
-}
-/* 상품목록------------------------------------- */
-/*데스크탑*/
-.contents {
-	margin: 0 auto;
-	display: table;
-	width: 100%;
-	max-width: 1000px;
-	min-height: 500px;
-	padding: 1%;
-	text-align: center;
-}
-
-.item_box {
-	/*float: left;*/
-	max-width: 23%;
-	margin: 0.5%;
-	padding: 0.5%;
-	background: white;
-	display: inline-block;
-}
-.item_box img {
-	width: 100%;
-}
-.item_box a{
-	color : black;
-	text-decoration : none;
-}
-.item_box a:hover .item_name {
-	text-decoration : underline;
-	color : red;
-}
-.item_price {
-	font-weight : 700;
-	color : red;
-}
-.item_name, .item_price {
-	font-size: 0.9em;
-	text-align: center;
-}
-
-/*태블릿 용*/
-@media all and (max-width: 1000px) {
+	
+	@media all and (max-width: 300px) {
+		#fix_menu #searchbox #search {
+			width: 180px;
+		}
+	}
+	
+	#fix_menu #sch:hover {
+		cursor: pointer;
+	}
+	
+	/* 정렬---------------------------------------------------*/
+	#fix_menu #sort {
+		width: auto;
+		padding: 1px;
+		background: white;
+		BORDER-BOTTOM: 1px solid yellow;
+		text-align: right;
+		margin-bottom: 5px;
+	}
+	
+	#fix_menu #sort a {
+		text-decoration: none;
+		color: black;
+		font-size: 10pt;
+	}
+	
+	#fix_menu #sort a:hover {
+		text-decoration: underline;
+	}
+	/* 상품목록------------------------------------- */
+	/*데스크탑*/
 	.contents {
-		padding: 0.5%;
-		padding-left: 3.3% padding-right: 0;
+		margin: 0 auto;
+		display: table;
+		width: 100%;
+		max-width: 1000px;
+		min-height: 500px;
+		padding: 1%;
+		text-align: center;
 	}
+	
 	.item_box {
-		max-width: 31%;
-		background: #ccffcc;
+		/*float: left;*/
+		max-width: 23%;
+		margin: 0.5%;
+		padding: 0.5%;
+		background: white;
+		display: inline-block;
+	}
+	.item_box img {
+		width: 100%;
+	}
+	.item_box a{
+		color : black;
+		text-decoration : none;
+	}
+	.item_box a:hover .item_name {
+		text-decoration : underline;
+		color : red;
+	}
+	.item_price {
+		font-weight : 700;
+		color : red;
 	}
 	.item_name, .item_price {
 		font-size: 0.9em;
+		text-align: center;
 	}
-}
-/*휴대폰*/
-@media all and (max-width: 750px) {
-	.contents {
-		padding: 1%;
-		padding-left: 2.2%
+	
+	/*태블릿 용*/
+	@media all and (max-width: 1000px) {
+		.contents {
+			padding: 0.5%;
+			padding-left: 3.3% padding-right: 0;
+		}
+		.item_box {
+			max-width: 31%;
+			background: #ccffcc;
+		}
+		.item_name, .item_price {
+			font-size: 0.9em;
+		}
 	}
-	.item_box {
-		max-width: 47%;
-		margin: 0.8%;
-		padding: 0.5%;
-		background: #ffccff;
+	/*휴대폰*/
+	@media all and (max-width: 750px) {
+		.contents {
+			padding: 1%;
+			padding-left: 2.2%
+		}
+		.item_box {
+			max-width: 47%;
+			margin: 0.8%;
+			padding: 0.5%;
+			background: #ffccff;
+		}
+		.item_name, .item_price {
+			font-size: 1em;
+		}
 	}
-	.item_name, .item_price {
-		font-size: 1em;
+	/*기타 기기(스마트워치 등)*/
+	@media all and (max-width: 300px) {
+		.item_box {
+			max-width: 100%;
+			margin: 0;
+			padding: 0;
+			background: #99ffff;
+		}
+		.item_name, .item_price {
+			font-size: 0.7em;
+		}
 	}
-}
-/*기타 기기(스마트워치 등)*/
-@media all and (max-width: 300px) {
-	.item_box {
-		max-width: 100%;
-		margin: 0;
-		padding: 0;
-		background: #99ffff;
+	/*------------------------------------------------------------------------이슬작성*/
+		#pageNo{
+			margin : 10px auto;
+			display : table;
+			border-spacing : 2px;
+		}
+		#pageNo a{
+			display : table-cell;
+			vertical-align : middle;
+			text-align : center;
+			border : 1px solid red;
+			color : red;
+			background : white;
+			text-decoration : none;
+			width : 30px;
+			height : 30px;
+		}
+		#pageNo a:hover{
+			color : white;
+			background : red;
+		}
+	/*-------------------------------------------------------------------------요기까지*/
+	/* 푸터 */
+	footer {
+		BORDER-TOP: 1px solid gray;
+		BORDER-BOTTOM: 1px solid gray;
+		padding-top: 10px;
+		padding-bottom: 10px;
+		width: 100%;
+		height: 150px;
+		display: table;
+		/* 세로 가운데 정렬을 위한. */
 	}
-	.item_name, .item_price {
-		font-size: 0.7em;
+	
+	footer #fwrap {
+		display: table-cell;
+		vertical-align: middle;
+		text-align: center;
 	}
-}
-
-	#pageNo{
-		float : bottom;
+	
+	.fd {
+		display: inline-block;
+		text-align: left;
+		padding: 0 20px;
 	}
-/* 푸터 */
-footer {
-	BORDER-TOP: 1px solid gray;
-	BORDER-BOTTOM: 1px solid gray;
-	padding-top: 10px;
-	padding-bottom: 10px;
-	width: 100%;
-	height: 150px;
-	display: table;
-	/* 세로 가운데 정렬을 위한. */
-}
-
-footer #fwrap {
-	display: table-cell;
-	vertical-align: middle;
-	text-align: center;
-}
-
-.fd {
-	display: inline-block;
-	text-align: left;
-	padding: 0 20px;
-}
-
-@media all and (max-width: 300px) {
-	.fd h1 {
-		font-size: 20pt;
+	
+	@media all and (max-width: 300px) {
+		.fd h1 {
+			font-size: 20pt;
+		}
 	}
-}
-
-#fmenu {
-	list-style-type: none;
-}
-
-.footMenu a {
-	text-decoration: none;
-	color: black;
-}
-
-.footMenu a:hover {
-	text-decoration: underline;
-}
-</style>
-
+	
+	#fmenu {
+		list-style-type: none;
+	}
+	
+	.footMenu a {
+		text-decoration: none;
+		color: black;
+	}
+	
+	.footMenu a:hover {
+		text-decoration: underline;
+	}
+	</style>
 </head>
 <body>
 	<!--  최상단 기본메뉴 -->
@@ -747,10 +814,10 @@ footer #fwrap {
 			<!-- 검색 -->
 
 			<div id="sort">
-				<a href="isort?status=<%=status%>&sortno=1">최신등록순</a>&nbsp;&nbsp; <a
-					href="isort?status=<%=status%>&sortno=2">높은조회순</a>&nbsp;&nbsp; <a
-					href="isort?status=<%=status%>&sortno=3">높은가격순</a>&nbsp;&nbsp; <a
-					href="isort?status=<%=status%>&sortno=4">낮은가격순</a>&nbsp;&nbsp;
+				<a href="isort?status=<%=status%>&sortno=1">최신등록순</a>&nbsp;&nbsp;
+				<a href="isort?status=<%=status%>&sortno=2">높은조회순</a>&nbsp;&nbsp;
+				<a href="isort?status=<%=status%>&sortno=3">높은가격순</a>&nbsp;&nbsp;
+				<a href="isort?status=<%=status%>&sortno=4">낮은가격순</a>&nbsp;&nbsp;
 			</div>
 			<!-- sort -->
 
@@ -766,13 +833,14 @@ footer #fwrap {
 				<!-- 클릭시 상세 페이지로 이동하도록. -->
 				<a href="/arm/item/ItemDetail.jsp"><table>
 						<tr>
-							<td class="item_img"><img src="<%=i.getItemTH()%>.jsp">
+							<td class="item_img"><img src="<%=i.getItemTH()%>">
 							<td>
 						</tr>
 						<tr>
 							<td class="item_name"><%=i.getItemName()%>
 							<td>
 						</tr>
+		<!-- ----------------------------------------------------------이슬작성----------------- -->
 						<tr>
 							<td class="item_price"><%=i.getItemPrice()%>원
 							<td>
@@ -793,7 +861,8 @@ footer #fwrap {
 				}
 			%>
 			<!-- 페이징처리할때 ------------------------------------------------------ -->
-			<div id = "pageNo"><< 1 2 3 4 5 >></div>
+			<div id = "pageNo"></div>
+		<!-- --------------------------------------------------------------요까지이슬----------------- -->
 		</div>
 		<!-- contents -->
 
@@ -811,6 +880,7 @@ footer #fwrap {
 	<!-- 푸터 -->
 	<footer>
 		<div id="fwrap">
+		
 			<div class="fd hidden-xs">
 				<!-- 스마트폰 크기에서는 안보이게 -->
 				<ul id="fmenu">
@@ -820,8 +890,7 @@ footer #fwrap {
 					<li class="footMenu"><a href="#">DELIVERY</a></li>
 				</ul>
 			</div>
-
-
+			
 			<div class="fd">
 				<h1>
 					<img src="images/전화기.png" width="50" height="40" border="0" alt="">&nbsp;1600-7000
@@ -832,7 +901,6 @@ footer #fwrap {
 				팔로 Follow Me <br> copyright by take ARM<br> All right
 				reserved<br>
 			</div>
-
 		</div>
 	</footer>
 </body>

@@ -93,7 +93,21 @@ public class ItemSortServlet extends HttpServlet {
 				System.out.println("가격 오름차순..");
 				break;
 			}
-			request.setAttribute("list", list);
+			
+
+			int totalCount = list.size();
+			ArrayList<Item> viewList = new ArrayList<Item>();
+			int pLast = 2;
+			if(pLast>=list.size()){
+				pLast = list.size();
+			}
+			for(int i = 0 ; i < pLast; i++){
+				viewList.add(list.get(i));
+			}
+			request.setAttribute("totalCount", totalCount);
+			request.setAttribute("page", 1);
+			request.setAttribute("list", viewList);
+			request.setAttribute("sortNo", sortNo);
 			view.forward(request, response);
 		}else{
 			view = request.getRequestDispatcher("SubPage.jsp");

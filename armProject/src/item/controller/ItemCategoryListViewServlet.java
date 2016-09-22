@@ -42,13 +42,15 @@ public class ItemCategoryListViewServlet extends HttpServlet {
 		int categoryNo = Integer.parseInt(request.getParameter("categoryno"));
 		
 		ArrayList<Item> list = new ItemService().selectCategoryList(categoryNo);
-		
+		System.out.println(list);
 		RequestDispatcher view = null;
+		
 		if(list != null){
 			//조회성공시
 			view = request.getRequestDispatcher("SubPage.jsp");
 			request.setAttribute("list", list);
 			request.setAttribute("status", String.valueOf(categoryNo));
+		
 			view.forward(request, response);
 		}else{
 			//조회실패시 어떻게 처리할까

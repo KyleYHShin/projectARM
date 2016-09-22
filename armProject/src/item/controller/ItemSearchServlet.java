@@ -45,8 +45,22 @@ public class ItemSearchServlet extends HttpServlet {
 		RequestDispatcher view = null;
 		if(list != null){
 			//조회된 내용이 있을 때
+			
+			//1페이지만 출력하기 위함.
+			int totalCount = list.size();
+			ArrayList<Item> viewList = new ArrayList<Item>();
+			int pLast = 2;
+			if(pLast>=list.size()){
+				pLast = list.size();
+			}
+			for(int i = 0 ; i < pLast; i++){
+				viewList.add(list.get(i));
+			}
+			
 			view = request.getRequestDispatcher("SubPage.jsp");
-			request.setAttribute("list", list);
+			request.setAttribute("list", viewList);
+			request.setAttribute("totalCount", totalCount);
+			request.setAttribute("page", 1);
 			request.setAttribute("status", "search");
 			request.setAttribute("keyword", keyword);
 			view.forward(request, response);

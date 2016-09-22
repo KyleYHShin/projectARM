@@ -44,12 +44,26 @@ public class ItemListViewServlet extends HttpServlet {
 		ArrayList<Item> list = new ItemService().selectMainList();
 		System.out.println(list);
 		
+		int totalCount = list.size();
+		
 		RequestDispatcher view = null;
 		if(list != null){
 			//불러오는데 성공했을 경우
+			
+			//1페이지만 출력하기 위함.
+			ArrayList<Item> viewList = new ArrayList<Item>();
+			int pLast = 2;
+			if(pLast>=list.size()){
+				pLast = list.size();
+			}
+			for(int i = 0 ; i < pLast; i++){
+				viewList.add(list.get(i));
+			}
 			view = request.getRequestDispatcher("Main.jsp");
-			request.setAttribute("list", list);
+			request.setAttribute("list", viewList);
 			request.setAttribute("status", "main");
+			request.setAttribute("totalCount", totalCount);
+			request.setAttribute("page", 1);
 			view.forward(request, response);
 			
 		}else{
