@@ -33,35 +33,27 @@ public class ItemSearchServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//검색처리 서블릿
-		System.out.println("검색 servlet 구동..");
+		System.out.println("검색서블릿 구동..");
 		
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html; charset=utf-8");
 		
 		String keyword = request.getParameter("keyword");
 		String sort_col = null;
+		int page = 1;
 		
-		ArrayList<Item> list = new ItemService().searchItem(keyword, sort_col);
+		ArrayList<Item> list = new ItemService().searchItem(keyword, sort_col, page);
 		
 		RequestDispatcher view = null;
 		if(list != null){
 			//조회된 내용이 있을 때
 			
-			//1페이지만 출력하기 위함.
-			int totalCount = list.size();
-			ArrayList<Item> viewList = new ArrayList<Item>();
-			int pLast = 2;
-			if(pLast>=list.size()){
-				pLast = list.size();
-			}
-			for(int i = 0 ; i < pLast; i++){
-				viewList.add(list.get(i));
-			}
-			
+			int totalCount = new ItemService().getSearchCount(keyword);
+
 			view = request.getRequestDispatcher("SubPage.jsp");
-			request.setAttribute("list", viewList);
+			request.setAttribute("list", list);
 			request.setAttribute("totalCount", totalCount);
-			request.setAttribute("page", 1);
+			request.setAttribute("page", page);
 			request.setAttribute("status", "search");
 			request.setAttribute("keyword", keyword);
 			request.setAttribute("sortNo", 0);

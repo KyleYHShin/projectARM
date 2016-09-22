@@ -41,29 +41,21 @@ public class ItemCategoryListViewServlet extends HttpServlet {
 		//카테고리no
 		int categoryNo = Integer.parseInt(request.getParameter("categoryno"));
 		String sort_col = null;
+		int page = 1;
 		
-		ArrayList<Item> list = new ItemService().selectCategoryList(categoryNo, sort_col);
+		ArrayList<Item> list = new ItemService().selectCategoryList(categoryNo, sort_col, page);
 		
 		
 		RequestDispatcher view = null;
 		if(list != null){
 			//조회성공시
-			//1페이지만 출력하기 위함.
-			int totalCount = list.size();
-			ArrayList<Item> viewList = new ArrayList<Item>();
-			int pLast = 2;
-			if(pLast>=list.size()){
-				pLast = list.size();
-			}
-			for(int i = 0 ; i < pLast; i++){
-				viewList.add(list.get(i));
-			}
+			int totalCount = new ItemService().getCategoryCount(categoryNo);
 			
 			view = request.getRequestDispatcher("SubPage.jsp");
-			request.setAttribute("list", viewList);
+			request.setAttribute("list", list);
 			request.setAttribute("status", String.valueOf(categoryNo));
 			request.setAttribute("totalCount", totalCount);
-			request.setAttribute("page", 1);
+			request.setAttribute("page", page);
 			request.setAttribute("sortNo", 0);
 			view.forward(request, response);
 		}else{

@@ -34,20 +34,20 @@ String status = (String)request.getAttribute("status");
 	//-- ----------------------------------------------------------이슬작성----------------- -
 		//전체 줄 수(reqeust로 전달받음)
 		var totalCount = <%= totalCount %>;
-		//페이지 수 : 한 페이지에 15줄 출력경우
-		var totalPage = Math.ceil(totalCount/2);
+		//페이지 수 : 한 페이지에 9줄 출력경우
+		var totalPage = Math.ceil(totalCount/9);
 		var PageNum;
 		//현재 페이지(request로 전달받음)
 		var page;
 	
 		//페이지 넘버링 출력
 		$(function drawPage(goTo){
-			//페이지 그룹 넘버링 : 한번에 보여줄 페이지 넘버의 갯수
 			if(goTo *= null){
 				page = goTo;
 			}else{
 				page = <%= pageNo %>;
 			}
+			//페이지 그룹 넘버링 : 한번에 보여줄 페이지 넘버의 갯수
 			var pageGroup = Math.ceil(page/10);
 			var next = pageGroup*10;
 			var prev = next-9;

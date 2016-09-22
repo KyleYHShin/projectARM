@@ -67,52 +67,34 @@ public class ItemPagingServlet extends HttpServlet {
 			break;
 		}
 		
+		//전달된 (출력할)page값
+		int page = Integer.parseInt(request.getParameter("page"));
+		
 		RequestDispatcher view = null;
 		view = request.getRequestDispatcher("SubPage.jsp");
-		
-		//status에 따라 다른 list를 가짐
+		int totalCount = 0;
+		//status에 따라 다른 list를 가짐 > list수도 다르다!
 		if(status.equals("main")){
-			list = new ItemService().selectMainList(sort_col);
+			list = new ItemService().selectMainList(sort_col, page);
+			totalCount = new ItemService().getTotalCount();
 			request.setAttribute("status", status);
 		}else if(status.equals("search")){
 			String keyword = (String)request.getParameter("keyword");
-			list = new ItemService().searchItem(keyword, sort_col);
+			list = new ItemService().searchItem(keyword, sort_col, page);
 			request.setAttribute("status", status);
 			request.setAttribute("keyword", keyword);
 		}else if(status.equals("err")){
 			request.setAttribute("msg", "정렬할 상품이 존재하지 않아요!");
 		}else{
 			int categoryNo = Integer.parseInt(status);
-			list = new ItemService().selectCategoryList(categoryNo, sort_col);
+			list = new ItemService().selectCategoryList(categoryNo, sort_col, page);
+			totalCount = new ItemService().getCategoryCount(categoryNo);
 			request.setAttribute("status", status);
 		}
 	
-		if(list != null){//정렬할 상품이 존재 할 때
-			
+		if(list != null){
 			//총 줄 수
-			int totalCount = list.size();
-			
-			//전달된 (출력할)page값
-			int page = Integer.parseInt(request.getParameter("page"));
-			
-			//출력용 arrayList객체 생성
-			ArrayList<Item> viewList = new ArrayList<Item>();
-			
-			//한 페이지당 15개씩 출력할 경우
-			//1페이지 : 0~14, 2페이지 : 15~29, 3페이지 : 30~44, n페이지:(n-1)*15 ~ n*15-1
-			
-			//해당 페이지의 첫 상품
-			int pFirst = (page-1)*2;
-			//해당 페이지의 마지막상품+1(<사용하므로)
-			int pLast = (page*2);
-			if(pLast > totalCount){
-				pLast = totalCount;
-			}
-			for(int i = pFirst ; i <pLast; i++){
-				viewList.add(list.get(i));
-			}
-			
-			request.setAttribute("list", viewList);
+			request.setAttribute("list", list);
 			//현제 페이지 전달
 			request.setAttribute("totalCount", totalCount);
 			
