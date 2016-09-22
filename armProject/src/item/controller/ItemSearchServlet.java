@@ -63,6 +63,7 @@ public class ItemSearchServlet extends HttpServlet {
 			request.setAttribute("page", 1);
 			request.setAttribute("status", "search");
 			request.setAttribute("keyword", keyword);
+			request.setAttribute("sortNo", 0);
 			view.forward(request, response);
 		}else{
 			//조회된 내용이 없거나 실패시

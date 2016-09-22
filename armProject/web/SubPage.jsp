@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import = "java.util.ArrayList, item.model.vo.Item"%>
+<%@ page import = "java.util.ArrayList, item.model.vo.Item, member.model.vo.User"%>
 <% 
+User loginUser = (User)session.getAttribute("loginUser");
 ArrayList<Item> list = (ArrayList<Item>)request.getAttribute("list");
 String msg = (String)request.getAttribute("msg");
 String status = (String)request.getAttribute("status");
@@ -73,7 +74,7 @@ String keyword = (String)request.getAttribute("keyword");
 		$("#pageNo").append(prevStep);
 		for(var i=prev; i<=next; i++){
 			
-			PageNum = "<a href='/arm/ipage?status=<%= status %>&page="+i+"&sortno="+<%= sortNo %>+"&keyword="+<%= keyword %>+"'>"+i+"</a>";
+			PageNum = "<a href='/arm/ipage?status=<%= status %>&sortno=<%= sortNo %>&keyword=<%= keyword %>&page="+i+"'>"+i+"</a>";
 			$("#pageNo").append(PageNum);
 		}
 		$("#pageNo").append(nextStep);
@@ -705,7 +706,13 @@ String keyword = (String)request.getAttribute("keyword");
                 <a href = "/arm/item/ItemDetail.jsp"><table>
                     <tr> <td class="item_img"><img src=<%= i.getItemTH() %>><td></tr>
                     <tr> <td class="item_name"><%= i.getItemName() %><td></tr>
-                    <tr> <td class="item_price"><%= i.getItemPrice() %>원<td></tr>
+                   	<tr> <td class="item_price"><%=i.getItemPrice()%>원<td>	</tr>
+					<% if (loginUser != null) {%>
+						<tr><td class="item_price" style = "color : black; font-weight : 600; text-decoration : line-through;">
+						<%=i.getItemPrice()%>원<td></tr>
+						<tr><td class="item_price" style = "color : red; font-weight : 800;">
+						<%= "계산값" %>원<td></tr>
+					<% } %>
                 </table></a>
             </section>
             <% }

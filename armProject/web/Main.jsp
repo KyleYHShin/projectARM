@@ -832,28 +832,15 @@ String status = (String)request.getAttribute("status");
 			<section class="item_box">
 				<!-- 클릭시 상세 페이지로 이동하도록. -->
 				<a href="/arm/item/ItemDetail.jsp"><table>
-						<tr>
-							<td class="item_img"><img src="<%=i.getItemTH()%>">
-							<td>
-						</tr>
-						<tr>
-							<td class="item_name"><%=i.getItemName()%>
-							<td>
-						</tr>
+						<tr><td class="item_img"><img src="<%=i.getItemTH()%>"><td></tr>
+						<tr><td class="item_name"><%=i.getItemName()%><td></tr>
 		<!-- ----------------------------------------------------------이슬작성----------------- -->
-						<tr>
-							<td class="item_price"><%=i.getItemPrice()%>원
-							<td>
-						</tr>
+						<tr><td class="item_price"><%=i.getItemPrice()%>원<td></tr>
 						<% if (loginUser != null) {%>
-						<tr>
-							<td class="item_price" style = "color : black; font-weight : 600; text-decoration : line-through;"><%=i.getItemPrice()%>원
-							<td>
-						</tr>
-						<tr>
-							<td class="item_price" style = "color : red; font-weight : 800;"><%= "계산값" %>원
-							<td>
-						</tr>
+						<tr><td class="item_price" style = "color : black; font-weight : 600; text-decoration : line-through;">
+						<%=i.getItemPrice()%>원<td></tr>
+						<tr><td class="item_price" style = "color : red; font-weight : 800;">
+						<%= "계산값" %>원<td></tr>
 						<% } %>
 					</table></a>
 			</section>
