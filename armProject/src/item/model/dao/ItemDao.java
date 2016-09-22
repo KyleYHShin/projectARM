@@ -9,7 +9,7 @@ public class ItemDao {
 
 	public ItemDao(){}
 
-	public ArrayList<Item> selectMainList(Connection con) {
+	public ArrayList<Item> selectMainList(Connection con, String sort_col) {
 		//전체상품목록 불러오기
 		ArrayList<Item> list = null;
 		Statement stmt = null;
@@ -17,11 +17,15 @@ public class ItemDao {
 		
 		
 		String query = "select * from product_main p left join item i on(p.PRM_ITEM_NO = i.ITEM_NO) order by prm_no";
+		String sort = "select * from product_main p left join item i on(p.PRM_ITEM_NO = i.ITEM_NO)" + sort_col;
 		
 		try {
 			stmt = con.createStatement();
-			rset = stmt.executeQuery(query);
-			
+			if(sort_col == null){
+				rset = stmt.executeQuery(query);
+			}else{
+				rset = stmt.executeQuery(sort);
+			}
 			boolean onoff = true;
 			while(rset.next()){
 				if(onoff){
@@ -54,14 +58,18 @@ public class ItemDao {
 		return list;
 	}
 
-	public ArrayList<Item> selectCategoryList(Connection con, int categoryNo) {
+	public ArrayList<Item> selectCategoryList(Connection con, int categoryNo, String sort_col) {
 		ArrayList<Item> list = null;
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
 		String query = "select * from item where item_cat_no = ?";
 		try {
-			pstmt = con.prepareStatement(query);
+			if(sort_col == null){
+				pstmt = con.prepareStatement(query);
+			}else{
+				pstmt = con.prepareStatement(query+sort_col);
+			}
 			pstmt.setInt(1, categoryNo);
 			
 			rset = pstmt.executeQuery();
@@ -98,14 +106,18 @@ public class ItemDao {
 		return list;
 	}
 
-	public ArrayList<Item> searchItem(Connection con, String keyword) {
+	public ArrayList<Item> searchItem(Connection con, String keyword, String sort_col) {
 		ArrayList<Item> list = null;
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
 		String query = "select * from item where item_tag like ?";
 		try {
-			pstmt = con.prepareStatement(query);
+			if(sort_col==null){
+				pstmt = con.prepareStatement(query);
+			}else{
+				pstmt = con.prepareStatement(query+sort_col);
+			}
 			pstmt.setString(1, "%"+keyword+"%");
 			
 			rset = pstmt.executeQuery();

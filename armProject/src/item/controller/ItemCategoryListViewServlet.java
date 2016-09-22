@@ -40,8 +40,9 @@ public class ItemCategoryListViewServlet extends HttpServlet {
 		
 		//카테고리no
 		int categoryNo = Integer.parseInt(request.getParameter("categoryno"));
+		String sort_col = null;
 		
-		ArrayList<Item> list = new ItemService().selectCategoryList(categoryNo);
+		ArrayList<Item> list = new ItemService().selectCategoryList(categoryNo, sort_col);
 		
 		
 		RequestDispatcher view = null;

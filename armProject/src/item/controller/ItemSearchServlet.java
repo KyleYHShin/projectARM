@@ -39,8 +39,9 @@ public class ItemSearchServlet extends HttpServlet {
 		response.setContentType("text/html; charset=utf-8");
 		
 		String keyword = request.getParameter("keyword");
+		String sort_col = null;
 		
-		ArrayList<Item> list = new ItemService().searchItem(keyword);
+		ArrayList<Item> list = new ItemService().searchItem(keyword, sort_col);
 		
 		RequestDispatcher view = null;
 		if(list != null){

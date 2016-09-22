@@ -41,7 +41,8 @@ public class ItemListViewServlet extends HttpServlet {
 		
 		
 		System.out.println("메인서블릿 구동..");
-		ArrayList<Item> list = new ItemService().selectMainList();
+		String sort_col = null;
+		ArrayList<Item> list = new ItemService().selectMainList(sort_col);
 		System.out.println(list);
 		
 		int totalCount = list.size();

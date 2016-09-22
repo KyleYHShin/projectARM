@@ -41,51 +41,54 @@ public class ItemPagingServlet extends HttpServlet {
 		
 		ArrayList<Item> list = null;
 		
-		RequestDispatcher view = null;
-		view = request.getRequestDispatcher("SubPage.jsp");
-		
-		//status에 따라 다른 list를 가짐
-		if(status.equals("main")){
-			list = new ItemService().selectMainList();
-			request.setAttribute("status", status);
-		}else if(status.equals("search")){
-			String keyword = (String)request.getParameter("keyword");
-			list = new ItemService().searchItem(keyword);
-			request.setAttribute("status", status);
-			request.setAttribute("keyword", keyword);
-		}else if(status.equals("err")){
-			request.setAttribute("msg", "정렬할 상품이 존재하지 않아요!");
-		}else{
-			int categoryNo = Integer.parseInt(status);
-			list = new ItemService().selectCategoryList(categoryNo);
-			request.setAttribute("status", status);
-		}
-		
 		//정렬방식
 		String ssn = request.getParameter("sortno");
 		int sortNo = 0;
 		if(ssn != null){
 			sortNo = Integer.parseInt(ssn);
 		}
+		String sort_col = null;
+		switch(sortNo){
+		case 1://최신상품(update날짜순)
+			sort_col = " order by item_update desc";
+			System.out.println("날짜 내림차순..");
+			break;
+		case 2://조회수
+			sort_col = " order by item_count desc";
+			System.out.println("조회수 내림차순..");
+			break;
+		case 3://가격높은순
+			sort_col = " order by item_price desc";
+			System.out.println("가격 내림차순..");
+			break;
+		case 4://가격낮은순
+			sort_col = " order by item_price asc";
+			System.out.println("가격 오름차순..");
+			break;
+		}
+		
+		RequestDispatcher view = null;
+		view = request.getRequestDispatcher("SubPage.jsp");
+		
+		//status에 따라 다른 list를 가짐
+		if(status.equals("main")){
+			list = new ItemService().selectMainList(sort_col);
+			request.setAttribute("status", status);
+		}else if(status.equals("search")){
+			String keyword = (String)request.getParameter("keyword");
+			list = new ItemService().searchItem(keyword, sort_col);
+			request.setAttribute("status", status);
+			request.setAttribute("keyword", keyword);
+		}else if(status.equals("err")){
+			request.setAttribute("msg", "정렬할 상품이 존재하지 않아요!");
+		}else{
+			int categoryNo = Integer.parseInt(status);
+			list = new ItemService().selectCategoryList(categoryNo, sort_col);
+			request.setAttribute("status", status);
+		}
+	
 		if(list != null){//정렬할 상품이 존재 할 때
-			switch(sortNo){
-			case 1://최신상품(update날짜순)
-				list.sort(new DescDate());
-				System.out.println("날짜 내림차순..");
-				break;
-			case 2://조회수
-				list.sort(new DescCount());
-				System.out.println("조회수 내림차순..");
-				break;
-			case 3://가격높은순
-				list.sort(new DescPrice());
-				System.out.println("가격 내림차순..");
-				break;
-			case 4://가격낮은순
-				list.sort(new AscPrice());
-				System.out.println("가격 오름차순..");
-				break;
-			}
+			
 			//총 줄 수
 			int totalCount = list.size();
 			
