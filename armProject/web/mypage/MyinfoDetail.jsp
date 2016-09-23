@@ -367,14 +367,14 @@
 	<form action="mupdate" method="post">
 	<table border = "1" width="500"  height="500" style="text-align:center;">
 	<tr><td width="150" >이 름 :</td><td width="350" ><%= member.getUserName() %></td></tr>
-	<tr><td>아이디 : </td><td><input type=text name=userid readonly value="<%=member.getUserId() %>"></td></tr>
-	<tr><td>비밀번호 : </td><td><input type=password name=password  id=password></td></tr>
-	<tr><td>비밀번호확인: </td><td><input type=password name=password1 id=password1></td></tr>
+	<tr><td>아이디 : </td><td><input type="text" name="userid" readonly value="<%=member.getUserId() %>"></td></tr>
+	<tr><td>비밀번호 : </td><td><input type="password" name="password"  id="password"></td></tr>
+	<tr><td>비밀번호확인: </td><td><input type="password" name="password1" id="password1"></td></tr>
 	<tr><td>생 일 :  </td><td><%=member.getBirthDate() %></td></tr>
-	<tr><td>전화번호 : </td><td><input type=tel name=phone value="<%=member.getPhone() %>"></td></tr>
-	<tr><td>이메일 : </td><td><input type=email name=email value="<%=member.getEmail() %>"></td></tr>
+	<tr><td>전화번호 : </td><td><input type="tel" name="phone" value="<%=member.getPhone() %>"></td></tr>
+	<tr><td>이메일 : </td><td><input type="email" name="email" value="<%=member.getEmail() %>"></td></tr>
 	<tr><td>성 별 : </td><td><%=member.getGender() %></td></tr>
-	<tr><td>우편번호 : </td><td><input type=text name=zcode value="<%=member.getZipCode() %>">
+	<tr><td>우편번호 : </td><td><input type="text" name="zcode" value="<%=member.getZipCode() %>">
 				&nbsp;<input type = "button" value="우편번호 검색"></td></tr>
 	<tr><td>주 소 : </td>
 		<td>
@@ -384,8 +384,8 @@
 			String address = addr.substring(addr.indexOf('-')+2, addr.indexOf("동")+1);
 			String address2 = addr.substring(addr.indexOf("동")+2);
 		%>
-		<input type=text name=address value="<%= address %>"></td></tr>
-	<tr><td>상세주소 : </td><td><input type=text name=address2 value="<%= address2 %>"></td></tr>
+		<input type="text" name="address" value="<%= address %>"></td></tr>
+	<tr><td>상세주소 : </td><td><input type="text" name="address2" value="<%= address2 %>"></td></tr>
 	<tr><td>회원등급 : </td><td><%
 			String gradeString= null;
 			switch(member.getGrade()){
@@ -404,10 +404,7 @@
 		<input type = "submit" value="수정하기">
 		&nbsp;&nbsp; <a href="mdel?userid=<%= member.getUserId() %>">탈퇴하기</a>
 		&nbsp;&nbsp; <a href="/arm/Main.jsp">처음페이지로</a>
-		 <!--  <a href="mupdate">수정하기</a>
-		&nbsp;&nbsp; <a href="mdel?userid=<%= member.getUserId() %>">탈퇴하기</a>
-		&nbsp;&nbsp; <a href="/arm/Main.jsp">처음페이지로</a>
-	-->
+		
 	</td></tr>
 	
 	</table>

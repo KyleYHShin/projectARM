@@ -571,7 +571,7 @@
 
 	<div id = "contents">
 		<div id = "notice">
-		<h1>공지사항/이벤트</h1>
+		<h1>공지사항/이벤트</h1> 
 		<table class = "notice" cellspacing ="0">
 		<tr>
 			<th width = "10%">No.</th><th>공지사항/이벤트</th><th width = "15%">작성일</th>
@@ -584,8 +584,11 @@
 							
 		<% } %>
 		</table>
-		</div>
-
+		</div><br>
+		<!-- 관리자 공지사항입력 -->
+		<button onclick="window.open('notice/adminnotice.jsp');">글쓰기</button>
+		
+		
 		<div id = "faq">
 		<h1>자주 묻는 질문</h1>
 		<table class = "faq" cellspacing ="0">
