@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class NoticeInsertServlet
  */
-@WebServlet("/NoticeInsertServlet")
+@WebServlet("/ninsert")
 public class NoticeInsertServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

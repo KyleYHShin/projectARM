@@ -1,12 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="java.util.ArrayList, admin.notice.model.vo.Notice, member.model.vo.User" %>
+<%
+User loginUser = (User)session.getAttribute("loginUser");
+ArrayList<Notice> list = (ArrayList<Notice>)request.getAttribute("list");
+%>    
 <!doctype html>
 <html lang="ko">
   <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Main</title>
+    <title>Notice</title>
 
     <!-- Bootstrap -->
     <link href="/arm/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -21,7 +26,10 @@
   
   <script type="text/javascript" src = "js/jquery-3.1.0.min.js"></script>
   <script type="text/javascript">
-		//고객센터 메뉴 클릭시 보이는 div 처리 (두가지방법)
+ 	function nologinCart(){
+		alert("로그인이 필요합니다");
+	}	
+  //고객센터 메뉴 클릭시 보이는 div 처리 (두가지방법)
 		function showNotice(){
 			$("#notice").show();
 			$("#faq").hide();
@@ -39,6 +47,9 @@
 			$("#direct_q").css("display","block");
 		};
  	$(function(){
+		$(document).on("hover",".menuLink", function(){
+			$(this).css("color","red"),css("cursor","pointer");
+		});
 		//퀵바 토글 - 퀵바 고정위치를 클릭시마다 바뀌게 하면서 trasition효과
 		var onoff = 0;
 		$("#qBtn").click(function(){
@@ -144,9 +155,10 @@
 		}
 	}
 
-    .topMenuLi:hover .menuLink {
-        color: red;
-    }
+	.menuLink:hover{
+		color : red;
+		cursor : pointer;
+	}
 	/*------------------- 최상단 메뉴 끝 -----------*/
 
 	#banner {
@@ -497,17 +509,23 @@
  </head>
  <body>
  <!-- 최상단 기본메뉴 -->
- <div id = "top_menu">
-   <nav id="topMenu" >
-        <ul>
-			<li class="topMenuLi"><a class="menuLink" href="/arm/notice/notice.jsp">고객센터</a></li>
-			<li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">장바구니</a></li>
-            <li class="topMenuLi"><a class="menuLink" href="">회원가입</a></li>
-            <li class="topMenuLi"><a class="menuLink" href="/arm/member/Login.jsp">로그인</a></li>
-        </ul>
-	</nav>
- 
- </div>
+	<div id = "top_menu">
+	   	<nav id="topMenu" >
+	        <ul>
+	         <li class="topMenuLi"><a class="menuLink" href="nlist">고객센터</a></li>       
+	      <% if(loginUser != null){ %>
+	         <li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">장바구니</a></li>
+	         <li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">MyPage</a></li>
+	         <li class="topMenuLi"><a class="menuLink" href="logout">로그아웃</a></li>
+	         <li class="topMenuLi"><a class="menuLink" >환영합니다! <%=loginUser.getUserName() %>님</a></li>
+	      <%}else{ %>
+	         <li class="topMenuLi"><a class="menuLink" onClick="nologinCart()">장바구니</a></li>
+	         <li class="topMenuLi"><a class="menuLink" href="/arm/member/MemberJoin.jsp">회원가입</a></li>
+	         <li class="topMenuLi"><a class="menuLink" href="/arm/member/Login.jsp">로그인</a></li>
+	      <%} %>   
+	        </ul>
+	   </nav>
+ 	</div>
 <!-- 퀵바 -->
  <button id = "qBtn" class = "hidden-xs">Quick</button>
  <div id = "quick_bar" class = "hidden-xs">
@@ -546,7 +564,7 @@
  <!-- 배너 -->
  <div id ="banner">
 	<!-- 배너클릭시 시작페이지로! -->
-	<a href="/arm/Main.jsp"><img src="/arm/img/banner.png" alt = "시작페이지로"></a>
+	<a href="/arm/mainlist"><img src="/arm/img/banner.png" alt = "시작페이지로"></a>
  </div>
 <!-- ---------------------------내용 부분------------------------------------ -->
 <div id="wrapper">
@@ -565,10 +583,12 @@
 		<tr>
 			<th width = "10%">No.</th><th>공지사항/이벤트</th><th width = "15%">작성일</th>
 		</tr>
-		<tr class = "question"><td>2</td><td>[이벤트] 이벤트이벤트이벤트</td><td>2016.09.07</td></tr>
-		<tr class = "answer"><td></td><td colspan = "2">이벤트내용111</td></tr>
-		<tr class = "question"><td>1</td><td>[공지] 공지공지공지</td><td>2016.09.07</td></tr>
-		<tr class = "answer"><td></td><td colspan ="2">공지내용11111</td></tr>
+		<%
+			for(Notice n:list){
+		%>
+		<tr class = "question"><td><%=n.getNoticeNo() %></td><td><%=n.getNoticeTitle() %></td><td><%=String.valueOf(n.getNoticeDate())%></td></tr>
+		<tr class = "answer"><td></td><td colspan ="2"><%=n.getContent() %><br>첨부파일</td></tr>
+		<% } %>
 		</table>
 		</div>
 

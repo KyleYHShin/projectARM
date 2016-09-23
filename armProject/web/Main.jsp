@@ -31,6 +31,9 @@ String status = (String)request.getAttribute("status");
 	
 	<script type="text/javascript" src="js/jquery-3.1.0.min.js"></script>
 	<script type="text/javascript">
+		function nologinCart(){
+			alert("로그인이 필요합니다");
+		};
 	//-- ----------------------------------------------------------이슬작성----------------- -
 		//전체 줄 수(reqeust로 전달받음)
 		var totalCount = <%= totalCount %>;
@@ -78,8 +81,12 @@ String status = (String)request.getAttribute("status");
 			}
 			$("#pageNo").append(nextStep);
 		});
-		//-- ----------------------------------------------------------이슬작성----------------- -->
+		
 		$(function() {
+			$(document).on("hover",".menuLink", function(){
+				$(this).css("color","red"),css("cursor","pointer");
+			});
+//-- ----------------------------------------------------------이슬작성----------------- -->
 			//스크롤시 카테고리고정
 			var menupos = $("#fix_menu").offset().top;
 			$(window).scroll(function() {
@@ -670,20 +677,23 @@ String status = (String)request.getAttribute("status");
 </head>
 <body>
 	<!--  최상단 기본메뉴 -->
-	<div id="top_menu">
-		<nav id="topMenu">
-			<ul>
-				<li class="topMenuLi"><a class="menuLink"
-					href="/arm/notice/notice.jsp">고객센터</a></li>
-				<li class="topMenuLi"><a class="menuLink"
-					href="/arm/mypage/MyinfoCart.jsp">장바구니</a></li>
-				<li class="topMenuLi"><a class="menuLink" href="">회원가입</a></li>
-				<li class="topMenuLi"><a class="menuLink"
-					href="/arm/member/Login.jsp">로그인</a></li>
-			</ul>
-		</nav>
-
-	</div>
+	<div id = "top_menu">
+	   	<nav id="topMenu" >
+	        <ul>
+	         <li class="topMenuLi"><a class="menuLink" href="nlist">고객센터</a></li>       
+	      <% if(loginUser != null){ %>
+	         <li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">장바구니</a></li>
+	         <li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">MyPage</a></li>
+	         <li class="topMenuLi"><a class="menuLink" href="logout">로그아웃</a></li>
+	         <li class="topMenuLi">환영합니다! <%=loginUser.getUserName() %>님</li>
+	      <%}else{ %>
+	         <li class="topMenuLi"><a class="menuLink" onclick="nologinCart();">장바구니</a></li>
+	         <li class="topMenuLi"><a class="menuLink" href="/arm/member/MemberJoin.jsp">회원가입</a></li>
+	         <li class="topMenuLi"><a class="menuLink" href="/arm/member/Login.jsp">로그인</a></li>
+	      <%} %>   
+	        </ul>
+	   </nav>
+ 	</div>
 	<!-- 퀵바 -->
 	<button id="qBtn" class="hidden-xs">Quick</button>
 	<div id="quick_bar" class="hidden-xs">
@@ -835,12 +845,13 @@ String status = (String)request.getAttribute("status");
 						<tr><td class="item_img"><img src="<%=i.getItemTH()%>"><td></tr>
 						<tr><td class="item_name"><%=i.getItemName()%><td></tr>
 		<!-- ----------------------------------------------------------이슬작성----------------- -->
-						<tr><td class="item_price"><%=i.getItemPrice()%>원<td></tr>
 						<% if (loginUser != null) {%>
 						<tr><td class="item_price" style = "color : black; font-weight : 600; text-decoration : line-through;">
 						<%=i.getItemPrice()%>원<td></tr>
 						<tr><td class="item_price" style = "color : red; font-weight : 800;">
-						<%= "계산값" %>원<td></tr>
+						<%= i.getItemPrice()*(1-loginUser.getDiscount()) %>원<td></tr>
+						<% } else {%>
+						<tr><td class="item_price"><%=i.getItemPrice()%>원<td></tr>
 						<% } %>
 					</table></a>
 			</section>

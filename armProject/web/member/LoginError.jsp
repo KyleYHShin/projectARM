@@ -1,12 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" %>
+    pageEncoding="UTF-8"%>
+
 <!doctype html>
 <html lang="ko">
   <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>회원가입</title>
+    <title>Login</title>
 
     <!-- Bootstrap -->
     <link href="/arm/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -21,13 +22,8 @@
   
   <script type="text/javascript" src = "js/jquery-3.1.0.min.js"></script>
   <script type="text/javascript">
-  	function nologinCart(){
-	    alert("로그인이 필요합니다");
-	}
 	$(function(){
-		$(document).on("hover",".menuLink", function(){
-			$(this).css("color","red"),css("cursor","pointer");
-		});
+	
 		//스크롤시 카테고리고정
 		var menupos = $("#fix_menu").offset().top;
 		$(window).scroll(function(){
@@ -141,10 +137,10 @@
 			line-height : 25px;
 		}
 	}
-	.menuLink:hover{
-		color : red;
-		cursor : pointer;
-	}
+
+    .topMenuLi:hover .menuLink {
+        color: red;
+    }
 	/*------------------- 최상단 메뉴 끝 -----------*/
 
 	#banner {
@@ -386,7 +382,43 @@
 	#fix_menu #sort a:hover{
 		text-decoration : underline;
 	}
+	/* 로그인 */
+	div#loginDiv{
+		text-align : left;
+		width : 200pt;
+		margin : 0 auto;
+	}
+	label#ckauto {
+		font-size : 11pt;
+	}
+	span {
+		font-size : 9pt;
+	}
+
+	#login_btn {
+		background : red;
+		border : 1px solid red;
+		color : white;
+	}
 	
+	#sch_id {
+		background : white;
+		border : 1px solid green;
+		color : black;
+	}
+	#sch_pwd {
+		background : white;
+		border : 1px solid green;
+		color : black;
+	}
+	#join_btn{
+		background :white;
+		border : 1px solid green;
+		color : black;
+	}
+	#loginTb td{
+		padding : 10px;
+	}
 
 	/* 푸터 */
 	footer {
@@ -428,7 +460,10 @@
 	.footMenu a:hover {
 		text-decoration : underline;
 	}
-
+	h2{
+		font-size : 12pt;
+		color : gray;
+	}
   </style>
   
  </head>
@@ -438,10 +473,9 @@
    <nav id="topMenu" >
         <ul>
 			<li class="topMenuLi"><a class="menuLink" href="nlist">고객센터</a></li>
-            <li class="topMenuLi"><a class="menuLink" onClick="nologinCart()">장바구니</a></li>
-	        <li class="topMenuLi"><a class="menuLink" href="/arm/member/MemberJoin.jsp">회원가입</a></li>
-	        <li class="topMenuLi"><a class="menuLink" href="/arm/member/Login.jsp">로그인</a></li>
-	       
+			<li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">장바구니</a></li>
+            <li class="topMenuLi"><a class="menuLink" href="">회원가입</a></li>
+            <li class="topMenuLi"><a class="menuLink" href="/arm/member/Login.jsp">로그인</a></li>
         </ul>
 	</nav>
  
@@ -492,26 +526,26 @@
  	<div id = "fix_menu">
 	<div id ="category">
 		<ul class = "navi">
-			<li><a href ="/arm/catlist?categoryno=100">손</a>
+			<li><a href ="">손</a>
 				<ul>
 					<li><a href ="">반지</a></li>
 					<li><a href ="">의료/건강</a></li>
 				</ul>
 			</li><!-- 손 -->
 
-			<li><a href ="/arm/catlist?categoryno=200">손목</a>
+			<li><a href ="">손목</a>
 				<ul>
 					<li><a href ="">팔찌/시계</a></li>
 					<li><a href ="">의료/건강</a></li>
 				</ul>
 			</li><!-- 손목 -->
-			<li><a href ="/arm/catlist?categoryno=300">팔목</a>
+			<li><a href ="">팔목</a>
 				<ul>
 					<li><a href ="">팔찌/시계</a></li>
 					<li><a href ="">의료/건강</a></li>
 				</ul>
 			</li><!-- 팔목 -->
-			<li><a href ="/arm/catlist?categoryno=400">어깨</a>
+			<li><a href ="">어깨</a>
 				<ul>
 					<li><a href ="">의류</a></li>
 					<li><a href ="">의료/건강</a></li>
@@ -535,56 +569,47 @@
 	
 	</div><!-- fix_menu(카테고리+검색+정렬) -->
 
-  	<center>
-	<h1>회원가입</h1>
-	<form action="../mjoin" method="post">
-	<table width="700">
-		<br><br>
-		
-		<tr><td bgclolr="#66ccff" align="center">아 이 디</td>
-			<td><input type="text" id="userid" name="userid" required></td></tr>
-			<tr><td bgclolr="#66ccff" align="center">이&nbsp;름</td>
-			<td><input type="text" id="username" name="username" required></td></tr>
-			<tr><td bgclolr="#66ccff" align="center">암&nbsp;호</td>
-			<td><input type="password" id="userpwd1" name="userpwd" required></td></tr>
-			<tr><td align="center">암호확인</td>
-			<td><input type="password" id="userpwd2" required></td></tr>
-			<tr><td>&nbsp;</td></tr>
-			<tr><td bgclolr="#66ccff" align="center">생&nbsp;일</td>
-			<td><input type="date" name="birthdate"></td></tr>
-			<tr><td align="center">전화번호</td>
-			<td><input type="tel" name="phone" placeholder="-포합 입력"></td></tr>
-			<tr><td align="center">이 메 일</td>
-			<td><input type="email" id="email" name="email" required></td></tr>
-			<tr><td bgclolr="#66ccff" align="center">성&nbsp;별</td>
-			<td><input type="radio" name="gender" value="M">남&nbsp;
-					<input type="radio" name="gender" value="F">여&nbsp;</td></tr>
-					<tr><td>&nbsp;</td></tr>
-			<tr><td bgclolr="#66ccff" align="center">주&nbsp;소</td>
-			
-			<td>
-				<table>
-					<tr><td><input type="text" name = "zcode" id= "zcode" size="5" maxlength="5">&nbsp;
-						<input type = "button" value="우편번호 검색"></td></tr>
-					<tr><td><input type="text" name = "address" placeholder = "기본주소 자동입력됨" size="50"></td></tr>
-					<tr><td><input type="text" name = "address2" placeholder= "상세주소를 입력하시오" size="50"></td></tr>
-					
-					
-		
-				</table>
-			</td></tr>
-		
-			<tr><td>&nbsp;</td></tr>
-			<tr><td>&nbsp;</td></tr>
-			<tr><td colspan="2" align = "center" bgcolor="#66ccff">
-			<input type="submit" value="가입하기">&nbsp;
-			<input type="reset" value="다시작성">&nbsp;
-			<input type = "button" value="취소" onclick="javascipt:history.go(-1);">
-			</td></tr>
-			
-	</table>
+    <div class="contents">
+    <h1>로 그 인</h1>
+     <h2>로그인이 실패했습니다. 다시 입력해주세요</h2>
+	<div id = "loginDiv" class="form">
+    <form action = "../login" method="post">
+	<table id = "loginTb" border = "0">
+	<tr><td>
+      <input type="text" style="width:200pt; height:30pt" name = "userid" placeholder="아 이 디"/>
+	  </td></tr>
+	<tr><td>
+      <input type="password" style="width:200pt; height:30pt" name = "userpwd" placeholder="비 밀 번 호"/><br>
+	  <label id = "ckauto"><input type="checkbox" align="left"> 자동 로그인</label><br>
+	  <span>개인 PC가 아닐 경우 주의하세요!</span><br>
+	  </td></tr>
+	    <tr><td>
+		</td></tr>
+	<tr><td>
+      <input id = "login_btn" type="submit" style="WIDTH: 200pt; HEIGHT: 30pt" value="Log in"><br></td></tr>
+	    <tr><td>
+		</td></tr>
+	 <tr><td><input id = "sch_id" type="button" style="width: 100pt; height:20pt" value="ID 찾기"><input id = "sch_pwd" type="button" style="width: 100pt; height:20pt" value="비밀번호 찾기"><br>
+	
+	  <input id = "join_btn" type="button" style="width: 200pt; height:30pt" value="회원가입" onClick="location.href='member/MemberJoin.jsp';">
+	   </td></tr>
+
+	 </table>
+    </form>
+	
+	</div>
+	<br><br><br><br>
+	<form>
+	<a href="http://www.naver.com"><img src="images/button.jpg" width="300" height="300" border="0" alt="">
+	<a href="http://www.naver.com"><img src="images/button.jpg" width="300" height="300" border="0" alt="">
+	<a href="http://www.naver.com"><img src="images/button.jpg" width="300" height="300" border="0" alt="">
+	<a href="http://www.naver.com"><img src="images/button.jpg" width="300" height="300" border="0" alt="">
 	</form>
-</center>
+
+    </div><!-- contents-->
+
+
+	</div><!-- fix+item_list -->
 	
 	<!-- top버튼 -->
 	<div style="position:fixed; bottom:10px; right:10px; z-index : 9999;">

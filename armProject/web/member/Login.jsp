@@ -22,8 +22,13 @@
   
   <script type="text/javascript" src = "js/jquery-3.1.0.min.js"></script>
   <script type="text/javascript">
+	function nologinCart(){
+	    alert("로그인이 필요합니다");
+	}
 	$(function(){
-	
+		$(document).on("hover",".menuLink", function(){
+			$(this).css("color","red"),css("cursor","pointer");
+		});
 		//스크롤시 카테고리고정
 		var menupos = $("#fix_menu").offset().top;
 		$(window).scroll(function(){
@@ -469,10 +474,10 @@
  <div id = "top_menu">
    <nav id="topMenu" >
         <ul>
-			<li class="topMenuLi"><a class="menuLink" href="/arm/notice/notice.jsp">고객센터</a></li>
-			<li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">장바구니</a></li>
-            <li class="topMenuLi"><a class="menuLink" href="">회원가입</a></li>
-            <li class="topMenuLi"><a class="menuLink" href="/arm/member/Login.jsp">로그인</a></li>
+				<li class="topMenuLi"><a class="menuLink" href="nlist">고객센터</a></li>
+	            <li class="topMenuLi"><a class="menuLink" onClick="nologinCart()">장바구니</a></li>
+	            <li class="topMenuLi"><a class="menuLink" href="/arm/member/MemberJoin.jsp">회원가입</a></li>
+	            <li class="topMenuLi"><a class="menuLink" href="/arm/member/Login.jsp">로그인</a></li>
         </ul>
 	</nav>
  
@@ -523,26 +528,26 @@
  	<div id = "fix_menu">
 	<div id ="category">
 		<ul class = "navi">
-			<li><a href ="">손</a>
+			<li><a href ="/arm/catlist?categoryno=100">손</a>
 				<ul>
 					<li><a href ="">반지</a></li>
 					<li><a href ="">의료/건강</a></li>
 				</ul>
 			</li><!-- 손 -->
 
-			<li><a href ="">손목</a>
+			<li><a href ="/arm/catlist?categoryno=200">손목</a>
 				<ul>
 					<li><a href ="">팔찌/시계</a></li>
 					<li><a href ="">의료/건강</a></li>
 				</ul>
 			</li><!-- 손목 -->
-			<li><a href ="">팔목</a>
+			<li><a href ="/arm/catlist?categoryno=300">팔목</a>
 				<ul>
 					<li><a href ="">팔찌/시계</a></li>
 					<li><a href ="">의료/건강</a></li>
 				</ul>
 			</li><!-- 팔목 -->
-			<li><a href ="">어깨</a>
+			<li><a href ="/arm/catlist?categoryno=400">어깨</a>
 				<ul>
 					<li><a href ="">의류</a></li>
 					<li><a href ="">의료/건강</a></li>
@@ -553,25 +558,29 @@
 		</ul>
 	</div><!-- 카테고리 -->
 	<div id = "searchbox">
-		<form action="/arm/isearch" method="post">
-			<input type="text" id="search" name="keyword" placeholder="검색하세요!">&nbsp;&nbsp;
-			<input type="image" id="schBtn" src="/arm/img/search2_small.png"
-				width="25px" height="25px">
-		</form>
+	<form>
+	<input type="text" id = "search" name = "search" placeholder = "검색하세요!">&nbsp;&nbsp;<input type="image" id = "schBtn" src = "/arm/img/search2_small.png" width ="25px" height = "25px";>
+	</form>
 	</div><!-- 검색 -->
-	<!-- 로그인페이지에서는 정렬 안보이게 -->
+
+	<div id = "sort">
+	<a href="#">인기도순</a>&nbsp;&nbsp;
+	<a href="#">가격높은순</a>&nbsp;&nbsp;
+	<a href="#">가격낮은순</a>&nbsp;&nbsp;
+	</div><!-- sort -->
+	
 	</div><!-- fix_menu(카테고리+검색+정렬) -->
 
     <div class="contents">
     <h1>로 그 인</h1>
 	<div id = "loginDiv" class="form">
-    <form>
+    <form action = "/arm/login" method="post">
 	<table id = "loginTb" border = "0">
 	<tr><td>
-      <input type="text" style="width:200pt; height:30pt" placeholder="아 이 디"/>
+      <input type="text" style="width:200pt; height:30pt" name = "userid" placeholder="아 이 디"/>
 	  </td></tr>
 	<tr><td>
-      <input type="password" style="width:200pt; height:30pt" placeholder="비 밀 번 호"/><br>
+      <input type="password" style="width:200pt; height:30pt" name = "userpwd" placeholder="비 밀 번 호"/><br>
 	  <label id = "ckauto"><input type="checkbox" align="left"> 자동 로그인</label><br>
 	  <span>개인 PC가 아닐 경우 주의하세요!</span><br>
 	  </td></tr>
@@ -583,7 +592,7 @@
 		</td></tr>
 	 <tr><td><input id = "sch_id" type="button" style="width: 100pt; height:20pt" value="ID 찾기"><input id = "sch_pwd" type="button" style="width: 100pt; height:20pt" value="비밀번호 찾기"><br>
 	
-	  <input id = "join_btn" type="button" style="width: 200pt; height:30pt" value="회원가입">
+	  <input id = "join_btn" type="button" style="width: 200pt; height:30pt" value="회원가입" onClick="self.location='MemberJoin.jsp';">
 	   </td></tr>
 
 	 </table>
