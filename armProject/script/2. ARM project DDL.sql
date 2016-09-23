@@ -30,20 +30,21 @@ drop sequence seq_FAQ_no;
 drop table FAQ;
 drop table FAQ_category;
 
-drop sequence seq_review_no;
-drop table review;
-drop table review_head;
-
 drop sequence seq_answer_no;
 drop table answer;
 
 drop sequence seq_question_no;
 drop table question;
 
+drop procedure insert_review;
 drop trigger trigger_delete_order;
 drop trigger trigger_insert_order;
 drop sequence seq_order_no;
 drop table orders;
+
+drop sequence seq_review_no;
+drop table review;
+drop table review_head;
 
 DROP PROCEDURE insert_payment;
 drop sequence seq_purchase_no;
@@ -55,7 +56,6 @@ drop table payment;
 
 drop sequence seq_cart_no;
 drop table cart;
-
 
 drop trigger trigger_update_users;
 drop trigger trigger_insert_users;
@@ -572,18 +572,86 @@ END;
 
 ------------------------------------------------------------------------
 --1.생성
+--drop table review_head;
+create table review_head(
+  review_head_no      number(1),
+  review_head_content varchar2(10 char),
+  
+  constraint pk_review_head primary key(review_head_no),
+  constraint uk_review_head_content unique(review_head_content)
+); 
+
+--2.코멘트
+COMMENT ON COLUMN review_head.review_head_no IS '후기 평점';
+COMMENT ON COLUMN review_head.review_head_content IS '평점 글';
+
+--4.기본 데이터 입력
+insert into review_head values(1, '완전 망했어요ㅠㅠ');
+insert into review_head values(2, '음..별로인데');
+insert into review_head values(3, '그냥저냥');
+insert into review_head values(4, '겁나좋군!');
+insert into review_head values(5, '강추!!!');
+
+------------------------------------------------------------------------
+--1.생성
+--drop table review;
+create table review(
+  review_no           number(9),
+  review_m_id      varchar2(15) not null,
+  review_item_no      number not null,
+  reivew_item_sub_no  number,
+  review_score        number(1) not null,
+  review_content      varchar2(600 char) not null,
+  review_date         date not null,
+  
+  constraint pk_review primary key(review_no),
+  constraint fk_review_m_id foreign key(review_m_id) 
+    references member(m_id) on delete cascade,
+  constraint fk_review_item_no foreign key(review_item_no) 
+    references item(item_no) on delete cascade,
+  constraint fk_reivew_item_sub_no foreign key(reivew_item_sub_no) 
+    references item_sub(item_sub_no) on delete set null,
+  constraint fk_review_score foreign key(review_score) 
+    references review_head(review_head_no)
+);
+  
+--2.코멘트
+COMMENT ON COLUMN review.review_no IS '후기 번호';
+COMMENT ON COLUMN review.review_m_id IS '후기 작성자 ID';
+COMMENT ON COLUMN review.review_item_no IS '후기 상품 ID';
+COMMENT ON COLUMN review.reivew_item_sub_no IS '후기 제품 ID';
+COMMENT ON COLUMN review.review_score IS '후기 평점';
+COMMENT ON COLUMN review.review_content IS '후기 내용';
+COMMENT ON COLUMN review.review_date IS '후기 작성 날짜';
+
+--3.시퀀스
+--drop sequence seq_review_no;
+create sequence seq_review_no
+  start with 1
+  increment by 1
+  maxvalue 999999999
+  Minvalue 1
+  noCycle
+  nocache
+;
+
+------------------------------------------------------------------------
+--1.생성
 --drop table orders;
 create table orders(
   order_no          number(10),
   order_purchase_no number(9) not null,
   order_item_sub_no number,
   order_qty         number(3) not null,
+  order_review_no   number(9),
   
   constraint pk_orders primary key(order_no),
   constraint fk_order_purchase_no foreign key(order_purchase_no) 
     references purchase(purchase_no) on delete cascade,
   constraint fk_order_item_sub_no foreign key(order_item_sub_no)
-    references item_sub(item_sub_no) on delete set null
+    references item_sub(item_sub_no) on delete set null,
+  constraint fk_order_review_no foreign key(order_review_no)
+    references review(review_no) on delete set null
 );
 
 --2.코멘트
@@ -591,6 +659,7 @@ COMMENT ON COLUMN orders.order_no IS '주문 상세 번호';
 COMMENT ON COLUMN orders.order_purchase_no IS '주문 번호';
 COMMENT ON COLUMN orders.order_item_sub_no IS '제품 ID';
 COMMENT ON COLUMN orders.order_qty IS '수량';
+COMMENT ON COLUMN orders.order_review_no IS '후기 번호';
 
 --3-1.시퀀스
 --drop sequence seq_order_no;
@@ -629,6 +698,37 @@ begin
     where
       item_sub_no = :OLD.order_item_sub_no;
 end;
+/
+
+--3-4.프로시저 : 리뷰 insert + orders update
+--DROP PROCEDURE insert_review;
+CREATE OR REPLACE PROCEDURE insert_review
+(
+    new_order_no  IN number,
+    m_id          IN varchar2,
+    item_no       IN number,
+    item_sub_no   IN number,
+    score         IN number,
+    content       IN varchar2
+)
+IS        
+BEGIN
+    insert into review values
+    (
+      seq_review_no.nextval, 
+      m_id, 
+      item_no,
+      item_sub_no,
+      score,
+      content,
+      sysdate
+    );
+    update orders
+    set
+      order_review_no = seq_review_no.currval
+    where
+      order_no = new_order_no;
+END;
 /
 
 /*
@@ -725,71 +825,6 @@ create sequence seq_answer_no
 insert into answer values
 (seq_answer_no.nextval, '1', '네. 실제 병원에서 사용하는 제품입니다^^', sysdate);
 */
-
-------------------------------------------------------------------------
---1.생성
---drop table review_head;
-create table review_head(
-  review_head_no      number(1),
-  review_head_content varchar2(10 char),
-  
-  constraint pk_review_head primary key(review_head_no),
-  constraint uk_review_head_content unique(review_head_content)
-); 
-
---2.코멘트
-COMMENT ON COLUMN review_head.review_head_no IS '후기 평점';
-COMMENT ON COLUMN review_head.review_head_content IS '평점 글';
-
---4.기본 데이터 입력
-insert into review_head values(1, '완전 망했어요ㅠㅠ');
-insert into review_head values(2, '음..별로인데');
-insert into review_head values(3, '그냥저냥');
-insert into review_head values(4, '겁나좋군!');
-insert into review_head values(5, '강추!!!');
-
-------------------------------------------------------------------------
---1.생성
---drop table review;
-create table review(
-  review_no           number(9),
-  review_m_id      varchar2(15) not null,
-  review_item_no      number not null,
-  reivew_item_sub_no  number,
-  review_score        number(1) not null,
-  review_content      varchar2(600 char) not null,
-  review_date         date not null,
-  
-  constraint pk_review primary key(review_no),
-  constraint fk_review_m_id foreign key(review_m_id) 
-    references member(m_id) on delete cascade,
-  constraint fk_review_item_no foreign key(review_item_no) 
-    references item(item_no) on delete cascade,
-  constraint fk_reivew_item_sub_no foreign key(reivew_item_sub_no) 
-    references item_sub(item_sub_no) on delete set null,
-  constraint fk_review_score foreign key(review_score) 
-    references review_head(review_head_no)
-);
-  
---2.코멘트
-COMMENT ON COLUMN review.review_no IS '후기 번호';
-COMMENT ON COLUMN review.review_m_id IS '후기 작성자 ID';
-COMMENT ON COLUMN review.review_item_no IS '후기 상품 ID';
-COMMENT ON COLUMN review.reivew_item_sub_no IS '후기 제품 ID';
-COMMENT ON COLUMN review.review_score IS '후기 평점';
-COMMENT ON COLUMN review.review_content IS '후기 내용';
-COMMENT ON COLUMN review.review_date IS '후기 작성 날짜';
-
---3.시퀀스
---drop sequence seq_review_no;
-create sequence seq_review_no
-  start with 1
-  increment by 1
-  maxvalue 999999999
-  Minvalue 1
-  noCycle
-  nocache
-;
 
 ------------------------------------------------------------------------
 --1.생성

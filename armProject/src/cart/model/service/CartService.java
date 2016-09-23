@@ -25,6 +25,13 @@ public class CartService {
 	public int updateCart(int cartNo, int cartQty) {
 		Connection con = getConnection();
 		int result = new CartDao().updateCart(con, cartNo, cartQty);
+		
+		if (result > 0) {
+			commit(con);
+		} else {
+			rollback(con);
+		}
+		
 		close(con);
 		
 		return result;
@@ -33,6 +40,13 @@ public class CartService {
 	public int deleteCart(int cartNo) {
 		Connection con = getConnection();
 		int result = new CartDao().deleteCart(con, cartNo);
+		
+		if (result > 0) {
+			commit(con);
+		} else {
+			rollback(con);
+		}
+		
 		close(con);
 		
 		return result;

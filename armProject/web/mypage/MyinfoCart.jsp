@@ -1,18 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="java.util.ArrayList, cart.model.vo.Cart"%>
-<!-- 장바구니 구현 목표 기능 목록
-- (완)목록 출력
-- (완)수량 변경1 (form)
-- (완)삭제 기능(form)
-- 구매 기능 
-- 결제 완료 기능
-- 수량 변경2 (onchange 이벤트->ajax)
---------------------------
-- 유저 정보 세션 페이지 이동간 처리
-- 디테일 페이지 이동
-- 장바구니 추가 
- -->
 <%
 	ArrayList<Cart> cartList = (ArrayList<Cart>) request.getAttribute("cartList");
 %>
@@ -271,9 +259,9 @@ nav#topMenu {
 #contents {
 	width: 100%;
 	margin: 0 auto;
-	margin-bottom : 10%;
-	padding-top: 2%;
+	margin-bottom: 10%; padding-top : 2%;
 	min-height: 600px;
+	padding-top: 2%;
 	/*background : #ffffcc;*/
 }
 
@@ -465,9 +453,11 @@ footer #fwrap {
 	<div id="wrapper">
 		<div id="cs_menu">
 			<ul class="cs_navi">
-				<li><a href="/arm/CartView" id="c_btn">장바구니</a></li>
-				<li><a href="/arm/mypage/MyinfoPurchase.jsp" id="bl_btn">구매
+				<!-- ---------------------------수정------------------------------------ -->
+				<li><a href="/arm/CartView?userId=user01" id="c_btn">장바구니</a></li>
+				<li><a href="/arm/PurchaseView?userId=user01" id="bl_btn">구매
 						내역</a></li>
+				<!-- ---------------------------수정 끝------------------------------------ -->
 				<li><a href="/arm/mypage/MyinfoQuestion.jsp" id="qa_btn">문의
 						내역</a></li>
 				<li><a href="/arm/mypage/MyinfoDetail.jsp" id="u_btn">회원정보</a></li>

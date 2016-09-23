@@ -21,7 +21,8 @@ public class CartDao {
 		String sql = "select cart_no, " + " cart_item_no, item_name, item_img_mini, item_price, "
 				+ " cart_item_sub_no, item_sub_name, item_sub_price, " + " cart_qty " + " from cart "
 				+ " inner join item on cart.cart_item_no = item.item_no " + " inner join item_sub on cart.cart_item_sub_no = item_sub.item_sub_no"
-				+ " where cart_m_id = ?";
+				+ " where cart_m_id = ? "
+				+ " order by cart_no desc";
 
 		try {
 			pstmt = con.prepareStatement(sql);

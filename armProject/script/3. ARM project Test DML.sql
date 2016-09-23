@@ -35,7 +35,7 @@ insert into item values
 '/item/img/2_mini.jpg', '메인 이미지 주소', '설명 이미지 주소');
 insert into item values
 (seq_item_no.nextval, '스마트폰 터치 보온 장갑', 100, 9900, 0, sysdate, 3, '겨울,보온,터치',
-'섬네일 이미지 주소', '메인 이미지 주소', '설명 이미지 주소');
+'/item/img/3_mini.jpg', '메인 이미지 주소', '설명 이미지 주소');
 
 --product_main 테스트용 데이터
 insert into product_main values(1, 2);
@@ -60,7 +60,7 @@ insert into cart values(seq_cart_no.nextval, 'user02', 1, 2, 3);
 insert into cart values(seq_cart_no.nextval, 'user02', 3, 6, 1);
 
 ---------------------------------------------------------------------
-
+--리뷰 추가
 /* 주문 내역
   1	눈속임 깁스	20000원 - 1	초록색	0원	1개
   2	일개미 팔찌	1500원	- 4	기본색	0원 2개
@@ -72,9 +72,9 @@ insert into purchase values(seq_purchase_no.nextval, 'user01', 23000, 2500, sysd
 insert into purchase values(seq_purchase_no.nextval, 'user02', 9900, 2500, sysdate, null);
 
 --2. 주문 완료 : 해당 주문 상세 데이터 추가(java에서 service~dao 반복처리)
-insert into orders values(seq_order_no.nextval, 1, 1, 1);
-insert into orders values(seq_order_no.nextval, 1, 4, 2);
-insert into orders values(seq_order_no.nextval, 2, 5, 1);
+insert into orders values(seq_order_no.nextval, 1, 1, 1, null);
+insert into orders values(seq_order_no.nextval, 1, 4, 2, null);
+insert into orders values(seq_order_no.nextval, 2, 5, 1, null);
 
 --3. 결제 완료 : 해당 주문 정보 수정
 EXECUTE insert_payment(1, 'user01', '카드결제', '신한카드', 25500);
@@ -97,8 +97,9 @@ insert into answer values(seq_answer_no.nextval, 1, '네. 실제 병원에서 사용하는 
 ---------------------------------------------------------------------
 
 --review 테스트용 데이터
-insert into review values(seq_review_no.nextval, 'user01', 1, 1, 4, '이번 명절에 사용했는데 진짜 다 속았어요!! 헤헤', sysdate);
-insert into review values(seq_review_no.nextval, 'user02', 3, 5, 5, '터치도 잘되고 따듯해요!!', sysdate);
+--EXECUTE insert_review(order_no, m_id, item_no, item_sub_no, score, content);
+EXECUTE insert_review(1, 'user01', 1, 1, 5, '이번 명절에 사용했는데 진짜 다 속았어요!! 헤헤');
+EXECUTE insert_review(3, 'user02', 3, 5, 4, '터치도 잘되고 따듯해요~');
 
 ---------------------------------------------------------------------
 
@@ -133,7 +134,7 @@ null, sysdate);
 commit;
 ---------------------------------------------------------------------
 --개인용 DML(구문) 작성--
-
+--cart Test---------------------------
 select cart_no, 
         cart_item_no, item_name, item_img_mini, item_price, 
         cart_item_sub_no, item_sub_name, item_sub_price,
@@ -141,4 +142,17 @@ select cart_no,
 from cart
 left join item on(cart.cart_item_no = item.item_no)
 left join item_sub on(cart.cart_item_sub_no = item_sub.item_sub_no)
-where cart_m_id = 'user01';
+where cart_m_id = 'user01'
+order by cart_no desc;
+
+insert into cart values(seq_cart_no.nextval, 'user01', 1, 1, 10);
+insert into cart values(seq_cart_no.nextval, 'user01', 2, 4, 1);
+commit;
+
+--purchase Test----------------------
+insert into purchase values(seq_purchase_no.nextval, 'user01', 23000, 2500, sysdate, null);
+insert into orders values(seq_order_no.nextval, 3, 6, 2, null);
+commit;
+
+
+

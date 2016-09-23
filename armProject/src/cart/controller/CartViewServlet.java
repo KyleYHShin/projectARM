@@ -42,18 +42,14 @@ public class CartViewServlet extends HttpServlet {
 		ArrayList<Cart> cartList = new CartService().selectAll(userId);
 			
 		// 3.
-		RequestDispatcher view = null;
+		RequestDispatcher view = request.getRequestDispatcher("/mypage/MyinfoCart.jsp");
 		if (cartList != null) {		
-			System.out.println("view success");
-			view = request.getRequestDispatcher("/mypage/MyinfoCart.jsp");
-			request.setAttribute("cartList", cartList);
-			view.forward(request, response);
+			System.out.println("Cart View Success");			
 		} else {
-			System.out.println("view fail");
-			//view = request.getRequestDispatcher("/Main.jsp");
-			view = request.getRequestDispatcher("/mypage/MyinfoCart.jsp");
-			view.forward(request, response);
+			System.out.println("Cart View Fail");
 		}
+		request.setAttribute("cartList", cartList);
+		view.forward(request, response);
 	}
 
 	/**
