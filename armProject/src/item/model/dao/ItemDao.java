@@ -59,7 +59,6 @@ public class ItemDao {
 				
 				list.add(item);
 			}
-			System.out.println("dao : "+list);
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("dao조회실패...");
@@ -75,12 +74,21 @@ public class ItemDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
+		String catQry = null;
+		int maxCatNo = 0;
+		if(categoryNo%100 != 0){//예;101이상~199이하
+			catQry = "item_cat_no = ?";
+		}else {
+			maxCatNo = categoryNo+99;
+			catQry = "item_cat_no between ? and "+maxCatNo;
+			//categoryNo~ categoryNo+99
+		}
 		String query = "select * "
 				+ "from(select ceil(rownum/9) page,"
 					+ " item_no, item_name, item_cat_no, item_price, "
 					+ "item_count, item_update, item_img_mini, "
 					+ "item_img, item_img_detail "
-				+ "from (select * from  item where item_cat_no = ?)) where page = ?";
+				+ "from (select * from  item where "+catQry+")) where page = ?";
 		try {
 			if(sort_col == null){
 				pstmt = con.prepareStatement(query);

@@ -99,6 +99,9 @@ public class ItemSortServlet extends HttpServlet {
 			view.forward(request, response);
 		}else{
 			view = request.getRequestDispatcher("SubPage.jsp");
+			request.setAttribute("totalCount", 0);
+			request.setAttribute("page", page);
+			request.setAttribute("sortNo", 0);
 			request.setAttribute("msg", "정렬할 상품이 존재하지 않아요!");
 			request.setAttribute("status", "err");
 			view.forward(request, response);

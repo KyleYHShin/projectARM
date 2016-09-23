@@ -783,30 +783,30 @@ String status = (String)request.getAttribute("status");
 					<li><a href="/arm/catlist?categoryno=100">손</a>
 					<!-- 100 -->
 						<ul>
-							<li><a href="">반지</a></li>
-							<li><a href="">의료/건강</a></li>
+							<li><a href="/arm/catlist?categoryno=110">반지</a></li>
+							<li><a href="/arm/catlist?categoryno=120">의료/건강</a></li>
 						</ul></li>
 					<!-- 손 -->
 
 					<li><a href="/arm/catlist?categoryno=200">손목</a>
 					<!-- 200 -->
 						<ul>
-							<li><a href="">팔찌/시계</a></li>
-							<li><a href="">의료/건강</a></li>
+							<li><a href="/arm/catlist?categoryno=210">팔찌/시계</a></li>
+							<li><a href="/arm/catlist?categoryno=220">의료/건강</a></li>
 						</ul></li>
 					<!-- 손목 -->
 					<li><a href="/arm/catlist?categoryno=300">팔목</a>
 					<!-- 300 -->
 						<ul>
-							<li><a href="">팔찌/시계</a></li>
-							<li><a href="">의료/건강</a></li>
+							<li><a href="/arm/catlist?categoryno=310">팔찌/시계</a></li>
+							<li><a href="/arm/catlist?categoryno=320">의료/건강</a></li>
 						</ul></li>
 					<!-- 팔목 -->
 					<li><a href="/arm/catlist?categoryno=400">어깨</a>
 					<!-- 400 -->
 						<ul>
-							<li><a href="">의류</a></li>
-							<li><a href="">의료/건강</a></li>
+							<li><a href="/arm/catlist?categoryno=410">의류</a></li>
+							<li><a href="/arm/catlist?categoryno=420">의료/건강</a></li>
 						</ul></li>
 					<!-- 어깨 -->
 

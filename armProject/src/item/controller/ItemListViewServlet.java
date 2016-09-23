@@ -59,6 +59,8 @@ public class ItemListViewServlet extends HttpServlet {
 		}else{
 			//불러오는데 실패했거나 조회결과가 없거나.
 			view = request.getRequestDispatcher("Main.jsp");
+			request.setAttribute("totalCount", 0);
+			request.setAttribute("page", page);
 			request.setAttribute("status", "err");
 			view.forward(request, response);
 			System.out.println("[servlet] 조회 실패...");

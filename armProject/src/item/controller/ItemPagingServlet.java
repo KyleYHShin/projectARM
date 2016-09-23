@@ -104,6 +104,9 @@ public class ItemPagingServlet extends HttpServlet {
 			view.forward(request, response);
 		}else{
 			view = request.getRequestDispatcher("SubPage.jsp");
+			request.setAttribute("totalCount", 0);
+			request.setAttribute("page", page);
+			request.setAttribute("sortNo", 0);
 			request.setAttribute("msg", "페이징에러!");
 			request.setAttribute("status", "err");
 			view.forward(request, response);

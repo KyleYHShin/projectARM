@@ -61,6 +61,9 @@ public class ItemSearchServlet extends HttpServlet {
 		}else{
 			//조회된 내용이 없거나 실패시
 			view = request.getRequestDispatcher("SubPage.jsp");
+			request.setAttribute("totalCount", 0);
+			request.setAttribute("page", page);
+			request.setAttribute("sortNo", 0);
 			request.setAttribute("msg", "해당 키워드로 검색된 상품이 없어요!");
 			request.setAttribute("status", "err");
 			view.forward(request, response);
