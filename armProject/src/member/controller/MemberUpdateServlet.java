@@ -31,7 +31,7 @@ public class MemberUpdateServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//공지글 수정 처리용 컨트롤러
+		//회원정보 수정 처리용 컨트롤러
 		System.out.println("수정 서블릿 구동");
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html; charset=utf-8");

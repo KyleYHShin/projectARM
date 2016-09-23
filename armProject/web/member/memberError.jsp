@@ -21,6 +21,6 @@
 	}
 	%>
 	에러 : <%= message %><br>
-	<a href = "layout_login.html">시작 페이지로 이동</a>
+	<a href = "/arm/mainlist">시작 페이지로 이동</a>
 </body>
 </html>
