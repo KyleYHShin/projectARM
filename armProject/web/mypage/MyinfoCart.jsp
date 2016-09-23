@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="java.util.ArrayList, cart.model.vo.Cart"%>
+<%@ page
+	import="member.model.vo.User, java.util.ArrayList, cart.model.vo.Cart"%>
 <%
+	User loginUser = (User) session.getAttribute("loginUser");
 	ArrayList<Cart> cartList = (ArrayList<Cart>) request.getAttribute("cartList");
 %>
 <!doctype html>
@@ -259,7 +261,8 @@ nav#topMenu {
 #contents {
 	width: 100%;
 	margin: 0 auto;
-	margin-bottom: 10%; padding-top : 2%;
+	margin-bottom: 10%;
+	padding-top: 2%;
 	min-height: 600px;
 	padding-top: 2%;
 	/*background : #ffffcc;*/
@@ -389,15 +392,30 @@ footer #fwrap {
 	<div id="top_menu">
 		<nav id="topMenu">
 			<ul>
+				<!-- ---------------------------수정------------------------------------ -->
+				<li class="topMenuLi"><a class="menuLink" href="nlist">고객센터</a></li>
+				<%
+					if (loginUser != null) {
+				%>
+				<li class="topMenuLi"><a class="menuLink" href="/arm/CartView">장바구니</a></li>
 				<li class="topMenuLi"><a class="menuLink"
-					href="/arm/notice/notice.jsp">고객센터</a></li>
-				<!-- ---------------------------수정 부분------------------------------------ -->
+					href="/arm/mypage/MyinfoDetail.jsp">MyPage</a></li>
+				<li class="topMenuLi"><a class="menuLink" href="logout">로그아웃</a></li>
+				<li class="topMenuLi">환영합니다! <%=loginUser.getUserName()%>님
+				</li>
+				<%
+					} else {
+				%>
 				<li class="topMenuLi"><a class="menuLink"
-					href="/arm/CartView?userId=user01">장바구니</a></li>
-				<!-- ---------------------------수정 끝------------------------------------ -->
-				<li class="topMenuLi"><a class="menuLink" href="">회원가입</a></li>
+					onClick="nologinCart()">장바구니</a></li>
+				<li class="topMenuLi"><a class="menuLink"
+					href="/arm/member/MemberJoin.jsp">회원가입</a></li>
 				<li class="topMenuLi"><a class="menuLink"
 					href="/arm/member/Login.jsp">로그인</a></li>
+				<%
+					}
+				%>
+				<!-- ---------------------------수정 끝------------------------------------ -->
 			</ul>
 		</nav>
 
@@ -454,13 +472,12 @@ footer #fwrap {
 		<div id="cs_menu">
 			<ul class="cs_navi">
 				<!-- ---------------------------수정------------------------------------ -->
-				<li><a href="/arm/CartView?userId=user01" id="c_btn">장바구니</a></li>
-				<li><a href="/arm/PurchaseView?userId=user01" id="bl_btn">구매
-						내역</a></li>
-				<!-- ---------------------------수정 끝------------------------------------ -->
+				<li><a href="/arm/mypage/MyinfoDetail.jsp" id="u_btn">회원정보</a></li>
+				<li><a href="/arm/CartView" id="c_btn">장바구니</a></li>
+				<li><a href="/arm/PurchaseView" id="bl_btn">구매 내역</a></li>
 				<li><a href="/arm/mypage/MyinfoQuestion.jsp" id="qa_btn">문의
 						내역</a></li>
-				<li><a href="/arm/mypage/MyinfoDetail.jsp" id="u_btn">회원정보</a></li>
+				<!-- ---------------------------수정 끝------------------------------------ -->
 			</ul>
 		</div>
 		<!-- cs_menu -->

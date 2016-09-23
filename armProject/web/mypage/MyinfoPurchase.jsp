@@ -1,8 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page
-	import="java.util.ArrayList, purchase.model.vo.Purchase, order.vo.Order, payment.vo.Payment"%>
+	import="member.model.vo.User, java.util.ArrayList, purchase.model.vo.Purchase, order.vo.Order, payment.vo.Payment"%>
 <%
+	User loginUser = (User) session.getAttribute("loginUser");
 	ArrayList<Purchase> purchaseList = (ArrayList<Purchase>) request.getAttribute("purchaseList");
 %>
 <!doctype html>
@@ -375,7 +376,7 @@ td {
 	width: 100%;
 	border: 1px solid #5263bd;
 	border-collapse: collapse;
-	background:#f0f1f9;
+	background: #f0f1f9;
 }
 
 .bill_fourth tr:first-child td {
@@ -457,13 +458,30 @@ footer #fwrap {
 	<div id="top_menu">
 		<nav id="topMenu">
 			<ul>
+				<!-- ---------------------------수정------------------------------------ -->
+				<li class="topMenuLi"><a class="menuLink" href="nlist">고객센터</a></li>
+				<%
+					if (loginUser != null) {
+				%>
+				<li class="topMenuLi"><a class="menuLink" href="/arm/CartView">장바구니</a></li>
 				<li class="topMenuLi"><a class="menuLink"
-					href="/arm/notice/notice.jsp">고객센터</a></li>
+					href="/arm/mypage/MyinfoDetail.jsp">MyPage</a></li>
+				<li class="topMenuLi"><a class="menuLink" href="logout">로그아웃</a></li>
+				<li class="topMenuLi">환영합니다! <%=loginUser.getUserName()%>님
+				</li>
+				<%
+					} else {
+				%>
 				<li class="topMenuLi"><a class="menuLink"
-					href="/arm/mypage/MyinfoCart.jsp">장바구니</a></li>
-				<li class="topMenuLi"><a class="menuLink" href="">회원가입</a></li>
+					onClick="nologinCart()">장바구니</a></li>
+				<li class="topMenuLi"><a class="menuLink"
+					href="/arm/member/MemberJoin.jsp">회원가입</a></li>
 				<li class="topMenuLi"><a class="menuLink"
 					href="/arm/member/Login.jsp">로그인</a></li>
+				<%
+					}
+				%>
+				<!-- ---------------------------수정 끝------------------------------------ -->
 			</ul>
 		</nav>
 
@@ -520,12 +538,13 @@ footer #fwrap {
 	<div id="wrapper">
 		<div id="cs_menu">
 			<ul class="cs_navi">
-				<li><a href="/arm/mypage/MyinfoCart.jsp" id="c_btn">장바구니</a></li>
-				<li><a href="/arm/mypage/MyinfoPurchase.jsp" id="bl_btn">구매
-						내역</a></li>
+				<!-- ---------------------------수정------------------------------------ -->
+				<li><a href="/arm/mypage/MyinfoDetail.jsp" id="u_btn">회원정보</a></li>
+				<li><a href="/arm/CartView" id="c_btn">장바구니</a></li>
+				<li><a href="/arm/PurchaseView" id="bl_btn">구매 내역</a></li>
 				<li><a href="/arm/mypage/MyinfoQuestion.jsp" id="qa_btn">문의
 						내역</a></li>
-				<li><a href="/arm/mypage/MyinfoDetail.jsp" id="u_btn">회원정보</a></li>
+				<!-- ---------------------------수정 끝------------------------------------ -->
 			</ul>
 		</div>
 		<!-- cs_menu -->
@@ -588,11 +607,13 @@ footer #fwrap {
 						<%
 							if (o.getOrder_review_no() > 0) {
 						%>
-						<td style="text-align:center"><a href="" style="color:#1b1b1b;">수정</a></td>
+						<td style="text-align: center"><a href=""
+							style="color: #1b1b1b;">수정</a></td>
 						<%
 							} else {
 						%>
-						<td style="text-align:center;"><a href="" style="color:red; font-weight:bold;">작성</a></td>
+						<td style="text-align: center;"><a href=""
+							style="color: red; font-weight: bold;">작성</a></td>
 						<%
 							}
 						%>

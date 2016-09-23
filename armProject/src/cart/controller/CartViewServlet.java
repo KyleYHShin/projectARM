@@ -9,9 +9,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import cart.model.service.CartService;
 import cart.model.vo.Cart;
+import member.model.vo.User;
 
 /**
  * Servlet implementation class CartViewServlet
@@ -36,15 +38,19 @@ public class CartViewServlet extends HttpServlet {
 		// 1.
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("text/html; charset=utf-8");
-		
+
 		// 2.
-		String userId = request.getParameter("userId");
+		// String userId = request.getParameter("userId");
+		HttpSession session = request.getSession();
+		User loginUser = (User) session.getAttribute("loginUser");
+		String userId = loginUser.getUserId();
+
 		ArrayList<Cart> cartList = new CartService().selectAll(userId);
-			
+
 		// 3.
 		RequestDispatcher view = request.getRequestDispatcher("/mypage/MyinfoCart.jsp");
-		if (cartList != null) {		
-			System.out.println("Cart View Success");			
+		if (cartList != null) {
+			System.out.println("Cart View Success");
 		} else {
 			System.out.println("Cart View Fail");
 		}

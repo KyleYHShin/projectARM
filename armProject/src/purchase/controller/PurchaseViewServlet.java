@@ -9,7 +9,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import member.model.vo.User;
 import purchase.model.service.PurchaseService;
 import purchase.model.vo.Purchase;
 
@@ -38,7 +40,10 @@ public class PurchaseViewServlet extends HttpServlet {
 		response.setCharacterEncoding("text/html; charset=utf-8");
 
 		// 2.
-		String userId = request.getParameter("userId");
+		// String userId = request.getParameter("userId");
+		HttpSession session = request.getSession();
+		User loginUser = (User) session.getAttribute("loginUser");
+		String userId = loginUser.getUserId();
 		ArrayList<Purchase> purchaseList = new PurchaseService().selectAll(userId);
 
 		// 3.
