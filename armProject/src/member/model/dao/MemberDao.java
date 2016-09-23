@@ -9,38 +9,38 @@ public class MemberDao {
 
 	public MemberDao() {}
 	//로그인 처리용 메소드
-	   public User login(Connection con, String userId, String userPwd) {
-	      User loginUser = null;
-	      
-	      PreparedStatement pstmt = null;
-	      ResultSet rset = null;
-	      
-	      String query = "select * from users where user_id = ? and user_pw = ?";
-	      
-	      try {
-	         pstmt = con.prepareStatement(query);
-	         pstmt.setString(1, userId);
-	         pstmt.setString(2, userPwd);
-	         
-	         rset = pstmt.executeQuery();
-	         if(rset.next()) {
-	            loginUser = new User();
-	            loginUser.setUserId(rset.getString("user_id"));
-	            loginUser.setUserName(rset.getString("user_name"));
-	            loginUser.setGrade(rset.getString("grade_name"));
-	            loginUser.setDiscount(rset.getDouble("discount"));
-	            
-	            
-	         }
-	      } catch (Exception e) {
-	         e.printStackTrace();
-	      }finally {
-	         close(rset);
-	         close(pstmt);
-	         close(con);
-	      }
-	      return loginUser;
-	   }
+	public User login(Connection con, String userId, String userPwd) {
+		User loginUser = null;
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String query = "select * from users where user_id = ? and user_pw = ?";
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, userId);
+			pstmt.setString(2, userPwd);
+			
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				loginUser = new User();
+				loginUser.setUserId(rset.getString("user_id"));
+				loginUser.setUserName(rset.getString("user_name"));
+				loginUser.setGrade(rset.getString("grade_name"));
+				loginUser.setDiscount(rset.getDouble("discount"));
+				
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			close(rset);
+			close(pstmt);
+			close(con);
+		}
+		return loginUser;
+	}
 	public int insertMember(Connection con, Member member) {
 		int result = 0;
 		con = getConnection();
@@ -58,7 +58,7 @@ public class MemberDao {
 			pstmt.setString(5, String.valueOf(member.getGender()));
 			pstmt.setString(6, member.getPhone());
 			pstmt.setString(7, member.getEmail());
-			pstmt.setInt(8, member.getZipCode());
+			pstmt.setString(8, member.getZipCode());
 			pstmt.setString(9, member.getAddress());
 			
 		
@@ -102,7 +102,7 @@ public class MemberDao {
 				member.setPhone(rset.getString("m_phone"));
 				member.setEmail(rset.getString("m_email"));
 				member.setGender(rset.getString("m_gender").charAt(0));
-				member.setZipCode(rset.getInt("m_zipcode"));
+				member.setZipCode(rset.getString("m_zipcode"));
 				member.setAddress(rset.getString("m_address"));
 				member.setJoinDate(rset.getDate("m_joindate"));
 				
@@ -142,41 +142,39 @@ public class MemberDao {
 		}
 		return result;
 	}
-	public int memberUpdate(Connection con, Member member) {
+
+	public int updateMember(Connection con, Member member) {
 		int result = 0;
-		
-		con = getConnection();
 		PreparedStatement pstmt = null;
-		String query = "update member set"
-				+ " M_NAME=?,  M_PW=?, M_BIRTH=?, M_PHONE=?, M_EMAIL=?, "
-				+"M_GENDER = ?, M_ZIPCODE =?, M_ADDRESS=? where M_ID=?";
+		
+		String query = "update member set M_PW = ?, M_PHONE = ?, M_EMAIL = ?, "
+				+ "M_ZIPCODE = ?, M_ADDRESS = ? where M_ID = ?";
+		System.out.println("Dao 작동");
+				
 		try {
 			pstmt = con.prepareStatement(query);
 			
 			pstmt.setString(1, member.getUserPwd());
-			pstmt.setString(2, member.getUserName());
-			pstmt.setDate(3, member.getBirthDate());
-			pstmt.setString(4, member.getPhone());
-			pstmt.setString(5, member.getEmail());
-			pstmt.setString(6, String.valueOf(member.getGender()));
-			pstmt.setInt(7, member.getZipCode());
-			pstmt.setString(8, member.getAddress());
-		
+			pstmt.setString(2, member.getPhone());
+			pstmt.setString(3, member.getEmail());
+			pstmt.setString(4, member.getZipCode());
+			pstmt.setString(5, member.getAddress());
+			pstmt.setString(6, member.getUserId());
 			
-			
+					
 			result = pstmt.executeUpdate();
-			if(result>0)
-			commit(con);
-			else
-				rollback(con);
-			
 		} catch (Exception e) {
 			e.printStackTrace();
+			
 		}finally {
 			close(pstmt);
-			close(con);
 		}
 		return result;
+		
+	
 	}
 
+
+
+	
 }

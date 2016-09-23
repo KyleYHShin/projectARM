@@ -849,7 +849,7 @@ String status = (String)request.getAttribute("status");
 						<tr><td class="item_price" style = "color : black; font-weight : 600; text-decoration : line-through;">
 						<%=i.getItemPrice()%>원<td></tr>
 						<tr><td class="item_price" style = "color : red; font-weight : 800;">
-						<%= i.getItemPrice()*(1-loginUser.getDiscount()) %>원<td></tr>
+						<%= Math.round(i.getItemPrice()*(1-loginUser.getDiscount())) %>원<td></tr>
 						<% } else {%>
 						<tr><td class="item_price"><%=i.getItemPrice()%>원<td></tr>
 						<% } %>
@@ -863,8 +863,6 @@ String status = (String)request.getAttribute("status");
 		<!-- --------------------------------------------------------------요까지이슬----------------- -->
 		</div>
 		<!-- contents -->
-
-
 	</div>
 	<!-- fix+item_list -->
 

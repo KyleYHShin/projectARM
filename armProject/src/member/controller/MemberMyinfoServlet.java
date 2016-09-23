@@ -32,7 +32,7 @@ public class MemberMyinfoServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//회원조회 처리용 컨트롤러
-		System.out.println("회원정보 구동됨..");
+	
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html; charset=uth-8");
 		

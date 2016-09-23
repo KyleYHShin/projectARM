@@ -15,7 +15,7 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script src="/arm/bootstrap/js/bootstrap.min.js"></script>
   
@@ -24,7 +24,75 @@
   	function nologinCart(){
 	    alert("로그인이 필요합니다");
 	}
+  	//주소api
+  	function getPostcode() {
+		  var themeObj = {
+		     bgColor: "#FFFD80", //바탕 배경색
+		     searchBgColor: "#FFFFFF", //검색창 배경색
+		     //contentBgColor: "", //본문 배경색(검색결과,결과없음,첫화면,검색서제스트)
+		     //pageBgColor: "", //페이지 배경색
+		     textColor: "#333333", //기본 글자색
+		     //queryTextColor: "", //검색창 글자색
+		     //postcodeTextColor: "", //우편번호 글자색
+		     emphTextColor: "#019102", //강조 글자색
+		     outlineColor: "#FD840E" //테두리
+		  };
+		  new daum.Postcode({
+		  //테마
+		  	theme : themeObj,
+		    oncomplete: function(data) {
+              // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+              // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+              // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+              var fullAddr = ''; // 최종 주소 변수
+              var extraAddr = ''; // 조합형 주소 변수
+
+              // 사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+              if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                  fullAddr = data.roadAddress;
+
+              } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                  fullAddr = data.jibunAddress;
+              }
+
+              // 사용자가 선택한 주소가 도로명 타입일때 조합한다.
+              if(data.userSelectedType === 'R'){
+                  //법정동명이 있을 경우 추가한다.
+                  if(data.bname !== ''){
+                      extraAddr += data.bname;
+                  }
+                  // 건물명이 있을 경우 추가한다.
+                  if(data.buildingName !== ''){
+                      extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                  }
+                  // 조합형주소의 유무에 따라 양쪽에 괄호를 추가하여 최종 주소를 만든다.
+                  fullAddr += (extraAddr !== '' ? ' ('+ extraAddr +')' : '');
+              }
+
+              // 우편번호와 주소 정보를 해당 필드에 넣는다.
+              document.getElementById('zcode').value = data.zonecode; //5자리 새우편번호 사용
+              document.getElementById('address').value = fullAddr;
+
+              // 커서를 상세주소 필드로 이동한다.
+              document.getElementById('address2').focus();
+	          }
+	        }).open();
+	      }
 	$(function(){
+		$("#userpwd2").keyup(function(){
+			if($("#userpwd2").val()!=$("#userpwd1").val()){
+				$("#ckpwd").html("비밀번호가 일치하지 않습니다.");
+				$("#ckpwd").css("font-size","9pt").css("color","red");
+				$("input[type=submit]").attr("disabled", true);
+				$("input[type=submit]").css("background", "gray").css("border","gray 1px solid");
+			}else{
+				$("#ckpwd").html("비밀번호가 일치합니다.");
+				$("#ckpwd").css("font-size","9pt").css("color","blue");
+				$("input[type=submit]").attr("disabled", false);
+				$("input[type=submit]").css("background", "red").css("border","red 1px solid");
+			}
+		});
 		$(document).on("hover",".menuLink", function(){
 			$(this).css("color","red"),css("cursor","pointer");
 		});
@@ -387,7 +455,79 @@
 		text-decoration : underline;
 	}
 	
+	#contents {
+		width : 100%;
+		margin : 0 auto;
+		padding-top : 1%;
+		min-height : 600px;
+		/*background : #ffffcc;*/
+	}
 
+	/* -------------------------내용 css----------------------------------- */
+
+	/*소스를 여기에 입력해주세요*/
+	#joinTb {
+		border: 0px ;
+		BORDER-TOP : 2px solid black;
+	}
+	#joinTb th,td{
+		height :35px;
+		border : 0px;
+		BORDER-TOP : 1px solid #cecece;
+	}
+	#joinTb th{
+		text-align : center;
+		width : 150px;
+		background : #d9d9d9;
+	}
+	#joinTb td{
+		padding-left : 2%;
+		text-align : left;
+		width : 400px;
+	}
+	#joinTb tr:last-of-type td{
+		padding-left : 0;
+		BORDER-TOP : 2px solid black;
+		BORDER-BOTTOM : 0;
+	}
+	#joinTb button{
+		background : green;
+		border : 1px solid green;
+		color : white;
+		float : left;
+	}
+	#joinTb td input[type=submit]{
+		float : right;
+		background : red;
+		color : white;
+		border : 1px solid red;
+	}
+	#joinTb tr:last-of-type td input[type=button], input[type=reset]{
+		background : green;
+		color : white;
+		border : 1px solid green;
+	}
+	 @media all and (max-width: 750px){
+	 	#joinTb {
+	 		font-size : 9pt;
+	 	}
+
+	 }
+
+	@media all and (max-width: 300px){
+		#joinTb th,td{
+			height :30px;
+		}
+		#joinTb th{
+	 		width : 100px;
+	 	}
+	 	#joinTb td{
+	 		width : 200px;
+	 	}
+	}
+	
+
+/*---------------------------내용 부분 (wrapper+css)끝--------------------------------- */
 	/* 푸터 */
 	footer {
 		BORDER-TOP : 1px solid gray;
@@ -534,58 +674,58 @@
 	</div><!-- sort -->
 	
 	</div><!-- fix_menu(카테고리+검색+정렬) -->
-
-  	<center>
-	<h1>회원가입</h1>
-	<form action="../mjoin" method="post">
-	<table width="700">
-		<br><br>
-		
-		<tr><td bgclolr="#66ccff" align="center">아 이 디</td>
-			<td><input type="text" id="userid" name="userid" required></td></tr>
-			<tr><td bgclolr="#66ccff" align="center">이&nbsp;름</td>
-			<td><input type="text" id="username" name="username" required></td></tr>
-			<tr><td bgclolr="#66ccff" align="center">암&nbsp;호</td>
-			<td><input type="password" id="userpwd1" name="userpwd" required></td></tr>
-			<tr><td align="center">암호확인</td>
-			<td><input type="password" id="userpwd2" required></td></tr>
-			<tr><td>&nbsp;</td></tr>
-			<tr><td bgclolr="#66ccff" align="center">생&nbsp;일</td>
-			<td><input type="date" name="birthdate"></td></tr>
-			<tr><td align="center">전화번호</td>
-			<td><input type="tel" name="phone" placeholder="-포합 입력"></td></tr>
-			<tr><td align="center">이 메 일</td>
-			<td><input type="email" id="email" name="email" required></td></tr>
-			<tr><td bgclolr="#66ccff" align="center">성&nbsp;별</td>
-			<td><input type="radio" name="gender" value="M">남&nbsp;
-					<input type="radio" name="gender" value="F">여&nbsp;</td></tr>
-					<tr><td>&nbsp;</td></tr>
-			<tr><td bgclolr="#66ccff" align="center">주&nbsp;소</td>
-			
-			<td>
-				<table>
-					<tr><td><input type="text" name = "zcode" id= "zcode" size="5" maxlength="5">&nbsp;
-						<input type = "button" value="우편번호 검색"></td></tr>
-					<tr><td><input type="text" name = "address" placeholder = "기본주소 자동입력됨" size="50"></td></tr>
-					<tr><td><input type="text" name = "address2" placeholder= "상세주소를 입력하시오" size="50"></td></tr>
-					
-					
-		
-				</table>
-			</td></tr>
-		
-			<tr><td>&nbsp;</td></tr>
-			<tr><td>&nbsp;</td></tr>
-			<tr><td colspan="2" align = "center" bgcolor="#66ccff">
-			<input type="submit" value="가입하기">&nbsp;
-			<input type="reset" value="다시작성">&nbsp;
-			<input type = "button" value="취소" onclick="javascipt:history.go(-1);">
-			</td></tr>
-			
-	</table>
-	</form>
-</center>
-	
+	<div id = "contents">
+<h1>회원가입</h1>
+<form action= "/arm/mjoin" method="post">
+<table id = "joinTb" border = "1" align = "center">
+	<tr>
+		<th>아 이 디</th><td><input type="text" id="userid" name="userid" required></td>
+	</tr>
+	<tr>
+		<th>이&nbsp; &nbsp; 름</th><td><input type="text" id="username" name="username" required></td>
+	</tr>
+	<tr>
+		<th>비밀번호</th><td><input type="password" id="userpwd1" name="userpwd" required></td>
+	</tr>
+	<tr>
+		<th>비밀번호확인</th><td><input type="password" id="userpwd2" required> <span id="ckpwd"></span></td>
+	</tr>
+	<tr>
+		<th>생&nbsp; &nbsp; 일</th><td><input type="date" name="birthdate"></td>
+	</tr>
+	<tr>
+		<th>전화번호</th><td><input type="tel" name="phone" placeholder="-포함 입력"></td>
+	</tr>
+	<tr>
+		<th>이 메 일</th><td><input type="email" id="email" name="email" required></td>
+	</tr>
+	<tr>
+		<th>성&nbsp; &nbsp; 별</th><td><input type="radio" name="gender" value="M">남&nbsp;
+					<input type="radio" name="gender" value="F">여</td>
+	</tr>
+	<!-- 주소api -->
+	<tr>
+		<th>우편번호</th>
+			<td><input type="text" id="zcode" name="zcode" placeholder="우편번호">
+			<input type="button" onclick="getPostcode()" value="우편번호 찾기"></td>
+	</tr>
+	<tr>
+		<th rowspan="2">주&nbsp; &nbsp; 소</th>
+		<td><input type="text" id="address" name="address" placeholder="기본주소" size="45"></td>
+	</tr>
+	<tr>
+		<td><input type="text" id="address2" name="address2" placeholder="상세주소" size="45"></td>
+	</tr>
+	<!-- 주소 api끗-->
+	<tr>
+		<td colspan="2"><input type="submit" value="가입하기">
+		<input type="button" value="취소" onclick="javascipt:history.go(-1);">
+		<input type="reset" value="다시작성">
+		</td>
+	</tr>
+</table>
+</form>
+</div>
 	<!-- top버튼 -->
 	<div style="position:fixed; bottom:10px; right:10px; z-index : 9999;">
 	 <a href="#top"><img src="/arm/img/top3.png" width="51" height="51" border="0" title="위로 이동"></a> <!-- 위에있는 이름 top에 있는 위치로 이동함 -->

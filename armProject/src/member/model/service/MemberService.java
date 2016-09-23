@@ -40,23 +40,27 @@ public class MemberService {
 		return result;
 	}
 
-	public int memberUpdate(Member member) {
+	
+
+	public User login(String userId, String userPwd) {
 		Connection con = getConnection();
-		int result = new MemberDao().memberUpdate(con, member);
-		if(result>0)
+		User loginUser = new MemberDao().login(con, userId, userPwd);
+		close(con);
+		return loginUser;
+	}
+
+	public int updateMember(Member member) {
+		Connection con = getConnection();
+		int result = new MemberDao().updateMember(con, member);
+		System.out.println("서비스작동"+result);
+		if(result >0)
 			commit(con);
 		else
 			rollback(con);
 		close(con);
-		
 		return result;
 	}
 
-	public User login(String userId, String userPwd) {
-	      Connection con = getConnection();
-	      User loginUser = new MemberDao().login(con, userId, userPwd);
-	      close(con);
-	      return loginUser;
-	}
+	
 
 }

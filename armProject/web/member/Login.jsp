@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<% String msg = (String)request.getAttribute("msg"); %>
 <!doctype html>
 <html lang="ko">
   <meta charset="utf-8">
@@ -27,7 +27,7 @@
 	}
 	$(function(){
 		$(document).on("hover",".menuLink", function(){
-			$(this).css("color","red"),css("cursor","pointer");
+			$(this).css("color","red").css("cursor","pointer");
 		});
 		//스크롤시 카테고리고정
 		var menupos = $("#fix_menu").offset().top;
@@ -573,6 +573,9 @@
 
     <div class="contents">
     <h1>로 그 인</h1>
+    <% if(msg != null){ %>
+    <span style = "text-align:center; color : red; font-size:9pt;"><%= msg %></span>
+    <% } %>
 	<div id = "loginDiv" class="form">
     <form action = "/arm/login" method="post">
 	<table id = "loginTb" border = "0">

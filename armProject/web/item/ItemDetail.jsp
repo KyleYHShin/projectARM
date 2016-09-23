@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import = "member.model.vo.User" %>
+<%
+User loginUser = (User)session.getAttribute("loginUser");
+%>
 <!doctype html>
 <html lang="ko">
   <meta charset="utf-8">
@@ -844,16 +848,22 @@
  <body>
 <!--  최상단 기본메뉴 -->
  <div id = "top_menu">
-   <nav id="topMenu" >
-        <ul>
-			<li class="topMenuLi"><a class="menuLink" href="/arm/notice/notice.jsp">고객센터</a></li>
-			<li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">장바구니</a></li>
-            <li class="topMenuLi"><a class="menuLink" href="">회원가입</a></li>
-            <li class="topMenuLi"><a class="menuLink" href="/arm/member/Login.jsp">로그인</a></li>
-         </ul>
-	</nav>
- 
- </div>
+	   	<nav id="topMenu" >
+	        <ul>
+	         <li class="topMenuLi"><a class="menuLink" href="nlist">고객센터</a></li>       
+	      <% if(loginUser != null){ %>
+	         <li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">장바구니</a></li>
+	         <li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">MyPage</a></li>
+	         <li class="topMenuLi"><a class="menuLink" href="logout">로그아웃</a></li>
+	         <li class="topMenuLi">환영합니다! <%=loginUser.getUserName() %>님</li>
+	      <%}else{ %>
+	         <li class="topMenuLi"><a class="menuLink" onclick="nologinCart();">장바구니</a></li>
+	         <li class="topMenuLi"><a class="menuLink" href="/arm/member/MemberJoin.jsp">회원가입</a></li>
+	         <li class="topMenuLi"><a class="menuLink" href="/arm/member/Login.jsp">로그인</a></li>
+	      <%} %>   
+	        </ul>
+	   </nav>
+ 	</div>
 <!-- 퀵바 -->
  <button id = "qBtn" class = "hidden-xs">Quick</button>
  <div id = "quick_bar" class = "hidden-xs">

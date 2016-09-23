@@ -355,8 +355,9 @@
         <ul>
 			<li class="topMenuLi"><a class="menuLink" href="nlist">고객센터</a></li>
 			<li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">장바구니</a></li>
+            <li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">MyPage</a></li>
             <li class="topMenuLi"><a class="menuLink" href="../logout">로그아웃</a></li>
-            <li class="topMenuLi"><a class="menuLink" >환영합니다! <%=loginUser.getUserName() %>님</a></li>
+            <li class="topMenuLi">환영합니다! <%=loginUser.getUserName() %>님</li>
         </ul>
 	</nav>
  
@@ -408,7 +409,7 @@
 			<li><a href="/arm/mypage/MyinfoCart.jsp" id = "c_btn">장바구니</a></li>
 			<li><a href="/arm/mypage/MyinfoPurchase.jsp" id = "bl_btn">구매 내역</a></li>
 			<li><a href="/arm/mypage/MyinfoQuestion.jsp" id = "qa_btn">문의 내역</a></li>
-			<li><a href="../myinfo?userid=<%= loginUser.getUserId() %>" id = "u_btn">회원정보</a></li>
+			<li><a href="/arm/myinfo?userid=<%= loginUser.getUserId() %>" id = "u_btn">회원정보</a></li>
 		</ul>
 	</div><!-- cs_menu -->
 

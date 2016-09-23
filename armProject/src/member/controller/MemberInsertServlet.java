@@ -1,8 +1,6 @@
 package member.controller;
 
-import java.awt.TrayIcon.MessageType;
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.Date;
 
 import javax.servlet.ServletException;
@@ -10,7 +8,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.JOptionPane;
 
 import member.model.service.MemberService;
 import member.model.vo.Member;
@@ -48,10 +45,10 @@ public class MemberInsertServlet extends HttpServlet {
 		String phone = request.getParameter("phone");
 		String email = request.getParameter("email");
 		char gender = request.getParameter("gender").charAt(0);
-		int zipcode = Integer.parseInt(request.getParameter("zcode"));
+		String zipcode = request.getParameter("zcode");
 		StringBuilder sb = new StringBuilder();
 
-		sb.append("\t"+ request.getParameter("address") + "\t"+request.getParameter("address2"));
+		sb.append(request.getParameter("address") +","+request.getParameter("address2"));
 		String address = sb.toString();
 
 		
@@ -62,19 +59,16 @@ public class MemberInsertServlet extends HttpServlet {
 		//4. dao 객체 메소드 실행하고 결과받음
 		//중복된 아이디값이 들어오면 다시 회원가입 메세지를 띄워야댐
 		
-		if(userId != member.getUserId()) {
+	
 		int result = new MemberService().insertMember(member);
 				
 		
 		if(result>0) {
 			response.sendRedirect("member/Login.jsp");
-		}
+		
 		}else {
 			
 			response.sendRedirect("member/MemberJoin.jsp");
-			
-			
-		
 		}
 	}
 

@@ -14,7 +14,7 @@ public class Member implements java.io.Serializable{
 	private String address;
 	private int grade;
 	private Date joinDate;
-	private int zipCode;
+	private String zipCode;
 	private String carts;
 
 	
@@ -30,7 +30,7 @@ public class Member implements java.io.Serializable{
 	
 	
 	public Member(String userId, String userPwd, String userName, Date birthDate, String phone, String email,
-			char gender, String address, int grade, Date joinDate, int zipCode, String carts) {
+			char gender, String address, int grade, Date joinDate, String zipCode, String carts) {
 		super();
 		this.userId = userId;
 		this.userPwd = userPwd;
@@ -50,8 +50,21 @@ public class Member implements java.io.Serializable{
 
 
 	
+	public Member(String userId, String userPwd, String phone, String email, String zipCode,
+			String address) {
+		super();
+		this.userId = userId;
+		this.userPwd = userPwd;
+		this.phone = phone;
+		this.email = email;
+		this.address = address;
+		this.zipCode = zipCode;
+	}
+	
+	
+	
 	public Member(String userId, String userPwd, String userName, Date birthDate, String phone, String email,
-			char gender, int zipCode, String address) {
+			char gender, String zipCode, String address) {
 		super();
 		this.userId = userId;
 		this.userPwd = userPwd;
@@ -166,12 +179,12 @@ public class Member implements java.io.Serializable{
 	}
 
 
-	public int getZipCode() {
+	public String getZipCode() {
 		return zipCode;
 	}
 
 
-	public void setZipCode(int zipCode) {
+	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
 	}
 
