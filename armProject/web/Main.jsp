@@ -746,13 +746,13 @@ String status = (String)request.getAttribute("status");
 			<!-- role 이 애니메이션 효과 -->
 			<div class="carousel-inner" role="listbox">
 				<div class="item active">
-					<img class="adv-img" src="images/1.png">
+					<img class="adv-img" src="/arm/img/ad/1.png">
 				</div>
 				<div class="item">
-					<img class="adv-img" src="images/2.jpg">
+					<img class="adv-img" src="/arm/img/ad/2.png">
 				</div>
 				<div class="item">
-					<img class="adv-img" src="images/3.png">
+					<img class="adv-img" src="/arm/img/ad/3.png">
 				</div>
 			</div>
 
