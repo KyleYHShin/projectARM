@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.util.ArrayList, java.util.HashMap, java.util.Collections, item.model.vo.*"%>
+<%@ page import="java.util.ArrayList, java.util.HashMap, java.util.Collections, item.model.vo.*, member.model.vo.User"%>
 <%
-	//User loginUser = (User)session.getAttribute("loginUser");
+	User loginUser = (User)session.getAttribute("loginUser");
 	Item item = (Item)request.getAttribute("item");
 	ArrayList<SubItem> subItemList = (ArrayList<SubItem>)request.getAttribute("subItemList");
 	ArrayList<Question> questionList = (ArrayList<Question>)request.getAttribute("questionList");
@@ -101,40 +101,12 @@
 			var activeTab = $(this).attr("rel");
 			$("#" + activeTab).fadeIn()
 		});
-
-		/*별점용*/
-		$(".star_point a").click(function() {
-			$(this).nextAll(this).removeClass("on");
-			$(this).addClass("on").prevAll("a").addClass("on");
-			
-			return false;			
-		});
-
-		/*별점에 따른 코멘트 출력용 ---매번 클릭 시마다 멘트 바뀌도록 수정해야*/
-		$(".star_point a").click(function(){
-			$(".comment").text();
-			var star_num = $(".star_point .on").length;
-			var star_comment = "";
-
-			if(star_num == 1){
-				star_comment = "ㅁ_ㅁ";
-			}else if(star_num == 2){
-				star_comment = "ㅋ?";
-			}else if(star_num == 3){
-				star_comment = "빼앰";
-			}else if(star_num == 4){
-				star_comment = "빼애앰";
-			}else if(star_num == 5){
-				star_comment = "와우내빼애앰";
-			}
-			$(".comment").text(star_comment);
-		});
-
 		
 		/*버튼 클릭 시 선택 옵션 삭제*/
 		$(document).on('click', '.remove_order', function (){
 			$(this).parent().parent().remove();
-		});
+			td_sum();
+		});		
 		
 		/*----------------------16.09.22 기능 구현하면서 아래 사항 삭제하고 자바스크립트로 구현---*/
 		/*옵션 선택시 테이블에 행 추가 버전2
@@ -152,6 +124,80 @@
 		
 	});
 	
+	/*--------------------------------- 16.09.23 옵션 선택에 따라 동적으로 선택된 상품 정보를 출력하는 함수 추가 --------------*/
+	//옵션 선택 시 p_selection 영역에 동적으로 행 추가
+	  function add_tr(){
+		option = document.getElementById('p_selection');
+		tr = option.insertRow(option.rows.length);
+	
+		td1 = tr.insertCell(0); //선택된 상품명 입력열
+		td2 = tr.insertCell(1); //input number 상자 입력열
+		td3 = tr.insertCell(2); //삭제버튼 입력열
+		td4 = tr.insertCell(3); //선택 옵션가 입력열
+	
+		var select = document.getElementById('p_opt_1');
+		var selected_sub = select.options[select.selectedIndex].text; //선택옵션명 가져옴
+		var selected_sub_price = document.getElementById(selected_sub).value; //선택옵션가격 가져옴
+		selected_sub_price = parseInt(selected_sub_price); //숫자형태로 변환
+		var selected_price_sum = selected_sub_price + parseInt("<%= item.getItemPrice()%>");
+		
+		//alert("파싱 후 : " + typeof selected_sub_price);
+	
+		td1.innerHTML = selected_sub;
+		td2.innerHTML = "<input type='number' id='Qty' class='Qty' name='Qty' min='1' width='10' value='1' onchange='update_sub_price(this);'>";
+		td3.innerHTML = "<button class='remove_order'><img src ='/arm/img/delete.png'></button>";
+		
+		if(selected_sub_price != 0)
+			td4.innerHTML = selected_price_sum;
+		td_sum();
+	  }
+	  
+	  //선택 제품의 수량 변화에 따라 제품 개별 구매금액 계산
+	  function update_sub_price(obj){
+		  var qty = $(obj).val();
+		  qty = parseInt(qty);
+		  
+		  //선택된 행의 제품명을 이용해 hidden 텍스트 상자에 있는 제품가격 가져옴
+		  var selected_sub = $(obj).parent().siblings('td:first').text(); //선택된 행의 제품명
+		  var selected_sub_price = document.getElementById(selected_sub).value; //선택된 제품가격
+		  var unit_price = parseInt("<%= item.getItemPrice()%>") + parseInt(selected_sub_price); //상품 기본가격과 제품가격 합산
+		 
+		  var sum = unit_price * qty;
+		  $(obj).parent().siblings('td:last-child').text(sum);
+		  td_sum();
+	  }
+		
+	  //제품 추가에 따라 총 주문금액 & 총결제액 계산
+	  function td_sum(){
+		  var total_sum = 0;
+		  $('.p_selection td:last-child').each(function(){
+			  total_sum += parseInt($(this).text());
+		  });
+		  
+		  //회원 할인율 적용 전 총주문액
+		  $('#original_sum').text(total_sum);
+		  
+		  //로그인했을 시 회원 할인율 적용
+		  var dc_rate ="";
+		  
+		  if("<%= loginUser %>" == null){
+			  dc_rate = 1;
+		  }else{
+			  dc_rate = 1 - "<%= loginUser.getDiscount() %>";
+			  $('#original_sum').attr("style", "text-decoration : line-through");
+			  var dc_sum = total_sum * dc_rate;
+			  $('#dc_sum').text(dc_sum);
+		  }
+		  
+		  //배송비 합산 회원 할인 적용된 총결제액
+		  $('#grand_total').text(dc_sum + 2500);
+		  
+		  if(total_sum == 0){
+			  $('#original_sum').empty();
+			  $('#dc_sum').empty();
+			  $('#grand_total').empty();
+		  }
+	  }
 	  
   </script>
  
@@ -715,14 +761,14 @@
 
 
 	/*문의, 후기 공통 적용*/
-	.inquiry_input, .review_input, .p_Q, .p_A, .p_review {
+	.inquiry_input, .p_Q, .p_A, .p_review {
 		border : 1px solid red;
 		padding : 2%;
 		width: 90%;
 		height: 100%;
 	}
 
-	.inquiry_input table, .review_input table, .loaded_qna table, .p_reivew table {
+	.inquiry_input table, .loaded_qna table, .p_reivew table {
 		width : 100%;
 		height : 80%;
 		border : 1px solid red;
@@ -785,30 +831,6 @@
 
 	.loaded_qna #loaded_td2 {
 		width : 15%;	
-	}
-
-
-	/*상품 후기 부분*/
-	.star_point {
-		font-size: 0;
-		letter-spacing: -4px;
-	}
-
-	.star_point a {
-		font-size : 20px;
-		letter-spacing: 0;
-		display : inline-block;
-		margin-left: 5px;
-		color : #ccc;
-		text-decoration : none;
-	}
-
-	.star_point a : first-child {
-		margin-left : 0;
-	}
-
-	.star_point a.on {
-		color : #ffcc00; 
 	}
 	
 	.p_review #review_td1 {
@@ -952,15 +974,14 @@
 	<!--상품 상세 설명 페이지 시작-->
 	<div class="content">
 		<div class="product">
-			<form method="post" action="장바구니 jsp로 이동하게">
+			<form method="get" action="/arm/CartInsertServlet">
 			<div class="pImage">
-				<img src="<%= item.getItemImg() %>"><!-- pImage div에선 이 옆에만 수정 -->
+				<img src="<%= item.getItemImg() %>"><!-------------- pImage div에선 이 옆에만 수정 -------->
 			</div>
 			<!--pImage-->
 
 <!-------------------- 이 밑으로는 표시한 부분까지 다 수정함  ------------------------------------------------------------->
 			<div class="pTable">
-	
 			<table>
 			<tr height="50">
 				<td width="200">상품명 : </td>
@@ -1017,8 +1038,12 @@
 			<tr height="60">
 				<td>총금액: </td>
 				<td align="center">
-					<input type="text" name="">
+					<span id="original_sum"></span>
+					<span id="dc_sum" style="color:red; font-weigh:bold"></span> 
+					&nbsp;
+					<span id=grand_total style="font-weigh:bold; font-size:20"></span>
 				</td>
+				
 			</tr>
 			<tr height="30">
 				<td colspan="2" height="70" align="center" style = "padding-left : 5%; padding-right : 5%;">
@@ -1046,7 +1071,7 @@
     </ul>
     <div class="tab_container">
         <div id="tab1" class="tab_content">
-			<img src="<%= item.getItemImgDt() %>">			
+			<img src="items_detail/01.jpg">			
         </div>
         <!-- #tab1 -->
         <div id="tab2" class="tab_content">
@@ -1056,6 +1081,20 @@
         <div id="tab3" class="tab_content">
 			<div class="inquiry_input" align="left">
 				<table>
+					<tr>
+						<td colspan="2">
+						<select>
+						<option> 문의할 옵션을 선택하세요 </option>
+						<% 
+							for (SubItem sub : subItemList){
+						%>
+							<option value="<%= sub.getItemSubName() %>">
+								<%= sub.getItemSubName() %>
+							</option>
+						<% } %>
+						</select>
+						</td>
+					</tr>
 					<tr>
 						<td id="td1">
 							<textarea name="p_inquiry" id="p_inquiry" placeholder="로그인한 사람만 문의내용ㄱㄱㄱ"></textarea>
@@ -1121,38 +1160,7 @@
         <!-- #tab3 -->
         
 		<div id="tab4" class="tab_content">
-			<div class="review_input">
-				<table>
-					<tr>
-						<td align="left">
-							<p class="star_point">
-							<a href="#" class="on">★</a>
-							<a href="#" class="on">★</a>
-							<a href="#" class="on">★</a>
-							<a href="#">★</a>
-							<a href="#">★</a>
-							</p>
-
-						</td>
-						<td align="left">
-							<p class="comment"></p>
-						</td>
-					</tr>
-				</table>
-				<table>
-					<tr>
-						<td>
-							<textarea name="p_review_input" id="p_review_input" placeholder="후기후기해"></textarea>
-						</td>
-						<td>
-							&nbsp;<input type="submit" value="확인" style = "background : Yellow; border : 1px solid yellow; border-radius:5px; ">
-						</td>
-					</tr>
-				</table>
-			</div>
-			<!--review_input 끝-->
-			<hr>
-			<br>
+			
 			<%
 			if(reviewList != null){
 				//최근 등록된 후기부터 출력되도록 리스트 역정렬
@@ -1234,40 +1242,6 @@
 		
 	</div>
 	</footer>
-
-
-<!------------------------------------- 16.09.22 옵션 선택에 따라 동적으로 선택된 상품 정보를 출력하는 함수 추가 -------------->
-	<script type="text/javascript">
-	  function add_tr(){
-		option = document.getElementById('p_selection');
-		tr = option.insertRow(option.rows.length);
-	
-		td1 = tr.insertCell(0);
-		td2 = tr.insertCell(1);
-		td3 = tr.insertCell(2);
-		td4 = tr.insertCell(3);
-	
-		var select = document.getElementById('p_opt_1');
-		var selected_sub = select.options[select.selectedIndex].text;
-		var selected_sub_price = document.getElementById(selected_sub).value;
-	
-		td1.innerHTML = selected_sub;
-		td2.innerHTML = "<input type='number' id='Qty' class='Qty' name='Qty' min='1' width='10' value='1' onchange='update_sub_price(this);'>";
-		td3.innerHTML = "<button class='remove_order'><img src ='/arm/img/delete.png'></button>";
-		
-		if(selected_sub_price != 0)
-			td4.innerHTML = selected_sub_price;
-	  }
-	  
-	  function delete_tr(obj){
-		var tr = obj.parentNode.parentNode;
-		tr.parentNode.removeChild(tr);
-	  }
-	  
-	  function update_sub_price(obj){
-		
-	  }
-	</script>
 
  </body>
 </html>

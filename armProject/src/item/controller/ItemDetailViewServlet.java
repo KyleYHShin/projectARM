@@ -64,13 +64,12 @@ public class ItemDetailViewServlet extends HttpServlet {
 			reviewList = IS.selectReview(itemNo);
 			//해당 제품에 대한 후기 내역이 있을 시, 후기 별점 코멘트를 조회하여 맵 형태로 리턴
 			if(reviewList != null)
-				reviewHContent = IS.selecteReviewHeadContent();
-			
+				reviewHContent = IS.selectReviewHeadContent();
 		}
 		
 		RequestDispatcher view = null;
 		if (item != null) {
-			view = request.getRequestDispatcher("/item/ItemDetail.jsp");
+			view = request.getRequestDispatcher("/arm/item/ItemDetail.jsp");
 			request.setAttribute("item", item);
 			request.setAttribute("subItemList", subItemList);
 
@@ -84,7 +83,6 @@ public class ItemDetailViewServlet extends HttpServlet {
 				request.setAttribute("reviewList", reviewList);
 				request.setAttribute("reviewHContent", reviewHContent);
 			}
-
 			view.forward(request, response);
 		}
 	}

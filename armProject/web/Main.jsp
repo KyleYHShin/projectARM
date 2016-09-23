@@ -683,6 +683,7 @@
 	
 	</div><!-- fix_menu(카테고리+검색+정렬) -->
 	
+	<a href="/arm/ItemDetailViewServlet?itemNo=1">아이템 상세페이지 테스트용</a>
 	
      <div class="contents">
             <section class="item_box">
