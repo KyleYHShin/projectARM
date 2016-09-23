@@ -540,9 +540,9 @@
 			<td><input type="text" id="userid" name="userid" required></td></tr>
 			<tr><td bgclolr="#66ccff" align="center">이&nbsp;름</td>
 			<td><input type="text" id="username" name="username" required></td></tr>
-			<tr><td bgclolr="#66ccff" align="center">암&nbsp;호</td>
+			<tr><td bgclolr="#66ccff" align="center">비밀번호</td>
 			<td><input type="password" id="userpwd1" name="userpwd" required></td></tr>
-			<tr><td align="center">암호확인</td>
+			<tr><td align="center">비밀번호확인</td>
 			<td><input type="password" id="userpwd2" required></td></tr>
 			<tr><td>&nbsp;</td></tr>
 			<tr><td bgclolr="#66ccff" align="center">생&nbsp;일</td>

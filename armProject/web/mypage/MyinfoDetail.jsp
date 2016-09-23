@@ -300,8 +300,8 @@
         <ul>
 			<li class="topMenuLi"><a class="menuLink" href="nlist">고객센터</a></li>
 			<li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">장바구니</a></li>
-            <li class="topMenuLi"><a class="menuLink" href="../logout">로그아웃</a></li>
-            <li class="topMenuLi"><a class="menuLink" >환영합니다! <%=loginUser.getUserName() %>님</a></li>
+            <li class="topMenuLi"><a class="menuLink" href="logout">로그아웃</a></li>
+            <li class="topMenuLi">환영합니다! <%=loginUser.getUserName() %>님</li>
         </ul>
 	</nav>
  
@@ -344,7 +344,7 @@
  <!-- 배너 -->
  <div id ="banner">
 	<!-- 배너클릭시 시작페이지로! -->
-	<a href="/arm/MainLogin.jsp"><img src="/arm/img/banner.png" alt = "시작페이지로"></a>
+	<a href="/arm/Main.jsp"><img src="/arm/img/banner.png" alt = "시작페이지로"></a>
  </div>
 <!-- ---------------------------내용 부분------------------------------------ -->
 <div id="wrapper">
@@ -361,17 +361,31 @@
 <div id = "contents">
 <!-- ---------------------------내용부분------------------------------------ -->
 <!-- 내용을 여기에 입력해 주세요 -->
-	
+	<center>
 	<h1>My Page</h1>
-	<table border = "1" width="500" bgcolor="yellow">
-	<tr><td width="150">이 름 </td><td width="350"><%= member.getUserName() %></td></tr>
-	<tr><td>아이디 : </td><td><%=member.getUserId() %></td></tr>
+	<br><br>
+	<form action="mupdate" method="post">
+	<table border = "1" width="500"  height="500" style="text-align:center;">
+	<tr><td width="150" >이 름 :</td><td width="350" ><%= member.getUserName() %></td></tr>
+	<tr><td>아이디 : </td><td><input type=text name=userid readonly value="<%=member.getUserId() %>"></td></tr>
+	<tr><td>비밀번호 : </td><td><input type=password name=password  id=password></td></tr>
+	<tr><td>비밀번호확인: </td><td><input type=password name=password1 id=password1></td></tr>
 	<tr><td>생 일 :  </td><td><%=member.getBirthDate() %></td></tr>
-	<tr><td>전화번호 : </td><td><%=member.getPhone() %></td></tr>
-	<tr><td>이메일 : </td><td><%=member.getEmail() %></td></tr>
+	<tr><td>전화번호 : </td><td><input type=tel name=phone value="<%=member.getPhone() %>"></td></tr>
+	<tr><td>이메일 : </td><td><input type=email name=email value="<%=member.getEmail() %>"></td></tr>
 	<tr><td>성 별 : </td><td><%=member.getGender() %></td></tr>
-	<tr><td>우편번호 : </td><td><%=member.getZipCode() %></td></tr>
-	<tr><td>주 소 : </td><td><%=member.getAddress() %></td></tr>
+	<tr><td>우편번호 : </td><td><input type=text name=zcode value="<%=member.getZipCode() %>">
+				&nbsp;<input type = "button" value="우편번호 검색"></td></tr>
+	<tr><td>주 소 : </td>
+		<td>
+		<%
+			String addr = member.getAddress();
+		
+			String address = addr.substring(addr.indexOf('-')+2, addr.indexOf("동")+1);
+			String address2 = addr.substring(addr.indexOf("동")+2);
+		%>
+		<input type=text name=address value="<%= address %>"></td></tr>
+	<tr><td>상세주소 : </td><td><input type=text name=address2 value="<%= address2 %>"></td></tr>
 	<tr><td>회원등급 : </td><td><%
 			String gradeString= null;
 			switch(member.getGrade()){
@@ -381,19 +395,25 @@
 			case 4 : gradeString = "골드 회원"; break;
 			case 5 : gradeString = "플레티넘 회원"; break;
 			case 6 : gradeString = "다이아몬드 회원"; break;
-			default : gradeString = "새싹"; break;
+			default : gradeString = "새싹 회원"; break;
 			}%>
 			
 			 <%= gradeString %></td></tr>
 	<tr><td>가입일 : </td><td><%=member.getJoinDate() %></td></tr>
 	<tr><td colspan="2" align = "center">
-		<a href="mupView?userid=<%= member.getUserId() %>">수정페이지로 이동</a>
-		&nbsp;&nbsp; <a href="/arm/MainLogin.jsp">처음페이지로</a>
+		<input type = "submit" value="수정하기">
+		&nbsp;&nbsp; <a href="mdel?userid=<%= member.getUserId() %>">탈퇴하기</a>
+		&nbsp;&nbsp; <a href="/arm/Main.jsp">처음페이지로</a>
+		 <!--  <a href="mupdate">수정하기</a>
+		&nbsp;&nbsp; <a href="mdel?userid=<%= member.getUserId() %>">탈퇴하기</a>
+		&nbsp;&nbsp; <a href="/arm/Main.jsp">처음페이지로</a>
+	-->
 	</td></tr>
 	
 	</table>
-
-
+	<br><br>
+</form>
+</center>
 <!-----------------------------------------------------내용 끝-->
 </div><!--contents끝-->
 </div><!--wrapper:menu+contents 끝-->

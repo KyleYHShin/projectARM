@@ -300,7 +300,7 @@
 			<li class="topMenuLi"><a class="menuLink" href="nlist">고객센터</a></li>
 			<li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">장바구니</a></li>
           <li class="topMenuLi"><a class="menuLink" href="../logout">로그아웃</a></li>
-            <li class="topMenuLi"><a class="menuLink" >환영합니다! <%=loginUser.getUserName() %>님</a></li>
+            <li class="topMenuLi">환영합니다! <%=loginUser.getUserName() %>님</li>
          </ul>
 	</nav>
  
@@ -343,7 +343,7 @@
  <!-- 배너 -->
  <div id ="banner">
 	<!-- 배너클릭시 시작페이지로! -->
-	<a href="/arm/MainLogin.jsp"><img src="/arm/img/banner.png" alt = "시작페이지로"></a>
+	<a href="/arm/Main.jsp"><img src="/arm/img/banner.png" alt = "시작페이지로"></a>
  </div>
 <!-- ---------------------------내용 부분------------------------------------ -->
 <div id="wrapper">

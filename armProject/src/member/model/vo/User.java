@@ -3,10 +3,9 @@ package member.model.vo;
 public class User implements java.io.Serializable{
 
 	private String userId;
-	
 	private String userName;
 	private String grade;
-	private int discount;
+	private double discount;
 	
 	public User() {}
 
@@ -18,7 +17,7 @@ public class User implements java.io.Serializable{
 
 	
 
-	public User(String userId, String userName, String grade, int discount) {
+	public User(String userId, String userName, String grade, double discount) {
 		super();
 		this.userId = userId;
 		
@@ -54,11 +53,11 @@ public class User implements java.io.Serializable{
 		this.grade = grade;
 	}
 
-	public int getDiscount() {
+	public double getDiscount() {
 		return discount;
 	}
 
-	public void setDiscount(int discount) {
+	public void setDiscount(double discount) {
 		this.discount = discount;
 	}
 

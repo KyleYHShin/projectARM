@@ -16,7 +16,7 @@ public class NoticeDao {
 		Statement stmt = null;
 		ResultSet rset = null;
 		
-		String query = "select * from notice";
+		String query = "select * from notice order by notice_no desc";
 		
 		try {
 			stmt = con.createStatement();

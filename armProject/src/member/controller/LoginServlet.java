@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import member.model.dao.MemberDao;
+import member.model.service.MemberService;
 import member.model.vo.User;
 
 /**
@@ -45,16 +46,16 @@ public class LoginServlet extends HttpServlet {
 		
 		System.out.println(userId);
 		
-		String userName = new MemberDao().login(userId, userPwd);
+		User loginUser = new MemberService().login(userId, userPwd);
 		
-		if(userName != null) {
+		if(loginUser != null) {
 			HttpSession session = request.getSession(); //새로생성
 			System.out.println("session id : " + session.getId());
 //			session.setAttribute("loginName", userName);
-			User loginUser = new User(userId, userName);
+			
 			session.setAttribute("loginUser", loginUser);
 //			response.sendRedirect("member/loginsucces.jsp");
-			response.sendRedirect("MainLogin.jsp");
+			response.sendRedirect("Main.jsp");
 			
 		}else {
 			//실패했을시 불러올 화면

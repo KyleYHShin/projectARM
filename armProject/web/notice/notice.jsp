@@ -1,8 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ page import="java.util.ArrayList, admin.notice.model.vo.Notice" %>
+    <%@ page import="java.util.ArrayList, admin.notice.model.vo.Notice, member.model.vo.User" %>
     <%
     	ArrayList<Notice> list = (ArrayList<Notice>)request.getAttribute("list");
+ 		User loginUser = (User)session.getAttribute("loginUser");
     %>
 <!doctype html>
 <html lang="ko">
@@ -504,10 +505,16 @@
  <div id = "top_menu">
    <nav id="topMenu" >
         <ul>
-			<li class="topMenuLi"><a class="menuLink" href="/arm/notice/notice.jsp">고객센터</a></li>
+			<li class="topMenuLi"><a class="menuLink" href="nlist">고객센터</a></li>
 			<li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">장바구니</a></li>
-            <li class="topMenuLi"><a class="menuLink" href="">회원가입</a></li>
-            <li class="topMenuLi"><a class="menuLink" href="/arm/member/Login.jsp">로그인</a></li>
+        	<% if(loginUser != null){ %>
+			 <li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">MyPage</a></li>
+            <li class="topMenuLi"><a class="menuLink" href="logout">로그아웃</a></li>
+            <li class="topMenuLi"><a class="menuLink" >환영합니다! <%=loginUser.getUserName() %>님</a></li>
+            <%}else{ %>
+            <li class="topMenuLi"><a class="menuLink" href="/arm/member/MemberJoin.jsp">회원가입</a></li>
+             <li class="topMenuLi"><a class="menuLink" href="/arm/member/Login.jsp">로그인</a></li>
+            <%} %>
         </ul>
 	</nav>
  
@@ -573,8 +580,8 @@
 			for(Notice n:list){
 		%>
 		<tr class = "question"><td><%=n.getNoticeNo() %></td><td><%=n.getNoticeTitle() %></td><td><%=String.valueOf(n.getNoticeDate())%></td></tr>
-		<tr class = "answer"><td></td><td colspan ="2"></td><%=n.getContent() %></tr>
-								<td></td><td colspan ="2">첨부파일</td></tr>
+		<tr class = "answer"><td></td><td colspan ="2"><%=n.getContent() %><br>첨부파일</td></tr>
+							
 		<% } %>
 		</table>
 		</div>
