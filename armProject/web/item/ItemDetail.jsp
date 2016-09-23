@@ -1,5 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="java.util.ArrayList, java.util.HashMap, java.util.Collections, item.model.vo.*"%>
+<%
+	//User loginUser = (User)session.getAttribute("loginUser");
+	Item item = (Item)request.getAttribute("item");
+	ArrayList<SubItem> subItemList = (ArrayList<SubItem>)request.getAttribute("subItemList");
+	ArrayList<Question> questionList = (ArrayList<Question>)request.getAttribute("questionList");
+	ArrayList<Answer> answerList = (ArrayList<Answer>)request.getAttribute("answerList");
+	ArrayList<Review> reviewList = (ArrayList<Review>)request.getAttribute("reviewList");
+	HashMap<Integer, String> reviewHContent = (HashMap<Integer, String>)request.getAttribute("reviewHContent");
+%>
 <!doctype html>
 <html lang="ko">
   <meta charset="utf-8">
@@ -120,34 +130,31 @@
 			$(".comment").text(star_comment);
 		});
 
+		
 		/*버튼 클릭 시 선택 옵션 삭제*/
 		$(document).on('click', '.remove_order', function (){
 			$(this).parent().parent().remove();
 		});
-
-
-		/*옵션 선택시 테이블에 행 추가 버전2*/ 
-		$('select.p_opt_2').change(function(){
+		
+		/*----------------------16.09.22 기능 구현하면서 아래 사항 삭제하고 자바스크립트로 구현---*/
+		/*옵션 선택시 테이블에 행 추가 버전2
+		$('select.p_opt_1').change(function(){
 			var opt1 = $('.p_opt_1 option:selected').text();
-			var opt2 = $('.p_opt_2 option:selected').text();
-			var new_td = opt1 + " " + opt2;
-
-			if(opt1 != null && opt2 != null){
-				var html = "<tr><td>" + new_td + 
-				"</td><td><input type='number' class='Qty' name='Qty' min='1' width='10' value='1'>" 
-				+ "</td><td><button class='remove_order'><img src ='/arm/img/delete.png'></button>" + "</td></tr>";
+			
+			var html = "<tr><td>" + opt1 + 
+				"</td><td><input type='number' id='Qty' class='Qty' name='Qty' min='1' width='10' value='1'>" 
+				+ "</td><td><button class='remove_order'><img src ='/arm/img/delete.png'></button></td>"
+				+ "<td><input type='text' id='sub_price' style='width:auto'></td></tr>";
 
 				$('.p_selection').append(html);
 				$('.p_selection button').attr('class', 'remove_order');
-
-			}else{
-				alert("옵션을 모두 선택하세요");
-			}
-		});
-
+		});*/ 
+		
 	});
+	
+	  
   </script>
-  
+ 
   <style type="text/css">
 	body {
 		min-width : 240px;
@@ -946,19 +953,19 @@
 	<div class="content">
 		<div class="product">
 			<form method="post" action="장바구니 jsp로 이동하게">
-			<input type="hidden" name="pId" value="상품 아이디">
 			<div class="pImage">
-				<img src="images/good.gif">
+				<img src="<%= item.getItemImg() %>"><!-- pImage div에선 이 옆에만 수정 -->
 			</div>
 			<!--pImage-->
 
+<!-------------------- 이 밑으로는 표시한 부분까지 다 수정함  ------------------------------------------------------------->
 			<div class="pTable">
-			
+	
 			<table>
 			<tr height="50">
 				<td width="200">상품명 : </td>
 				<td id="pName" width="300">
-					<input type="text" name="pName" value="상품명" readonly>
+					<input type="text" name="pName" value="<%= item.getItemName() %>" readonly>
 				</td>
 			</tr>
 			</table>
@@ -967,12 +974,12 @@
 			<tr height="40">
 				<td width="200">가격 : </td>
 				<td id="pPrice" width="300">
-					<input type="text" name="pPrice" value="상품가격" readonly>
+					<input type="text" name="pPrice" value="<%= item.getItemPrice() %>" readonly>
 				</td>
 			</tr>
 			<tr>
 				<td>배송비 : </td>
-				<td id="shippingCost" align="right">2500</td>
+				<td><input type="text" name="shippingCost" value="2500" readonly></td>
 			</tr>
 			</table>
 			<br>
@@ -981,30 +988,28 @@
 			<tr height="40">
 				<td width="200">옵션1 : </td>
 				<td id="opt1" width="300">
-					<select name="p_opt_1" class="p_opt_1" style = "width : 95%;">
-						<option value="" selected> -------
-						<option value="p_opt_1-1"> 첫번째 옵션
-						<option value="p_opt_1-2"> 두번째 옵션
-						<option value="p_opt_1-3"> 세번째 옵션
-						<option value="p_opt_1-4"> 네번째 옵션
+					<select name="p_opt_1" id="p_opt_1" class="p_opt_1" style = "width : 95%;" onchange="add_tr();">
+						<option> 옵션을 선택하세요</option>
+						<% 
+							for (SubItem sub : subItemList){
+						%>
+							<option value="<%= sub.getItemSubName() %>">
+								<%= sub.getItemSubName() %>
+							</option>
+						<% } %>
 					</select>
+					<%
+						for (SubItem sub : subItemList) {
+					%>
+						<input type="hidden" id="<%= sub.getItemSubName() %>" value="<%= sub.getItemSubPrice()%>">
+					<% } %>
 				</td>
 			</tr>
-			<tr height="40">
-				<td>옵션2: </td>
-				<td id="opt2">
-					<select name="p_opt_2" class="p_opt_2" style = "width : 95%;">
-						<option value="" selected> -------
-						<option value="p_opt_2-1"> 2의 첫번째 옵션
-						<option value="p_opt_2-2" > 2의 두번째 옵션
-						<option value="p_opt_2-3" > 2의 세번째 옵션
-					</select>
-				</td>
-			</tr>
+			
 			<tr height="60">
 				<td colspan="2">
 					<div style="width:100%; height:80px; overflow:auto">
-					<table class="p_selection" align="center">
+					<table class="p_selection" id="p_selection" align="center">
 						<!--옵션 선택 시 동적으로 행 추가되는 부분-->
 					</table>
 					</div><!--주문목록 길어질 경우 스크롤 달아주려고 만든 div-->
@@ -1041,7 +1046,7 @@
     </ul>
     <div class="tab_container">
         <div id="tab1" class="tab_content">
-			<img src="items_detail/01.jpg">			
+			<img src="<%= item.getItemImgDt() %>">			
         </div>
         <!-- #tab1 -->
         <div id="tab2" class="tab_content">
@@ -1065,36 +1070,56 @@
 			<br>
 
 			<div class="loaded_qna">
-				<div class="p_Q">
-					<table border="1px solid gray" id="qna_table">
-						<tr>
-							<td id="loaded_td1"><input type="text" name="qna_category" value="[질문]" readonly></td>
-							<td id="loaded_td2"><input type="text" name="qna_ID" value="작성자 ID" readonly></td>
-							<td><input type="text" name="q_date" value="작성일자" readonly></td>
-						</tr>
-						<tr>
-							<td colspan="3"><textarea name="q_content" rows="" cols="">문의</textarea></td>
-						</tr>
-					</table>
-				</div><!--p_Q-->
-				<br>
-				<div class="p_A">
-					<table border="1px solid gray" id="qna_table">
-						<tr>
-							<td id="loaded_td1"><input type="text" name="qna_category" value="[답변]" readonly></td>
-							<td id="loaded_td2"><input type="text" name="a_ID" value="답변자 ID" readonly></td>
-							<td><input type="text" name="a_Date" value="답변일자" readonly></td>
-						</tr>
-						<tr>
-							<td colspan="3"><textarea name="a_content" rows="" cols="">답변</textarea></td>
-						</tr>
-					</table>
-				</div>
-				<br>
+				<%
+				if(questionList != null){
+					//최근 등록된 문의내역부터 출력되도록 리스트 역정렬
+					Collections.reverse(questionList);
+					for(int i = 0; i < questionList.size(); i++) {
+				%>			
+					<div class="p_Q">
+						<table border="1px solid gray" id="qna_table">
+							<tr>
+								<td id="loaded_td1"><input type="text" name="qna_category" value="[질문]" readonly></td>
+								<td id="loaded_td2"><input type="text" name="qna_ID" value="<%= questionList.get(i).getmId() %>" readonly></td>
+								<td><input type="text" name="q_date" value="<%= questionList.get(i).getqDate() %>" readonly></td>
+							</tr>
+							<tr>
+								<td colspan="3"><textarea name="q_content" rows="" cols=""> <%= questionList.get(i).getqContent() %></textarea></td>
+							</tr>
+						</table>
+					</div><!--p_Q-->
+					<br>	
+				<%
+						//문의번호와 answer객체의 문의번호가 일치할 시 바로 밑에 답변 출력
+						for(int j = 0; j < answerList.size(); j++){
+							if(questionList.get(i).getqNo() == answerList.get(j).getqNo()){
+				%>
+							<div class="p_A">
+								<table border="1px solid gray" id="qna_table">
+									<tr>
+										<td id="loaded_td1"><input type="text" name="qna_category" value="[답변]" readonly></td>
+										<td id="loaded_td2"><input type="text" name="a_ID" value="팔로 Follow Me" readonly></td>
+										<td><input type="text" name="a_Date" value="<%= answerList.get(j).getaDate() %>" readonly></td>
+									</tr>
+									<tr>
+										<td colspan="3"><textarea name="a_content" rows="" cols=""> <%= answerList.get(j).getaContent() %></textarea></td>
+									</tr>
+								</table>
+							</div>
+							<br>
+				<%			
+							}	
+						}
+					}
+				} else {
+				%>		
+				<h3>아직 작성된 문의 내역이 없습니다.</h3>
+				<% } %>
 			</div>
 			<!--loaded_qna-->
 		</div>
         <!-- #tab3 -->
+        
 		<div id="tab4" class="tab_content">
 			<div class="review_input">
 				<table>
@@ -1128,21 +1153,47 @@
 			<!--review_input 끝-->
 			<hr>
 			<br>
-			
+			<%
+			if(reviewList != null){
+				//최근 등록된 후기부터 출력되도록 리스트 역정렬
+				Collections.reverse(reviewList);
+				for(Review r : reviewList) {
+					//후기에 저장된 별점에 따라 코멘트 출력
+					StringBuilder scoreWithComment = new StringBuilder();
+										
+					switch(r.getScore()) {
+					case 1 : scoreWithComment.append("★ "); scoreWithComment.append(reviewHContent.get(1)); break;
+					case 2 : scoreWithComment.append("★★ "); scoreWithComment.append(reviewHContent.get(2)); break;
+					case 3 : scoreWithComment.append("★★★ "); scoreWithComment.append(reviewHContent.get(3)); break;
+					case 4 : scoreWithComment.append("★★★★ "); scoreWithComment.append(reviewHContent.get(4)); break;
+					case 5 : scoreWithComment.append("★★★★★ "); scoreWithComment.append(reviewHContent.get(5)); break;
+				    }
+	
+			%>
+				
 			<div class="p_review">
 				<table border="1px solid gray" id="r_table">
 					<tr>
-						<td id="review_td1"><input type="text" name="review_id" value="작성자 id" readonly></td>
-						<td id="review_td2"><input type="text" name="review_star" value="★★★" readonly style = "color:#ffcc00;"></td>
-						<td><input type="text" name="review_date" value="작성일자" readonly></td>
+						<td id="review_td1"><input type="text" name="review_id" value="<%= r.getmId() %>" readonly></td>
+						<td id="review_td2"><input type="text" name="review_star" value="<%= scoreWithComment %>" readonly style = "color:#ffcc00;"></td>
+						<td><input type="text" name="review_date" value="<%= r.getReviewDate() %>" readonly></td>
 					</tr>
 					<tr>
-						<td colspan="3"><textarea name="review_content" rows="" cols="">후기 </textarea></td>
+						<td colspan="3"><textarea name="review_content" rows="" cols=""> <%= r.getReviewContent() %> </textarea></td>
 					</tr>
 				</table>
 				<br>
 			</div><!--p_review-->
-		</div>
+			<% 
+				}
+			} else {
+			%>
+				아직 등록된 후기가 없습니다.
+			<% 		
+			}
+			%>
+			
+		</div><!-- .tab_content -->
     </div>
     <!-- .tab_container -->
    </div><!--tabArea-->
@@ -1151,6 +1202,7 @@
 	</div><!--content-->
 
 	</div><!-- fix+item_list -->
+<!--------------------------------------------------------------여기까지 뜯어고침 ------------------------------>
 	
 	<!-- top버튼 -->
 	<div style="position:fixed; bottom:10px; right:10px; z-index : 9999;">
@@ -1182,6 +1234,40 @@
 		
 	</div>
 	</footer>
+
+
+<!------------------------------------- 16.09.22 옵션 선택에 따라 동적으로 선택된 상품 정보를 출력하는 함수 추가 -------------->
+	<script type="text/javascript">
+	  function add_tr(){
+		option = document.getElementById('p_selection');
+		tr = option.insertRow(option.rows.length);
+	
+		td1 = tr.insertCell(0);
+		td2 = tr.insertCell(1);
+		td3 = tr.insertCell(2);
+		td4 = tr.insertCell(3);
+	
+		var select = document.getElementById('p_opt_1');
+		var selected_sub = select.options[select.selectedIndex].text;
+		var selected_sub_price = document.getElementById(selected_sub).value;
+	
+		td1.innerHTML = selected_sub;
+		td2.innerHTML = "<input type='number' id='Qty' class='Qty' name='Qty' min='1' width='10' value='1' onchange='update_sub_price(this);'>";
+		td3.innerHTML = "<button class='remove_order'><img src ='/arm/img/delete.png'></button>";
+		
+		if(selected_sub_price != 0)
+			td4.innerHTML = selected_sub_price;
+	  }
+	  
+	  function delete_tr(obj){
+		var tr = obj.parentNode.parentNode;
+		tr.parentNode.removeChild(tr);
+	  }
+	  
+	  function update_sub_price(obj){
+		
+	  }
+	</script>
 
  </body>
 </html>
