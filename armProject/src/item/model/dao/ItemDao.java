@@ -241,7 +241,16 @@ public class ItemDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
-		String query = "select count(*) from item where item_cat_no = ?";
+		String catQry = null;
+		int maxCatNo = 0;
+		if(categoryNo%100 != 0){//예;101이상~199이하
+			catQry = "item_cat_no = ?";
+		}else {
+			maxCatNo = categoryNo+99;
+			catQry = "item_cat_no between ? and "+maxCatNo;
+			//categoryNo~ categoryNo+99
+		}
+		String query = "select count(*) from item where "+catQry;
 		
 		try {
 			pstmt = con.prepareStatement(query);
