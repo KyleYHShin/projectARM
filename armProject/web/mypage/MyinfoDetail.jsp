@@ -78,6 +78,19 @@
 	        }).open();
 	      }
  	$(function(){
+ 		$("#userpwd2").keyup(function(){
+			if($("#userpwd2").val()!=$("#userpwd1").val()){
+				$("#ckpwd").html("비밀번호가 일치하지 않습니다.");
+				$("#ckpwd").css("font-size","9pt").css("color","red");
+				$("input[type=submit]").attr("disabled", true);
+				$("input[type=submit]").css("background", "gray").css("border","gray 1px solid");
+			}else{
+				$("#ckpwd").html("비밀번호가 일치합니다.");
+				$("#ckpwd").css("font-size","9pt").css("color","blue");
+				$("input[type=submit]").attr("disabled", false);
+				$("input[type=submit]").css("background", "red").css("border","red 1px solid");
+			}
+		});
 		//퀵바 토글 - 퀵바 고정위치를 클릭시마다 바뀌게 하면서 trasition효과
 		var onoff = 0;
 		$("#qBtn").click(function(){
@@ -326,11 +339,16 @@
 		BORDER-TOP : 2px solid black;
 		BORDER-BOTTOM : 0;
 	}
-	#infoTb button{
+	#infoTb td a{
+		display : block;
+		text-align : center;
 		background : green;
 		border : 1px solid green;
 		color : white;
 		float : left;
+		text-decoration:none;
+		width : 70px;
+		line-height : 20px;
 	}
 	#infoTb td input[type=submit]{
 		float : right;
@@ -479,10 +497,10 @@
 		<th>아 이 디</th><td><input type="text" name="userid" value="<%= member.getUserId() %>" readonly></td>
 	</tr>
 	<tr>
-		<th>비밀번호</th><td><input type = "password" name="password"></td>
+		<th>비밀번호</th><td><input type = "password" id="userpwd1" name="password" required></td>
 	</tr>
 	<tr>
-		<th>비밀번호확인</th><td><input type = "password" name="password1"></td>
+		<th>비밀번호확인</th><td><input type = "password" id="userpwd2" name="password1" required> <span id="ckpwd"></span></td>
 	</tr>
 	<tr>
 		<th>생&nbsp; &nbsp; 일</th><td><%= member.getBirthDate() %></td>
@@ -526,8 +544,6 @@
 		<td><input type="text" id="address2" name="address2" placeholder="상세주소" size="45"></td>
 	</tr>
 	<%	} %>
-		
-
 	<!-- 주소 api끗-->
 	<tr>
 		<th>회원등급</th>
@@ -549,7 +565,7 @@
 		<th>가 입 일</th><td><%= member.getJoinDate() %></td>
 	</tr>
 	<tr>
-		<td colspan="2"><button onclick="mdel?userid=<%= member.getUserId() %>">탈퇴하기</button>
+		<td colspan="2"><a href="mdel?userid=<%= member.getUserId() %>">탈퇴하기</a>
 		<input type = "submit" value="수정하기">
 		</td>
 	</tr>
