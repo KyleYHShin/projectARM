@@ -91,8 +91,7 @@
 		%>
 			<tr>
 				<td><%= si.getItemSubNo() %></td>
-				<td width= "50%">
-				<%= si.getItemSubName() %></td>
+				<td><%= si.getItemSubName() %></td>
 				<td><%= si.getItemSubPrice() %></td>
 				<td><%= si.getQuantity() %></td>
 			</tr>

@@ -99,7 +99,7 @@
 		%>
 			<tr>
 				<td><%= i.getItemNo() %></td>
-				<td><a href="SubItemViewServlet?itemNo=<%= i.getItemNo() %>">
+				<td><a href="/arm/SubItemViewServlet?itemNo=<%= i.getItemNo() %>">
 				<%= i.getItemName() %></a></td>
 				<td><%= i.getItemCatNo() %></td>
 				<td><%= i.getItemPrice() %></td>
@@ -113,8 +113,8 @@
 			</tr>
 		<% } %>
 	</table>
-<p/><a href = "/arm/admin/AdminMain.jsp">메인페이지로</a> &nbsp; &nbsp;
-<a href = "/arm/ItemViewServlet">상품 목록 보기</a>
+<p/><a href = "/arm/admin/AdminMain.jsp">관리자 메인페이지</a> &nbsp; &nbsp;
+<a href = "/arm/ItemViewServlet">상품 전체목록 보기</a>
 </center>
 	
 </body>

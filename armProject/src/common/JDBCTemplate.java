@@ -9,12 +9,12 @@ public class JDBCTemplate {
 	}
 
 	public static Connection getConnection() {
-		String driver = "oracle.jdbc.driver.OracleDriver";
-		String url = "jdbc:oracle:thin:@127.0.0.1:1521:xe";
-		String user = "arm";
-		String password = "arm";
-
 		Connection con = null;
+		String driver = "oracle.jdbc.driver.OracleDriver";
+			String url = "jdbc:oracle:thin:@127.0.0.1:1521:xe";
+			String user = "arm";
+			String password = "arm";
+
 
 		try {
 			Class.forName(driver);
@@ -30,8 +30,9 @@ public class JDBCTemplate {
 
 	public static void close(Connection con) {
 		try {
-			if (!con.isClosed())
+			if (!con.isClosed()){
 				con.close();
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -40,8 +41,9 @@ public class JDBCTemplate {
 
 	public static void close(PreparedStatement pstmt) {
 		try {
-			if (!pstmt.isClosed())
+			if (!pstmt.isClosed()){
 				pstmt.close();
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -50,8 +52,9 @@ public class JDBCTemplate {
 
 	public static void close(Statement stmt) {
 		try {
-			if (!stmt.isClosed())
+			if (!stmt.isClosed()){
 				stmt.close();
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -60,8 +63,9 @@ public class JDBCTemplate {
 
 	public static void close(ResultSet rset) {
 		try {
-			if (!rset.isClosed())
+			if (!rset.isClosed()){
 				rset.close();
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -70,8 +74,9 @@ public class JDBCTemplate {
 
 	public static void commit(Connection con) {
 		try {
-			if (!con.isClosed())
+			if (!con.isClosed()){
 				con.commit();
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -80,8 +85,9 @@ public class JDBCTemplate {
 
 	public static void rollback(Connection con) {
 		try {
-			if (!con.isClosed())
+			if (!con.isClosed()){
 				con.rollback();
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

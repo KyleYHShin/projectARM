@@ -20,4 +20,21 @@ public class ItemService {
 		return list;
 	}
 
+	public ArrayList<Item> selectItem(int itemNo, String keyword) {
+		Connection con = getConnection();
+		ArrayList<Item> list = null;
+		
+		if(itemNo == 1){
+			itemNo = Integer.parseInt(keyword);
+			list = new ItemDao().selectId(con, itemNo);
+		}else if(itemNo == 2){
+			list = new ItemDao().selectName(con, keyword);
+		}else if(itemNo == 3){
+			list = new ItemDao().selectTag(con, keyword);
+		}
+		
+		close(con);
+		return list;
+	}
+
 }

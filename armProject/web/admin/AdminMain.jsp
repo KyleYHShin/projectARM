@@ -554,7 +554,7 @@
  <div id = "top_menu">
    <nav id="topMenu" >
         <ul>
-        	<li class="topMenuLi"><a class="menuLink" href="ItemViewServlet">관리자</a></li>
+        	<li class="topMenuLi"><a class="menuLink" href="/arm/ItemViewServlet">관리자</a></li>
 			<li class="topMenuLi"><a class="menuLink" href="/arm/notice/notice.jsp">고객센터</a></li>
 			<li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">장바구니</a></li>
             <li class="topMenuLi"><a class="menuLink" href="">회원가입</a></li>
