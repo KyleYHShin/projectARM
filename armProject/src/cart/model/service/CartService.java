@@ -52,4 +52,19 @@ public class CartService {
 		return result;
 	}
 
+	public int deleteCartSelect(int[] cartNumbers) {
+		Connection con = getConnection();
+		int result = new CartDao().deleteCartSelect(con, cartNumbers);
+		
+		if (result > 0) {
+			commit(con);
+		} else {
+			rollback(con);
+		}
+		
+		close(con);
+		
+		return result;
+	}
+
 }

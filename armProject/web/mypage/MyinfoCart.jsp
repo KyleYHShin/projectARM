@@ -14,10 +14,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MyPage:Cart</title>
 
-
 <link href="/arm/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-
 
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -55,10 +52,30 @@
 			$("#recent_list").slideUp("fast");
 			$("#cart_list").slideDown("fast");
 		});
-		/*x버튼누르면 해당 행 삭제 css에서만... */
-		$(document).on('click', '.item_remove', function() {
-			$(this).parent().parent().remove();
+
+		//전체선택
+		var selected = false;
+		$("#btn_select_all").click(function() {
+			/* window.alert('동작'); */
+			var checkboxes = document.getElementsByName('ck_item_select');
+			var total = checkboxes.length;
+			
+			if (!select) {
+				window.alert('select = 0');
+				for (var i = 0; i < total; i++) {
+					checkboxes[i].checked = true;
+					selected = true;
+				}
+			} else {
+				window.alert('select = 1');
+				for (var i = 0; i < total; i++) {
+					checkboxes[i].checked = false;
+					selected = false;
+				}
+			}
 		});
+
+		//선택 상품 삭제
 	});
 </script>
 <style type="text/css">
@@ -289,18 +306,32 @@ nav#topMenu {
 	width: 100%;
 }
 
-#cart_table table {
+#cart_table #cart_top {
+	margin: 0 auto;
 	width: 95%;
+}
+
+#cart_table #cart_top #btn_select_all {
+	float: left;
+	border: 1px solid green;
+	background: green;
+	color: white;
+}
+
+#cart_table #cart {
+	width: 95%;
+	margin-top: 3px;
 	BORDER-TOP: 2px solid black;
 	BORDER-BOTTOM: 2px solid black;
 	text-align: center;
+	BORDER-TOP: 2px solid black;
 }
 
-#cart_table table tr {
+#cart_table #cart tr {
 	BORDER-BOTTOM: 1px solid gray;
 }
 
-#cart_table table th {
+#cart_table #cart th {
 	background: #ffff99;
 	text-align: center;
 }
@@ -494,10 +525,15 @@ footer #fwrap {
 						완&nbsp;&nbsp;&nbsp;&nbsp;료</label>
 				</div>
 				<div id="cart_table">
-					<table align="center" cellspacing="0" cellpadding="10px">
+					<table id="cart_top">
 						<tr>
-							<th width="30px"><input type="checkbox"></th>
-							<th>전체선택</th>
+							<td><button id="btn_select_all">전체 선택</button></td>
+						</tr>
+					</table>
+					<table id="cart" align="center" cellspacing="0" cellpadding="10px">
+						<tr>
+							<th width="30px"></th>
+							<th>상품 이미지</th>
 							<th width="400px">상품설명</th>
 							<th width="150px">수량</th>
 							<th width="150px">상품가격</th>
@@ -515,13 +551,13 @@ footer #fwrap {
 							%>
 						
 						<tr>
-							<td><input type="checkbox" class="item_remove_select"></td>
+							<td><input type="checkbox" name="ck_item_select"></td>
 							<td><img class="item_img" src="<%=c.getItem_img_mini()%>"></td>
 							<td>상품명:<%=c.getItem_name()%><br>옵션명: <%=c.getItem_sub_name()%>
 							</td>
 							<td>
 								<form
-									action="/arm/CartUpdate?userId=user01&cartNo=<%=String.valueOf(c.getCart_no())%>"
+									action="/arm/CartUpdate?cartNo=<%=String.valueOf(c.getCart_no())%>"
 									method="post">
 									<input type="number" name="item_qty" class="item_qty" min="1"
 										max="99" value="<%=c.getQuantity()%>"> <input

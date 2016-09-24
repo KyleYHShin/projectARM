@@ -21,8 +21,7 @@ public class CartDao {
 		String sql = "select cart_no, " + " cart_item_no, item_name, item_img_mini, item_price, "
 				+ " cart_item_sub_no, item_sub_name, item_sub_price, " + " cart_qty " + " from cart "
 				+ " inner join item on cart.cart_item_no = item.item_no " + " inner join item_sub on cart.cart_item_sub_no = item_sub.item_sub_no"
-				+ " where cart_m_id = ? "
-				+ " order by cart_no desc";
+				+ " where cart_m_id = ? " + " order by cart_no desc";
 
 		try {
 			pstmt = con.prepareStatement(sql);
@@ -97,6 +96,36 @@ public class CartDao {
 		try {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, cartNo);
+
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
+	public int deleteCartSelect(Connection con, int[] cartNumbers) {
+		int result = 0;
+
+		PreparedStatement pstmt = null;
+
+		String sql = "delete from cart where CART_NO = ?";
+		for (int i = 0; i < cartNumbers.length; i++) {
+			if (i > 0) {
+				sql += " or CART_NO = ?";
+			}
+		}
+
+		try {
+			pstmt = con.prepareStatement(sql);
+			for (int i = 0; i < cartNumbers.length; i++) {
+				if (i == 0) {
+					pstmt.setInt(i + 1, cartNumbers[i]);
+				}
+			}
 
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {

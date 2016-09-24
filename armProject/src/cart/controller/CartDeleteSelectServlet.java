@@ -12,16 +12,16 @@ import cart.model.service.CartService;
 import member.model.vo.User;
 
 /**
- * Servlet implementation class CartDeleteServlet
+ * Servlet implementation class CartDeleteSelectServlet
  */
-@WebServlet("/CartDelete")
-public class CartDeleteServlet extends HttpServlet {
+@WebServlet("/CartDeleteSelect")
+public class CartDeleteSelectServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public CartDeleteServlet() {
+	public CartDeleteSelectServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -36,15 +36,20 @@ public class CartDeleteServlet extends HttpServlet {
 		response.setCharacterEncoding("text/html; charset=utf-8");
 
 		// 2.
-		int cartNo = Integer.parseInt(request.getParameter("cartNo"));
+		// 선택 삭제 시 장바구니 번호 배열로 전달 받음
+		int cartNumbers[] = null;//수정 필요
+		int result = 0;
 
-		int result = new CartService().deleteCart(cartNo);
+		// 전달받은 장바구니 번호가 한개 이상일 경우만 동작
+		if (cartNumbers.length > 0) {
+			result = new CartService().deleteCartSelect(cartNumbers);
+		}
 
 		// 3.
 		if (result > 0) {
-			System.out.println("장바구니 Delete 성공");
+			System.out.println("장바구니 DeleteSelect 성공");
 		} else {
-			System.out.println("장바구니 Delete 실패");
+			System.out.println("장바구니 DeleteSelect 실패");
 		}
 		response.sendRedirect("/arm/CartView");
 	}

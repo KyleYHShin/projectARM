@@ -147,7 +147,14 @@ order by cart_no desc;
 
 insert into cart values(seq_cart_no.nextval, 'user01', 1, 1, 10);
 insert into cart values(seq_cart_no.nextval, 'user01', 2, 4, 1);
+
+insert into cart values(seq_cart_no.nextval, 'user02', 1, 2, 3);
+insert into cart values(seq_cart_no.nextval, 'user02', 1, 2, 3);
 commit;
+
+delete from cart
+where cart_no = 9 or 
+cart_no = 10;
 
 --purchase Test----------------------
 insert into purchase values(seq_purchase_no.nextval, 'user01', 23000, 2500, sysdate, null);

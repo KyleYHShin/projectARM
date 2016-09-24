@@ -49,9 +49,9 @@ public class PurchaseViewServlet extends HttpServlet {
 		// 3.
 		RequestDispatcher view = request.getRequestDispatcher("/mypage/MyinfoPurchase.jsp");
 		if (purchaseList != null) {
-			System.out.println("Purchase View Success");
+			System.out.println("구매목록 Load 성공");
 		} else {
-			System.out.println("Purchase View Fail");
+			System.out.println("구매목록 Load 실패");
 		}
 		request.setAttribute("purchaseList", purchaseList);
 		view.forward(request, response);

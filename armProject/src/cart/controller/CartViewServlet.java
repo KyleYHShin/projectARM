@@ -50,9 +50,9 @@ public class CartViewServlet extends HttpServlet {
 		// 3.
 		RequestDispatcher view = request.getRequestDispatcher("/mypage/MyinfoCart.jsp");
 		if (cartList != null) {
-			System.out.println("Cart View Success");
+			System.out.println("장바구니 Load 성공");
 		} else {
-			System.out.println("Cart View Fail");
+			System.out.println("장바구니 Load 실패");
 		}
 		request.setAttribute("cartList", cartList);
 		view.forward(request, response);

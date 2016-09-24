@@ -9,9 +9,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import cart.model.service.CartService;
 import cart.model.vo.Cart;
+import member.model.vo.User;
 
 /**
  * Servlet implementation class CartUpdateServlet
@@ -38,20 +40,18 @@ public class CartUpdateServlet extends HttpServlet {
 		response.setCharacterEncoding("text/html; charset=utf-8");
 
 		// 2.
-		String userId = request.getParameter("userId");
 		int cartNo = Integer.parseInt(request.getParameter("cartNo"));
 		int cartQty = Integer.parseInt(request.getParameter("item_qty"));
-
+	
 		int result = new CartService().updateCart(cartNo, cartQty);
 
 		// 3.
 		if (result > 0) {
-			System.out.println("update success");
-			response.sendRedirect("/arm/CartView?userId=" + userId);
+			System.out.println("장바구니 Update 성공");
 		} else {
-			System.out.println("update fail");
-			response.sendRedirect("/arm/CartView?userId=" + userId);
+			System.out.println("장바구니 Update 실패");
 		}
+		response.sendRedirect("/arm/CartView");
 	}
 
 }
