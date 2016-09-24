@@ -1,6 +1,8 @@
 package admin.subitem.controller;
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,16 +13,16 @@ import admin.subitem.model.service.SubItemService;
 import admin.subitem.model.vo.SubItem;
 
 /**
- * Servlet implementation class SubItemInsertServlet
+ * Servlet implementation class SubItemUpdateViewServlet
  */
-@WebServlet("/asinsert")
-public class SubItemInsertServlet extends HttpServlet {
+@WebServlet("/asupview")
+public class SubItemUpdateViewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public SubItemInsertServlet() {
+    public SubItemUpdateViewServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -29,28 +31,20 @@ public class SubItemInsertServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//서브아이탬 추가
+		//update view 서블릿
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html; charset=utf-8");
 		
-		String itemSubName = request.getParameter("sname");
 		int itemNo = Integer.parseInt(request.getParameter("itemno"));
-		int itemSubPrice = Integer.parseInt(request.getParameter("sprice"));
-		int itemSubQty = Integer.parseInt(request.getParameter("sqty"));
-		System.out.println(itemNo);
+		int itemSubNo = Integer.parseInt(request.getParameter("subno"));
 		
-		SubItem subItem = new SubItem();
-		subItem.setItemSubName(itemSubName);
-		subItem.setItemSubPrice(itemSubPrice);
-		subItem.setQuantity(itemSubQty);
-		
-		int result = new SubItemService().insertSubItem(itemNo, subItem);
-		
-		if(result > 0){
-			response.sendRedirect("SubItemViewServlet?itemNo="+itemNo);
+		SubItem subItem = new SubItemService().selectOne(itemSubNo);
+		if(subItem != null){
+			RequestDispatcher view = request.getRequestDispatcher("SubItemViewServlet?itemNo="+itemNo);
+			request.setAttribute("subitem", subItem);
+			view.forward(request, response);
 		}else{
-			//오류
-			System.out.println("상품추가오류");
+			System.out.println("update view 서블릿 오류..");
 		}
 	}
 

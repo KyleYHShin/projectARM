@@ -21,4 +21,52 @@ public class SubItemService {
 		return list;
 	}
 
+	public int insertSubItem(int itemNo, SubItem subItem) {
+		Connection con = getConnection();
+		int result = new SubItemDao().insertSubItem(con, itemNo, subItem);
+		
+		if(result > 0){
+			commit(con);
+		}else{
+			rollback(con);
+		}
+		
+		return result;
+	}
+
+	public int deleteOne(int itemSubNo) {
+		Connection con = getConnection();
+		int result = new SubItemDao().deleteOne(con, itemSubNo);
+		
+		if(result > 0){
+			commit(con);
+		}else{
+			rollback(con);
+		}
+		close(con);
+		return result;
+	}
+
+	public SubItem selectOne(int itemSubNo) {
+		Connection con = getConnection();
+		
+		SubItem subItem = new SubItemDao().selectOne(con, itemSubNo);
+		
+		close(con);
+		return subItem;
+	}
+
+	public int updateOne(SubItem subItem) {
+		Connection con = getConnection();
+		int result = new SubItemDao().updateOne(con, subItem);
+		
+		if(result > 0){
+			commit(con);
+		}else{
+			rollback(con);
+		}
+		close(con);
+		return result;
+	}
+
 }

@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import admin.item.model.service.ItemService;
+import admin.item.model.vo.Item;
 import admin.subitem.model.service.SubItemService;
 import admin.subitem.model.vo.SubItem;
 
@@ -46,15 +48,19 @@ public class SubItemViewServlet extends HttpServlet {
 		int itemNo = Integer.parseInt(request.getParameter("itemNo"));
 
 		ArrayList<SubItem> list = new SubItemService().selectAll(itemNo);
+		//item객체 얻어오기
+		Item item = new ItemService().selectOne(itemNo);
 		
 		RequestDispatcher view = null;
 		if(list != null){
 			view = request.getRequestDispatcher("admin/SubItemListView.jsp");
 			request.setAttribute("list", list);
+			request.setAttribute("item", item);
 			view.forward(request, response);
 		}else{
 			view = request.getRequestDispatcher("admin/SubItemListView.jsp");
 			request.setAttribute("msg", "등록된 옵션이 없습니다.");
+			request.setAttribute("item", item);
 			view.forward(request, response);
 		}
 	}
