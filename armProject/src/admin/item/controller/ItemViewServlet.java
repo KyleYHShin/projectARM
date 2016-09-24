@@ -1,11 +1,17 @@
 package admin.item.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import admin.item.model.service.ItemService;
+import admin.item.model.vo.Item;
 
 /**
  * Servlet implementation class ItemViewServlet
@@ -27,15 +33,25 @@ public class ItemViewServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		doPost(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		request.setCharacterEncoding("utf-8");
+		response.setContentType("text/html; charset=utf-8");
+		
+		ArrayList<Item> list = new ItemService().selectAll();
+		
+		RequestDispatcher view = null;
+		if(list != null){
+			view = request.getRequestDispatcher("admin/ItemListView.jsp");
+			request.setAttribute("list", list);
+			view.forward(request, response);
+		}else{
+			// 에러페이지 출력
+		}
 	}
-
 }
