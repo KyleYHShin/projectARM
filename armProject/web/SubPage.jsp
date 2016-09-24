@@ -719,7 +719,7 @@ String keyword = (String)request.getAttribute("keyword");
            for(Item i : list){ %>
             <section class="item_box">
 			<!-- 클릭시 상세 페이지로 이동하도록. -->
-                <a href = "/arm/item/ItemDetail.jsp"><table>
+                <a href = "/arm/ItemDetailViewServlet?itemNo=1"><table>
                     <tr> <td class="item_img"><img src=<%= i.getItemTH() %>><td></tr>
                     <tr> <td class="item_name"><%= i.getItemName() %><td></tr>
 					<% if (loginUser != null) {%>

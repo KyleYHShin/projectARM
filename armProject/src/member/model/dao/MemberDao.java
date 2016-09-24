@@ -29,8 +29,6 @@ public class MemberDao {
 				loginUser.setUserName(rset.getString("user_name"));
 				loginUser.setGrade(rset.getString("grade_name"));
 				loginUser.setDiscount(rset.getDouble("discount"));
-				
-				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -60,10 +58,7 @@ public class MemberDao {
 			pstmt.setString(7, member.getEmail());
 			pstmt.setString(8, member.getZipCode());
 			pstmt.setString(9, member.getAddress());
-			
-		
-			
-		
+
 			result = pstmt.executeUpdate();
 			if(result>0)
 				commit(con);
@@ -105,9 +100,6 @@ public class MemberDao {
 				member.setZipCode(rset.getString("m_zipcode"));
 				member.setAddress(rset.getString("m_address"));
 				member.setJoinDate(rset.getDate("m_joindate"));
-				
-				
-				
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -161,7 +153,6 @@ public class MemberDao {
 			pstmt.setString(5, member.getAddress());
 			pstmt.setString(6, member.getUserId());
 			
-					
 			result = pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -170,11 +161,5 @@ public class MemberDao {
 			close(pstmt);
 		}
 		return result;
-		
-	
 	}
-
-
-
-	
 }

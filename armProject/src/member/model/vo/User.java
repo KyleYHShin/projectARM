@@ -3,7 +3,6 @@ package member.model.vo;
 public class User implements java.io.Serializable{
 
 	private String userId;
-	
 	private String userName;
 	private String grade;
 	private double discount;
