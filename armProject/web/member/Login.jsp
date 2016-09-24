@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<% String msg = (String)request.getAttribute("msg"); %>
 <!doctype html>
 <html lang="ko">
   <meta charset="utf-8">
@@ -22,8 +22,13 @@
   
   <script type="text/javascript" src = "js/jquery-3.1.0.min.js"></script>
   <script type="text/javascript">
+	function nologinCart(){
+	    alert("로그인이 필요합니다");
+	}
 	$(function(){
-	
+		$(document).on("hover",".menuLink", function(){
+			$(this).css("color","red").css("cursor","pointer");
+		});
 		//스크롤시 카테고리고정
 		var menupos = $("#fix_menu").offset().top;
 		$(window).scroll(function(){
@@ -41,7 +46,6 @@
 		$(window).resize(function(){
 			$("#fix_menu").width($("#wrapper").width());
 		});
-
 		//검색창 슬라이드토글
 		var sonoff = 0;
 		$("#sch").click(function(){
@@ -55,7 +59,6 @@
 			}
 		});
 		
-
 		//퀵바 토글 - 퀵바 고정위치를 클릭시마다 바뀌게 하면서 trasition효과
 		var onoff = 0;
 		$("#qBtn").click(function(){
@@ -79,9 +82,6 @@
 			$("#recent_list").slideUp("fast");
 			$("#cart_list").slideDown("fast");
 		});
-
-
-
 	});
   </script>
   <style type="text/css">
@@ -92,7 +92,6 @@
 	text-align : center;
 	vertical-align:middle;
 	}
-
 	/* 기본메뉴(최상단) */
 	nav#topMenu {
             height: 30px;
@@ -137,12 +136,10 @@
 			line-height : 25px;
 		}
 	}
-
     .topMenuLi:hover .menuLink {
         color: red;
     }
 	/*------------------- 최상단 메뉴 끝 -----------*/
-
 	#banner {
 		margin : 10px auto;
 	}
@@ -203,7 +200,6 @@
 	#quick_bar .btn.active.focus {
 		background : white;
 	}
-
 	/* 카테고리 ~ item창까지------------------------*/
 	#wrapper{
 		margin: 0 auto;
@@ -225,7 +221,6 @@
 	padding : 0;
 	margin : 0;
 	}
-
 	.navi li {
 		float : left;
 		position : relative;
@@ -234,7 +229,6 @@
 		width : 20%;
 		background : rgba(255,255,0, 0.5);
 	}
-
 	.navi li a {
 		display : block;
 		font-weight:900;
@@ -250,14 +244,12 @@
 			padding : 5px 20px;
 		}
 	}
-
 	@media all and (max-width: 750px){
 		.navi li a {
 			font-size : 15px;
 			padding : 5px 0px;
 		}
 	}
-
 	@media all and (max-width: 300px){
 		.navi li a {
 			font-size : 15px;
@@ -267,12 +259,10 @@
 		line-height : 50px;
 		}
 	}
-
 	.navi li a:hover {
 		color : #fff;
 		background : red;
 	}
-
 	.navi li ul {
 		opacity : 0;
 		position : absolute;
@@ -283,7 +273,6 @@
 		list-style-type : none;
 		padding : 0;
 		margin : 0;
-
 		border : 1px solid red;
 	}
 	.navi li:hover ul {
@@ -363,7 +352,6 @@
 		cursor : pointer;
 	}
 	
-
 	/* 정렬---------------------------------------------------*/
 	#fix_menu #sort {
 		width : auto;
@@ -394,7 +382,6 @@
 	span {
 		font-size : 9pt;
 	}
-
 	#login_btn {
 		background : red;
 		border : 1px solid red;
@@ -419,17 +406,14 @@
 	#loginTb td{
 		padding : 10px;
 	}
-
 	/* 푸터 */
 	footer {
 		BORDER-TOP : 1px solid gray;
 		BORDER-BOTTOM : 1px solid gray;
 		padding-top : 10px;
 		padding-bottom :10px;
-
 		width : 100%;
 		height : 150px;
-
 		display : table;
 		/* 세로 가운데 정렬을 위한. */
 	}
@@ -443,13 +427,11 @@
 		text-align : left;
 		padding : 0 20px;
 	}
-
 	@media all and (max-width: 300px){
 		.fd h1{
 			font-size : 20pt;
 		}
 	}
-
 	#fmenu {
 		list-style-type : none;
 	}
@@ -460,7 +442,6 @@
 	.footMenu a:hover {
 		text-decoration : underline;
 	}
-
   </style>
   
  </head>
@@ -469,10 +450,10 @@
  <div id = "top_menu">
    <nav id="topMenu" >
         <ul>
-			<li class="topMenuLi"><a class="menuLink" href="/arm/notice/notice.jsp">고객센터</a></li>
-			<li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">장바구니</a></li>
-            <li class="topMenuLi"><a class="menuLink" href="">회원가입</a></li>
-            <li class="topMenuLi"><a class="menuLink" href="/arm/member/Login.jsp">로그인</a></li>
+				<li class="topMenuLi"><a class="menuLink" href="nlist">고객센터</a></li>
+	            <li class="topMenuLi"><a class="menuLink" onClick="nologinCart()">장바구니</a></li>
+	            <li class="topMenuLi"><a class="menuLink" href="/arm/member/MemberJoin.jsp">회원가입</a></li>
+	            <li class="topMenuLi"><a class="menuLink" href="/arm/member/Login.jsp">로그인</a></li>
         </ul>
 	</nav>
  
@@ -515,43 +496,47 @@
 <!-- 배너 -->
  <div id ="banner">
 	<!-- 배너클릭시 시작페이지로! -->
-	<a href="/arm/Main.jsp"><img src="/arm/img/banner.png" alt = "시작페이지로"></a>
+	<a href="/arm/mainlist"><img src="/arm/img/banner.png" alt = "시작페이지로"></a>
  </div>
 <!-- 카테고리 ~ item 목록 -->
  <div id="wrapper">
 
  	<div id = "fix_menu">
-	<div id ="category">
-		<ul class = "navi">
-			<li><a href ="">손</a>
-				<ul>
-					<li><a href ="">반지</a></li>
-					<li><a href ="">의료/건강</a></li>
-				</ul>
-			</li><!-- 손 -->
+			<div id="category">
+				<ul class="navi">
+					<li><a href="/arm/catlist?categoryno=100">손</a>
+					<!-- 100 -->
+						<ul>
+							<li><a href="/arm/catlist?categoryno=110">반지</a></li>
+							<li><a href="/arm/catlist?categoryno=120">의료/건강</a></li>
+						</ul></li>
+					<!-- 손 -->
 
-			<li><a href ="">손목</a>
-				<ul>
-					<li><a href ="">팔찌/시계</a></li>
-					<li><a href ="">의료/건강</a></li>
-				</ul>
-			</li><!-- 손목 -->
-			<li><a href ="">팔목</a>
-				<ul>
-					<li><a href ="">팔찌/시계</a></li>
-					<li><a href ="">의료/건강</a></li>
-				</ul>
-			</li><!-- 팔목 -->
-			<li><a href ="">어깨</a>
-				<ul>
-					<li><a href ="">의류</a></li>
-					<li><a href ="">의료/건강</a></li>
-				</ul>
-			</li><!-- 어깨 -->
+					<li><a href="/arm/catlist?categoryno=200">손목</a>
+					<!-- 200 -->
+						<ul>
+							<li><a href="/arm/catlist?categoryno=210">팔찌/시계</a></li>
+							<li><a href="/arm/catlist?categoryno=220">의료/건강</a></li>
+						</ul></li>
+					<!-- 손목 -->
+					<li><a href="/arm/catlist?categoryno=300">팔목</a>
+					<!-- 300 -->
+						<ul>
+							<li><a href="/arm/catlist?categoryno=310">팔찌/시계</a></li>
+							<li><a href="/arm/catlist?categoryno=320">의료/건강</a></li>
+						</ul></li>
+					<!-- 팔목 -->
+					<li><a href="/arm/catlist?categoryno=400">어깨</a>
+					<!-- 400 -->
+						<ul>
+							<li><a href="/arm/catlist?categoryno=410">의류</a></li>
+							<li><a href="/arm/catlist?categoryno=420">의료/건강</a></li>
+						</ul></li>
+					<!-- 어깨 -->
 
-			<li><a id = "sch">검색</a></li>
-		</ul>
-	</div><!-- 카테고리 -->
+					<li><a id="sch">검색</a></li>
+				</ul>
+			</div><!-- 카테고리 -->
 	<div id = "searchbox">
 	<form>
 	<input type="text" id = "search" name = "search" placeholder = "검색하세요!">&nbsp;&nbsp;<input type="image" id = "schBtn" src = "/arm/img/search2_small.png" width ="25px" height = "25px";>
@@ -568,14 +553,17 @@
 
     <div class="contents">
     <h1>로 그 인</h1>
+    <% if(msg != null){ %>
+    <span style = "text-align:center; color : red; font-size:9pt;"><%= msg %></span>
+    <% } %>
 	<div id = "loginDiv" class="form">
-    <form>
+    <form action = "/arm/login" method="post">
 	<table id = "loginTb" border = "0">
 	<tr><td>
-      <input type="text" style="width:200pt; height:30pt" placeholder="아 이 디"/>
+      <input type="text" style="width:200pt; height:30pt" name = "userid" placeholder="아 이 디"/>
 	  </td></tr>
 	<tr><td>
-      <input type="password" style="width:200pt; height:30pt" placeholder="비 밀 번 호"/><br>
+      <input type="password" style="width:200pt; height:30pt" name = "userpwd" placeholder="비 밀 번 호"/><br>
 	  <label id = "ckauto"><input type="checkbox" align="left"> 자동 로그인</label><br>
 	  <span>개인 PC가 아닐 경우 주의하세요!</span><br>
 	  </td></tr>
@@ -587,7 +575,7 @@
 		</td></tr>
 	 <tr><td><input id = "sch_id" type="button" style="width: 100pt; height:20pt" value="ID 찾기"><input id = "sch_pwd" type="button" style="width: 100pt; height:20pt" value="비밀번호 찾기"><br>
 	
-	  <input id = "join_btn" type="button" style="width: 200pt; height:30pt" value="회원가입">
+	  <input id = "join_btn" type="button" style="width: 200pt; height:30pt" value="회원가입" onClick="self.location='MemberJoin.jsp';">
 	   </td></tr>
 
 	 </table>
@@ -639,4 +627,3 @@
 	</footer>
  </body>
 </html>
-    

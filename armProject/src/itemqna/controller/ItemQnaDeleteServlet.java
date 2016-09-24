@@ -28,7 +28,7 @@ public class ItemQnaDeleteServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doPost(request, response);
+    	doPost(request, response);
 	}
 
 	/**
@@ -43,7 +43,7 @@ public class ItemQnaDeleteServlet extends HttpServlet {
 		
 		int itemNo = Integer.parseInt(request.getParameter("q_item_no")); 
 		if(result > 0)
-			response.sendRedirect("/first/ItemDetailViewServlet?itemNo=" + itemNo);
+			response.sendRedirect("/arm/ItemDetailViewServlet?itemNo=" + itemNo);
 	}
 
 }

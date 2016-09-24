@@ -1,6 +1,8 @@
 package member.controller;
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -8,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import member.model.dao.MemberDao;
 import member.model.service.MemberService;
 import member.model.vo.User;
 
@@ -51,15 +52,14 @@ public class LoginServlet extends HttpServlet {
 		if(loginUser != null) {
 			HttpSession session = request.getSession(); //새로생성
 			System.out.println("session id : " + session.getId());
-//			session.setAttribute("loginName", userName);
-			
 			session.setAttribute("loginUser", loginUser);
-//			response.sendRedirect("member/loginsucces.jsp");
-			response.sendRedirect("Main.jsp");
+			response.sendRedirect("/arm/SubPage.jsp");
 			
 		}else {
 			//실패했을시 불러올 화면
-			response.sendRedirect("member/LoginError.jsp");
+			RequestDispatcher view = request.getRequestDispatcher("member/Login.jsp");
+			request.setAttribute("msg", "아이디 혹은 비밀번호가 다릅니다. 다시 입력해 주세요.");
+			view.forward(request, response);
 		}
 	}
 

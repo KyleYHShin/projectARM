@@ -48,9 +48,9 @@ public class ItemQnaInsertServlet extends HttpServlet {
 		
 		int result = new ItemQnaService().insertQuestion(question);
 		
-		int itemNo = Integer.parseInt(request.getParameter("q_item_no")); 
+		int itemNo = Integer.parseInt(request.getParameter("inquired_item_no")); 
 		if(result > 0)
-			response.sendRedirect("/first/ItemDetailViewServlet?itemNo=" + itemNo);
+			response.sendRedirect("/arm/ItemDetailViewServlet?itemNo=" + itemNo);
 	}
 
 }

@@ -601,7 +601,7 @@
      <div class="contents">
             <section class="item_box">
 			<!-- 클릭시 상세 페이지로 이동하도록. -->
-                <a href = "/arm/item/ItemDetailViewServlet?itemNo=1"><table>
+                <a href = "/arm/ItemDetailViewServlet?itemNo=1"><table>
                     <tr> <td class="item_img"><img src="items/01.jpg"><td></tr>
                     <tr> <td class="item_name">아이템 이름1<td></tr>
                     <tr> <td class="item_price">Price1<td></tr>
