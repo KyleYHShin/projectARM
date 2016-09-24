@@ -7,6 +7,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import admin.subitem.model.service.SubItemService;
+import admin.subitem.model.vo.SubItem;
+
 /**
  * Servlet implementation class SubItemUpdateServlet
  */
@@ -34,8 +37,7 @@ public class SubItemUpdateServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+
+	}
 	}
 
-}
