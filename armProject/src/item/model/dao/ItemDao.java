@@ -175,7 +175,7 @@ public class ItemDao {
 				review.setReviewNo(rset.getInt("review_no"));
 				review.setmId(rset.getString("review_m_id"));
 				review.setItemNo(rset.getInt("review_item_no"));
-				review.setItemSubNo(rset.getInt("review_item_sub_no"));
+				review.setItemSubNo(rset.getInt("reivew_item_sub_no"));
 				review.setScore(rset.getInt("review_score"));
 				review.setReviewContent(rset.getString("review_content"));
 				review.setReviewDate(rset.getDate("review_date"));
@@ -193,8 +193,6 @@ public class ItemDao {
 		return reviewList;
 	}
 	
-	
-
 	public ArrayList<Answer> selectItemAnswer(Connection con, ArrayList<Question> questionList) {
 		ArrayList<Answer> answerList = null;
 		PreparedStatement pstmt = null;
@@ -261,6 +259,49 @@ public class ItemDao {
 		return reviewHContent;
 	}
 	
+	public int deleteReview(Connection con, int rNo) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		
+		String query = "delete from review where review_no = ?";
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, rNo);
+			
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			System.out.println("후기 삭제 Dao에서 실패");
+			e.printStackTrace();
+		} finally {
+			close(pstmt);			
+		}		
+		
+		return result;
+	}
+
+	public int updateReview(Connection con, Review review) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		
+		String query = "update review set review_score = ?, review_content = ? where review_no = ?";
+				
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, review.getScore());
+			pstmt.setString(2, review.getReviewContent());
+			pstmt.setInt(3, review.getReviewNo());
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			System.out.println("후기 업데이트 Dao에서 실패");
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}		
+		return result;
+	}
 	
 
 }

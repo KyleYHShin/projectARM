@@ -78,6 +78,34 @@ public class ItemService {
 		return reviewHContent;
 	}
 	
+	//리뷰 삭제
+	public int deleteReview(int rNo) {
+		Connection con = getConnection();
+		int result = new ItemDao().deleteReview(con, rNo);
+		
+		if(result > 0)
+			commit(con);
+		else
+			rollback(con);
+		close(con);
+		
+		return result;
+	}
+
+	//리뷰 수정
+	public int updateReview(Review review) {
+		Connection con = getConnection();
+		int result = new ItemDao().updateReview(con, review);
+		
+		if(result > 0)
+			commit(con);
+		else
+			rollback(con);
+		close(con);
+		
+		return result;
+	}
+	
 	
 
 }

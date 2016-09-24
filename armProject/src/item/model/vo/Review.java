@@ -27,6 +27,13 @@ public class Review implements Serializable {
 		this.reviewContent = reviewContent;
 		this.reviewDate = reviewDate;
 	}
+	
+	public Review(int reviewNo, int score, String reviewContent) {
+		super();
+		this.reviewNo = reviewNo;
+		this.score = score;
+		this.reviewContent = reviewContent;
+	}
 
 	// Getter & Setter
 	public int getReviewNo() {

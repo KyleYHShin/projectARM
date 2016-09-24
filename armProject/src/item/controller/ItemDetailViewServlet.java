@@ -69,7 +69,7 @@ public class ItemDetailViewServlet extends HttpServlet {
 		
 		RequestDispatcher view = null;
 		if (item != null) {
-			view = request.getRequestDispatcher("/arm/item/ItemDetail.jsp");
+			view = request.getRequestDispatcher("/item/ItemDetail.jsp");
 			request.setAttribute("item", item);
 			request.setAttribute("subItemList", subItemList);
 

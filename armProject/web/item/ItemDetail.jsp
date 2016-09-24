@@ -108,6 +108,28 @@
 			td_sum();
 		});		
 		
+/*--------------------16.09.24 아이템 상세 페이지에서 후기 수정 시 사용하도록 별점&별점 코멘트 부분 약간 수정하여 다시 추가--*/
+		$(".star_point a").click(function() {
+			$(this).nextAll(this).removeClass("on");
+			$(this).addClass("on").prevAll("a").addClass("on");
+			
+			var star_num =$(this).siblings('.star_point .on').length;
+			star_num = parseInt(star_num) + 1;
+			
+			var star_comment = "";
+			
+			switch(star_num){
+			case 1 : star_comment = "<%= reviewHContent.get(1)%>"; break;
+			case 2 : star_comment = "<%= reviewHContent.get(2)%>"; break;
+			case 3 : star_comment = "<%= reviewHContent.get(3)%>"; break;
+			case 4 : star_comment = "<%= reviewHContent.get(4)%>"; break;
+			case 5 : star_comment = "<%= reviewHContent.get(5)%>"; break;
+			}
+			
+			$(this).parent().next().text(star_comment);
+			$(this).parent().siblings('#revew_score').val(star_num);
+		});	
+		
 		/*----------------------16.09.22 기능 구현하면서 아래 사항 삭제하고 자바스크립트로 구현---*/
 		/*옵션 선택시 테이블에 행 추가 버전2
 		$('select.p_opt_1').change(function(){
@@ -122,7 +144,7 @@
 				$('.p_selection button').attr('class', 'remove_order');
 		});*/ 
 		
-	});
+	});	
 	
 	/*--------------------------------- 16.09.23 옵션 선택에 따라 동적으로 선택된 상품 정보를 출력하는 함수 추가 --------------*/
 	//옵션 선택 시 p_selection 영역에 동적으로 행 추가
@@ -177,27 +199,38 @@
 		  //회원 할인율 적용 전 총주문액
 		  $('#original_sum').text(total_sum);
 		  
-		  //로그인했을 시 회원 할인율 적용
-		  var dc_rate ="";
+		 //회원 할인율 적용 후 주문액
+		 var dc_rate ="";
+		 
+		 //계속 문제발생...수정해야..
+		 if("<%= loginUser %>" != null) {
+			dc_rate = 1 - "<%= loginUser.getDiscount()%>"; 
+			$('#original_sum').attr("style", "text-decoration : line-through");
+			var dc_sum = total_sum * dc_rate;
+			$('#dc_sum').text(dc_sum);
+		 }else {
+			dc_rate = 1;
+		 }
+		 
+		 //배송비 합산 회원 할인 적용된 총결제액
+		 $('#grand_total').text(dc_sum + 2500);
 		  
-		  if("<%= loginUser %>" == null){
-			  dc_rate = 1;
-		  }else{
-			  dc_rate = 1 - "<%= loginUser.getDiscount() %>";
-			  $('#original_sum').attr("style", "text-decoration : line-through");
-			  var dc_sum = total_sum * dc_rate;
-			  $('#dc_sum').text(dc_sum);
-		  }
+		 if(total_sum == 0){
+			 $('#original_sum').empty();
+			 $('#dc_sum').empty();
+			 $('#grand_total').empty();
+		 }
 		  
-		  //배송비 합산 회원 할인 적용된 총결제액
-		  $('#grand_total').text(dc_sum + 2500);
-		  
-		  if(total_sum == 0){
-			  $('#original_sum').empty();
-			  $('#dc_sum').empty();
-			  $('#grand_total').empty();
-		  }
 	  }
+	  
+	  //문의할 제품 선택 시 해당 제품번호 출력
+	  function get_inquired_sub(){
+		  var select = document.getElementById('qna_select');
+		  var selected_sub = select.options[select.selectedIndex].value;
+		  
+		  alert(selected_sub);
+	  }
+	  
 	  
   </script>
  
@@ -865,7 +898,40 @@
 	table tr td{/*확인용*/
 		border : 1px solid orange;
 	}
+	
+	
+	/*상품 후기 부분*/
+	.star_point {
+		font-size: 0;
+		letter-spacing: -4px;
+	}
 
+	.star_point a {
+		font-size : 20px;
+		letter-spacing: 0;
+		display : inline-block;
+		margin-left: 5px;
+		color : #ccc;
+		text-decoration : none;
+	}
+
+	.star_point a : first-child {
+		margin-left : 0;
+	}
+
+	.star_point a.on {
+		color : #ffcc00; 
+	}
+	
+	.p_review #review_td1 {
+		width : 5%;
+	}
+
+	.p_review #review_td2 {
+		width : 25%;
+	}
+	
+	
 
   </style>
   
@@ -974,7 +1040,7 @@
 	<!--상품 상세 설명 페이지 시작-->
 	<div class="content">
 		<div class="product">
-			<form method="get" action="/arm/CartInsertServlet">
+			<form method="get" action="CartInsertServlet">
 			<div class="pImage">
 				<img src="<%= item.getItemImg() %>"><!-------------- pImage div에선 이 옆에만 수정 -------->
 			</div>
@@ -1080,30 +1146,36 @@
         <!-- #tab2 -->
         <div id="tab3" class="tab_content">
 			<div class="inquiry_input" align="left">
+				<form action="/arm/ItemQnaInsertServlet" method="post">
 				<table>
 					<tr>
-						<td colspan="2">
-						<select>
+						<td colspan="2" align="left">
+						<select id="qna_select" name="inquired_sub" onchange="get_inquired_sub">
 						<option> 문의할 옵션을 선택하세요 </option>
 						<% 
 							for (SubItem sub : subItemList){
 						%>
-							<option value="<%= sub.getItemSubName() %>">
+							<option value="<%= sub.getItemSubNo() %>">
 								<%= sub.getItemSubName() %>
 							</option>
 						<% } %>
 						</select>
+						<input type="hidden" name="inquired_item_no" value="<%= item.getItemNo() %>">
 						</td>
 					</tr>
 					<tr>
 						<td id="td1">
-							<textarea name="p_inquiry" id="p_inquiry" placeholder="로그인한 사람만 문의내용ㄱㄱㄱ"></textarea>
+							<textarea name="p_inquiry" id="p_inquiry" placeholder="로그인 후 문의하실 수 있습니다"></textarea>
 						</td>
+						<% if(loginUser != null) {%>
 						<td>
 							&nbsp;<input type="submit" value="확인" class="btn btn-success">
+							<input type="hidden" name="inquiring_user" value="<%= loginUser.getUserId()%>">
 						</td>
+						<% } %>
 					</tr>
 				</table> 
+				</form>
 			</div>
 			<hr>
 			<br>
@@ -1116,16 +1188,37 @@
 					for(int i = 0; i < questionList.size(); i++) {
 				%>			
 					<div class="p_Q">
+					<form action="/arm/ItemQnaUpdateServlet" method="post">
 						<table border="1px solid gray" id="qna_table">
 							<tr>
 								<td id="loaded_td1"><input type="text" name="qna_category" value="[질문]" readonly></td>
 								<td id="loaded_td2"><input type="text" name="qna_ID" value="<%= questionList.get(i).getmId() %>" readonly></td>
-								<td><input type="text" name="q_date" value="<%= questionList.get(i).getqDate() %>" readonly></td>
+								<td><input type="text" name="q_date" value="<%= questionList.get(i).getqDate() %>" readonly>
+									<input type="hidden" name="q_no" value="<%= questionList.get(i).getqNo() %>">
+									<input type="hidden" name="q_item_no" value="<%= questionList.get(i).getItemNo() %>">
+								</td>
+								
+						<% 
+							//로그인한 사용자와 문의 작성자 아이디가 같을 경우
+							if(loginUser != null && loginUser.getUserId().equals(questionList.get(i).getmId())){
+						%>
+								<td>
+									<input type="submit" value="수정" style="width :45px; height : 30px;"> &nbsp; 
+									<button style="width :45px; height : 30px;"><a href="/arm/ItemQnaDeleteServlet?q_no=<%= questionList.get(i).getqNo() %>">삭제</a></button>
+								</td>						
 							</tr>
 							<tr>
-								<td colspan="3"><textarea name="q_content" rows="" cols=""> <%= questionList.get(i).getqContent() %></textarea></td>
+								<td colspan="4"><textarea name="q_content" rows="" cols=""> <%= questionList.get(i).getqContent() %></textarea></td>
 							</tr>
+						<% } else {%>	
+							</tr>
+							<tr>
+								<td colspan="3"><textarea rows="" cols="" readonly> <%= questionList.get(i).getqContent() %></textarea></td>
+							</tr>
+						<% }%>	
 						</table>
+						</form>
+						
 					</div><!--p_Q-->
 					<br>	
 				<%
@@ -1141,7 +1234,7 @@
 										<td><input type="text" name="a_Date" value="<%= answerList.get(j).getaDate() %>" readonly></td>
 									</tr>
 									<tr>
-										<td colspan="3"><textarea name="a_content" rows="" cols=""> <%= answerList.get(j).getaContent() %></textarea></td>
+										<td colspan="3"><textarea name="a_content" rows="" cols="" readonly> <%= answerList.get(j).getaContent() %></textarea></td>
 									</tr>
 								</table>
 							</div>
@@ -1176,20 +1269,90 @@
 					case 4 : scoreWithComment.append("★★★★ "); scoreWithComment.append(reviewHContent.get(4)); break;
 					case 5 : scoreWithComment.append("★★★★★ "); scoreWithComment.append(reviewHContent.get(5)); break;
 				    }
-	
 			%>
 				
 			<div class="p_review">
+				<form action="/arm/ItemReviewUpdateServlet" method="post">
 				<table border="1px solid gray" id="r_table">
 					<tr>
 						<td id="review_td1"><input type="text" name="review_id" value="<%= r.getmId() %>" readonly></td>
-						<td id="review_td2"><input type="text" name="review_star" value="<%= scoreWithComment %>" readonly style = "color:#ffcc00;"></td>
-						<td><input type="text" name="review_date" value="<%= r.getReviewDate() %>" readonly></td>
+						<% 
+							//로그인한 사용자와 후기 작성자 아이디가 같을 경우
+							if(loginUser != null && loginUser.getUserId().equals(r.getmId())){
+						%>
+						<td id="review_td2">
+							<input type="text" name="review_date" value="<%= r.getReviewDate() %>" readonly>
+							<input type="hidden" name="review_no" value="<%= r.getReviewNo() %>">	
+							<input type="hidden" name="review_item_no" value="<%= r.getReviewNo() %>">
+						</td>						
+						<td>
+							<input type="text" value="<%= scoreWithComment %>" readonly style = "color:#ffcc00;">
+						</td>
+						<td>
+							<input type="submit" value="수정" style="width :45px; height : 30px;">
+							 &nbsp;
+							<button style="width : 45px; height : 30px;"><a href="/arm/ItemReviewDeleteServlet?r_no=<%= r.getReviewNo() %>">삭제</a></button>
+						</td>
 					</tr>
 					<tr>
-						<td colspan="3"><textarea name="review_content" rows="" cols=""> <%= r.getReviewContent() %> </textarea></td>
+						<td colspan="3">
+							<textarea name="review_content" rows="" cols=""> <%= r.getReviewContent() %> </textarea>
+						</td>
+						<td>
+							<p class="star_point">
+							<% 
+							//등록된 별점에 따라 표시되는 별 갯수 변화
+							if(r.getScore() == 1) {
+							%>
+								<a href="#" class="on">★</a>
+								<a href="#">★</a>
+								<a href="#">★</a>
+								<a href="#">★</a>
+								<a href="#">★</a>
+							<% } else if (r.getScore() == 2) {%>
+								<a href="#" class="on">★</a>
+								<a href="#" class="on">★</a>
+								<a href="#">★</a>
+								<a href="#">★</a>
+								<a href="#">★</a>
+							<% } else if (r.getScore() == 3) {%>
+								<a href="#" class="on">★</a>
+								<a href="#" class="on">★</a>
+								<a href="#" class="on">★</a>
+								<a href="#">★</a>
+								<a href="#">★</a>
+							<% } else if (r.getScore() == 4) { %>
+								<a href="#" class="on">★</a>
+								<a href="#" class="on">★</a>
+								<a href="#" class="on">★</a>
+								<a href="#" class="on">★</a>
+								<a href="#">★</a> 
+							<% } else { %>
+								<a href="#" class="on">★</a>
+								<a href="#" class="on">★</a>
+								<a href="#" class="on">★</a>
+								<a href="#" class="on">★</a>
+								<a href="#" class="on">★</a> 
+							<% } %>
+							</p>
+							<p class="review_comment"></p>
+							<input type="hidden" name="review_score" id="review_score" value="<%= r.getScore()%>">
+						</td>		
 					</tr>
+					<% } else { %>	
+						<td id="review_td2">
+							<input type="text" value="<%= r.getReviewDate() %>" readonly>	
+						</td>
+						<td>
+							<input type="text" value="<%= scoreWithComment %>" readonly style = "color:#ffcc00;">
+						</td>
+					</tr>
+					<tr>
+						<td colspan="3"><textarea rows="" cols="" readonly> <%= r.getReviewContent() %> </textarea></td>
+					</tr>
+					<% } %>
 				</table>
+				</form>
 				<br>
 			</div><!--p_review-->
 			<% 
