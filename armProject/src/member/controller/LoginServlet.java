@@ -48,7 +48,6 @@ public class LoginServlet extends HttpServlet {
 		System.out.println(userId);
 		
 		User loginUser = new MemberService().login(userId, userPwd);
-		
 		if(loginUser != null) {
 			HttpSession session = request.getSession(); //새로생성
 			System.out.println("session id : " + session.getId());

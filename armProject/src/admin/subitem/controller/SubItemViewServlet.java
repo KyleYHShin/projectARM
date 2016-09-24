@@ -53,7 +53,9 @@ public class SubItemViewServlet extends HttpServlet {
 			request.setAttribute("list", list);
 			view.forward(request, response);
 		}else{
-			// 에러페이지 출력
+			view = request.getRequestDispatcher("admin/SubItemListView.jsp");
+			request.setAttribute("msg", "등록된 옵션이 없습니다.");
+			view.forward(request, response);
 		}
 	}
 

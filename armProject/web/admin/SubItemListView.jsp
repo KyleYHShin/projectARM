@@ -3,7 +3,8 @@
 <%@ page import="java.util.ArrayList, admin.subitem.model.vo.SubItem" %>
     
 <%
-	ArrayList<SubItem> list = (ArrayList<SubItem>)request.getAttribute("list");
+ArrayList<SubItem> list = (ArrayList<SubItem>)request.getAttribute("list");
+String msg = (String)request.getAttribute("msg");
 %>
 <!DOCTYPE html >
 <html>
@@ -85,8 +86,8 @@
 		<tr>
 			<th>제품ID</th><th>제품명</th><th>제품가격</th><th>재고수량</th>
 		</tr>
-		
-<%
+		<%
+		if(list!= null){
 			for(SubItem si:list){		
 		%>
 			<tr>
@@ -96,6 +97,9 @@
 				<td><%= si.getItemSubPrice() %></td>
 				<td><%= si.getQuantity() %></td>
 			</tr>
+		<% } 
+		}else{ %>
+			<tr><td colspan = "4"><%= msg %></td></tr>
 		<% } %>
 </table>
 <p/>

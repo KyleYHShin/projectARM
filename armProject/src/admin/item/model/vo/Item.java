@@ -17,6 +17,16 @@ public class Item implements java.io.Serializable{
 	
 	public Item(){}
 
+	
+	public Item(String itemName, int itemCatNo, int itemPrice, int itemVender, String itemTag) {
+		super();
+		ItemName = itemName;
+		ItemCatNo = itemCatNo;
+		ItemPrice = itemPrice;
+		ItemVender = itemVender;
+		ItemTag = itemTag;
+	}
+
 	public Item(int itemNo, String itemName, int itemCatNo, int itemPrice, Date itemUpdate, int itemVender,
 			String itemImgMini, String itemImg, String itemImgDetail, String itemTag) {
 		super();
