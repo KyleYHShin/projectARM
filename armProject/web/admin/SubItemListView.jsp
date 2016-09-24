@@ -99,8 +99,7 @@
 		<% } %>
 </table>
 <p/>
-<a href="ItemListView.jsp">상품 목록 보기</a>
-<a href="AdminMain.jsp">메인페이지로</a>
+<a href="/arm/ItemViewServlet">상품 목록 보기</a>
 </center>
 </body>
 </html>
