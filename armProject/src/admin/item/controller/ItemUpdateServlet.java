@@ -203,7 +203,7 @@ public class ItemUpdateServlet extends HttpServlet {
 		int result = new ItemService().updateItem(item);
 		
 		if(result > 0){
-			response.sendRedirect("/arm/ItemViewServlet");
+			response.sendRedirect("/arm/ailist");
 		}else{
 			System.out.println("서블릿 ; 수정 에러..");
 		}

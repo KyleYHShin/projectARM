@@ -42,7 +42,7 @@ public class ItemUpdateViewServlet extends HttpServlet {
 		
 		RequestDispatcher view = null;
 		if(item != null){
-			view = request.getRequestDispatcher("ItemViewServlet");
+			view = request.getRequestDispatcher("ailist");
 			request.setAttribute("item", item);
 			view.forward(request, response);
 		}else{

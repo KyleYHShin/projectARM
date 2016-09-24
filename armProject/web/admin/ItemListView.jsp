@@ -6,6 +6,7 @@ ArrayList<Item> list = (ArrayList<Item>)request.getAttribute("list");
 ArrayList<Category> category = (ArrayList<Category>)request.getAttribute("category");
 ArrayList<Vender> vender = (ArrayList<Vender>)request.getAttribute("vender");
 Item item = (Item)request.getAttribute("item");
+String msg = (String)request.getAttribute("msg");
 %>
 <!DOCTYPE html>
 <html>
@@ -87,7 +88,7 @@ Item item = (Item)request.getAttribute("item");
 </head>
 <body>
 <center><h1>상품 목록</h1><br>
-	<form action = "ItemsSearch" method="post">
+	<form action = "/arm/aisearch" method="post">
 	<select name = "no">
 		<option value = "0"> -- 선택 -- </option>
 		<option value = "1">ID</option>
@@ -185,11 +186,12 @@ Item item = (Item)request.getAttribute("item");
 		</tr>
 		
 		<%
+		if(list != null){
 			for(Item i:list){
 		%>
 			<tr>
 				<td><%= i.getItemNo() %></td>
-				<td><a href="SubItemViewServlet?itemNo=<%= i.getItemNo() %>">
+				<td><a href="aslist?itemNo=<%= i.getItemNo() %>">
 				<%= i.getItemName() %></a></td>
 				<td><%= i.getItemCatNo() %></td>
 				<td><%= i.getItemPrice() %></td>
@@ -201,12 +203,15 @@ Item item = (Item)request.getAttribute("item");
 				<td><%= i.getItemImg().substring(1,5)+"..."+i.getItemImg().substring(i.getItemImg().indexOf("item/")+4) %></td>
 				<td><%= i.getItemImgDetail().substring(1,5)+"..."+i.getItemImgDetail().substring(i.getItemImgDetail().indexOf("item/")+4) %></td>
 				<td width="50px"><a href="/arm/aiupview?itemno=<%= i.getItemNo() %>">수정</a>
-				<a href="/arm/aidelete?itemno=<%= i.getItemNo() %>">삭제</a>
+				<a href="/arm/aidelete?itemno=<%= i.getItemNo() %>">삭제</a></td>
 			</tr>
+		<% }
+		}else{ %>
+			<tr><td colspan="12"><%= msg %></td></tr>
 		<% } %>
 	</table>
 <p/><a href = "/arm/admin/AdminMain.jsp">메인페이지로</a> &nbsp; &nbsp;
-<a href = "/arm/ItemViewServlet">전체 목록 보기</a>
+<a href = "/arm/ailist">전체 목록 보기</a>
 
 </center>
 	

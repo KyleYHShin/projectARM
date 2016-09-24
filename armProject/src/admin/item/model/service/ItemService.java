@@ -113,5 +113,20 @@ public class ItemService {
 		}
 		return result;
 	}
+	public ArrayList<Item> selectItem(int no, String keyword) {
+		Connection con = getConnection();
+		ArrayList<Item> list = null;
+		
+		if(no == 1){
+			list = new ItemDao().selectId(con, Integer.parseInt(keyword));
+		}else if(no == 2){
+			list = new ItemDao().selectName(con, keyword);
+		}else if(no == 3){
+			list = new ItemDao().selectTag(con, keyword);
+		}
+		
+		close(con);
+		return list;
+	}
 
 }

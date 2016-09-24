@@ -18,7 +18,7 @@ import admin.subitem.model.vo.SubItem;
 /**
  * Servlet implementation class SubItemViewServlet
  */
-@WebServlet("/SubItemViewServlet")
+@WebServlet("/aslist")
 public class SubItemViewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

@@ -47,7 +47,7 @@ public class SubItemInsertServlet extends HttpServlet {
 		int result = new SubItemService().insertSubItem(itemNo, subItem);
 		
 		if(result > 0){
-			response.sendRedirect("SubItemViewServlet?itemNo="+itemNo);
+			response.sendRedirect("aslist?itemNo="+itemNo);
 		}else{
 			//오류
 			System.out.println("상품추가오류");

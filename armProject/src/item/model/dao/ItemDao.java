@@ -142,7 +142,7 @@ public class ItemDao {
 					+ " item_no, item_name, item_cat_no, item_price, "
 					+ "item_count, item_update, item_img_mini, "
 					+ "item_img, item_img_detail "
-				+ "from (select * from  item where item_tag like ?)) where page = ?";
+				+ "from (select * from  item where item_tag like ? or item_name like ?)) where page = ?";
 		try {
 			if(sort_col==null){
 				pstmt = con.prepareStatement(query);
@@ -150,7 +150,8 @@ public class ItemDao {
 				pstmt = con.prepareStatement(query+sort_col);
 			}
 			pstmt.setString(1, "%"+keyword+"%");
-			pstmt.setInt(2, page);
+			pstmt.setString(2, "%"+keyword+"%");
+			pstmt.setInt(3, page);
 			
 			rset = pstmt.executeQuery();
 			

@@ -146,7 +146,7 @@ String msg = (String)request.getAttribute("msg");
 		<% } %>
 </table>
 <p/>
-<a href="/arm/ItemViewServlet">상품 목록 보기</a>&nbsp;&nbsp;&nbsp;
+<a href="/arm/ailist">상품 목록 보기</a>&nbsp;&nbsp;&nbsp;
 <a href="/arm/admin/AdminMain.jsp">메인페이지로</a>
 </center>
 </body>

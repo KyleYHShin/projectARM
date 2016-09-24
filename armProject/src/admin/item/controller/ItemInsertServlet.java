@@ -187,7 +187,7 @@ public class ItemInsertServlet extends HttpServlet {
 			int fresult = new ItemService().updateFileName(fitem);
 			
 			if(fresult > 0){
-				response.sendRedirect("/arm/ItemViewServlet");
+				response.sendRedirect("/arm/ailist");
 			}else{
 				System.out.println("2차 update 실패..");
 			}

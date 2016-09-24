@@ -45,7 +45,7 @@ public class SubItemUpdateServlet extends HttpServlet {
 		int result = new SubItemService().updateOne(subItem);
 		
 		if(result > 0){
-			response.sendRedirect("SubItemViewServlet?itemNo="+itemNo);
+			response.sendRedirect("aslist?itemNo="+itemNo);
 		}else{
 			System.out.println("수정실패...");
 		}

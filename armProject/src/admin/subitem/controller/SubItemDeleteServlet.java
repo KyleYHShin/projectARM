@@ -38,7 +38,7 @@ public class SubItemDeleteServlet extends HttpServlet {
 		int result = new SubItemService().deleteOne(itemSubNo);
 		
 		if(result > 0){
-			response.sendRedirect("SubItemViewServlet?itemNo="+itemNo);
+			response.sendRedirect("aslist?itemNo="+itemNo);
 		}else{
 			System.out.println("삭제오류");
 		}

@@ -19,7 +19,7 @@ import admin.item.model.vo.Vender;
 /**
  * Servlet implementation class ItemViewServlet
  */
-@WebServlet("/ItemViewServlet")
+@WebServlet("/ailist")
 public class ItemViewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

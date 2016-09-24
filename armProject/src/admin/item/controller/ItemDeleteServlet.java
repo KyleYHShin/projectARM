@@ -40,7 +40,7 @@ public class ItemDeleteServlet extends HttpServlet {
 		int result = new ItemService().deleteOne(itemNo);
 		
 		if(result > 0){
-			response.sendRedirect("ItemViewServlet");
+			response.sendRedirect("ailist");
 		}else{
 			System.out.println("삭제실패..");
 		}
