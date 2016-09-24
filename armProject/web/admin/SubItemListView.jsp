@@ -38,7 +38,7 @@
 	table {
 	BORDER-TOP : 2px solid black;
 	BORDER-BOTTOM : 2px solid black;
-	width : 1200px;  
+	width : 800px;
 	text-align : center;
 	}
 	table th, td{
@@ -91,7 +91,7 @@
 		%>
 			<tr>
 				<td><%= si.getItemSubNo() %></td>
-				<td width= "50%">
+				<td>
 				<%= si.getItemSubName() %></td>
 				<td><%= si.getItemSubPrice() %></td>
 				<td><%= si.getQuantity() %></td>
@@ -99,8 +99,8 @@
 		<% } %>
 </table>
 <p/>
-<a href="ItemListView.jsp">상품 목록 보기</a>
-<a href="AdminMain.jsp">메인페이지로</a>
+<a href="/arm/ItemViewServlet">상품 목록 보기</a>
+<a href="/arm/admin/AdminMain.jsp">메인페이지로</a>
 </center>
 </body>
 </html>
