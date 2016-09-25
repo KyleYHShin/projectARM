@@ -35,7 +35,7 @@ ArrayList<Notice> list = (ArrayList<Notice>)request.getAttribute("list");
 			$("#recent_list").html("<div class='ritem'>최근 본 상품이 없습니다.</div>");
 		}else{
 			if(slen <= 4){
-				for(var i = slen-1; i > 0; i--){
+				for(var i = slen-1; i >= 0; i--){
 					var key = sessionStorage.key(i);
 					var item = sessionStorage[key];
 					var values = item.split(",");
@@ -50,7 +50,7 @@ ArrayList<Notice> list = (ArrayList<Notice>)request.getAttribute("list");
 					var rItem = "<div class='ritem'><a href='/arm/ItemDetailViewServlet?itemNo="+values[0]+"'><img src='"+values[1]+"'></a></div>";
 					rItems += rItem;
 				}
-				for(var i = slen-5; i > 0; i--){
+				for(var i = slen-5; i >= 0; i--){
 					var key = sessionStorage.key(i);
 					sessionStorage.removeItem(key);
 					//4개이상은 지우기 위홤
@@ -700,7 +700,7 @@ ArrayList<Notice> list = (ArrayList<Notice>)request.getAttribute("list");
 		
 
 		<div class = "fd">
-		<h1><img src="images/전화기.png" width="50" height="40" border="0" alt="">&nbsp;1600-7000</h1>
+		<h1><img src="img/tel.png" width="50" height="50" border="0" alt="">&nbsp;1600-7000</h1>
 		</div>
 
 		<div class = "fd">

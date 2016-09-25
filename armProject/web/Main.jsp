@@ -40,7 +40,7 @@ String status = (String)request.getAttribute("status");
 				$("#recent_list").html("<div class='ritem'>최근 본 상품이 없습니다.</div>");
 			}else{
 				if(slen <= 4){
-					for(var i = slen-1; i > 0; i--){
+					for(var i = slen-1; i >= 0; i--){
 						var key = sessionStorage.key(i);
 						var item = sessionStorage[key];
 						var values = item.split(",");
@@ -55,7 +55,7 @@ String status = (String)request.getAttribute("status");
 						var rItem = "<div class='ritem'><a href='/arm/ItemDetailViewServlet?itemNo="+values[0]+"'><img src='"+values[1]+"'></a></div>";
 						rItems += rItem;
 					}
-					for(var i = slen-5; i > 0; i--){
+					for(var i = slen-5; i >= 0; i--){
 						var key = sessionStorage.key(i);
 						sessionStorage.removeItem(key);
 						//4개이상은 지우기 위홤
@@ -115,7 +115,20 @@ String status = (String)request.getAttribute("status");
 			}
 			$("#pageNo").append(nextStep);
 		});
-		
+		function goCart(){
+			<% if(loginUser != null) {%>
+			location.href="/arm/mypage/MyinfoCart.jsp";
+			<% } else{ %>
+			nologinCart();
+			<% }%>
+		}
+		function goMyinfo(){
+			<% if(loginUser != null) {%>
+			location.href="/arm/myinfo?userid=<%= loginUser.getUserId() %>";
+			<% } else{ %>
+			nologinCart();
+			<% }%>
+		}
 		$(function() {
 			//최근목록보기
 			viewRecentItem();
@@ -747,11 +760,11 @@ String status = (String)request.getAttribute("status");
 		<!-- 퀵바 -->
 	<button id="qBtn" class="hidden-xs">Quick</button>
 	<div id="quick_bar" class="hidden-xs">
-		<button class="btn btn-default">
+		<button class="btn btn-default" onclick="goMyinfo();">
 			<span class="glyphicon glyphicon-user"></span> MY PAGE
 		</button>
 		<!-- 그냥 장바구니 페이지로 이동하도록. -->
-		<button id="cart" class="btn btn-default">
+		<button id="cart" class="btn btn-default" onclick="goCart();">
 			<span class="glyphicon glyphicon-shopping-cart"></span> 장바구니 &nbsp;
 		</button><br>
 		<button id="recent" class="btn btn-default">최근 본 상품</button>
@@ -912,7 +925,7 @@ String status = (String)request.getAttribute("status");
 			
 			<div class="fd">
 				<h1>
-					<img src="images/전화기.png" width="50" height="40" border="0" alt="">&nbsp;1600-7000
+					<img src="img/tel.png" width="50" height="50" border="0" alt="">&nbsp;1600-7000
 				</h1>
 			</div>
 
