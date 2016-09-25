@@ -4,6 +4,7 @@
 <%
 User loginUser = (User)session.getAttribute("loginUser");
 ArrayList<Notice> list = (ArrayList<Notice>)request.getAttribute("list");
+String admin = (String)session.getAttribute("admin");
 %>    
 <!doctype html>
 <html lang="ko">
@@ -530,7 +531,7 @@ ArrayList<Notice> list = (ArrayList<Notice>)request.getAttribute("list");
 	.direct_q select {
 		width : 30%;
 	}
-	input[name*="title"]{
+	.direct_q input[name*="title"]{
 		width : 98%;
 	}
 	textarea{
@@ -612,7 +613,7 @@ ArrayList<Notice> list = (ArrayList<Notice>)request.getAttribute("list");
 	         <li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">장바구니</a></li>
 	         <li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">MyPage</a></li>
 	         <li class="topMenuLi"><a class="menuLink" href="logout">로그아웃</a></li>
-	         <li class="topMenuLi"><a class="menuLink" >환영합니다! <%=loginUser.getUserName() %>님</a></li>
+	         <li class="topMenuLi">환영합니다! <%=loginUser.getUserName() %>님</li>
 	      <%}else{ %>
 	         <li class="topMenuLi"><a class="menuLink" onClick="nologinCart()">장바구니</a></li>
 	         <li class="topMenuLi"><a class="menuLink" href="/arm/member/MemberJoin.jsp">회원가입</a></li>
@@ -652,20 +653,59 @@ ArrayList<Notice> list = (ArrayList<Notice>)request.getAttribute("list");
 	</div><!-- cs_menu -->
 
 	<div id = "contents">
-		<div id = "notice">
-		<h1>공지사항/이벤트</h1>
-		<table class = "notice" cellspacing ="0">
+	<div id ="notice">
+	<h1>공지사항/이벤트</h1> 
+	<form action="/arm/nupdate" method="post">
+	<table class = "notice" cellspacing ="0">
 		<tr>
 			<th width = "10%">No.</th><th>공지사항/이벤트</th><th width = "15%">작성일</th>
 		</tr>
-		<%
-			for(Notice n:list){
+	<!-- 관리자일 경우 -->
+	<% if(admin != null){ 
+		for(Notice n:list){ 
+		%>	
+		<tr class = "question"><td><input type="text" name="noticeno" value="<%=n.getNoticeNo() %>" readonly size="1"></td>
+		<td><select name = "cate">
+				<option value="1">공지사항</option>
+				<option value="2">이벤트</option>
+			</select>&nbsp;&nbsp;<input type="text" name="ntitle" value="<%=n.getNoticeTitle() %>" size="60"></td>
+		<td><%=String.valueOf(n.getNoticeDate())%></td></tr>
+		
+		<tr class = "answer"><td></td><td colspan ="2"><textarea name="content" rows="5" cols="50"><%=n.getContent() %></textarea>
+		<br><span style="float:right;">첨부파일 :
+		 <%	if(n.getNoticeFile() == null){  //첨부파일이없는 경우
+			%>
+			첨부파일 없음
+		<%  }else{ //첨부파일이 있는 경우 %>
+				<a href="/arm/filedown?ofile=<%=n.getNoticeFile() %>"><%= n.getNoticeFile() %></a>&nbsp; &nbsp; &nbsp; &nbsp;
+		<%  } %></span><br><input type="submit" value="수정하기">&nbsp;&nbsp;
+				<a href="ndel?noticeNo=<%= n.getNoticeNo() %>">삭제하기</a>
+				</td></tr>
+		<% }//for %>
+		<!-- 일반회원일 경우 -->
+	<% }else{
+		for(Notice n:list){
 		%>
-		<tr class = "question"><td><%=n.getNoticeNo() %></td><td><%=n.getNoticeTitle() %></td><td><%=String.valueOf(n.getNoticeDate())%></td></tr>
-		<tr class = "answer"><td></td><td colspan ="2"><%=n.getContent() %><br>첨부파일</td></tr>
+		<tr class = "question"><td><%=n.getNoticeNo() %></td><td><%if( n.getCatNo()==1 ){ %>[공지사항] <%}else{ %>[이벤트] <%} %><%=n.getNoticeTitle() %></td><td><%=String.valueOf(n.getNoticeDate())%></td></tr>
+		<tr class = "answer"><td></td><td colspan ="2"><%=n.getContent() %>
+			<br><span style="float : right;">첨부파일 :
+			<% if(n.getNoticeFile() == null){  //첨부파일이없는 경우
+			%>
+			첨부파일없음
+			<% }else{ //첨부파일이 있는 경우 %>
+				<a href="/arm/filedown?rfile=<%=n.getNoticeFile() %>"><%= n.getNoticeFile() %></a>
+			<% } %>
+				</span></td></tr>
 		<% } %>
-		</table>
-		</div>
+	<% } %>
+
+	</table>
+	</form>
+			<!-- 관리자 공지사항입력 -->
+	<% if(admin != null){ %>
+		<button onclick="window.open('notice/adminnotice.jsp');">글쓰기</button>
+	<% }%>
+	</div><br>
 
 		<div id = "faq">
 		<h1>자주 묻는 질문</h1>

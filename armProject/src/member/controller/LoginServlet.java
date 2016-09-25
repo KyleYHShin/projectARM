@@ -52,8 +52,15 @@ public class LoginServlet extends HttpServlet {
 			HttpSession session = request.getSession(); //새로생성
 			System.out.println("session id : " + session.getId());
 			session.setAttribute("loginUser", loginUser);
-			response.sendRedirect("/arm/mainlist");
 			
+			//로그인한 유저가 관리자인지 확인
+			String admin = null;
+			if(loginUser.getUserId().equals("admin")){
+			    admin = "adminaccount";
+			}
+			session.setAttribute("admin",admin);
+			
+			response.sendRedirect("/arm/mainlist");
 		}else {
 			//실패했을시 불러올 화면
 			RequestDispatcher view = request.getRequestDispatcher("member/Login.jsp");

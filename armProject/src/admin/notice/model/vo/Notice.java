@@ -25,6 +25,31 @@ public class Notice implements java.io.Serializable{
 		this.noticeDate = noticeDate;
 	}
 
+	public Notice(int catNo, String noticeTitle, String content, String noticeFile
+			) {
+		super();
+		
+		this.catNo = catNo;
+		this.noticeTitle = noticeTitle;
+		this.content = content;
+		this.noticeFile = noticeFile;
+	}
+
+	public Notice(int catNo, String noticeTitle, String content) {
+		super();
+		this.catNo = catNo;
+		this.noticeTitle = noticeTitle;
+		this.content = content;
+	}
+
+	public Notice(int noticeNo, int catNo, String noticeTitle, String content) {
+		super();
+		this.noticeNo = noticeNo;
+		this.catNo = catNo;
+		this.noticeTitle = noticeTitle;
+		this.content = content;
+	}
+
 	public int getNoticeNo() {
 		return noticeNo;
 	}
@@ -72,12 +97,10 @@ public class Notice implements java.io.Serializable{
 	public void setNoticeDate(Date noticeDate) {
 		this.noticeDate = noticeDate;
 	}
-
 	@Override
 	public String toString() {
 		return noticeNo + ", " + catNo + ", " + noticeTitle + ", " + content + ", " + 
 				noticeFile + ", " + noticeDate;
 	}
-	
-	
+
 }
