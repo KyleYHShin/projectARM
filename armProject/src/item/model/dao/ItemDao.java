@@ -302,6 +302,32 @@ public class ItemDao {
 		}		
 		return result;
 	}
+
+	public int insertReview(Connection con, Review review) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		
+		String query = "insert into review values (seq_review_no.nextval, ?, ?, ?, ?, ?, sysdate)";
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			
+			pstmt.setString(1, review.getmId());
+			pstmt.setInt(2, review.getItemNo());
+			pstmt.setInt(3, review.getItemSubNo());
+			pstmt.setInt(4, review.getScore());
+			pstmt.setString(5, review.getReviewContent());
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			System.out.println("후기 입력 Dao 실패");
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}		
+		return result;
+	}
 	
 
 }

@@ -112,6 +112,7 @@
 		
 /*--------------------16.09.24 아이템 상세 페이지에서 후기 수정 시 사용하도록 별점&별점 코멘트 부분 약간 수정하여 다시 추가--*/
 	    <% if(reviewHContent != null){ %>
+	    //후기 리스트 수정용 코멘트 및 별점 출력
 		$(".star_point a").click(function() {
 			$(this).nextAll(this).removeClass("on");
 			$(this).addClass("on").prevAll("a").addClass("on");
@@ -132,6 +133,27 @@
 			$(this).parent().next().text(star_comment);
 			$(this).parent().siblings('#revew_score').val(star_num);
 		});	
+		
+	    //후기 입력 부분
+		$(".review_input .star_point a").click(function(){
+			$(".comment").text();
+			
+			var star_num =$(this).siblings('.star_point .on').length;
+			star_num = parseInt(star_num) + 1;
+			
+			var star_comment = "";
+			
+			switch(star_num){
+			case 1 : star_comment = "<%=reviewHContent.get(1)%>"; break;
+			case 2 : star_comment = "<%=reviewHContent.get(2)%>"; break;
+			case 3 : star_comment = "<%=reviewHContent.get(3)%>"; break;
+			case 4 : star_comment = "<%=reviewHContent.get(4)%>"; break;
+			case 5 : star_comment = "<%=reviewHContent.get(5)%>"; break;
+			}
+			
+			$(".comment").text(star_comment);
+			$(this).parent().siblings('#review_score').val(star_num);
+		});
 	    <% } %>
 		
 	});	
@@ -795,14 +817,14 @@ ul.tabs li.active {
 }
 
 /*문의, 후기 공통 적용*/
-.inquiry_input, .p_Q, .p_A, .p_review {
+.inquiry_input, .review_input, .p_Q, .p_A, .p_review {
 	border: 1px solid red;
 	padding: 2%;
 	width: 90%;
 	height: 100%;
 }
 
-.inquiry_input table, .loaded_qna table, .p_reivew table {
+.inquiry_input table, .review_input table, .loaded_qna table, .p_reivew table {
 	width: 100%;
 	height: 80%;
 	border: 1px solid red;
@@ -1276,7 +1298,40 @@ table tr td { /*확인용*/
 						<!-- #tab3 -->
 
 						<div id="tab4" class="tab_content">
-
+						<form action="/arm/ItemReviewInsertServlet" method="post"> 
+							<div class="review_input">
+								<table>
+								<tr>
+									<td width="150px">
+										<p class="star_point">
+											<a href="#" class="on">★</a>
+											<a href="#" class="on">★</a>
+											<a href="#" class="on">★</a>
+											<a href="#">★</a>
+											<a href="#">★</a>
+										</p>
+									</td>
+									<td align="left">
+										<p class="comment"></p>
+									</td>
+								</tr>
+								</table>
+								<table>
+								<tr>
+									<td>
+										<textarea name="p_review_input" id="p_review_input" placeholder="후기를 입력해주세요!"></textarea>
+									</td>
+									<td>
+										<input type="submit" value="입력" class="btn btn-success">
+									</td>
+								</tr>
+								</table>
+							</div>
+							<!--review_input 끝-->
+							</form>
+							<hr>
+							<br>
+							
 							<%
 								if (reviewList != null) {
 									//최근 등록된 후기부터 출력되도록 리스트 역정렬
