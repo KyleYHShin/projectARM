@@ -1,9 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@page import="admin.notice.model.vo.Notice" %>
-    <%
-    	Notice notice =(Notice) request.getAttribute("notice");
-    %>
+  
 <!DOCTYPE html >
 <html>
 <head>
@@ -15,17 +13,17 @@
 	<center>
 	
 	<h1>공지사항입력</h1>
-		<form action ="ninsert" method=post name=insert target="main">
+		<form action ="/arm/ninsert" method=post  enctype="multipart/form-data">
 		<table border=0>
-			<tr>
+			 <tr>
 				<td width=103 align="center">카테고리</td>
 				<td>
 					<select name = "cate">
-						<option value="notice">공지사항</option>
-						<option value="event">이벤트</option>
+						<option value="1">공지사항</option>
+						<option value="2">이벤트</option>
 					</select>
 				</td></tr>
-			<tr>
+			<tr> 
 				<td width="103" align="center">제목</td>
 				<td><input type=text name=nTitle>
 			</td></tr>
@@ -33,10 +31,13 @@
 				<td colspan=2><textarea name=nContent rows=10 cols=70></textarea>
 			</td></tr>
 			<tr>
-				<td >첨부파일<input type ="button" id="addFile" value="파일추가"></td>
+				<td>첨부파일<input type="file" name="nfile"></td>
 				
 				</tr>
-			
+			<tr>
+					<td colspan=2 align=center><input type=submit value="저장">
+						<input type=reset value="취소"></td>
+				</tr>
 		</table>
 		</form>
 	

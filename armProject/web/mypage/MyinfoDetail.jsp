@@ -18,12 +18,79 @@
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script src="/arm/bootstrap/js/bootstrap.min.js"></script>
-  
+ 
+  <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
   <script type="text/javascript" src = "/arm/js/jquery-3.1.0.min.js"></script>
   <script type="text/javascript">
+  //주소api
+	  function getPostcode() {
+		  var themeObj = {
+		     bgColor: "#FFFD80", //바탕 배경색
+		     searchBgColor: "#FFFFFF", //검색창 배경색
+		     //contentBgColor: "", //본문 배경색(검색결과,결과없음,첫화면,검색서제스트)
+		     //pageBgColor: "", //페이지 배경색
+		     textColor: "#333333", //기본 글자색
+		     //queryTextColor: "", //검색창 글자색
+		     //postcodeTextColor: "", //우편번호 글자색
+		     emphTextColor: "#019102", //강조 글자색
+		     outlineColor: "#FD840E" //테두리
+		  };
+		  new daum.Postcode({
+		  //테마
+		  	theme : themeObj,
+		    oncomplete: function(data) {
+                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 
-	
+                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                var fullAddr = ''; // 최종 주소 변수
+                var extraAddr = ''; // 조합형 주소 변수
+
+                // 사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                    fullAddr = data.roadAddress;
+
+                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                    fullAddr = data.jibunAddress;
+                }
+
+                // 사용자가 선택한 주소가 도로명 타입일때 조합한다.
+                if(data.userSelectedType === 'R'){
+                    //법정동명이 있을 경우 추가한다.
+                    if(data.bname !== ''){
+                        extraAddr += data.bname;
+                    }
+                    // 건물명이 있을 경우 추가한다.
+                    if(data.buildingName !== ''){
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+                    // 조합형주소의 유무에 따라 양쪽에 괄호를 추가하여 최종 주소를 만든다.
+                    fullAddr += (extraAddr !== '' ? ' ('+ extraAddr +')' : '');
+                }
+
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                document.getElementById('zcode').value = data.zonecode; //5자리 새우편번호 사용
+                document.getElementById('address').value = fullAddr;
+
+                // 커서를 상세주소 필드로 이동한다.
+                document.getElementById('address2').focus();
+	          }
+	        }).open();
+	      }
  	$(function(){
+ 		$("#userpwd2").keyup(function(){
+			if($("#userpwd2").val()!=$("#userpwd1").val()){
+				$("#ckpwd").html("비밀번호가 일치하지 않습니다.");
+				$("#ckpwd").css("font-size","9pt").css("color","red");
+				$("input[type=submit]").attr("disabled", true);
+				$("input[type=submit]").css("background", "gray").css("border","gray 1px solid");
+			}else{
+				$("#ckpwd").html("비밀번호가 일치합니다.");
+				$("#ckpwd").css("font-size","9pt").css("color","blue");
+				$("input[type=submit]").attr("disabled", false);
+				$("input[type=submit]").css("background", "red").css("border","red 1px solid");
+			}
+		});
 		//퀵바 토글 - 퀵바 고정위치를 클릭시마다 바뀌게 하면서 trasition효과
 		var onoff = 0;
 		$("#qBtn").click(function(){
@@ -240,7 +307,7 @@
 	#contents {
 		width : 100%;
 		margin : 0 auto;
-		padding-top : 2%;
+		padding-top : 1%;
 		min-height : 600px;
 		/*background : #ffffcc;*/
 	}
@@ -248,7 +315,68 @@
 	/* -------------------------내용 css----------------------------------- */
 
 	/*소스를 여기에 입력해주세요*/
+	#infoTb {
+		border: 0px ;
+		BORDER-TOP : 2px solid black;
+	}
+	#infoTb th,td{
+		height :35px;
+		border : 0px;
+		BORDER-TOP : 1px solid #cecece;
+	}
+	#infoTb th{
+		text-align : center;
+		width : 150px;
+		background : #d9d9d9;
+	}
+	#infoTb td{
+		padding-left : 2%;
+		text-align : left;
+		width : 400px;
+	}
+	#infoTb tr:last-of-type td{
+		padding: 0;
+		BORDER-TOP : 2px solid black;
+		BORDER-BOTTOM : 0;
+	}
+	#infoTb td a{
+		display : block;
+		text-align : center;
+		background : green;
+		border : 1px solid green;
+		color : white;
+		float : left;
+		text-decoration:none;
+		width : 70px;
+		line-height : 20px;
+	}
+	#infoTb td input[type=submit]{
+		float : right;
+		background : red;
+		color : white;
+		border : 1px solid red;
+	}
+	 @media all and (max-width: 750px){
+	 	#infoTb {
+	 		font-size : 9pt;
+	 	}
 
+	 }
+
+	@media all and (max-width: 300px){
+		#infoTb th,td{
+			height :30px;
+		}
+		#infoTb th{
+	 		width : 100px;
+	 	}
+	 	#infoTb td{
+	 		width : 200px;
+	 	}
+	}
+	#infoTb input[readonly] {
+		border : 0;
+	}
 /*---------------------------내용 부분 (wrapper+css)끝--------------------------------- */
 	/* 푸터 */
 	footer {
@@ -356,37 +484,70 @@
 			<li><a href="../myinfo?userid=<%= loginUser.getUserId() %>" id = "u_btn">회원정보</a></li>
 		</ul>
 	</div><!-- cs_menu -->
-
-
 <div id = "contents">
 <!-- ---------------------------내용부분------------------------------------ -->
 <!-- 내용을 여기에 입력해 주세요 -->
-	<center>
-	<h1>My Page</h1>
-	<br><br>
-	<form action="mupdate" method="post">
-	<table border = "1" width="500"  height="500" style="text-align:center;">
-	<tr><td width="150" >이 름 :</td><td width="350" ><%= member.getUserName() %></td></tr>
-	<tr><td>아이디 : </td><td><input type="text" name="userid" readonly value="<%=member.getUserId() %>"></td></tr>
-	<tr><td>비밀번호 : </td><td><input type="password" name="password"  id="password"></td></tr>
-	<tr><td>비밀번호확인: </td><td><input type="password" name="password1" id="password1"></td></tr>
-	<tr><td>생 일 :  </td><td><%=member.getBirthDate() %></td></tr>
-	<tr><td>전화번호 : </td><td><input type="tel" name="phone" value="<%=member.getPhone() %>"></td></tr>
-	<tr><td>이메일 : </td><td><input type="email" name="email" value="<%=member.getEmail() %>"></td></tr>
-	<tr><td>성 별 : </td><td><%=member.getGender() %></td></tr>
-	<tr><td>우편번호 : </td><td><input type="text" name="zcode" value="<%=member.getZipCode() %>">
-				&nbsp;<input type = "button" value="우편번호 검색"></td></tr>
-	<tr><td>주 소 : </td>
-		<td>
-		<%
-			String addr = member.getAddress();
-		
-			String address = addr.substring(addr.indexOf('-')+2, addr.indexOf("동")+1);
-			String address2 = addr.substring(addr.indexOf("동")+2);
-		%>
-		<input type="text" name="address" value="<%= address %>"></td></tr>
-	<tr><td>상세주소 : </td><td><input type="text" name="address2" value="<%= address2 %>"></td></tr>
-	<tr><td>회원등급 : </td><td><%
+<h1>My Page</h1>
+<form action= "/arm/mupdate" method="post">
+<table id = "infoTb" border = "1" align = "center">
+	<tr>
+		<th>이&nbsp; &nbsp; 름</th><td><input type="text" name="username" value="<%= member.getUserName() %>" readonly></td>
+	</tr>
+	<tr>
+		<th>아 이 디</th><td><input type="text" name="userid" value="<%= member.getUserId() %>" readonly></td>
+	</tr>
+	<tr>
+		<th>비밀번호</th><td><input type = "password" id="userpwd1" name="password" required></td>
+	</tr>
+	<tr>
+		<th>비밀번호확인</th><td><input type = "password" id="userpwd2" name="password1" required> <span id="ckpwd"></span></td>
+	</tr>
+	<tr>
+		<th>생&nbsp; &nbsp; 일</th><td><%= member.getBirthDate() %></td>
+	</tr>
+	<tr>
+		<th>전화번호</th><td><input type="tel" name="phone" value="<%= member.getPhone() %>"></td>
+	</tr>
+	<tr>
+		<th>이 메 일</th><td><input type="email" name="email" value="<%= member.getEmail() %>"></td>
+	</tr>
+	<tr>
+		<th>성&nbsp; &nbsp; 별</th><td><%= member.getGender() %></td>
+	</tr>
+	<!-- 주소api -->
+	<tr>
+		<th>우편번호</th>
+	<% if(member.getZipCode()!=null){ %>
+		<td><input type="text" id="zcode" name="zcode" value="<%= member.getZipCode() %>">
+	<% }else{ %>
+		<td><input type="text" id="zcode" name="zcode" placeholder="우편번호">
+	<% } %>
+			<input type="button" onclick="getPostcode()" value="우편번호 찾기"></td>
+	</tr>
+	<tr>
+		<th rowspan="2">주&nbsp; &nbsp; 소</th>
+	<%
+		String addr = member.getAddress();
+		if(addr != null){
+			String[] address = addr.split(",");
+	%>
+		<td><input type="text" id="address" name="address" value="<%= address[0] %>" size="45"></td>
+	</tr>
+	<tr>
+		<td><input type="text" id="address2" name="address2" value="<%= address[1] %>" size="45"></td>
+	</tr>
+	<%	}else{
+	%>
+		<td><input type="text" id="address" name="address" placeholder="기본주소" size="45"></td>
+	</tr>
+	<tr>
+		<td><input type="text" id="address2" name="address2" placeholder="상세주소" size="45"></td>
+	</tr>
+	<%	} %>
+	<!-- 주소 api끗-->
+	<tr>
+		<th>회원등급</th>
+		<td><%
 			String gradeString= null;
 			switch(member.getGrade()){
 			case 1 : gradeString = "일반 회원"; break;
@@ -397,20 +558,19 @@
 			case 6 : gradeString = "다이아몬드 회원"; break;
 			default : gradeString = "새싹 회원"; break;
 			}%>
-			
-			 <%= gradeString %></td></tr>
-	<tr><td>가입일 : </td><td><%=member.getJoinDate() %></td></tr>
-	<tr><td colspan="2" align = "center">
+			<%= gradeString %>
+		</td>
+	</tr>
+	<tr>
+		<th>가 입 일</th><td><%= member.getJoinDate() %></td>
+	</tr>
+	<tr>
+		<td colspan="2"><a href="mdel?userid=<%= member.getUserId() %>">탈퇴하기</a>
 		<input type = "submit" value="수정하기">
-		&nbsp;&nbsp; <a href="mdel?userid=<%= member.getUserId() %>">탈퇴하기</a>
-		&nbsp;&nbsp; <a href="/arm/Main.jsp">처음페이지로</a>
-		
-	</td></tr>
-	
-	</table>
-	<br><br>
+		</td>
+	</tr>
+</table>
 </form>
-</center>
 <!-----------------------------------------------------내용 끝-->
 </div><!--contents끝-->
 </div><!--wrapper:menu+contents 끝-->

@@ -52,7 +52,7 @@ public class MemberService {
 	public int updateMember(Member member) {
 		Connection con = getConnection();
 		int result = new MemberDao().updateMember(con, member);
-		System.out.println("서비스작동"+result);
+		
 		if(result >0)
 			commit(con);
 		else

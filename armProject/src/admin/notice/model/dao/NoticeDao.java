@@ -51,4 +51,81 @@ public class NoticeDao {
 		return list;
 	}
 
+	public int insertNotice(Connection con, Notice notice) {
+		
+		
+		int result = 0;
+		
+		PreparedStatement pstmt = null;
+		
+		
+		String query = "insert into NOTICE (Notice_no, Notice_CAT_NO, NOTICE_TITLE,"
+				+ "NOTICE_CONTENT, NOTICE_FILE, NOTICE_DATE) values((select max(Notice_no) from notice) +1, ?, ?, ?, ?, sysdate)";
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			
+			pstmt.setInt(1, notice.getCatNo());
+			pstmt.setString(2, notice.getNoticeTitle());
+			pstmt.setString(3, notice.getContent());
+			pstmt.setString(4, notice.getNoticeFile());
+			result = pstmt.executeUpdate();
+
+			System.out.println(result + "dao");
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+			
+		}
+		return result;
+		
+		}
+			
+			
+		
+
+
+	public int updateNotice(Connection con, Notice notice) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String query = "update notice set Notice_title = ?, NOtice_CONTENT = ? where NOtice_no = ?";
+		System.out.println("Dao 작동");
+		try {
+			pstmt = con.prepareStatement(query);
+			
+			pstmt.setString(1, notice.getNoticeTitle());
+			pstmt.setString(2, notice.getContent());
+			pstmt.setInt(3, notice.getNoticeNo());
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	public int deleteNotice(Connection con, int titleNo) {
+		int result =0;
+		PreparedStatement pstmt = null;
+		
+		String query = "delete from notice where notice_no = ?";
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, titleNo);
+			
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
 }

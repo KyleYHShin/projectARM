@@ -4,6 +4,8 @@
     <%
     	ArrayList<Notice> list = (ArrayList<Notice>)request.getAttribute("list");
  		User loginUser = (User)session.getAttribute("loginUser");
+ 		String admin = (String)session.getAttribute("admin");
+ 		
     %>
 <!doctype html>
 <html lang="ko">
@@ -572,21 +574,75 @@
 	<div id = "contents">
 		<div id = "notice">
 		<h1>공지사항/이벤트</h1> 
+			<form action="/arm/nupdate" method="post">
 		<table class = "notice" cellspacing ="0">
 		<tr>
 			<th width = "10%">No.</th><th>공지사항/이벤트</th><th width = "15%">작성일</th>
 		</tr>
+	
+	<!-- 관리자일 경우 -->
+	<% if(admin != null){ %> 
 		<%
-			for(Notice n:list){
+		
+		for(Notice n:list){
+				 
 		%>
-		<tr class = "question"><td><%=n.getNoticeNo() %></td><td><%=n.getNoticeTitle() %></td><td><%=String.valueOf(n.getNoticeDate())%></td></tr>
-		<tr class = "answer"><td></td><td colspan ="2"><%=n.getContent() %><br>첨부파일</td></tr>
-							
+			
+		<tr class = "question">><td><input type="text" name="noticeno" value="<%=n.getNoticeNo() %>" readonly size="10"></td>
+		<td><select name = "cate">
+						<option value="1">공지사항</option>
+						<option value="2">이벤트</option>
+					</select><input type="text" name="ntitle" value="<%=n.getNoticeTitle() %>"></td>
+		<td><%=String.valueOf(n.getNoticeDate())%></td></tr>
+		
+		<tr class = "answer"><td></td><td colspan ="2"><textarea name="content" rows="5" cols="50"><%=n.getContent() %></textarea>
+		<br>첨부파일 : <%
+				if(n.getNoticeFile() == null){  //첨부파일이없는 경우
+			%>
+				
+			<%  }else{ //첨부파일이 있는 경우 %>
+				<a href="/arm/filedown?ofile=<%=n.getNoticeFile() %>"><%= n.getNoticeFile() %></a>&nbsp; &nbsp; &nbsp; &nbsp;
+				
+				
+			<%  } %><br><input type="submit" value="수정하기">&nbsp;&nbsp;
+											<a href="ndel?noticeNo=<%= n.getNoticeNo() %>">삭제하기</a>
+											</td></tr>
+		
 		<% } %>
-		</table>
+		<!-- 일반회원일 경우 -->
+	<% }else{ %>
+		<%
+		
+		for(Notice n:list){
+				 
+		%>
+		<tr class = "question"><td name = "noticeNo"><%=n.getNoticeNo() %></td><td><%if( n.getCatNo()==1 ){ %>[공지사항] <%}else{ %>[이벤트] <%} %><%=n.getNoticeTitle() %></td><td><%=String.valueOf(n.getNoticeDate())%></td></tr>
+		<tr class = "answer"><td></td><td colspan ="2"><%=n.getContent() %><br>
+											첨부파일 : <%
+				if(n.getNoticeFile() == null){  //첨부파일이없는 경우
+			%>첨부파일없음 
+				
+			<%  }else{ //첨부파일이 있는 경우 %>
+				<a href="/arm/filedown?rfile=<%=n.getNoticeFile() %>"><%= n.getNoticeFile() %></a>
+				
+				
+			<%  } %>
+						</td></tr>
+		
+		<% } %>
+					
+		
+			<% } %>
+	
+		
+				</table>
+			</form>
 		</div><br>
 		<!-- 관리자 공지사항입력 -->
+			<% if(admin != null){ %>
 		<button onclick="window.open('notice/adminnotice.jsp');">글쓰기</button>
+	
+		<% }%>
 		
 		
 		<div id = "faq">
@@ -600,6 +656,7 @@
 		<tr class = "question"><td>1</td><td>[교환/환불] 교환은 언제까지 되나요?</td></tr>
 		<tr class = "answer"><td></td><td>질문답변11111</td></tr>
 		</table>
+		
 		</div>
 
 		<div id = "direct_q">

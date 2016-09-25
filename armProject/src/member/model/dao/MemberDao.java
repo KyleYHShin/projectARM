@@ -149,7 +149,7 @@ public class MemberDao {
 		
 		String query = "update member set M_PW = ?, M_PHONE = ?, M_EMAIL = ?, "
 				+ "M_ZIPCODE = ?, M_ADDRESS = ? where M_ID = ?";
-		System.out.println("Dao 작동");
+		
 				
 		try {
 			pstmt = con.prepareStatement(query);

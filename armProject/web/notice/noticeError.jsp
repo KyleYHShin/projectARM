@@ -15,6 +15,8 @@
 		String message = null;
 	switch(code){
 	case "nlist": message = "공지글 전체보기가 실패하였습니다"; break;
+	case "ninsert" : message = "공지글 입력에 실패하였습니다"; break;
+	case "nomulti" : message = "파일에러"; break;
 	default : message = "공지서비스에서 에러가 발생하였습니다"; break;
 	}
 	%>

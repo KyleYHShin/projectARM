@@ -56,11 +56,21 @@ public class LoginServlet extends HttpServlet {
 			session.setAttribute("loginUser", loginUser);
 //			response.sendRedirect("member/loginsucces.jsp");
 			response.sendRedirect("Main.jsp");
-			
+//			
+//			if(loginUser.getUserId().equals("admin")) {
+//	            session.setAttribute("admin", true);
+//	       
+//	         }
+			String admin = null;
+			if(loginUser.getUserId().equals("admin")){
+			    admin = "adminaccount";
+			}
+			session.setAttribute("admin",admin);
 		}else {
 			//실패했을시 불러올 화면
 			response.sendRedirect("member/LoginError.jsp");
 		}
+		
 	}
 
 }
