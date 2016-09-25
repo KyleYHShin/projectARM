@@ -21,6 +21,40 @@
   
   <script type="text/javascript" src = "js/jquery-3.1.0.min.js"></script>
   <script type="text/javascript">
+//--------------------------------------------------------------최근본 목록-----이슬작성-------
+	function viewRecentItem(){
+		//sessionStorage.clear();
+		var slen = sessionStorage.length;
+		var rItems = "";
+		if(slen==0){
+			$("#recent_list").html("<div class='ritem'>최근 본 상품이 없습니다.</div>");
+		}else{
+			if(slen <= 4){
+				for(var i = slen-1; i > 0; i--){
+					var key = sessionStorage.key(i);
+					var item = sessionStorage[key];
+					var values = item.split(",");
+					var rItem = "<div class='ritem'><a href='/arm/ItemDetailViewServlet?itemNo="+values[0]+"'><img src='"+values[1]+"'></a></div>";
+					rItems += rItem;
+				}
+			} else {//최대 4개만 보여준다
+				for(var i = slen-1; i > slen-5; i--){
+					var key = sessionStorage.key(i);
+					var item = sessionStorage[key];
+					var values = item.split(",");
+					var rItem = "<div class='ritem'><a href='/arm/ItemDetailViewServlet?itemNo="+values[0]+"'><img src='"+values[1]+"'></a></div>";
+					rItems += rItem;
+				}
+				for(var i = slen-5; i > 0; i--){
+					var key = sessionStorage.key(i);
+					sessionStorage.removeItem(key);
+					//4개이상은 지우기 위홤
+				}
+			}
+			$("#recent_list").html(rItems);
+		}
+	}
+//------------------------------------------------------------------------끗---------
   	function nologinCart(){
 	    alert("로그인이 필요합니다");
 	}
@@ -80,6 +114,22 @@
 	        }).open();
 	      }
 	$(function(){
+		//최근목록보기
+		viewRecentItem();
+		
+		//퀵바 위치 조절
+		var winH = $(window).height();
+		var qH = $("#quick_bar").height();
+		var qbH = $("#qBtn").height();
+		var qTop = (winH-qH)/2;
+		var qbTop = (winH-qbH)/2;
+		$("#quick_bar").css("top", qTop);
+		$("#qBtn").css("top", qbTop);
+		
+		$(document).on("hover",".menuLink", function(){
+			$(this).css("color","red").css("cursor","pointer");
+		});
+//-- ----------------------------------------------------------이슬작성-끗---------------- -->
 		$("#userpwd2").keyup(function(){
 			if($("#userpwd2").val()!=$("#userpwd1").val()){
 				$("#ckpwd").html("비밀번호가 일치하지 않습니다.");
@@ -141,19 +191,6 @@
 				onoff = 1;
 			};
 		});
-		
-		//퀵바 장바구니, 최근 본 목록 슬라이드 처리
-		$("#recent").click(function(){
-			$("#recent_list").slideDown("fast");
-			$("#cart_list").slideUp("fast");
-		});
-		$("#cart").click(function(){
-			$("#recent_list").slideUp("fast");
-			$("#cart_list").slideDown("fast");
-		});
-
-
-
 	});
   </script>
   <style type="text/css">
@@ -226,56 +263,72 @@
 	}
 	/*-------------- 퀵바 ----------------------*/
 	#quick_bar {
-		width : 120px;
-		height : auto;
-		border : 1px solid yellow;
-		background : #feffd0;
-		background : white;
-		z-index : 9999;
-		position : fixed;
-		right : -122px;
-		top : 170px;
+		width: 120px;
+		border: 1px solid yellow;
+		background: #feffd0;
+		background: white;
+		z-index: 9999;
+		position: fixed;
+		right: -122px;
 	}
+	
 	#qBtn {
-		position:fixed;
-		right : -14px;
-		bottom : 310px;
-		z-index : 9999;
-		display : block;
-		border : 1px solid #ffcc00;
-		transform : rotate(270deg);
-		background : yellow;
-		font-size : 12pt;
+		position: fixed;
+		right: -14px;
+		z-index: 9999;
+		display: block;
+		border: 1px solid #ffcc00;
+		transform: rotate(270deg);
+		background: yellow;
+		font-size: 12pt;
 	}
+	
 	#quick_bar a {
 		padding: 16px;
 		display: block;
 		transition: all 0.3s ease;
 		font-size: 15px;
-		position : relative;
+		position: relative;
 	}
-	#quick_bar #cart_list{
-		display : none;
+	
+	#quick_bar #cart_list {
+		display: none;
 	}
-	#quick_bar #cart_list table{
-		margin : 3px auto;
+	
+	#quick_bar #cart_list table {
+		margin: 3px auto;
+	} 	
+/* 	#quick_bar #recent_list table {
+		margin: 3px auto;
+	} */
+	/*퀵바 내 칸당 크기 조절-----------------------------------0925*/
+	#quick_bar #recent_list .ritem{
+		width : 90px;
+		height : 90px;
+		border : 1px solid black;
+		padding : 0;
+		margin : 1px auto;
 	}
-	#quick_bar #recent_list table {
-		margin : 3px auto;
-	}
-	#quick_bar .btn {
+	#quick_bar #recent_list .ritem img{
 		width : 100%;
+		height : 100%;
+		margin : 0 auto;
+		padding : 0;
 	}
-	#quick_bar .btn:focus,
-	#quick_bar .btn:hover,
-	#quick_bar .btn:active:focus,
-	#quick_bar .btn.active:focus,
-	#quick_bar .btn.focus,
-	#quick_bar .btn:active.focus,
-	#quick_bar .btn.active.focus {
-		background : white;
+	#quick_bar #recent_list .ritem a{
+		margin : 0;
+		padding : 0;
 	}
-
+	/*=============------------------------------------*/
+	#quick_bar .btn {
+		width: 100%;
+	}
+	
+	#quick_bar .btn:focus, #quick_bar .btn:hover, #quick_bar .btn:active:focus,
+		#quick_bar .btn.active:focus, #quick_bar .btn.focus, #quick_bar .btn:active.focus,
+		#quick_bar .btn.active.focus {
+		background: white;
+	}
 	/* 카테고리 ~ item창까지------------------------*/
 	#wrapper{
 		margin: 0 auto;
@@ -586,41 +639,21 @@
 	</nav>
  
  </div>
-<!-- 퀵바 -->
- <button id = "qBtn" class = "hidden-xs">Quick</button>
- <div id = "quick_bar" class = "hidden-xs">
-	<button class="btn btn-default"><span class="glyphicon glyphicon-user"></span> MY PAGE </button>
-	<!-- 그냥 장바구니 페이지로 이동하도록. -->
-	<button id = "cart" class="btn btn-default"><span class="glyphicon glyphicon-shopping-cart"></span> 장바구니 &nbsp;</button><br>
-		<div id = "cart_list">
-			<table cellpadding = "0" cellspacing = "0" border = "1px">
-			<tr>
-				<td><a href="#">이미지1</a></td>
-			</tr>
-			<tr>
-				<td><a href="#">이미지2</a></td>
-			</tr>
-			<tr>
-				<td><a href="#">이미지3</a></td>
-			</tr>
-			</table>
+	<!-- 퀵바 -->
+	<button id="qBtn" class="hidden-xs">Quick</button>
+	<div id="quick_bar" class="hidden-xs">
+		<button class="btn btn-default">
+			<span class="glyphicon glyphicon-user"></span> MY PAGE
+		</button>
+		<!-- 그냥 장바구니 페이지로 이동하도록. -->
+		<button id="cart" class="btn btn-default">
+			<span class="glyphicon glyphicon-shopping-cart"></span> 장바구니 &nbsp;
+		</button><br>
+		<button id="recent" class="btn btn-default">최근 본 상품</button>
+		<div id="recent_list">
+			<!-- 동적으로 추가됨 -->
 		</div>
-	<button id = "recent" class="btn btn-default">최근 본 상품</button>
-	<div id = "recent_list">
-		<table cellpadding = "0" cellspacing = "0" border = "1px">
-		<tr>
-			<td><a href="#">이미지1</a></td>
-		</tr>
-		<tr>
-			<td><a href="#">이미지2</a></td>
-		</tr>
-		<tr>
-			<td><a href="#">이미지3</a></td>
-		</tr>
-		</table>
 	</div>
-	<button>◀</button> 1/5 <button>▶</button>
- </div>
 <!-- 배너 -->
  <div id ="banner">
 	<!-- 배너클릭시 시작페이지로! -->
