@@ -163,14 +163,14 @@
 		selected_sub_price = parseInt(selected_sub_price); //숫자형태로 변환
 		var selected_price_sum = selected_sub_price + parseInt("<%= item.getItemPrice()%>");
 		
-		//alert("파싱 후 : " + typeof selected_sub_price);
+		//alert("파싱 후 : " +selected_sub_price);
 	
 		td1.innerHTML = selected_sub;
 		td2.innerHTML = "<input type='number' id='Qty' class='Qty' name='Qty' min='1' width='10' value='1' onchange='update_sub_price(this);'>";
 		td3.innerHTML = "<button class='remove_order'><img src ='/arm/img/delete.png'></button>";
 		
-		if(selected_sub_price != 0)
-			td4.innerHTML = selected_price_sum;
+		
+		td4.innerHTML = selected_price_sum;
 		td_sum();
 	  }
 	  
@@ -203,17 +203,19 @@
 		 var dc_rate ="";
 		 
 		 //계속 문제발생...수정해야..
-		 if("<%= loginUser %>" != null) {
+		 <% if(loginUser != null){ %>
 			dc_rate = 1 - "<%= loginUser.getDiscount()%>"; 
 			$('#original_sum').attr("style", "text-decoration : line-through");
 			var dc_sum = total_sum * dc_rate;
 			$('#dc_sum').text(dc_sum);
-		 }else {
+			 //배송비 합산 회원 할인 적용된 총결제액
+			 $('#grand_total').text(dc_sum + 2500);
+		 <% }else { %>
 			dc_rate = 1;
-		 }
+			 $('#grand_total').text(total_sum + 2500);
+		 <% } %>
 		 
-		 //배송비 합산 회원 할인 적용된 총결제액
-		 $('#grand_total').text(dc_sum + 2500);
+
 		  
 		 if(total_sum == 0){
 			 $('#original_sum').empty();
