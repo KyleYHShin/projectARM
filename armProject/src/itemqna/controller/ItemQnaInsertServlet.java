@@ -41,7 +41,7 @@ public class ItemQnaInsertServlet extends HttpServlet {
 		
 		String userId = request.getParameter("inquiring_user");
 		int qItemNo = Integer.parseInt(request.getParameter("inquired_item_no"));
-		int qItemSubNo = Integer.parseInt(request.getParameter("inquired_sub")); //Null 값일 경우 처리 추가해야함
+		int qItemSubNo = Integer.parseInt(request.getParameter("inquired_sub"));
 		String qContent = request.getParameter("p_inquiry");
 		
 		Question question = new Question(userId, qItemNo, qItemSubNo, qContent);

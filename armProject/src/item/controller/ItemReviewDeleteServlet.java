@@ -39,11 +39,11 @@ public class ItemReviewDeleteServlet extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html; charset=utf-8");
 		
-		int rNo = Integer.parseInt(request.getParameter("r_no"));
-		int itemNo = Integer.parseInt(request.getParameter("review_item_no")); 
+		int rNo = Integer.parseInt(request.getParameter("review_no"));
 		
 		int result = new ItemService().deleteReview(rNo);
 		
+		int itemNo = Integer.parseInt(request.getParameter("review_item_no")); 
 		if(result > 0)
 			response.sendRedirect("/arm/ItemDetailViewServlet?itemNo=" + itemNo);
 	}

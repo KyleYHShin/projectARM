@@ -19,6 +19,7 @@ public class ItemQnaService {
 			commit(con);
 		else
 			rollback(con);
+
 		close(con);
 		
 		return result;

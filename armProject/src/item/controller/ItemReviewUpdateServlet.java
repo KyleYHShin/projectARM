@@ -42,12 +42,12 @@ public class ItemReviewUpdateServlet extends HttpServlet {
 		int rNo = Integer.parseInt(request.getParameter("review_no"));
 		int score = Integer.parseInt(request.getParameter("review_score"));
 		String rContent = request.getParameter("review_content");
-		int itemNo = Integer.parseInt(request.getParameter("review_item_no")); 
 		
 		Review review = new Review(rNo, score, rContent);
 		
 		int result = new ItemService().updateReview(review);
 		
+		int itemNo = Integer.parseInt(request.getParameter("review_item_no")); 
 		if(result > 0)
 			response.sendRedirect("/arm/ItemDetailViewServlet?itemNo=" + itemNo);
 		
