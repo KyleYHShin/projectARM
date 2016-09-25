@@ -1,41 +1,44 @@
 package admin.member.model.service;
 
-import java.io.IOException;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import static common.JDBCTemplate.*;
 
-/**
- * Servlet implementation class MemberService
- */
-@WebServlet("/MemberService")
-public class MemberService extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public MemberService() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+import java.sql.Connection;
+import java.util.ArrayList;
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+import admin.member.model.dao.MemberDao;
+import admin.member.model.vo.Member;
+
+public class MemberService {
+
+	public ArrayList<Member> memberAll() {
+Connection con = getConnection();
+		
+		ArrayList<Member> list = new MemberDao().memberAll(con);
+		
+		close(con);
+		return list;
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+	public ArrayList<Member> selectMember(String memberId) {
+Connection con = getConnection();
+		
+		ArrayList<Member> list = new MemberDao().selectMember(con, memberId);
+		
+		close(con);
+		return list;
+	}
+
+	public int deleteMember(String memberId) {
+		Connection con = getConnection();
+		int result = new MemberDao().deleteMember(con, memberId);
+		
+		if(result > 0){
+			commit(con);
+		}else{
+			rollback(con);
+		}
+		close(con);
+		return result;
 	}
 
 }

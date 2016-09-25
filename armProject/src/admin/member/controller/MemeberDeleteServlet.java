@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import admin.member.model.service.MemberService;
+
 /**
  * Servlet implementation class MemeberDeleteServlet
  */
@@ -34,8 +36,18 @@ public class MemeberDeleteServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		request.setCharacterEncoding("utf-8");
+		response.setContentType("text/html; charset=utf-8");
+		
+		String memberId = request.getParameter("id");
+		
+		int result = new MemberService().deleteMember(memberId);
+		
+		if(result > 0){
+			response.sendRedirect("/arm/MemberListView");
+		}else{
+			// 에러
+		}
 	}
 
 }
