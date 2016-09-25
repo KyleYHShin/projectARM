@@ -49,6 +49,6 @@ public class ItemQnaUpdateServlet extends HttpServlet {
 		
 		int itemNo = Integer.parseInt(request.getParameter("q_item_no")); 
 		if(result > 0)
-			response.sendRedirect("/first/ItemDetailViewServlet?itemNo=" + itemNo);
+			response.sendRedirect("/arm/ItemDetailViewServlet?itemNo=" + itemNo);
 	}
 }

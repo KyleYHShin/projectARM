@@ -4,6 +4,7 @@ import static common.JDBCTemplate.close;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.Types;
 
 import itemqna.model.vo.Question;
 
@@ -65,7 +66,13 @@ public class ItemQnaDao {
 			pstmt = con.prepareStatement(query);
 			pstmt.setString(1, question.getM_id());
 			pstmt.setInt(2, question.getItem_no());
-			pstmt.setInt(3, question.getItem_sub_no());
+			
+			if(question.getItem_sub_no() == 0){
+				pstmt.setNull(3, Types.INTEGER);
+			}else{
+				pstmt.setInt(3, question.getItem_sub_no());
+			}
+			
 			pstmt.setString(4, question.getContent());
 
 			result = pstmt.executeUpdate();

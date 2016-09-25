@@ -1,35 +1,41 @@
 package item.model.vo;
 
+import java.io.Serializable;
 import java.sql.Date;
 
-public class Review implements java.io.Serializable{
-	//field
+public class Review implements Serializable {
+
+	// Field
 	private int reviewNo;
 	private String mId;
 	private int itemNo;
 	private int itemSubNo;
-	private int reviewCatNo;
 	private int score;
 	private String reviewContent;
 	private Date reviewDate;
-	
-	//constructor
-	public Review(){}
 
-	public Review(int reviewNo, String mId, int itemNo, int itemSubNo, int reviewCatNo, int score, String reviewContent,
-			Date reviewDate) {
+	// Constructor
+	public Review() {}
+
+	public Review(int reviewNo, String mId, int itemNo, int itemSubNo, int score, String reviewContent, Date reviewDate) {
 		super();
 		this.reviewNo = reviewNo;
 		this.mId = mId;
 		this.itemNo = itemNo;
 		this.itemSubNo = itemSubNo;
-		this.reviewCatNo = reviewCatNo;
 		this.score = score;
 		this.reviewContent = reviewContent;
 		this.reviewDate = reviewDate;
 	}
+	
+	public Review(int reviewNo, int score, String reviewContent) {
+		super();
+		this.reviewNo = reviewNo;
+		this.score = score;
+		this.reviewContent = reviewContent;
+	}
 
-	//getter,setter
+	// Getter & Setter
 	public int getReviewNo() {
 		return reviewNo;
 	}
@@ -62,14 +68,6 @@ public class Review implements java.io.Serializable{
 		this.itemSubNo = itemSubNo;
 	}
 
-	public int getReviewCatNo() {
-		return reviewCatNo;
-	}
-
-	public void setReviewCatNo(int reviewCatNo) {
-		this.reviewCatNo = reviewCatNo;
-	}
-
 	public int getScore() {
 		return score;
 	}
@@ -93,7 +91,11 @@ public class Review implements java.io.Serializable{
 	public void setReviewDate(Date reviewDate) {
 		this.reviewDate = reviewDate;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return reviewNo + ", " + mId + ", " + itemNo + ", " + itemSubNo + ", " + score + ", " + reviewContent + ", "
+				+ reviewDate;
+	}
 
 }

@@ -33,38 +33,63 @@ String keyword = (String)request.getAttribute("keyword");
   <script type="text/javascript" src = "js/jquery-3.1.0.min.js"></script>
   <script type="text/javascript">
 //--------------------------------------------------------------최근본 목록-----이슬작성-------
-	function viewRecentItem(){
-		//sessionStorage.clear();
-		var slen = sessionStorage.length;
-		var rItems = "";
-		if(slen==0){
-			$("#recent_list").html("<div class='ritem'>최근 본 상품이 없습니다.</div>");
-		}else{
-			if(slen <= 4){
-				for(var i = slen-1; i >= 0; i--){
-					var key = sessionStorage.key(i);
-					var item = sessionStorage[key];
-					var values = item.split(",");
-					var rItem = "<div class='ritem'><a href='/arm/ItemDetailViewServlet?itemNo="+values[0]+"'><img src='"+values[1]+"'></a></div>";
-					rItems += rItem;
+		function viewRecentItem(){
+			//sessionStorage.clear();
+			var rItems = "";
+			if(sessionStorage.length==0){
+				$("#recent_list").html("<div class='ritem'>최근 본 상품이 없습니다.</div>");
+			}else{
+				if(sessionStorage.length <= 4){
+					//중복 값 지우기 위함.
+					for(var i = sessionStorage.length-1; i >= 0; i--){
+						var key = sessionStorage.key(i);
+						var item = sessionStorage[key];
+						for(var j = i-1 ; j >=0; j--){
+							var key2 = sessionStorage.key(j);
+							var item2 = sessionStorage[key2];
+							if(item == item2){
+								sessionStorage.removeItem(key2);
+							}
+						}
+					}
+					for(var i = sessionStorage.length-1; i >= 0; i--){
+						var key = sessionStorage.key(i);
+						var item = sessionStorage[key];
+						var values = item.split(",");
+						var rItem = "<div class='ritem'><a href='/arm/ItemDetailViewServlet?itemNo="+values[0]+"'><img src='"+values[1]+"'></a></div>";
+						rItems += rItem;
+					}
+				} else {//최대 4개만 보여준다
+					//중복 값 지우기 위함.
+					for(var i = sessionStorage.length-1; i > sessionStorage.length-5; i--){
+						var key = sessionStorage.key(i);
+						var item = sessionStorage[key];
+						for(var j = i-1 ; j > sessionStorage.length-5; j--){
+							var key2 = sessionStorage.key(j);
+							var item2 = sessionStorage[key2];
+							if(item == item2){
+								sessionStorage.removeItem(key2);
+							}
+						}
+					}
+					for(var i = sessionStorage.length-1; i > sessionStorage.length-5; i--){
+						var key = sessionStorage.key(i);
+						var item = sessionStorage[key];
+						var values = item.split(",");
+						var rItem = "<div class='ritem'><a href='/arm/ItemDetailViewServlet?itemNo="+values[0]+"'><img src='"+values[1]+"'></a></div>";
+						rItems += rItem;
+					}
+					if(sessionStorage.length > 10){
+						for(var i = sessionStorage.length-10; i >= 0; i--){
+							var key = sessionStorage.key(i);
+							sessionStorage.removeItem(key);
+							//10개이상은 지우기 위홤 >> 5개는 여분
+						}
+					}
 				}
-			} else {//최대 4개만 보여준다
-				for(var i = slen-1; i > slen-5; i--){
-					var key = sessionStorage.key(i);
-					var item = sessionStorage[key];
-					var values = item.split(",");
-					var rItem = "<div class='ritem'><a href='/arm/ItemDetailViewServlet?itemNo="+values[0]+"'><img src='"+values[1]+"'></a></div>";
-					rItems += rItem;
-				}
-				for(var i = slen-5; i >= 0; i--){
-					var key = sessionStorage.key(i);
-					sessionStorage.removeItem(key);
-					//4개이상은 지우기 위홤
-				}
+				$("#recent_list").html(rItems);
 			}
-			$("#recent_list").html(rItems);
 		}
-	}
 //------------------------------------------------------------------------끗---------
     function nologinCart(){
 		alert("로그인이 필요합니다");
@@ -116,7 +141,20 @@ String keyword = (String)request.getAttribute("keyword");
 		}
 		$("#pageNo").append(nextStep);
 	});
-	
+	function goCart(){
+		<% if(loginUser != null) {%>
+		location.href="/arm/mypage/MyinfoCart.jsp";
+		<% } else{ %>
+		nologinCart();
+		<% }%>
+	}
+	function goMyinfo(){
+		<% if(loginUser != null) {%>
+		location.href="/arm/myinfo?userid=<%= loginUser.getUserId() %>";
+		<% } else{ %>
+		nologinCart();
+		<% }%>
+	}
 	$(function(){
 		//최근목록보기
 		viewRecentItem();
