@@ -44,7 +44,8 @@ public class ItemSortServlet extends HttpServlet {
 		String sort_col = null;
 		
 		ArrayList<Item> list = null;
-				
+		
+		//정렬방식
 		switch(sortNo){
 		case 1://최신상품(update날짜순)
 			sort_col = " order by item_update desc";
@@ -86,12 +87,8 @@ public class ItemSortServlet extends HttpServlet {
 			totalCount = new ItemService().getCategoryCount(categoryNo);
 			request.setAttribute("status", status);
 		}
-		
-		//정렬방식
-		
-		if(list != null){			
 
-			
+		if(list != null){			
 			request.setAttribute("totalCount", totalCount);
 			request.setAttribute("page", page);
 			request.setAttribute("list", list);

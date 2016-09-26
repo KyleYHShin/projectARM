@@ -72,7 +72,7 @@
 <body>
 <center><h1>회원 목록</h1><br>
 	
-	<form action = "MemberSearchServlet" method="post">
+	<form action = "/arm/amsearch" method="post">
 	회원 아이디로 검색
 	<input type="text" name = "keyword" size = "30">
 	<input type = "submit" value="검색">
@@ -106,12 +106,12 @@
 				<td><%= m.getAddress() %></td>
 				<td><%= m.getGrade() %></td>
 				<td><%= m.getJoinDate() %></td>
-				<td width="50px"><a href="/arm/MemeberDeleteServlet?id=<%= m.getUserId() %>">삭제</a>
+				<td width="50px"><a href="/arm/amdelete?id=<%= m.getUserId() %>">삭제</a>
 			</tr>
 		<% } %>
 	</table>
-<p/><a href = "/arm/admin/AdminMain.jsp">관리자 메인페이지</a> &nbsp; &nbsp;
-<a href = "/arm/MemberListView">회원 전체 보기</a>
+<p/><a href = "/arm/mainlist">관리자 메인페이지</a> &nbsp; &nbsp;
+<a href = "/arm/amlist">회원 전체 보기</a>
 </center>
 	
 </body>

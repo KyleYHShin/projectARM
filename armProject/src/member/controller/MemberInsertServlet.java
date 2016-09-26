@@ -65,9 +65,7 @@ public class MemberInsertServlet extends HttpServlet {
 		
 		if(result>0) {
 			response.sendRedirect("member/Login.jsp");
-		
 		}else {
-			
 			response.sendRedirect("member/MemberJoin.jsp");
 		}
 	}

@@ -210,7 +210,7 @@ String msg = (String)request.getAttribute("msg");
 			<tr><td colspan="12"><%= msg %></td></tr>
 		<% } %>
 	</table>
-<p/><a href = "/arm/admin/AdminMain.jsp">메인페이지로</a> &nbsp; &nbsp;
+<p/><a href = "/arm/mainlist">메인페이지로</a> &nbsp; &nbsp;
 <a href = "/arm/ailist">전체 목록 보기</a>
 
 </center>

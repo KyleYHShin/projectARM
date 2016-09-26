@@ -16,7 +16,7 @@ import admin.member.model.vo.Member;
 /**
  * Servlet implementation class MemberSearchServlet
  */
-@WebServlet("/MemberSearchServlet")
+@WebServlet("/amsearch")
 public class MemberSearchServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -50,7 +50,7 @@ public class MemberSearchServlet extends HttpServlet {
 		RequestDispatcher view = null;
 		
 		if(list != null){
-			view = request.getRequestDispatcher("admin/MemberListView.jsp");
+			view = request.getRequestDispatcher("admin/amlist.jsp");
 			request.setAttribute("list", list);
 			view.forward(request, response);
 			

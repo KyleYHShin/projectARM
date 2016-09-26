@@ -3,6 +3,8 @@
 <%@ page import="java.util.ArrayList, item.model.vo.Item, member.model.vo.User"%>
 <%
 User loginUser = (User)session.getAttribute("loginUser");
+String admin = (String)session.getAttribute("admin");
+
 ArrayList<Item> list = (ArrayList<Item>)request.getAttribute("list");
 int totalCount = (int)request.getAttribute("totalCount");
 int pageNo = (int)request.getAttribute("page");
@@ -204,23 +206,17 @@ String status = (String)request.getAttribute("status");
 	
 			//퀵바 토글 - 퀵바 고정위치를 클릭시마다 바뀌게 하면서 trasition효과
 			var onoff = 0;
-			$("#qBtn").click(
-					function() {
-						if (onoff == 1) {
-							$("#quick_bar").css("right", "-122px").css(
-									"transition", "all 0.5s");
-							$("#qBtn").css("right", "0px").css("transition",
-									"all 0.5s");
-							onoff = 0;
-						} else if (onoff == 0) {
-							$("#quick_bar").css("right", "0").css("transition",
-									"all 0.5s");
-							$("#qBtn").css("right", "118px").css("transition",
-									"all 0.5s");
-							onoff = 1;
-						}
-						;
-					});
+			$("#qBtn").click(function() {
+				if (onoff == 1) {
+					$("#quick_bar").css("right", "-122px").css("transition", "all 0.5s");
+					$("#qBtn").css("right", "0px").css("transition", "all 0.5s");
+					onoff = 0;
+				} else if (onoff == 0) {
+					$("#quick_bar").css("right", "0").css("transition", "all 0.5s");
+					$("#qBtn").css("right", "118px").css("transition", "all 0.5s");
+					onoff = 1;
+				}
+			});
 
 		});
 	</script>
@@ -761,18 +757,23 @@ String status = (String)request.getAttribute("status");
 	<div id = "top_menu">
 	   	<nav id="topMenu" >
 	        <ul>
-	         <li class="topMenuLi"><a class="menuLink" href="nlist">고객센터</a></li>       
-	      <% if(loginUser != null){ %>
-	         <li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">장바구니</a></li>
-	         <li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">MyPage</a></li>
-	         <li class="topMenuLi"><a class="menuLink" href="logout">로그아웃</a></li>
-	         <li class="topMenuLi">환영합니다! <%=loginUser.getUserName() %>님</li>
-	      <%}else{ %>
-	         <li class="topMenuLi"><a class="menuLink" onclick="nologinCart();">장바구니</a></li>
-	         <li class="topMenuLi"><a class="menuLink" href="/arm/member/MemberJoin.jsp">회원가입</a></li>
-	         <li class="topMenuLi"><a class="menuLink" href="/arm/member/Login.jsp">로그인</a></li>
-	      <%} %>   
-	        </ul>
+		        <li class="topMenuLi"><a class="menuLink" href="/arm/nlist">고객센터</a></li>       
+		      <% if(loginUser != null){ %>
+		     	 <% if(admin != null) {%>
+		        <li class="topMenuLi"><a class="menuLink" href="/arm/ailist">상품관리</a></li>
+		       	<li class="topMenuLi"><a class="menuLink" href="/arm/amlist">회원관리</a></li>
+		     	 <% }else{%>
+		        <li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">장바구니</a></li>
+		        <li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">MyPage</a></li>
+		        <% } %>
+		        <li class="topMenuLi"><a class="menuLink" href="/arm/logout">로그아웃</a></li>
+		        <li class="topMenuLi">환영합니다! <%=loginUser.getUserName() %>님</li>
+		      <% }else{ %>
+		        <li class="topMenuLi"><a class="menuLink" onclick="nologinCart();">장바구니</a></li>
+		        <li class="topMenuLi"><a class="menuLink" href="/arm/member/MemberJoin.jsp">회원가입</a></li>
+		        <li class="topMenuLi"><a class="menuLink" href="/arm/member/Login.jsp">로그인</a></li>
+		      <% } %>
+		        </ul>
 	   </nav>
  	</div>
 		<!-- 퀵바 -->

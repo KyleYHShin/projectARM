@@ -12,7 +12,7 @@ import admin.member.model.service.MemberService;
 /**
  * Servlet implementation class MemeberDeleteServlet
  */
-@WebServlet("/MemeberDeleteServlet")
+@WebServlet("/amdelete")
 public class MemeberDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -44,7 +44,7 @@ public class MemeberDeleteServlet extends HttpServlet {
 		int result = new MemberService().deleteMember(memberId);
 		
 		if(result > 0){
-			response.sendRedirect("/arm/MemberListView");
+			response.sendRedirect("/arm/amlist");
 		}else{
 			// 에러
 		}

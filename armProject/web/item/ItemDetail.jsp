@@ -4,6 +4,8 @@
 	import="java.util.ArrayList, java.util.HashMap, java.util.Collections, item.model.vo.*, member.model.vo.User"%>
 <%
 	User loginUser = (User) session.getAttribute("loginUser");
+	String admin = (String)session.getAttribute("admin");
+	
 	Item item = (Item) request.getAttribute("item");
 	ArrayList<SubItem> subItemList = (ArrayList<SubItem>) request.getAttribute("subItemList");
 	ArrayList<Question> questionList = (ArrayList<Question>) request.getAttribute("questionList");
@@ -181,31 +183,19 @@ sessionStorage.setItem(getTimeStamp(), "<%= item.getItemNo() %>"+","+"<%= item.g
 			}
 		});
 		
-
 		//퀵바 토글 - 퀵바 고정위치를 클릭시마다 바뀌게 하면서 trasition효과
 		var onoff = 0;
-		$("#qBtn").click(function(){
-			if(onoff == 1){
-				$("#quick_bar").css("right","-122px").css("transition","all 0.5s");
-				$("#qBtn").css("right","-14px").css("transition","all 0.5s");
+		$("#qBtn").click(function() {
+			if (onoff == 1) {
+				$("#quick_bar").css("right", "-122px").css("transition", "all 0.5s");
+				$("#qBtn").css("right", "0").css("transition", "all 0.5s");
 				onoff = 0;
-			}else if(onoff == 0){
-				$("#quick_bar").css("right","0").css("transition","all 0.5s");
-				$("#qBtn").css("right","106px").css("transition","all 0.5s");
+			} else if (onoff == 0) {
+				$("#quick_bar").css("right", "0").css("transition", "all 0.5s");
+				$("#qBtn").css("right", "118px").css("transition", "all 0.5s");
 				onoff = 1;
-			};
+			}
 		});
-		
-		//퀵바 장바구니, 최근 본 목록 슬라이드 처리
-		$("#recent").click(function(){
-			$("#recent_list").slideDown("fast");
-			$("#cart_list").slideUp("fast");
-		});
-		$("#cart").click(function(){
-			$("#recent_list").slideUp("fast");
-			$("#cart_list").slideDown("fast");
-		});
-
 		
 		/*탭 기능용 소스*/
 		$(".tab_content").hide();
@@ -414,7 +404,8 @@ nav#topMenu {
 /*-------------- 퀵바 ----------------------*/
 	#quick_bar {
 		width: 120px;
-		border: 1px solid yellow;
+		border: 1px solid orange;
+		border-radius:5px;
 		background: #feffd0;
 		background: white;
 		z-index: 9999;
@@ -424,13 +415,14 @@ nav#topMenu {
 	
 	#qBtn {
 		position: fixed;
-		right: -14px;
+		right: 0px;
 		z-index: 9999;
 		display: block;
 		border: 1px solid #ffcc00;
 		transform: rotate(270deg);
 		background: yellow;
 		font-size: 12pt;
+		border-radius : 3px;
 	}
 	
 	#quick_bar a {
@@ -440,19 +432,12 @@ nav#topMenu {
 		font-size: 15px;
 		position: relative;
 	}
-	
-	#quick_bar #cart_list {
-		display: none;
-	}
-	
-	#quick_bar #cart_list table {
-		margin: 3px auto;
-	} 	
+
 	/*퀵바 내 칸당 크기 조절-----------------------------------0925*/
 	#quick_bar #recent_list .ritem{
 		width : 90px;
 		height : 90px;
-		border : 1px solid black;
+		border : 1px solid orange;
 		padding : 0;
 		margin : 1px auto;
 	}
@@ -469,12 +454,16 @@ nav#topMenu {
 	/*=============------------------------------------*/
 	#quick_bar .btn {
 		width: 100%;
+		border : 0;
+		BORDER-BOTTOM : 1px solid orange;
+		border-radius : 0;
+		background: none;
 	}
 	
 	#quick_bar .btn:focus, #quick_bar .btn:hover, #quick_bar .btn:active:focus,
 		#quick_bar .btn.active:focus, #quick_bar .btn.focus, #quick_bar .btn:active.focus,
 		#quick_bar .btn.active.focus {
-		background: white;
+		background: none;
 	}
 /* 카테고리 ~ item창까지------------------------*/
 #wrapper {
@@ -1046,24 +1035,32 @@ table tr td { /*확인용*/
 </head>
 <body>
 	<!--  최상단 기본메뉴 -->
-	<div id="top_menu">
-		<nav id="topMenu">
-			<ul>
-				<li class="topMenuLi"><a class="menuLink"
-					href="/arm/notice/notice.jsp">고객센터</a></li>
-				<li class="topMenuLi"><a class="menuLink"
-					href="/arm/mypage/MyinfoCart.jsp">장바구니</a></li>
-				<li class="topMenuLi"><a class="menuLink" href="">회원가입</a></li>
-				<li class="topMenuLi"><a class="menuLink"
-					href="/arm/member/Login.jsp">로그인</a></li>
-			</ul>
-		</nav>
-
-	</div>
+	<div id = "top_menu">
+	<nav id="topMenu" >
+	        <ul>
+		        <li class="topMenuLi"><a class="menuLink" href="/arm/nlist">고객센터</a></li>       
+		      <% if(loginUser != null){ %>
+		     	 <% if(admin != null) {%>
+		        <li class="topMenuLi"><a class="menuLink" href="/arm/ailist">상품관리</a></li>
+		       	<li class="topMenuLi"><a class="menuLink" href="/arm/amlist">회원관리</a></li>
+		     	 <% }else{%>
+		        <li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">장바구니</a></li>
+		        <li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">MyPage</a></li>
+		        <% } %>
+		        <li class="topMenuLi"><a class="menuLink" href="/arm/logout">로그아웃</a></li>
+		        <li class="topMenuLi">환영합니다! <%=loginUser.getUserName() %>님</li>
+		      <% }else{ %>
+		        <li class="topMenuLi"><a class="menuLink" onclick="nologinCart();">장바구니</a></li>
+		        <li class="topMenuLi"><a class="menuLink" href="/arm/member/MemberJoin.jsp">회원가입</a></li>
+		        <li class="topMenuLi"><a class="menuLink" href="/arm/member/Login.jsp">로그인</a></li>
+		      <% } %>
+		        </ul>
+	   </nav>
+ 	</div>
 	<!-- 퀵바 -->
-	<button id="qBtn" class="hidden-xs">Quick</button>
+	<button id="qBtn" class="hidden-xs"><span class="glyphicon glyphicon-chevron-up"></span></button>
 	<div id="quick_bar" class="hidden-xs">
-		<button class="btn btn-default" onclick="goMyinfo();">
+		<button id="mypage" class="btn btn-default" onclick="goMyinfo();">
 			<span class="glyphicon glyphicon-user"></span> MY PAGE
 		</button>
 		<!-- 그냥 장바구니 페이지로 이동하도록. -->
