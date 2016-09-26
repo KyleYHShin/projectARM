@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import="member.model.vo.User"%>
+    pageEncoding="UTF-8" import="java.util.ArrayList, member.model.vo.User, itemqna.model.vo.Question"%>
    <%
    	User loginUser = (User)session.getAttribute("loginUser");
+   Question question = (Question)session.getAttribute("itemlist");
+   ArrayList<Question> list = (ArrayList<Question>)request.getAttribute("itemlist");
    %>
 <!doctype html>
 <html lang="ko">
@@ -48,6 +50,7 @@
 		});
 	});
 		
+
   </script>
   <style type="text/css">
 	body {
@@ -246,8 +249,8 @@
 
 	/* -------------------------내용 css----------------------------------- */
 
-	/*소스를 여기에 입력해주세요*/
-
+	
+	
 /*---------------------------내용 부분 (wrapper+css)끝--------------------------------- */
 	/* 푸터 */
 	footer {
@@ -360,8 +363,21 @@
 <div id = "contents">
 <!-- ---------------------------내용부분------------------------------------ -->
 <!-- 내용을 여기에 입력해 주세요 -->
-문의내역
+	<h1>문의내역</h1>
 
+		
+		<form action="ilist" method="post">
+		<%
+		
+		for(Question q:list){
+				 
+		%>
+		<h2><%=q.getItem_name() %><%=q.getItem_sub_name() %></h2>
+		<h3><%=String.valueOf(q.getDate())%></h3>>
+		<h4><%=q.getContent() %></h4>
+				<%} %>			
+						</form>
+						
 <!-----------------------------------------------------내용 끝-->
 </div><!--contents끝-->
 </div><!--wrapper:menu+contents 끝-->

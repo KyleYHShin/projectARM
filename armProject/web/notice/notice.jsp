@@ -499,6 +499,8 @@
 	.footMenu a:hover {
 		text-decoration : underline;
 	}
+	
+	
   </style>
   
  </head>
@@ -616,7 +618,7 @@
 		for(Notice n:list){
 				 
 		%>
-		<tr class = "question"><td name = "noticeNo"><%=n.getNoticeNo() %></td><td><%if( n.getCatNo()==1 ){ %>[공지사항] <%}else{ %>[이벤트] <%} %><%=n.getNoticeTitle() %></td><td><%=String.valueOf(n.getNoticeDate())%></td></tr>
+		<tr class = "question"><td><%=n.getNoticeNo() %></td><td><%if( n.getCatNo()==1 ){ %>[공지사항] <%}else{ %>[이벤트] <%} %><%=n.getNoticeTitle() %></td><td><%=String.valueOf(n.getNoticeDate())%></td></tr>
 		<tr class = "answer"><td></td><td colspan ="2"><%=n.getContent() %><br>
 											첨부파일 : <%
 				if(n.getNoticeFile() == null){  //첨부파일이없는 경우
