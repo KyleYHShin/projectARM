@@ -2,6 +2,10 @@ package admin.notice.controller;
 
 import java.io.IOException;
 
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMultipart;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -45,7 +49,7 @@ public class EmailSendingServlet extends HttpServlet {
 		
 		switch(cat){
 		case "delivery": 
-			recipient="huaruya@gmail.com";	
+			recipient="banila_ice@naver.com";	
 			cat_name="배송";
 			break;
 		case "product" : 
@@ -81,18 +85,37 @@ public class EmailSendingServlet extends HttpServlet {
         String subject = "["+cat_name+"] "+request.getParameter("subject");
         
         StringBuilder sb = new StringBuilder();
-
-		sb.append("[연락처] : "+ request.getParameter("phone1") + "-"+request.getParameter("phone2") + 
+       
+		/*sb.append("[연락처] : "+ request.getParameter("phone1") + "-"+request.getParameter("phone2") + 
 				"-"+ request.getParameter("phone3") + "\n[이메일] : "+request.getParameter("email") +
-				"\n"+request.getParameter("content"));
+				"\n"+request.getParameter("content")+"<img src=\"http://localhost:8880/arm/echeck?userId=001\"/>");
+		String content = sb.toString();*/
+		
+		sb.append("[연락처] : "+ request.getParameter("phone1") + "-"+request.getParameter("phone2") + 
+				"-"+ request.getParameter("phone3") + "<br>[이메일] : "+request.getParameter("email") +
+				"<br>"+request.getParameter("content")+"<br><img src=\"http://localhost:8880/arm/echeck?userId=001\"/>");
 		String content = sb.toString();
-      
+		
+        Multipart multipart = new MimeMultipart();
+		
+		 // 메일 내용을 Setting
+		String html = "<img src=\"http://localhost:8880/arm/echeck?userId=001\" width=\"0\" height=\"0\"/>";
+
+		try {
+			MimeBodyPart messageBodyPart = new MimeBodyPart();
+			messageBodyPart.setContent(content,
+			"text/html;charset=" + "utf-8");// html형식
+			multipart.addBodyPart(messageBodyPart);
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
  
         String resultMessage = "";
  
         try {
             EmailUtility.sendEmail(host, port, user, pass, recipient, subject,
-                    content);
+                    content, multipart);
             resultMessage = "The e-mail was sent successfully";
         } catch (Exception ex) {
             ex.printStackTrace();
