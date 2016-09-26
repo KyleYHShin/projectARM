@@ -101,7 +101,7 @@
 	nav#topMenu {
             height: 30px;
 			width: 100%; 
-			background-color: yellow;  /*메인 메뉴 색깔 fc3*/
+			background-color: #fed605;  /*메인 메뉴 색깔 fc3*/
 			padding-right : 2%;
 			max-width: 100%;
     }
@@ -112,7 +112,7 @@
 		
     }
     #topMenu ul li {           
-        background-color: yellow;  
+        background-color: #fed605;  
         float: right;
         line-height: 30px;
 		padding : 0 5px;
@@ -213,7 +213,7 @@
 	#quick_bar {
 		width : 120px;
 		height : auto;
-		border : 1px solid yellow;
+		border : 1px solid #fed605;
 		background : #feffd0;
 		background : white;
 		z-index : 9999;
@@ -229,7 +229,7 @@
 		display : block;
 		border : 1px solid #ffcc00;
 		transform : rotate(270deg);
-		background : yellow;
+		background : #fed605;
 		font-size : 12pt;
 	}
 	#quick_bar a {
@@ -274,7 +274,7 @@
 	#fix_menu #category	{
 		width : 100%;
 		height : 50px;
-		background : #ffff00;
+		background : #fed605;
 	}
 	/* 메뉴구현 */
 	.navi {
@@ -289,7 +289,7 @@
 		padding : 0;
 		line-height : 40px;
 		width : 20%;
-		background : rgba(255,255,0, 0.5);
+	
 	}
 
 	.navi li a {
@@ -426,7 +426,7 @@
 		width : auto;
 		padding : 1px;
 		background : white;
-		BORDER-BOTTOM : 1px solid yellow;
+		BORDER-BOTTOM : 1px solid #fed605;
 		text-align : right;
 		margin-bottom : 5px;
 		

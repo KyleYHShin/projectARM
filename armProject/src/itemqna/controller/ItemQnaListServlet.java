@@ -37,7 +37,7 @@ public class ItemQnaListServlet extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html; charset=utf-8");
 		String userId = request.getParameter("userid");
-		ArrayList<Question> list = new ItemQnaService().selectMylist();
+		ArrayList<Question> list = new ItemQnaService().selectMylist(userId);
 		
 		System.out.println(list);
 		RequestDispatcher view = null;
@@ -49,6 +49,8 @@ public class ItemQnaListServlet extends HttpServlet {
 		}else {
 			System.out.println("값이 없습니다");
 		}
+		
+	
 	}
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

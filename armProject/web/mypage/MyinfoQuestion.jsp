@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import="java.util.ArrayList, member.model.vo.User, itemqna.model.vo.Question"%>
+    pageEncoding="UTF-8" import="java.util.ArrayList, member.model.vo.User, item.model.vo.*, itemqna.model.vo.Question"%>
    <%
    	User loginUser = (User)session.getAttribute("loginUser");
    Question question = (Question)session.getAttribute("itemlist");
    ArrayList<Question> list = (ArrayList<Question>)request.getAttribute("itemlist");
+   ArrayList<Answer> alist = (ArrayList<Answer>)request.getAttribute("answerList");
    %>
 <!doctype html>
 <html lang="ko">
@@ -48,8 +49,13 @@
 			$("#recent_list").slideUp("fast");
 			$("#cart_list").slideDown("fast");
 		});
+	
+ 	
+	$(".qna .question").click(function(){
+		$(this).next().slideToggle();
 	});
-		
+ 	});
+ 	
 
   </script>
   <style type="text/css">
@@ -239,50 +245,63 @@
 	}
 
 	/*contents : 내용 wrapper*/
-	#contents {
-		width : 100%;
-		margin : 0 auto;
-		padding-top : 2%;
-		min-height : 600px;
-		
-		/*background : #ffffcc;*/
+	#contents{
+	
 	}
-
 	/* -------------------------내용 css----------------------------------- */
 
-	.Qna{
+
+	#qna {
+		display : none;
+		width :100%;
+		min-height : 600px;
 		
-		border: 1px solid red;
-		padding: 2%;
-		width: 90%;
-		height: 100%;
-		
-		
+		margin : 5px auto;
+		padding : 5px;
+	}
+	.qna {
+		margin:0 auto;
+		BORDER-TOP: 2px solid black;
+		BORDER-BOTTOM: 2px solid black;
+		background : white;
+
+		width : 80%;
 	}
 	
-	@media all and( max_width : 640px){
-		#QnaTable, #QnaTable thead
-			#QnaTable tbody, #QnaTable tr, #QnaTable th, #QnaTable td{
-			display: block;
-			
-			}
-			#QnaTable tr{
-			border-bottom: 1px solid #ddd;
-			} 
-			#QnaTable th, #QnaTable td{
-				border-top: none;
-				border-bottom: none;
-			}
+	.qna tr th, .qna tr td{
+		BORDER-BOTTOM: 1px solid #d9d9d9;
+		padding : 10px;
+	}
+	.qna tr th {
+		text-align : center;
+	}
+	.qna tr td:nth-child(2n+1), .qna tr th:nth-child(2n+1){
+		background: #ebebeb;
+	}
+	.qna .question:hover {
+		cursor : pointer;
+		background : #ebebeb;
+	}
+	.qna .answer{
+		display : none;
 	}
 	
-	.content #Mquestion {
-		width : 5%;
-	}
 	
-	.content #Mquestion2 {
-		width : 15%;
-	}
 	
+	
+	@media all and (max-width: 1000px){
+		#wrapper{
+			font-size :
+		}
+	}
+
+	 @media all and (max-width: 750px){}
+
+	@media all and (max-width: 300px){
+		#wrapper h1{
+			font-size : 20pt
+		}
+	}
 /*---------------------------내용 부분 (wrapper+css)끝--------------------------------- */
 	/* 푸터 */
 	footer {
@@ -392,41 +411,61 @@
 	</div><!-- cs_menu -->
 
 
-<div id = "contents">
+
 <!-- ---------------------------내용부분------------------------------------ -->
 <!-- 내용을 여기에 입력해 주세요 -->
-	<h1>문의내역</h1>
-	<div class="Qna">
-		<form action="ilist" method="post">
-		<center>
-		<table border="1px solid gray" id="QnaTable">
+	
+	
+	<div class="qna">
+	<h1>MY 문의내역</h1>
+	<br>
+	
+		<form action="/arm/ilist" method="post">
+		
+		<table class = "qna" cellspacing ="0">
 		<tr>
-			<th width = "10%">종류</th><th>상품 / 옵션</th><th width = "10%">작성일</th>
+			<th width = "10%">종류</th><th>상품 / 옵션</th><th width = "15%">작성일</th>
 		</tr>
+		
 		<%
 		
 		for(Question q:list){
 				 
 		%>
-		<tr>
-			<td id = "Mquestion" align = "center">&nbsp;[질문]&nbsp;</td>
-			<td id = "Mqeustion2" align = "center">상품 : <%=q.getItem_name() %>&nbsp;&nbsp;옵션 : <%=q.getItem_sub_name() %>
-									&nbsp;&nbsp;<button style ="font-size:12px; width: 40ox; height: 30px;"
-										type="submit" formaction="/arm/ItemQnaDelteServlet">삭제</button></td>
-			<td style="border-right:1px solid gray;"><%=String.valueOf(q.getDate())%></td>
-			<td></td>
+		
+				
+		<tr class = "question">
+			<td>[질문]</td><td >상품 : <%=q.getItem_name() %>&nbsp;&nbsp;옵션 : <%=q.getItem_sub_name() %></td>
+			<td><%=String.valueOf(q.getDate())%><a href="ItemQnaDeleteServlet?q_no=<%= q.getQuestion_no() %>">삭제하기</a></td>
+			
 		</tr>
-		<tr>
-			<td></td><td colspan ="2" ><%=q.getContent() %></td>
+		<tr class = "answer">
+			<td></td><td colspan ="2"><%=q.getContent() %></td>
+		</tr>
+		<tr class = "question">
+			<td>[답변]</td>
+			<td>팔로FollowME</button></td>
+			<td><%if(q.getAnswer().getDate() !=null){ %><%=String.valueOf(q.getDate())%>
+				<%}else{ %>답변준비중<%} %>
+				
+			</td>
+			
+			
+		</tr>
+		<tr class = "answer">
+			<td></td><td colspan ="2"> <%if(q.getAnswer().getContent() !=null){ %><%=q.getAnswer().getContent() %>
+			<%}else{ %>답변을 준비중입니다<%} %></td>
 		</tr>
 				<%} %>		
 				
 				</table>
-				</center>	
+			
 			</form>
-		</div>				
+			<br>
+		</div>		
+		
 <!-----------------------------------------------------내용 끝-->
-</div><!--contents끝-->
+
 </div><!--wrapper:menu+contents 끝-->
 	<!-- top버튼 -->
 	<div style="position:fixed; bottom:10px; right:10px; z-index : 9999;">

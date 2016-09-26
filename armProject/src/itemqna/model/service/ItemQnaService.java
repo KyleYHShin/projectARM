@@ -52,9 +52,9 @@ public class ItemQnaService {
 		return result;
 	}
 
-	public ArrayList<Question> selectMylist() {
+	public ArrayList<Question> selectMylist(String userId) {
 		Connection con = getConnection();
-		ArrayList<Question> list = new ItemQnaDao().selectMylist(con);
+		ArrayList<Question> list = new ItemQnaDao().selectMylist(con, userId);
 		System.out.println("서비스...");
 		
 		return list;

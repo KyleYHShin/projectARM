@@ -9,8 +9,9 @@ import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
 
-import admin.notice.model.vo.Notice;
-import itemqna.model.vo.Question;
+
+
+import itemqna.model.vo.*;
 
 public class ItemQnaDao {
 	
@@ -89,18 +90,21 @@ public class ItemQnaDao {
 		return result;
 	}
 
-	public ArrayList<Question> selectMylist(Connection con) {
+	public ArrayList<Question> selectMylist(Connection con, String userId) {
 		ArrayList<Question> list = null;
-		Statement stmt = null;
+		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
 		String query = "select* from QUESTION Left join ITEM On(QUESTION_NO = ITEM_NO) "
 				+ "LEFT JOIN MEMBER ON(QUESTION_M_ID = M_ID)"
 				+ "LEFT JOIN ITEM_SUB ON(QUESTION_ITEM_SUB_NO = ITEM_SUB_NO)"
+				+ "LEFT JOIN ANSWER ON(ANSWER_QUESTION_NO = QUESTION_NO) "
+				+ "Where M_ID = ?"
 				+ "order by Question_NO desc";
 		try {
-			stmt = con.createStatement();
-			rset = stmt.executeQuery(query);
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, userId);
+			rset = pstmt.executeQuery();
 			
 			boolean flag = true;
 			while(rset.next()) {
@@ -116,6 +120,12 @@ public class ItemQnaDao {
 			q.setItem_sub_name(rset.getString("ITEM_SUB_NAME"));
 			q.setContent(rset.getString("QUESTION_CONTENT"));
 			q.setDate(rset.getDate("QUESTION_DATE"));
+			Answer a = new Answer();
+			a.setAnswer_no(rset.getInt("ANSWER_NO"));
+			a.setContent(rset.getString("ANSWER_CONTENT"));
+			a.setDate(rset.getDate("ANSWER_DATE"));
+			
+			q.setAnswer(a);
 			
 			list.add(q);
 			}
@@ -123,7 +133,7 @@ public class ItemQnaDao {
 			e.printStackTrace();
 		}finally {
 			close(rset);
-			close(stmt);
+			close(pstmt);
 		}
 		
 		return list;
