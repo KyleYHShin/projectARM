@@ -10,9 +10,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import item.model.service.ItemService;
 import item.model.vo.*;
+import member.model.vo.User;
+import order.service.OrderService;
+import order.vo.Order;
 
 
 /**
@@ -51,6 +55,9 @@ public class ItemDetailViewServlet extends HttpServlet {
 		
 		ItemService IS = new ItemService();
 		
+		//후기 입력용 추가 객체
+		ArrayList<Order> orderedSubItemList = null;
+		
 		// 조회수 증가 처리 성공하면 아이템 상세 보기 페이지로 이동
 		if (result > 0) {
 			item = IS.selectOne(itemNo);
@@ -65,6 +72,10 @@ public class ItemDetailViewServlet extends HttpServlet {
 			//해당 제품에 대한 후기 내역이 있을 시, 후기 별점 코멘트를 조회하여 맵 형태로 리턴
 			if(reviewList != null)
 				reviewHContent = IS.selectReviewHeadContent();
+			
+			//해당 제품을 구매한 사람만 후기 작성할 수 있도록 구매목록 조회하여 리턴
+			orderedSubItemList = new OrderService().selectOrders(subItemList);
+			
 		}
 		
 		RequestDispatcher view = null;
@@ -82,6 +93,10 @@ public class ItemDetailViewServlet extends HttpServlet {
 			if (reviewList != null){
 				request.setAttribute("reviewList", reviewList);
 				request.setAttribute("reviewHContent", reviewHContent);
+			}
+			
+			if(orderedSubItemList != null){
+				request.setAttribute("orderedSubItemList", orderedSubItemList);
 			}
 			view.forward(request, response);
 		}

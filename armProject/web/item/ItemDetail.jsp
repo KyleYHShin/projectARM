@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page
-	import="java.util.ArrayList, java.util.HashMap, java.util.Collections, item.model.vo.*, member.model.vo.User"%>
+	import="java.util.ArrayList, java.util.HashMap, java.util.Collections, item.model.vo.*, member.model.vo.User, order.vo.Order"%>
 <%
 	User loginUser = (User) session.getAttribute("loginUser");
 	Item item = (Item) request.getAttribute("item");
@@ -10,6 +10,8 @@
 	ArrayList<Answer> answerList = (ArrayList<Answer>) request.getAttribute("answerList");
 	ArrayList<Review> reviewList = (ArrayList<Review>) request.getAttribute("reviewList");
 	HashMap<Integer, String> reviewHContent = (HashMap<Integer, String>) request.getAttribute("reviewHContent");
+	
+	ArrayList<Order> orderedSubItemList = (ArrayList<Order>) request.getAttribute("orderedSubItemList");
 %>
 <!doctype html>
 <html lang="ko">
@@ -131,10 +133,18 @@
 			}
 			
 			$(this).parent().next().text(star_comment);
-			$(this).parent().siblings('#revew_score').val(star_num);
+			$(this).parent().siblings('#review_score').val(star_num);
 		});	
 		
 	    //후기 입력 부분
+	    <% if (orderedSubItemList != null) { %>
+	 	//초기값을 3으로 넣어주고 시작
+	    $(document).ready(function(){
+	    	$("#input_score").val(3); 
+	    	$(".comment").text("<%= reviewHContent.get(3)%>");
+	   	 });
+	    
+	 	//사용자의 별점 선택에 따라 출력 코멘트 및 전송할 스코어 변화
 		$(".review_input .star_point a").click(function(){
 			$(".comment").text();
 			
@@ -152,9 +162,12 @@
 			}
 			
 			$(".comment").text(star_comment);
-			$(this).parent().siblings('#review_score').val(star_num);
+			$("#input_score").val(star_num);
 		});
-	    <% } %>
+	  <% 
+	    	}
+		}
+	   %>
 		
 	});	
 	
@@ -914,7 +927,7 @@ table tr td { /*확인용*/
 }
 
 .star_point a {
-	font-size: 20px;
+	font-size: 15px;
 	letter-spacing: 0;
 	display: inline-block;
 	margin-left: 5px;
@@ -1092,7 +1105,7 @@ table tr td { /*확인용*/
 
 						<table>
 							<tr height="40">
-								<td width="200">옵션1 :</td>
+								<td width="200">옵션 :</td>
 								<td id="opt1" width="300"><select name="p_opt_1"
 									id="p_opt_1" class="p_opt_1" style="width: 95%;"
 									onchange="add_tr();">
@@ -1298,21 +1311,31 @@ table tr td { /*확인용*/
 						<!-- #tab3 -->
 
 						<div id="tab4" class="tab_content">
+						
+						<% 
+							if( loginUser!= null && orderedSubItemList != null ) { 	
+								for(int i = 0; i < orderedSubItemList.size(); i++){
+									if(loginUser.getUserId().equals(orderedSubItemList.get(i).getM_id())){
+						%>
 						<form action="/arm/ItemReviewInsertServlet" method="post"> 
 							<div class="review_input">
 								<table>
 								<tr>
+									<td width="50%" align="left">
+									옵션 : <input type="text" value="<%= orderedSubItemList.get(i).getItem_sub_name() %>">
+									</td>
 									<td width="150px">
 										<p class="star_point">
-											<a href="#" class="on">★</a>
-											<a href="#" class="on">★</a>
-											<a href="#" class="on">★</a>
-											<a href="#">★</a>
-											<a href="#">★</a>
+											<a href="#" class="on" style="font-size: 20px">★</a>
+											<a href="#" class="on" style="font-size: 20px">★</a>
+											<a href="#" class="on" style="font-size: 20px">★</a>
+											<a href="#" style="font-size: 20px">★</a>
+											<a href="#" style="font-size: 20px">★</a>
 										</p>
 									</td>
 									<td align="left">
 										<p class="comment"></p>
+										<input type="hidden" name="input_score" id="input_score" value="">	
 									</td>
 								</tr>
 								</table>
@@ -1322,6 +1345,9 @@ table tr td { /*확인용*/
 										<textarea name="p_review_input" id="p_review_input" placeholder="후기를 입력해주세요!"></textarea>
 									</td>
 									<td>
+										<input type="hidden" name="review_writer" value="<%= loginUser.getUserId()%>">
+										<input type="hidden" name="item_no" value="<%= item.getItemNo()%>">
+										<input type="hidden" name="item_sub_no" value="<%= orderedSubItemList.get(i).getItem_sub_no() %>">
 										<input type="submit" value="입력" class="btn btn-success">
 									</td>
 								</tr>
@@ -1331,6 +1357,7 @@ table tr td { /*확인용*/
 							</form>
 							<hr>
 							<br>
+							<% }}} %>
 							
 							<%
 								if (reviewList != null) {
@@ -1390,13 +1417,14 @@ table tr td { /*확인용*/
 											</td>
 										</tr>
 										<tr>
-											<td colspan="3"><textarea name="review_content" rows=""
-													cols=""> <%=r.getReviewContent()%> </textarea></td>
+											<td colspan="3">
+												<textarea name="review_content" rows="" cols=""> <%=r.getReviewContent()%> </textarea>
+											</td>
 											<td>
 												<p class="star_point">
 													<%
 														//등록된 별점에 따라 표시되는 별 갯수 변화
-																	if (r.getScore() == 1) {
+														if (r.getScore() == 1) {
 													%>
 													<a href="#" class="on">★</a> <a href="#">★</a> <a href="#">★</a>
 													<a href="#">★</a> <a href="#">★</a>
@@ -1426,9 +1454,8 @@ table tr td { /*확인용*/
 														}
 													%>
 												</p>
-												<p class="review_comment"></p> <input type="hidden"
-												name="review_score" id="review_score"
-												value="<%=r.getScore()%>">
+												<p class="review_comment"></p> 
+												<input type="hidden" name="review_score" id="review_score" value="<%=r.getScore()%>">
 											</td>
 										</tr>
 										<%

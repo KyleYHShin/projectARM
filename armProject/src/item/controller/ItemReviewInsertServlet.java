@@ -33,7 +33,7 @@ public class ItemReviewInsertServlet extends HttpServlet {
 		response.setContentType("text/html; charset=utf-8");
 		
 		String userId = request.getParameter("review_writer");
-		int score = Integer.parseInt(request.getParameter("review_score"));
+		int score = Integer.parseInt(request.getParameter("input_score"));
 		int itemNo = Integer.parseInt(request.getParameter("item_no"));
 		int itemSubNo = Integer.parseInt(request.getParameter("item_sub_no"));
 		String content = request.getParameter("p_review_input");
