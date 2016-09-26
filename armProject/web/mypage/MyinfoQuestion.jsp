@@ -244,12 +244,44 @@
 		margin : 0 auto;
 		padding-top : 2%;
 		min-height : 600px;
+		
 		/*background : #ffffcc;*/
 	}
 
 	/* -------------------------내용 css----------------------------------- */
 
+	.Qna{
+		
+		border: 1px solid red;
+		padding: 2%;
+		width: 90%;
+		height: 100%;
+		
+		
+	}
 	
+	@media all and( max_width : 640px){
+		#QnaTable, #QnaTable thead
+			#QnaTable tbody, #QnaTable tr, #QnaTable th, #QnaTable td{
+			display: block;
+			
+			}
+			#QnaTable tr{
+			border-bottom: 1px solid #ddd;
+			} 
+			#QnaTable th, #QnaTable td{
+				border-top: none;
+				border-bottom: none;
+			}
+	}
+	
+	.content #Mquestion {
+		width : 5%;
+	}
+	
+	.content #Mquestion2 {
+		width : 15%;
+	}
 	
 /*---------------------------내용 부분 (wrapper+css)끝--------------------------------- */
 	/* 푸터 */
@@ -364,20 +396,35 @@
 <!-- ---------------------------내용부분------------------------------------ -->
 <!-- 내용을 여기에 입력해 주세요 -->
 	<h1>문의내역</h1>
-
-		
+	<div class="Qna">
 		<form action="ilist" method="post">
+		<center>
+		<table border="1px solid gray" id="QnaTable">
+		<tr>
+			<th width = "10%">종류</th><th>상품 / 옵션</th><th width = "10%">작성일</th>
+		</tr>
 		<%
 		
 		for(Question q:list){
 				 
 		%>
-		<h2><%=q.getItem_name() %><%=q.getItem_sub_name() %></h2>
-		<h3><%=String.valueOf(q.getDate())%></h3>>
-		<h4><%=q.getContent() %></h4>
-				<%} %>			
-						</form>
-						
+		<tr>
+			<td id = "Mquestion" align = "center">&nbsp;[질문]&nbsp;</td>
+			<td id = "Mqeustion2" align = "center">상품 : <%=q.getItem_name() %>&nbsp;&nbsp;옵션 : <%=q.getItem_sub_name() %>
+									&nbsp;&nbsp;<button style ="font-size:12px; width: 40ox; height: 30px;"
+										type="submit" formaction="/arm/ItemQnaDelteServlet">삭제</button></td>
+			<td style="border-right:1px solid gray;"><%=String.valueOf(q.getDate())%></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td><td colspan ="2" ><%=q.getContent() %></td>
+		</tr>
+				<%} %>		
+				
+				</table>
+				</center>	
+			</form>
+		</div>				
 <!-----------------------------------------------------내용 끝-->
 </div><!--contents끝-->
 </div><!--wrapper:menu+contents 끝-->
