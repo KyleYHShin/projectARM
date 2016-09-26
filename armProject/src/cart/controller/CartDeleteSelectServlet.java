@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
+
 import cart.model.service.CartService;
 import member.model.vo.User;
 
@@ -37,7 +39,12 @@ public class CartDeleteSelectServlet extends HttpServlet {
 
 		// 2.
 		// 선택 삭제 시 장바구니 번호 배열로 전달 받음
-		int cartNumbers[] = null;//수정 필요
+		String get = request.getParameter("cartList");
+		String[] temp = get.split(",");
+		int cartNumbers[] = new int[temp.length];
+		for (int i = 0; i < temp.length; i++) {
+			cartNumbers[i] = Integer.parseInt(temp[i]);
+		}
 		int result = 0;
 
 		// 전달받은 장바구니 번호가 한개 이상일 경우만 동작

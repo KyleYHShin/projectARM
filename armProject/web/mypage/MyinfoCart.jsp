@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page
-	import="member.model.vo.User, java.util.ArrayList, cart.model.vo.Cart"%>
+	import="member.model.vo.User, java.util.ArrayList, cart.model.vo.Cart, org.json.simple.JSONArray"%>
 <%
 	User loginUser = (User) session.getAttribute("loginUser");
 	ArrayList<Cart> cartList = (ArrayList<Cart>) request.getAttribute("cartList");
+	JSONArray jsonList = (JSONArray) request.getAttribute("jsonList");
 %>
 <!doctype html>
 <html lang="ko">
@@ -53,29 +54,226 @@
 			$("#cart_list").slideDown("fast");
 		});
 
-		//전체선택
+		//장바구니 관련 메서드---------------------------------------------------------------
+
+		//합계 변경 함수
+		function reWriteTable() {
+
+			//ajax로 데이터 송신
+			$
+					.ajax({
+						url : "CartReView",
+						type : "POST",
+						//수신 완료
+						success : function(responseData) {
+							//1.테이블 데이터 삭제
+							$('#cart_table').empty();
+							$('#pay').empty();
+
+							//2.테이블 재작성
+							var html = '<table id="cart_top"><tr><td><button id="btn_select_all">전체 선택</button></td></tr></table><table id="cart" align="center" cellspacing="0" cellpadding="10px"><tr><th width="30px"></th><th width="300px">상품 이미지</th><th width="400px">상품설명</th><th width="150px">수량</th><th width="150px">상품가격</th><th width="30px"></th><tr>';
+
+							var json =
+<%=jsonList%>
+	;
+							html += json;
+
+							$('#cart_table').html(html);
+
+							window.alert(json[0].itemName);
+							/* for(var i=0; i<jsonObj.cartList.length; i++){
+								var obj = jsonObj.cartList[i];
+								window.alert(obj);		            	
+							}
+							var cartList = JSON.parse(responseData);
+							for(var cart in cartList){
+								window.alert("ㅁㄴㅇㄹ");		            	
+							} */
+							//3.이벤트 연결
+						},
+						fail : function() {
+							window.alert('테이블 재작성 실패하였습니다.');
+							location.reload();
+						}
+					});
+		}
+
+		//전체선택 버튼
 		var selected = false;
 		$("#btn_select_all").click(function() {
-			/* window.alert('동작'); */
 			var checkboxes = document.getElementsByName('ck_item_select');
-			var total = checkboxes.length;
-			
-			if (!select) {
-				window.alert('select = 0');
-				for (var i = 0; i < total; i++) {
+			if (!selected) {
+				for (var i = 0; i < checkboxes.length; i++) {
 					checkboxes[i].checked = true;
-					selected = true;
 				}
-			} else {
-				window.alert('select = 1');
-				for (var i = 0; i < total; i++) {
+				selected = true;
+			} else if (selected) {
+				for (var i = 0; i < checkboxes.length; i++) {
 					checkboxes[i].checked = false;
-					selected = false;
 				}
+				selected = false;
 			}
 		});
 
 		//선택 상품 삭제
+		$('#ck_remove_btn').on('click', function() {
+			var checkedItem = document.getElementsByName('ck_item_select');
+			var carts = document.getElementsByName('cart_no');
+			var cartNo = new Array();
+
+			for (var i = 0; i < checkedItem.length; i++) {
+				if (checkedItem[i].checked) {
+					cartNo.push(carts[i].value);
+				}
+			}
+
+			//체크된 항목이 있으면
+			if (cartNo.length > 0) {
+				//1.post 방식
+				var form = document.createElement("form");
+				form.method = 'post';
+				form.action = "/arm/CartDeleteSelect";
+
+				var input = document.createElement("input");
+				input.type = "hidden";
+				input.name = 'cartList';
+				input.value = cartNo.toString();
+				$(form).append(input);
+				$('#body').append(form);
+
+				form.submit();
+
+				//2.ajax 방식
+				/* $.ajax({
+					url : "CartDeleteSelect",//현재 페이지 새로고침으로 구현중
+					type : "POST",
+					data : {
+						cartList : cartNo.toString()
+					},
+					success : function() {
+						//DB처리 완료시 
+						//(미구현)테이블 재작성
+						//(임시 처리)
+						for (var i = checkedItem.length - 1; i >= 0; i--) {
+							window.alert(i);
+							if (checkedItem[i].checked) {
+								window.alert(checkedItem[i].parent.parent);
+							}
+						}
+					},
+					fail : function() {
+						window.alert('요청이 실패하였습니다. 다시 시도해주세요.');
+					}
+				}); */
+			} else {
+				window.alert('선택한 제품이 없습니다.');
+			}
+		});
+
+		//수량변경 시
+		var qtyList = document.getElementsByName('cart_qty');
+		for (var i = 0; i < qtyList.length; i++) {
+			qtyList[i].onchange = function() {
+				var rowTr = (this).parentElement.parentElement;
+				var cartNo = rowTr.children[0].children[0].value;
+				var cartQty = rowTr.children[3].children[0].value;
+
+				//서블릿 실행
+				//1.post 방식
+				var form = document.createElement("form");
+				form.method = 'post';
+				form.action = "/arm/CartUpdate";
+
+				var input1 = document.createElement("input");
+				input1.type = "hidden";
+				input1.name = 'cartNo';
+				input1.value = cartNo;
+				$(form).append(input1);
+
+				var input2 = document.createElement("input");
+				input2.type = "hidden";
+				input2.name = 'cartQty';
+				input2.value = cartQty;
+				$(form).append(input2);
+
+				$('#body').append(form);
+				form.submit();
+
+				//2.ajax 방식
+				/* $.ajax({
+					url : "CartUpdate",
+					type : "POST",
+					data : {
+						cartNo : cartNo,
+						cartQty : cartQty
+					},
+					success : function() {
+						//(미구현)테이블 제작성
+						//reWriteTable();
+					},
+					fail : function() {
+						window.alert('수량 변경이 실패하였습니다.');
+						location.reload();
+					}
+				}); */
+			}
+		}
+		;
+
+		//장바구니 개별 삭제
+		var delBtns = document.getElementsByName('cart_del_btn');
+		for (var i = 0; i < delBtns.length; i++) {
+			delBtns[i].onclick = function() {
+				var rowTr = (this).parentElement.parentElement;
+				var cartNo = rowTr.children[0].children[0].value;
+
+				//서블릿 실행
+				//1.post 방식
+				var form = document.createElement("form");
+				form.method = 'post';
+				form.action = "/arm/CartDelete";
+				
+				var input = document.createElement("input");
+				input.type = "hidden";
+				input.name = 'cartNo';
+				input.value = cartNo;
+				$(form).append(input);
+
+				$('#body').append(form);
+				form.submit();
+			}
+		}
+		;
+
+		//(미구현)주문하기
+		$('#purchase_btn').on('click', function() {
+			<%-- var cartList =[];
+			<%for (int i = 0; i < cartList.size(); i++) {%>
+			cartList.push("<%=cartList.get(i).toString()%>
+	");
+<%}%>
+	;
+			window.alert(cartList.toString()); --%>
+			//2.ajax 방식
+			/* $.ajax({
+				url : "CartUpdate",
+				type : "POST",
+				data : {
+					cartNo : cartNo,
+					cartQty : cartQty
+				},
+				success : function() {
+					//(미구현)테이블 제작성
+					//reWriteTable();
+				},
+				fail : function() {
+					window.alert('수량 변경이 실패하였습니다.');
+					location.reload();
+				}
+			}); */
+		});
+
+		//장바구니 관련 메서드 끝---------------------------------------------------------------
 	});
 </script>
 <style type="text/css">
@@ -255,26 +453,6 @@ nav#topMenu {
 	background: red;
 }
 
-@media all and (max-width: 1000px) {
-	.cs_navi li a {
-		font-size: 17px;
-	}
-}
-
-@media all and (max-width: 750px) {
-	.cs_navi li a {
-		font-size: 13px;
-		padding: 10px 0;
-	}
-}
-
-@media all and (max-width: 300px) {
-	.cs_navi li a {
-		font-size: 11px;
-		padding: 10px 0;
-	}
-}
-
 #contents {
 	width: 100%;
 	margin: 0 auto;
@@ -336,6 +514,10 @@ nav#topMenu {
 	text-align: center;
 }
 
+.cart_qty {
+	width: 40px;
+}
+
 #pay {
 	margin: 0 auto;
 	margin-top: 3px;
@@ -343,7 +525,7 @@ nav#topMenu {
 	BORDER-BOTTOM: 2px solid black;
 }
 
-#pay button#ck_remove_btn, button#continue_btn {
+#pay button#continue_btn, #pay button#ck_remove_btn {
 	border: 1px solid green;
 	background: green;
 	color: white;
@@ -355,7 +537,7 @@ button#continue_btn {
 	font-size: 1.4em;
 }
 
-#pay button#purchase_btn {
+#pay #purchase_btn {
 	margin-top: 5px;
 	border: 1px solid red;
 	background: red;
@@ -365,12 +547,42 @@ button#continue_btn {
 	width: 150px;
 }
 
-#pay p span { /*결제가격 부분(빨간글씨)*/
+#pay p .price { /*결제가격 부분(빨간글씨)*/
+	font-size: 1.1em;
+	font-weight: 900;
+}
+
+#pay p .total_price { /*결제가격 부분(빨간글씨)*/
 	color: red;
 	font-size: 1.4em;
 	font-weight: 900;
 }
 /*-------장바구니끝-----------*/
+@media all and (max-width: 1000px) {
+	.cs_navi li a {
+		font-size: 17px;
+	}
+}
+
+@media all and (max-width: 750px) {
+	.cs_navi li a {
+		font-size: 13px;
+		padding: 10px 0;
+	}
+}
+
+@media all and (max-width: 400px) {
+	.cs_navi li a {
+		font-size: 11px;
+		padding: 10px 0;
+	}
+	#contents {
+		min-width: 200px;
+	}
+	.img_col {
+		display: none;
+	}
+}
 
 /* 푸터 */
 footer {
@@ -533,7 +745,7 @@ footer #fwrap {
 					<table id="cart" align="center" cellspacing="0" cellpadding="10px">
 						<tr>
 							<th width="30px"></th>
-							<th>상품 이미지</th>
+							<th width="300px" class="img_col">상품 이미지</th>
 							<th width="400px">상품설명</th>
 							<th width="150px">수량</th>
 							<th width="150px">상품가격</th>
@@ -542,7 +754,6 @@ footer #fwrap {
 							<%
 								int deliCost = 0;
 								int sumTotalPrice = 0;
-								/* 테스트용 */String userId = "user01";
 
 								if (cartList != null) {
 									deliCost = 2500;
@@ -550,28 +761,19 @@ footer #fwrap {
 										sumTotalPrice += c.getTotal_price();
 							%>
 						
-						<tr>
-							<td><input type="checkbox" name="ck_item_select"></td>
-							<td><img class="item_img" src="<%=c.getItem_img_mini()%>"></td>
+						<tr class='items'>
+							<td><input type="text" name="cart_no" id="cart_no"
+								value="<%=String.valueOf(c.getCart_no())%>"
+								style="display: none"><input type="checkbox"
+								name="ck_item_select"></td>
+							<td class="img_col"><img class="item_img"
+								src="<%=c.getItem_img_mini()%>"></td>
 							<td>상품명:<%=c.getItem_name()%><br>옵션명: <%=c.getItem_sub_name()%>
 							</td>
-							<td>
-								<form
-									action="/arm/CartUpdate?cartNo=<%=String.valueOf(c.getCart_no())%>"
-									method="post">
-									<input type="number" name="item_qty" class="item_qty" min="1"
-										max="99" value="<%=c.getQuantity()%>"> <input
-										type="submit" value="적용">
-								</form>
-							</td>
-							<td><%=c.getTotal_price()%>원</td>
-							<td>
-								<form
-									action="/arm/CartDelete?userId=user01&cartNo=<%=String.valueOf(c.getCart_no())%>"
-									method="post">
-									<input type="submit" value="x">
-								</form>
-							</td>
+							<td><input type="number" name="cart_qty" id="cart_qty"
+								class="cart_qty" min="1" max="99" value="<%=c.getQuantity()%>"></td>
+							<td><span class="item_price"><%=c.getItem_price()%></span>원</td>
+							<td><input type="button" name="cart_del_btn" value="x"></td>
 						</tr>
 						<%
 							}
@@ -584,16 +786,16 @@ footer #fwrap {
 					<button id="ck_remove_btn">선택 상품 삭제</button>
 					<br>
 					<p align="right" style="font-size: 1.3em;">
-						총 상품가격
-						<%=sumTotalPrice%>원<br> 배송비
-						<%=deliCost%>
+						총 상품가격 <span class="sum_price"><%=sumTotalPrice%></span>원<br>
+						회원 할인가 <span class="dis_price" style="color: red"><%=(int) (sumTotalPrice * loginUser.getDiscount())%>원</span><br>
+						배송비 <span class="del_price"><%=deliCost%></span>원
 					</p>
 					<hr style="border: solid 1px black;">
 					<p align="right" style="font-size: 1.4em;">
-						총 결제 가격 : <span><%=sumTotalPrice + deliCost%>원</span>
+						총 결제 가격 : <span class="total_price"><%=(int) (sumTotalPrice * (1 - loginUser.getDiscount())) + deliCost%></span>원
 					</p>
 					<button id="continue_btn">계속 쇼핑하기</button>
-					<button id="purchase_btn">구매 하기</button>
+					<input type="button" id="purchase_btn" value="전체 구매 하기">
 				</div>
 			</div>
 

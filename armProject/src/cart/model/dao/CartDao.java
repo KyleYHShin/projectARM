@@ -118,13 +118,10 @@ public class CartDao {
 				sql += " or CART_NO = ?";
 			}
 		}
-
 		try {
 			pstmt = con.prepareStatement(sql);
 			for (int i = 0; i < cartNumbers.length; i++) {
-				if (i == 0) {
-					pstmt.setInt(i + 1, cartNumbers[i]);
-				}
+				pstmt.setInt(i + 1, cartNumbers[i]);
 			}
 
 			result = pstmt.executeUpdate();

@@ -161,5 +161,6 @@ insert into purchase values(seq_purchase_no.nextval, 'user01', 23000, 2500, sysd
 insert into orders values(seq_order_no.nextval, 3, 6, 2, null);
 commit;
 
-
+delete from cart where CART_NO = 1 or CART_NO = 2;
+rollback;
 

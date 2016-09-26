@@ -36,9 +36,8 @@ public class CartDeleteServlet extends HttpServlet {
 		response.setCharacterEncoding("text/html; charset=utf-8");
 
 		// 2.
-		int cartNo = Integer.parseInt(request.getParameter("cartNo"));
-
-		int result = new CartService().deleteCart(cartNo);
+		int cart_no = Integer.parseInt(request.getParameter("cartNo"));
+		int result = new CartService().deleteCart(cart_no);
 
 		// 3.
 		if (result > 0) {

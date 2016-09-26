@@ -41,6 +41,9 @@ public class PurchaseInsertServlet extends HttpServlet {
 		// 2.
 		String userId = request.getParameter("userId");
 		Purchase purchase = new Purchase();
+		
+		
+		
 		ArrayList<Order> orderList = new ArrayList<Order>();
 		
 		int result = new PurchaseService().insertPurchase(orderList, purchase);

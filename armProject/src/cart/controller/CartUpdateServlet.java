@@ -40,10 +40,10 @@ public class CartUpdateServlet extends HttpServlet {
 		response.setCharacterEncoding("text/html; charset=utf-8");
 
 		// 2.
-		int cartNo = Integer.parseInt(request.getParameter("cartNo"));
-		int cartQty = Integer.parseInt(request.getParameter("item_qty"));
+		int cart_no = Integer.parseInt(request.getParameter("cartNo"));
+		int cart_qty = Integer.parseInt(request.getParameter("cartQty"));
 	
-		int result = new CartService().updateCart(cartNo, cartQty);
+		int result = new CartService().updateCart(cart_no, cart_qty);
 
 		// 3.
 		if (result > 0) {
