@@ -379,7 +379,7 @@
  <div id = "top_menu">
    <nav id="topMenu" >
         <ul>
-			<li class="topMenuLi"><a class="menuLink" href="nlist">고객센터</a></li>
+			<li class="topMenuLi"><a class="menuLink" href="/arm/nlist">고객센터</a></li>
 			<li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">장바구니</a></li>
             <li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">MyPage</a></li>
             <li class="topMenuLi"><a class="menuLink" href="/arm/logout">로그아웃</a></li>

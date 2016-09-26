@@ -448,6 +448,10 @@ String admin = (String)session.getAttribute("admin");
 	.notice tr td:nth-child(3n+1), .notice tr th:nth-child(3n+1){
 		background: #ebebeb;
 	}
+	.notice textarea{
+		width : 98%;
+		height : 200px;
+	}
 
 	.notice .question:hover {
 		cursor : pointer;
@@ -530,7 +534,7 @@ String admin = (String)session.getAttribute("admin");
 	.direct_q input[name*="title"]{
 		width : 98%;
 	}
-	textarea{
+	.direct_q textarea{
 		width : 98%;
 		height : 200px;
 	}
@@ -724,24 +728,26 @@ String admin = (String)session.getAttribute("admin");
 		<div id = "direct_q">
 	
 		<h1>1:1문의</h1>
+		<!-- 문의종류에 따라 이메일 선택 -->
+		 <form action="/arm/EmailSendingServlet" method="post">
 		<table class="direct_q" cellspacing ="0">
 		<tr>
 			<th>문의분류</th>
-			<td>
-				<select name="q_category" >
-					<option value="delivery" selected> 배송
-					<option value="product">상품
-					<option value="order">주문
-					<option value="payment">결제
-					<option value="ch/rfd">교환/환불
-					<option value="membership">회원
-					<option value="etc">기타
+			   <td>
+			    <select name="q_category" >
+						<option value="delivery" selected> 배송
+						<option value="product">상품
+						<option value="order">주문
+						<option value="payment">결제
+						<option value="ch/rfd">교환/환불
+						<option value="membership">회원
+						<option value="etc">기타
 				</select>
-			</td>
+              </td>
 		</tr>
 		<tr>
 			<th>제목</th>
-			<td><input type="text" name="title"></td>
+			<td><input type="text" name="subject"></td>
 		</tr>
 		<tr>
 			<th>연락처</th>
@@ -749,14 +755,15 @@ String admin = (String)session.getAttribute("admin");
 		</tr>
 		<tr>
 			<th>이메일</th>
-			<td><input type="email" name="email"></td>
+			<td><input type="text" name="email"></td>
 		</tr>
 		<tr>
 			<th>문의내용</th>
-			<td><textarea name="q_content"></textarea></td>
+			<td><textarea name="content"></textarea></td>
 		</tr>
 		</table><br>
 			<input type="submit" id = "dqBtn" value = "문의하기">
+			</form>
 		</div>
 	</div><!-- contents --------------------------------->
 	</div><!-- wrapper -->
