@@ -1,8 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import = "java.util.ArrayList, admin.item.model.vo.Item" %>
+<%@ page import = "java.util.ArrayList, admin.item.model.vo.Item, admin.item.model.vo.Category, admin.item.model.vo.Vender"  %>
 <%
 	ArrayList<Item> list = (ArrayList<Item>)request.getAttribute("list");
+	String status = (String)request.getAttribute("status");
+	ArrayList<Category> category = (ArrayList<Category>)request.getAttribute("category");
+	ArrayList<Vender> vender = (ArrayList<Vender>)request.getAttribute("vender");
+	Item item = (Item)request.getAttribute("item");
+	String msg = (String)request.getAttribute("msg");
 %>
 <!DOCTYPE html>
 <html>
@@ -87,6 +92,17 @@
 	<input type="text" name = "keyword" size = "30">
 	<input type = "submit" value="검색">
 	</form>
+	
+	<!-- 검색 -->
+
+			<div id="sort">
+				<a href="ItemSortListView?status=<%=status%>&sortNo=1">등록일내림차순</a>&nbsp;&nbsp;
+				<a href="ItemSortListView?status=<%=status%>&sortNo=2">등록일오름차순</a>&nbsp;&nbsp;
+				<a href="ItemSortListView?status=<%=status%>&sortNo=3">상품명내림차순</a>&nbsp;&nbsp;
+				<a href="ItemSortListView?status=<%=status%>&sortNo=4">상품명오름차순</a>&nbsp;&nbsp;
+			</div>
+			<!-- sort -->
+	<br>
 
 	<table cellspacing = "0">
 		<tr>
