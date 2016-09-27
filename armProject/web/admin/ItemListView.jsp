@@ -185,10 +185,10 @@ String almsg = (String)request.getAttribute("almsg");
 	</div>
 	<% } %>
 	<div id="sort">
-		<a href="ItemSortListView?&sortNo=1">등록일내림차순</a>&nbsp;&nbsp;
-		<a href="ItemSortListView?&sortNo=2">등록일오름차순</a>&nbsp;&nbsp;
-		<a href="ItemSortListView?&sortNo=3">상품명내림차순</a>&nbsp;&nbsp;
-		<a href="ItemSortListView?&sortNo=4">상품명오름차순</a>&nbsp;&nbsp;
+		<a href="/arm/aisort?&sortNo=1">등록일내림차순</a>&nbsp;&nbsp;
+		<a href="/arm/aisort?&sortNo=2">등록일오름차순</a>&nbsp;&nbsp;
+		<a href="/arm/aisort?&sortNo=3">상품명내림차순</a>&nbsp;&nbsp;
+		<a href="/arm/aisort?&sortNo=4">상품명오름차순</a>&nbsp;&nbsp;
 	</div>
 	<!-- sort -->
 	<table id ="itemList" cellspacing = "0">

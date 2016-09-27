@@ -742,7 +742,7 @@ String msg = (String)request.getAttribute("msg");
 
 	<h1>1:1문의</h1>
 	<!-- 문의종류에 따라 이메일 선택 -->
-	 <form action="/arm/EmailSendingServlet" method="post">
+	 <form action="/arm/mailsend" method="post">
 	<table class="direct_q" cellspacing ="0">
 	<tr>
 		<th>문의분류</th>

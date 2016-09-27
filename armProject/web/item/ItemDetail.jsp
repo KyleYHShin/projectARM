@@ -69,7 +69,7 @@ sessionStorage.setItem(getTimeStamp(), "<%= item.getItemNo() %>"+","+"<%= item.g
 		//sessionStorage.clear();
 		var rItems = "";
 		if(sessionStorage.length==0){
-			$("#recent_list").html("<div class='ritem'>최근 본 상품이 없습니다.</div>");
+			$("#recent_list").html("<div class='ritem' style='color : gray;'><br>최근 본 상품이 없습니다.</div>");
 		}else{
 			if(sessionStorage.length <= 4){
 				//중복 값 지우기 위함.
@@ -187,19 +187,18 @@ function nologinCart(){
 
 		//퀵바 토글 - 퀵바 고정위치를 클릭시마다 바뀌게 하면서 trasition효과
 		var onoff = 0;
-		$("#qBtn").click(function(){
-			if(onoff == 1){
-				$("#quick_bar").css("right","-122px").css("transition","all 0.5s");
-				$("#qBtn").css("right","-14px").css("transition","all 0.5s");
+		$("#qBtn").click(function() {
+			if (onoff == 1) {
+				$("#quick_bar").css("right", "-122px").css("transition", "all 0.5s");
+				$("#qBtn").css("right", "0px").css("transition", "all 0.5s");
 				onoff = 0;
-			}else if(onoff == 0){
-				$("#quick_bar").css("right","0").css("transition","all 0.5s");
-				$("#qBtn").css("right","106px").css("transition","all 0.5s");
+			} else if (onoff == 0) {
+				$("#quick_bar").css("right", "0").css("transition", "all 0.5s");
+				$("#qBtn").css("right", "118px").css("transition", "all 0.5s");
 				onoff = 1;
-			};
+			}
 		});
-		
-		//퀵바 장바구니, 최근 본 목록 슬라이드 처리
+		/* //퀵바 장바구니, 최근 본 목록 슬라이드 처리
 		$("#recent").click(function(){
 			$("#recent_list").slideDown("fast");
 			$("#cart_list").slideUp("fast");
@@ -207,7 +206,7 @@ function nologinCart(){
 		$("#cart").click(function(){
 			$("#recent_list").slideUp("fast");
 			$("#cart_list").slideDown("fast");
-		});
+		}); */
 
 		
 		/*탭 기능용 소스*/
@@ -1147,29 +1146,33 @@ table tr td { /*확인용*/
 		<div id="fix_menu">
 			<div id="category">
 				<ul class="navi">
-					<li><a href="">손</a>
+					<li><a href="/arm/catlist?categoryno=100">손</a>
+					<!-- 100 -->
 						<ul>
-							<li><a href="">반지</a></li>
-							<li><a href="">의료/건강</a></li>
+							<li><a href="/arm/catlist?categoryno=110">반지</a></li>
+							<li><a href="/arm/catlist?categoryno=120">의료/건강</a></li>
 						</ul></li>
 					<!-- 손 -->
 
-					<li><a href="">손목</a>
+					<li><a href="/arm/catlist?categoryno=200">손목</a>
+					<!-- 200 -->
 						<ul>
-							<li><a href="">팔찌/시계</a></li>
-							<li><a href="">의료/건강</a></li>
+							<li><a href="/arm/catlist?categoryno=210">팔찌/시계</a></li>
+							<li><a href="/arm/catlist?categoryno=220">의료/건강</a></li>
 						</ul></li>
 					<!-- 손목 -->
-					<li><a href="">팔목</a>
+					<li><a href="/arm/catlist?categoryno=300">팔목</a>
+					<!-- 300 -->
 						<ul>
-							<li><a href="">팔찌/시계</a></li>
-							<li><a href="">의료/건강</a></li>
+							<li><a href="/arm/catlist?categoryno=310">팔찌/시계</a></li>
+							<li><a href="/arm/catlist?categoryno=320">의료/건강</a></li>
 						</ul></li>
 					<!-- 팔목 -->
-					<li><a href="">어깨</a>
+					<li><a href="/arm/catlist?categoryno=400">어깨</a>
+					<!-- 400 -->
 						<ul>
-							<li><a href="">의류</a></li>
-							<li><a href="">의료/건강</a></li>
+							<li><a href="/arm/catlist?categoryno=410">의류</a></li>
+							<li><a href="/arm/catlist?categoryno=420">의료/건강</a></li>
 						</ul></li>
 					<!-- 어깨 -->
 
@@ -1297,11 +1300,11 @@ table tr td { /*확인용*/
 					</ul>
 					<div class="tab_container">
 						<div id="tab1" class="tab_content">
-							<img src="items_detail/01.jpg">
+							<img src="<%= item.getItemImgDt() %>">
 						</div>
 						<!-- #tab1 -->
 						<div id="tab2" class="tab_content">
-							<img src="images/caution.jpg">
+							<img src="img/caution.jpg">
 						</div>
 						<!-- #tab2 -->
 						<div id="tab3" class="tab_content">
@@ -1651,7 +1654,7 @@ table tr td { /*확인용*/
 
 			<div class="fd">
 				<h1>
-					<img src="images/전화기.png" width="50" height="40" border="0" alt="">&nbsp;1600-7000
+					<img src="img/tel.png" width="50" height="50" border="0" alt="">&nbsp;1600-7000
 				</h1>
 			</div>
 

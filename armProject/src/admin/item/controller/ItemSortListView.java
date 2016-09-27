@@ -18,7 +18,7 @@ import admin.item.model.vo.Vender;
 /**
  * Servlet implementation class ItemSortListView
  */
-@WebServlet("/ItemSortListView")
+@WebServlet("/aisort")
 public class ItemSortListView extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

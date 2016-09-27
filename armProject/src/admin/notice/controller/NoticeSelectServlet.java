@@ -45,7 +45,7 @@ public class NoticeSelectServlet extends HttpServlet {
 			System.out.println("selectone 오류발생");
 		}
 		
-		}
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
