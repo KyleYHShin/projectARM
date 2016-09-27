@@ -4,6 +4,8 @@
 	import="java.util.ArrayList, java.util.HashMap, java.util.Collections, item.model.vo.*, member.model.vo.User, order.vo.Order"%>
 <%
 	User loginUser = (User) session.getAttribute("loginUser");
+	String admin = (String)session.getAttribute("admin");
+	
 	Item item = (Item) request.getAttribute("item");
 	ArrayList<SubItem> subItemList = (ArrayList<SubItem>) request.getAttribute("subItemList");
 	ArrayList<Question> questionList = (ArrayList<Question>) request.getAttribute("questionList");
@@ -12,6 +14,9 @@
 	HashMap<Integer, String> reviewHContent = (HashMap<Integer, String>) request.getAttribute("reviewHContent");
 	
 	ArrayList<Order> orderedSubItemList = (ArrayList<Order>) request.getAttribute("orderedSubItemList");
+	
+	//구매내역 페이지에서 후기 작성 위해 이동했는지 체크
+	boolean comeForReview = ((Boolean)request.getAttribute("comeForReview")).booleanValue();
 %>
 <!doctype html>
 <html lang="ko">
@@ -35,8 +40,119 @@
 
 <script type="text/javascript" src="js/jquery-3.1.0.min.js"></script>
 <script type="text/javascript">
-	$(function(){
+function leadingZeros(n, digits){
+	  var zero = '';
+	  n = n.toString();
+	  
+	  if(n.length < digits){
+		  for(i = 0; i < digits - n.length; i++){
+			  zero += '0';
+		  }
+	  }
+	  return zero + n;
+}
+function getTimeStamp(){
+	  var d = new Date();
+	  
+	  var s = leadingZeros(d.getFullYear(), 4)+
+	  leadingZeros(d.getMonth() + 1, 2)+
+	  leadingZeros(d.getDate(), 2)+
+	  leadingZeros(d.getHours(), 2)+
+	  leadingZeros(d.getMinutes(), 2)+
+	  leadingZeros(d.getSeconds(), 2);
+	  return s;
+}
+//세션 스토리지에 저장
+sessionStorage.setItem(getTimeStamp(), "<%= item.getItemNo() %>"+","+"<%= item.getItemTH() %>");
 
+	function viewRecentItem(){
+		//sessionStorage.clear();
+		var rItems = "";
+		if(sessionStorage.length==0){
+			$("#recent_list").html("<div class='ritem'>최근 본 상품이 없습니다.</div>");
+		}else{
+			if(sessionStorage.length <= 4){
+				//중복 값 지우기 위함.
+				for(var i = sessionStorage.length-1; i >= 0; i--){
+					var key = sessionStorage.key(i);
+					var item = sessionStorage[key];
+					for(var j = i-1 ; j >=0; j--){
+						var key2 = sessionStorage.key(j);
+						var item2 = sessionStorage[key2];
+						if(item == item2){
+							sessionStorage.removeItem(key2);
+						}
+					}
+				}
+				for(var i = sessionStorage.length-1; i >= 0; i--){
+					var key = sessionStorage.key(i);
+					var item = sessionStorage[key];
+					var values = item.split(",");
+					var rItem = "<div class='ritem'><a href='/arm/ItemDetailViewServlet?itemNo="+values[0]+"'><img src='"+values[1]+"'></a></div>";
+					rItems += rItem;
+				}
+			} else {//최대 4개만 보여준다
+				//중복 값 지우기 위함.
+				for(var i = sessionStorage.length-1; i > sessionStorage.length-5; i--){
+					var key = sessionStorage.key(i);
+					var item = sessionStorage[key];
+					for(var j = i-1 ; j > sessionStorage.length-5; j--){
+						var key2 = sessionStorage.key(j);
+						var item2 = sessionStorage[key2];
+						if(item == item2){
+							sessionStorage.removeItem(key2);
+						}
+					}
+				}
+				for(var i = sessionStorage.length-1; i > sessionStorage.length-5; i--){
+					var key = sessionStorage.key(i);
+					var item = sessionStorage[key];
+					var values = item.split(",");
+					var rItem = "<div class='ritem'><a href='/arm/ItemDetailViewServlet?itemNo="+values[0]+"'><img src='"+values[1]+"'></a></div>";
+					rItems += rItem;
+				}
+				if(sessionStorage.length > 10){
+					for(var i = sessionStorage.length-10; i >= 0; i--){
+						var key = sessionStorage.key(i);
+						sessionStorage.removeItem(key);
+						//10개이상은 지우기 위홤 >> 5개는 여분
+					}
+				}
+			}
+			$("#recent_list").html(rItems);
+		}
+	}
+function nologinCart(){
+		alert("로그인이 필요합니다");
+	}
+	function goCart(){
+		<% if(loginUser != null) {%>
+		location.href="/arm/mypage/MyinfoCart.jsp";
+		<% } else{ %>
+		nologinCart();
+		<% }%>
+	}
+	function goMyinfo(){
+		<% if(loginUser != null) {%>
+		location.href="/arm/myinfo?userid=<%= loginUser.getUserId() %>";
+		<% } else{ %>
+		nologinCart();
+		<% }%>
+	}
+//------------------------------------------------------------------------끗---------
+	$(function(){
+		//최근목록보기
+		viewRecentItem();
+		
+		//퀵바 위치 조절
+		var winH = $(window).height();
+		var qH = $("#quick_bar").height();
+		var qbH = $("#qBtn").height();
+		var qTop = (winH-qH)/2;
+		var qbTop = (winH-qbH)/2;
+		$("#quick_bar").css("top", qTop);
+		$("#qBtn").css("top", qbTop);
+		
 		//스크롤시 카테고리고정
 		var menupos = $("#fix_menu").offset().top;
 		$(window).scroll(function(){
@@ -95,8 +211,25 @@
 
 		
 		/*탭 기능용 소스*/
-		$(".tab_content").hide();
-		$(".tab_content:first").show();
+/*------------------------------------------ 구매 내역 페이지에서 후기 작성 버튼 시 바로 이동하기 위해 아래 소스 수정 */		
+		//구매내역 페이지에서 후기 작성 버튼을 클릭하여 상세 페이지로 이동했을시 바로 후기 탭 출력
+		<% if (comeForReview) {%>
+			$(".tab_content").hide();
+			$(".tab_content:last-child").show();
+			$("ul.tabs li").removeClass("active").css("color", "#333");
+			$("ul.tabs li:last-child").addClass("active").css("color", "darkred");
+			var activeTab = $("ul.tabs li:last-child").attr("rel");
+			$("#" + activeTab).fadeIn();
+			
+			var position = $('#forInsertReview').offset();
+			var go = position.offset().top + (position.height() / 2);
+			$('html, body').animate({ scrollTop : go }, 400);
+			
+		<% } else {%>
+			$(".tab_content").hide();
+			$(".tab_content:first").show();
+		<% }%>
+/*----------------------------------수정 끝------------------------------------------------------*/		
 
 		$("ul.tabs li").click(function () {
 			$("ul.tabs li").removeClass("active").css("color", "#333");
@@ -268,7 +401,7 @@ div {
 nav#topMenu {
 	height: 30px;
 	width: 100%;
-	background-color: yellow; /*메인 메뉴 색깔 fc3*/
+	background-color: #fed605; /*메인 메뉴 색깔 fc3*/
 	padding-right: 2%;
 	max-width: 100%;
 }
@@ -280,7 +413,7 @@ nav#topMenu {
 }
 
 #topMenu ul li {
-	background-color: yellow;
+	background-color: #fed605;
 	float: right;
 	line-height: 30px;
 	padding: 0 5px;
@@ -326,65 +459,74 @@ nav#topMenu {
 /*상단 배너 크기*/
 #banner a img {
 	max-width: 100%;
-	max-height: 100px;
+	max-height: 70px;
 	border: 0;
 }
 
 /*-------------- 퀵바 ----------------------*/
-#quick_bar {
-	width: 120px;
-	height: auto;
-	border: 1px solid yellow;
-	background: #feffd0;
-	background: white;
-	z-index: 9999;
-	position: fixed;
-	right: -122px;
-	top: 170px;
-}
+	#quick_bar {
+		width: 120px;
+		border: 1px solid orange;
+		border-radius:5px;
+		background: #feffd0;
+		background: white;
+		z-index: 9999;
+		position: fixed;
+		right: -122px;
+	}
+	
+	#qBtn {
+		position: fixed;
+		right: 0px;
+		z-index: 9999;
+		display: block;
+		border: 1px solid #ffcc00;
+		transform: rotate(270deg);
+		background: #fed605;
+		font-size: 12pt;
+		border-radius : 3px;
+	}
+	
+	#quick_bar a {
+		padding: 16px;
+		display: block;
+		transition: all 0.3s ease;
+		font-size: 15px;
+		position: relative;
+	}
 
-#qBtn {
-	position: fixed;
-	right: -14px;
-	bottom: 310px;
-	z-index: 9999;
-	display: block;
-	border: 1px solid #ffcc00;
-	transform: rotate(270deg);
-	background: yellow;
-	font-size: 12pt;
-}
-
-#quick_bar a {
-	padding: 16px;
-	display: block;
-	transition: all 0.3s ease;
-	font-size: 15px;
-	position: relative;
-}
-
-#quick_bar #cart_list {
-	display: none;
-}
-
-#quick_bar #cart_list table {
-	margin: 3px auto;
-}
-
-#quick_bar #recent_list table {
-	margin: 3px auto;
-}
-
-#quick_bar .btn {
-	width: 100%;
-}
-
-#quick_bar .btn:focus, #quick_bar .btn:hover, #quick_bar .btn:active:focus,
-	#quick_bar .btn.active:focus, #quick_bar .btn.focus, #quick_bar .btn:active.focus,
-	#quick_bar .btn.active.focus {
-	background: white;
-}
-
+	/*퀵바 내 칸당 크기 조절-----------------------------------0925*/
+	#quick_bar #recent_list .ritem{
+		width : 90px;
+		height : 90px;
+		border : 1px solid orange;
+		padding : 0;
+		margin : 1px auto;
+	}
+	#quick_bar #recent_list .ritem img{
+		width : 100%;
+		height : 100%;
+		margin : 0 auto;
+		padding : 0;
+	}
+	#quick_bar #recent_list .ritem a{
+		margin : 0;
+		padding : 0;
+	}
+	/*=============------------------------------------*/
+	#quick_bar .btn {
+		width: 100%;
+		border : 0;
+		BORDER-BOTTOM : 1px solid orange;
+		border-radius : 0;
+		background: none;
+	}
+	
+	#quick_bar .btn:focus, #quick_bar .btn:hover, #quick_bar .btn:active:focus,
+		#quick_bar .btn.active:focus, #quick_bar .btn.focus, #quick_bar .btn:active.focus,
+		#quick_bar .btn.active.focus {
+		background: none;
+	}
 /* 카테고리 ~ item창까지------------------------*/
 #wrapper {
 	margin: 0 auto;
@@ -399,8 +541,8 @@ nav#topMenu {
 
 #fix_menu #category {
 	width: 100%;
-	height: 50px;
-	background: #ffff00;
+	height: 40px;
+	background: #fed605;
 }
 
 /* 메뉴구현 */
@@ -414,15 +556,14 @@ nav#topMenu {
 	float: left;
 	position: relative;
 	padding: 0;
-	line-height: 40px;
+	line-height: 30px;
 	width: 20%;
-	background: rgba(255, 255, 0, 0.5);
 }
 
 .navi li a {
 	display: block;
 	font-weight: 900;
-	font-size: 20px;
+	font-size: 16px;
 	padding: 5px 25px;
 	color: black;
 	text-decoration: none;
@@ -955,66 +1096,49 @@ table tr td { /*확인용*/
 </head>
 <body>
 	<!--  최상단 기본메뉴 -->
-	<div id="top_menu">
-		<nav id="topMenu">
-			<ul>
-				<li class="topMenuLi"><a class="menuLink"
-					href="/arm/notice/notice.jsp">고객센터</a></li>
-				<li class="topMenuLi"><a class="menuLink"
-					href="/arm/mypage/MyinfoCart.jsp">장바구니</a></li>
-				<li class="topMenuLi"><a class="menuLink" href="">회원가입</a></li>
-				<li class="topMenuLi"><a class="menuLink"
-					href="/arm/member/Login.jsp">로그인</a></li>
-			</ul>
-		</nav>
-
-	</div>
-	<!-- 퀵바 -->
-	<button id="qBtn" class="hidden-xs">Quick</button>
+	<!--  최상단 기본메뉴 -->
+	<div id = "top_menu">
+	   	<nav id="topMenu" >
+	        <ul>
+		        <li class="topMenuLi"><a class="menuLink" href="/arm/nlist">고객센터</a></li>       
+		      <% if(loginUser != null){ %>
+		     	 <% if(admin != null) {%>
+		        <li class="topMenuLi"><a class="menuLink" href="/arm/ailist">상품관리</a></li>
+		       	<li class="topMenuLi"><a class="menuLink" href="/arm/amlist">회원관리</a></li>
+		       	<li class="topMenuLi"><a class="menuLink" href="/arm/QnaListViewServlet">Q&A 관리</a></li>
+		     	 <% }else{%>
+		        <li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">장바구니</a></li>
+		        <li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">MyPage</a></li>
+		        <% } %>
+		        <li class="topMenuLi"><a class="menuLink" href="/arm/logout">로그아웃</a></li>
+		        <li class="topMenuLi">환영합니다! <%=loginUser.getUserName() %>님</li>
+		      <% }else{ %>
+		        <li class="topMenuLi"><a class="menuLink" onclick="nologinCart();">장바구니</a></li>
+		        <li class="topMenuLi"><a class="menuLink" href="/arm/member/MemberJoin.jsp">회원가입</a></li>
+		        <li class="topMenuLi"><a class="menuLink" href="/arm/member/Login.jsp">로그인</a></li>
+		      <% } %>
+		        </ul>
+	   </nav>
+ 	</div>
+		<!-- 퀵바 -->
+	<button id="qBtn" class="hidden-xs"><span class="glyphicon glyphicon-chevron-up"></span></button>
 	<div id="quick_bar" class="hidden-xs">
-		<button class="btn btn-default">
+		<button id="mypage" class="btn btn-default" onclick="goMyinfo();">
 			<span class="glyphicon glyphicon-user"></span> MY PAGE
 		</button>
 		<!-- 그냥 장바구니 페이지로 이동하도록. -->
-		<button id="cart" class="btn btn-default">
+		<button id="cart" class="btn btn-default" onclick="goCart();">
 			<span class="glyphicon glyphicon-shopping-cart"></span> 장바구니 &nbsp;
-		</button>
-		<br>
-		<div id="cart_list">
-			<table cellpadding="0" cellspacing="0" border="1px">
-				<tr>
-					<td><a href="#">이미지1</a></td>
-				</tr>
-				<tr>
-					<td><a href="#">이미지2</a></td>
-				</tr>
-				<tr>
-					<td><a href="#">이미지3</a></td>
-				</tr>
-			</table>
-		</div>
+		</button><br>
 		<button id="recent" class="btn btn-default">최근 본 상품</button>
 		<div id="recent_list">
-			<table cellpadding="0" cellspacing="0" border="1px">
-				<tr>
-					<td><a href="#">이미지1</a></td>
-				</tr>
-				<tr>
-					<td><a href="#">이미지2</a></td>
-				</tr>
-				<tr>
-					<td><a href="#">이미지3</a></td>
-				</tr>
-			</table>
+			<!-- 동적으로 추가됨 -->
 		</div>
-		<button>◀</button>
-		1/5
-		<button>▶</button>
 	</div>
 	<!-- 배너 -->
 	<div id="banner">
 		<!-- 배너클릭시 시작페이지로! -->
-		<a href="/arm/Main.jsp"><img src="/arm/img/banner.png"
+		<a href="/arm/mainlist"><img src="/arm/img/banner.png"
 			alt="시작페이지로"></a>
 	</div>
 	<!-- 카테고리 ~ item 목록 -->
@@ -1073,12 +1197,11 @@ table tr td { /*확인용*/
 			<div class="product">
 				<form method="get" action="CartInsertServlet">
 					<div class="pImage">
-						<img src="<%=item.getItemImg()%>">
-						<!-------------- pImage div에선 이 옆에만 수정 -------->
+						<img src="<%=item.getItemImg()%>">	<!-------------- pImage div에선 이 옆에만 수정 -------->
 					</div>
 					<!--pImage-->
 
-					<!-------------------- 이 밑으로는 표시한 부분까지 다 수정함  ------------------------------------------------------------->
+<!-------------------- 이 밑으로는 표시한 부분까지 다 수정함  ------------------------------------------------------------->
 					<div class="pTable">
 						<table>
 							<tr height="50">
@@ -1203,7 +1326,7 @@ table tr td { /*확인용*/
 										</tr>
 										<tr>
 											<td id="td1"><textarea name="p_inquiry" id="p_inquiry"
-													placeholder="로그인 후 문의하실 수 있습니다"></textarea></td>
+													placeholder="로그인 후 문의하실 수 있습니다" required></textarea></td>
 											<%
 												if (loginUser != null) {
 											%>
@@ -1255,7 +1378,7 @@ table tr td { /*확인용*/
 											</tr>
 											<tr>
 												<td colspan="4"><textarea name="q_content" rows=""
-														cols=""> <%=questionList.get(i).getqContent()%></textarea></td>
+														cols="" required> <%=questionList.get(i).getqContent()%></textarea></td>
 											</tr>
 											<%
 												} else {
@@ -1318,13 +1441,16 @@ table tr td { /*확인용*/
 									if(loginUser.getUserId().equals(orderedSubItemList.get(i).getM_id())){
 						%>
 						<form action="/arm/ItemReviewInsertServlet" method="post"> 
+<!--------------------------------- 구매내역 페이지에서 후기 작성 버튼 누를 경우 바로 후기 입력 부분으로 오기 위해 아래 한줄 추가함  -->
+						<p id="forInsertReview"></p>
 							<div class="review_input">
 								<table>
 								<tr>
-									<td width="50%" align="left">
-									옵션 : <input type="text" value="<%= orderedSubItemList.get(i).getItem_sub_name() %>">
+									<td width="30%" align="left">
+									옵션 : <span><%= orderedSubItemList.get(i).getItem_sub_name() %></span>
+
 									</td>
-									<td width="150px">
+									<td width="20%">
 										<p class="star_point">
 											<a href="#" class="on" style="font-size: 20px">★</a>
 											<a href="#" class="on" style="font-size: 20px">★</a>
@@ -1342,7 +1468,7 @@ table tr td { /*확인용*/
 								<table>
 								<tr>
 									<td>
-										<textarea name="p_review_input" id="p_review_input" placeholder="후기를 입력해주세요!"></textarea>
+										<textarea name="p_review_input" id="p_review_input" placeholder="후기를 입력해주세요!" required></textarea>
 									</td>
 									<td>
 										<input type="hidden" name="review_writer" value="<%= loginUser.getUserId()%>">
@@ -1418,7 +1544,7 @@ table tr td { /*확인용*/
 										</tr>
 										<tr>
 											<td colspan="3">
-												<textarea name="review_content" rows="" cols=""> <%=r.getReviewContent()%> </textarea>
+												<textarea name="review_content" rows="" cols="" required> <%=r.getReviewContent()%> </textarea>
 											</td>
 											<td>
 												<p class="star_point">
@@ -1494,7 +1620,6 @@ table tr td { /*확인용*/
 				<!--tabArea-->
 			</div>
 			<!-- 탭메뉴 영역 끝-->
-
 		</div>
 		<!--content-->
 
@@ -1534,7 +1659,6 @@ table tr td { /*확인용*/
 				팔로 Follow Me <br> copyright by take ARM<br> All right
 				reserved<br>
 			</div>
-
 		</div>
 	</footer>
 

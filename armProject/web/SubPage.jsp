@@ -1,5 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import = "java.util.ArrayList, item.model.vo.Item, member.model.vo.User"%>
+<% 
+User loginUser = (User)session.getAttribute("loginUser");
+String admin = (String)session.getAttribute("admin");
+ArrayList<Item> list = (ArrayList<Item>)request.getAttribute("list");
+String msg = (String)request.getAttribute("msg");
+String status = (String)request.getAttribute("status");
+int totalCount = (int)request.getAttribute("totalCount");
+int pageNo = (int)request.getAttribute("page");
+int sortNo = (int)request.getAttribute("sortNo");
+String keyword = (String)request.getAttribute("keyword");
+ %>
 <!doctype html>
 <html lang="ko">
   <meta charset="utf-8">
@@ -21,8 +33,169 @@
   
   <script type="text/javascript" src = "js/jquery-3.1.0.min.js"></script>
   <script type="text/javascript">
+//--------------------------------------------------------------최근본 목록-----이슬작성-------
+		function viewRecentItem(){
+			//sessionStorage.clear();
+			var rItems = "";
+			if(sessionStorage.length==0){
+				$("#recent_list").html("<div class='ritem'>최근 본 상품이 없습니다.</div>");
+			}else{
+				if(sessionStorage.length <= 4){
+					//중복 값 지우기 위함.
+					for(var i = sessionStorage.length-1; i >= 0; i--){
+						var key = sessionStorage.key(i);
+						var item = sessionStorage[key];
+						for(var j = i-1 ; j >=0; j--){
+							var key2 = sessionStorage.key(j);
+							var item2 = sessionStorage[key2];
+							if(item == item2){
+								sessionStorage.removeItem(key2);
+							}
+						}
+					}
+					for(var i = sessionStorage.length-1; i >= 0; i--){
+						var key = sessionStorage.key(i);
+						var item = sessionStorage[key];
+						var values = item.split(",");
+						var rItem = "<div class='ritem'><a href='/arm/ItemDetailViewServlet?itemNo="+values[0]+"'><img src='"+values[1]+"'></a></div>";
+						rItems += rItem;
+					}
+				} else {//최대 4개만 보여준다
+					//중복 값 지우기 위함.
+					for(var i = sessionStorage.length-1; i > sessionStorage.length-5; i--){
+						var key = sessionStorage.key(i);
+						var item = sessionStorage[key];
+						for(var j = i-1 ; j > sessionStorage.length-5; j--){
+							var key2 = sessionStorage.key(j);
+							var item2 = sessionStorage[key2];
+							if(item == item2){
+								sessionStorage.removeItem(key2);
+							}
+						}
+					}
+					for(var i = sessionStorage.length-1; i > sessionStorage.length-5; i--){
+						var key = sessionStorage.key(i);
+						var item = sessionStorage[key];
+						var values = item.split(",");
+						var rItem = "<div class='ritem'><a href='/arm/ItemDetailViewServlet?itemNo="+values[0]+"'><img src='"+values[1]+"'></a></div>";
+						rItems += rItem;
+					}
+					if(sessionStorage.length > 10){
+						for(var i = sessionStorage.length-10; i >= 0; i--){
+							var key = sessionStorage.key(i);
+							sessionStorage.removeItem(key);
+							//10개이상은 지우기 위홤 >> 5개는 여분
+						}
+					}
+				}
+				$("#recent_list").html(rItems);
+			}
+		}
+//------------------------------------------------------------------------끗---------
+    function nologinCart(){
+		alert("로그인이 필요합니다");
+	}
+//------------------------------------------------------------------------------------------이슬 끗
+	//전체 줄 수(reqeust로 전달받음)
+	var totalCount = <%= totalCount %>;
+	//페이지 수 : 한 페이지에 15줄 출력경우
+	var totalPage = Math.ceil(totalCount/9);
+	var PageNum;
+	//현재 페이지(request로 전달받음)
+	var page;
+
+	//페이지 넘버링 출력
+	$(function drawPage(goTo){
+		if(goTo *= null){
+			page = goTo;
+		}else{
+			page = <%= pageNo %>;
+		}
+		//페이지 그룹 넘버링 : 한번에 보여줄 페이지 넘버의 갯수
+		var pageGroup = Math.ceil(page/10);
+		var next = pageGroup*10;
+		var prev = next-9;
+		
+		var goNext = next+1;
+		if(prev-1<=0){
+			var goPrev = 1;
+		}else{
+			var goPrev = prev-1;
+		}
+		
+		if(next>totalPage){
+			var goNext = totalPage;
+			next = totalPage;
+		}else{
+			var goNext = next+1;
+		}
+		
+		var prevStep = "<a href='javascript:drawPage("+goPrev+");'>"+"<<"+"</a>";
+		var nextStep = "<a href='javascript:drawPage("+goNext+");'>"+">>"+"</a>";
+		
+		$("#pageNo").empty();
+		$("#pageNo").append(prevStep);
+		for(var i=prev; i<=next; i++){
+			
+			PageNum = "<a href='/arm/ipage?status=<%= status %>&sortno=<%= sortNo %>&keyword=<%= keyword %>&page="+i+"'>"+i+"</a>";
+			$("#pageNo").append(PageNum);
+		}
+		$("#pageNo").append(nextStep);
+	});
+	function goCart(){
+		<% if(loginUser != null) {%>
+		location.href="/arm/mypage/MyinfoCart.jsp";
+		<% } else{ %>
+		nologinCart();
+		<% }%>
+	}
+	function goMyinfo(){
+		<% if(loginUser != null) {%>
+		location.href="/arm/myinfo?userid=<%= loginUser.getUserId() %>";
+		<% } else{ %>
+		nologinCart();
+		<% }%>
+	}
 	$(function(){
-	
+		//최근목록보기
+		viewRecentItem();
+		
+		//퀵바 위치 조절
+		var winH = $(window).height();
+		var qH = $("#quick_bar").height();
+		var qbH = $("#qBtn").height();
+		var qTop = (winH-qH)/2;
+		var qbTop = (winH-qbH)/2;
+		$("#quick_bar").css("top", qTop);
+		$("#qBtn").css("top", qbTop);
+		
+		$(document).on("hover",".menuLink", function(){
+			$(this).css("color","red").css("cursor","pointer");
+		});
+		
+		//카테고리 색상 바꾸기 및 검색시 키워드 띄우기
+		<% if(status.equals("search")){ %>
+			$("#sch").css("background", "red").css("color","white");
+			$("#searchbox").css("display","block");
+			$("#search").attr("value","<%= keyword %>");
+		<%}else if(!status.equals("main") && !status.equals("err")){
+			int categoryNo = Integer.parseInt(status);
+			if(categoryNo >= 100 && categoryNo < 200){%>
+			 $("#cat_100").css("background", "red").css("color","white");
+			<%}else if(categoryNo >= 200 && categoryNo < 300){%>
+			 $("#cat_200").css("background", "red").css("color","white");
+			<%}else if(categoryNo >= 300 && categoryNo < 400){%>
+			 $("#cat_300").css("background", "red").css("color","white");
+			<%}else if(categoryNo >= 400 && categoryNo < 500){%>
+			 $("#cat_400").css("background", "red").css("color","white");
+			<%}
+		}%>
+		
+//-- ----------------------------------------------------------이슬작성-끗---------------- -->
+		$(document).on("hover",".menuLink", function(){
+			$(this).css("color","red"),css("cursor","pointer");
+		});
+		//------------------------------------------------------------------------------------------이슬 끗
 		//스크롤시 카테고리고정
 		var menupos = $("#fix_menu").offset().top;
 		$(window).scroll(function(){
@@ -57,29 +230,17 @@
 
 		//퀵바 토글 - 퀵바 고정위치를 클릭시마다 바뀌게 하면서 trasition효과
 		var onoff = 0;
-		$("#qBtn").click(function(){
-			if(onoff == 1){
-				$("#quick_bar").css("right","-122px").css("transition","all 0.5s");
-				$("#qBtn").css("right","-14px").css("transition","all 0.5s");
+		$("#qBtn").click(function() {
+			if (onoff == 1) {
+				$("#quick_bar").css("right", "-122px").css("transition", "all 0.5s");
+				$("#qBtn").css("right", "0px").css("transition", "all 0.5s");
 				onoff = 0;
-			}else if(onoff == 0){
-				$("#quick_bar").css("right","0").css("transition","all 0.5s");
-				$("#qBtn").css("right","106px").css("transition","all 0.5s");
+			} else if (onoff == 0) {
+				$("#quick_bar").css("right", "0").css("transition", "all 0.5s");
+				$("#qBtn").css("right", "118px").css("transition", "all 0.5s");
 				onoff = 1;
-			};
+			}
 		});
-		
-		//퀵바 장바구니, 최근 본 목록 슬라이드 처리
-		$("#recent").click(function(){
-			$("#recent_list").slideDown("fast");
-			$("#cart_list").slideUp("fast");
-		});
-		$("#cart").click(function(){
-			$("#recent_list").slideUp("fast");
-			$("#cart_list").slideDown("fast");
-		});
-
-
 
 	});
   </script>
@@ -96,7 +257,7 @@
 	nav#topMenu {
             height: 30px;
 			width: 100%; 
-			background-color: yellow;  /*메인 메뉴 색깔 fc3*/
+			background-color: #fed605;  /*메인 메뉴 색깔 fc3*/
 			padding-right : 2%;
 			max-width: 100%;
     }
@@ -107,7 +268,7 @@
 		
     }
     #topMenu ul li {           
-        background-color: yellow;  
+        background-color: #fed605;  
         float: right;
         line-height: 30px;
 		padding : 0 5px;
@@ -148,61 +309,73 @@
 	/*상단 배너 크기*/
 	#banner a img {
 	 max-width:100%;
-	 max-height:100px;
+	 max-height:70px;
 	 border:0;
 	}
 	/*-------------- 퀵바 ----------------------*/
 	#quick_bar {
-		width : 120px;
-		height : auto;
-		border : 1px solid yellow;
-		background : #feffd0;
-		background : white;
-		z-index : 9999;
-		position : fixed;
-		right : -122px;
-		top : 170px;
+		width: 120px;
+		border: 1px solid orange;
+		border-radius:5px;
+		background: #feffd0;
+		background: white;
+		z-index: 9999;
+		position: fixed;
+		right: -122px;
 	}
+	
 	#qBtn {
-		position:fixed;
-		right : -14px;
-		bottom : 310px;
-		z-index : 9999;
-		display : block;
-		border : 1px solid #ffcc00;
-		transform : rotate(270deg);
-		background : yellow;
-		font-size : 12pt;
+		position: fixed;
+		right: 0px;
+		z-index: 9999;
+		display: block;
+		border: 1px solid #ffcc00;
+		transform: rotate(270deg);
+		background: #fed605;
+		font-size: 12pt;
+		border-radius : 3px;
 	}
+	
 	#quick_bar a {
 		padding: 16px;
 		display: block;
 		transition: all 0.3s ease;
 		font-size: 15px;
-		position : relative;
-	}
-	#quick_bar #cart_list{
-		display : none;
-	}
-	#quick_bar #cart_list table{
-		margin : 3px auto;
-	}
-	#quick_bar #recent_list table {
-		margin : 3px auto;
-	}
-	#quick_bar .btn {
-		width : 100%;
-	}
-	#quick_bar .btn:focus,
-	#quick_bar .btn:hover,
-	#quick_bar .btn:active:focus,
-	#quick_bar .btn.active:focus,
-	#quick_bar .btn.focus,
-	#quick_bar .btn:active.focus,
-	#quick_bar .btn.active.focus {
-		background : white;
+		position: relative;
 	}
 
+	/*퀵바 내 칸당 크기 조절-----------------------------------0925*/
+	#quick_bar #recent_list .ritem{
+		width : 90px;
+		height : 90px;
+		border : 1px solid orange;
+		padding : 0;
+		margin : 1px auto;
+	}
+	#quick_bar #recent_list .ritem img{
+		width : 100%;
+		height : 100%;
+		margin : 0 auto;
+		padding : 0;
+	}
+	#quick_bar #recent_list .ritem a{
+		margin : 0;
+		padding : 0;
+	}
+	/*=============------------------------------------*/
+	#quick_bar .btn {
+		width: 100%;
+		border : 0;
+		BORDER-BOTTOM : 1px solid orange;
+		border-radius : 0;
+		background: none;
+	}
+	
+	#quick_bar .btn:focus, #quick_bar .btn:hover, #quick_bar .btn:active:focus,
+		#quick_bar .btn.active:focus, #quick_bar .btn.focus, #quick_bar .btn:active.focus,
+		#quick_bar .btn.active.focus {
+		background: none;
+	}
 	/* 카테고리 ~ item창까지------------------------*/
 	#wrapper{
 		margin: 0 auto;
@@ -215,8 +388,8 @@
 	}
 	#fix_menu #category	{
 		width : 100%;
-		height : 50px;
-		background : #ffff00;
+		height : 40px;/*수정*/
+		background : ##fed60500;
 	}
 	/* 메뉴구현 */
 	.navi {
@@ -229,15 +402,15 @@
 		float : left;
 		position : relative;
 		padding : 0;
-		line-height : 40px;
+		line-height : 30px;/*수정*/
 		width : 20%;
-		background : rgba(255,255,0, 0.5);
+		background : #fed605;
 	}
 
 	.navi li a {
 		display : block;
 		font-weight:900;
-		font-size : 20px;
+		font-size : 16px;/*메뉴글자크기수정*/
 		padding : 5px 25px;
 		color : black;
 		text-decoration : none;
@@ -368,7 +541,7 @@
 		width : auto;
 		padding : 1px;
 		background : white;
-		BORDER-BOTTOM : 1px solid yellow;
+		BORDER-BOTTOM : 1px solid #fed605;
 		text-align : right;
 		margin-bottom : 5px;
 		
@@ -388,22 +561,35 @@
 		display: table;
 		width: 100%;
 		max-width: 1000px;
+		min-height : 500px;
 		padding:1%;
 
 		text-align : center;
 	}
 	.item_box{
 		/*float: left;*/
-		max-width:23%;
+		max-width:19%;/*변경*/
 		margin:0.5%;
 		padding:0.5%;
-		background: white;
 		display : inline-block;
 	}
-	.item_box img{
-		width:100%;
-	}	
-	.item_name, .item_price{
+	
+	.item_box img {
+		width: 100%;
+	}
+	.item_box a{
+		color : black;
+		text-decoration : none;
+	}
+	.item_box a:hover .item_name {
+		text-decoration : underline;
+		color : red;
+	}
+	.item_price {
+		font-weight : 700;
+		color : red;
+	}
+	.item_name, .item_price {
 		font-size: 0.8em;
 		text-align: center;
 	}
@@ -411,12 +597,11 @@
   @media all and (max-width: 1000px){
 	 .contents{
 		padding : 0.5%;
-		padding-left : 3.3%
+		padding-left : 3.3%;
 		padding-right : 0;
 	}
 	.item_box{
 		 max-width:31%;
-		 background: #ccffcc;
 	}
 	.item_name, .item_price{
 		font-size: 0.9em;
@@ -433,7 +618,6 @@
 		max-width: 47%;
 		margin:0.8%;
 		padding:0.5%;
-		background: #ffccff;
 	}
 	.item_name, .item_price{
 		font-size: 1em;
@@ -445,13 +629,34 @@
 		 max-width: 100%;
 		 margin:0;
 		 padding:0;
-		 background: #99ffff;
 	 }
 	.item_name, .item_price{
 		font-size: 0.7em;
 	}
   }
-
+  /*---------------------------------------------------------------------------------이슬*/
+  
+  		#pageNo{
+			margin : 10px auto;
+			display : table;
+			border-spacing : 2px;
+		}
+		#pageNo a{
+			display : table-cell;
+			vertical-align : middle;
+			text-align : center;
+			border : 1px solid red;
+			color : red;
+			background : white;
+			text-decoration : none;
+			width : 30px;
+			height : 30px;
+		}
+		#pageNo a:hover{
+			color : white;
+			background : red;
+		}
+  /*---------------------------------------------------------------------------------이슬끗*/
 	/* 푸터 */
 	footer {
 		BORDER-TOP : 1px solid gray;
@@ -498,165 +703,134 @@
  </head>
  <body>
 <!--  최상단 기본메뉴 -->
- <div id = "top_menu">
-   <nav id="topMenu" >
-        <ul>
-			<li class="topMenuLi"><a class="menuLink" href="/arm/notice/notice.jsp">고객센터</a></li>
-			<li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">장바구니</a></li>
-            <li class="topMenuLi"><a class="menuLink" href="">회원가입</a></li>
-            <li class="topMenuLi"><a class="menuLink" href="/arm/member/Login.jsp">로그인</a></li>
-        </ul>
-	</nav>
- 
- </div>
-<!-- 퀵바 -->
- <button id = "qBtn" class = "hidden-xs">Quick</button>
- <div id = "quick_bar" class = "hidden-xs">
-	<button class="btn btn-default"><span class="glyphicon glyphicon-user"></span> MY PAGE </button>
-	<!-- 그냥 장바구니 페이지로 이동하도록. -->
-	<button id = "cart" class="btn btn-default"><span class="glyphicon glyphicon-shopping-cart"></span> 장바구니 &nbsp;</button><br>
-		<div id = "cart_list">
-			<table cellpadding = "0" cellspacing = "0" border = "1px">
-			<tr>
-				<td><a href="#">이미지1</a></td>
-			</tr>
-			<tr>
-				<td><a href="#">이미지2</a></td>
-			</tr>
-			<tr>
-				<td><a href="#">이미지3</a></td>
-			</tr>
-			</table>
+	<div id = "top_menu">
+	<nav id="topMenu" >
+	        <ul>
+		        <li class="topMenuLi"><a class="menuLink" href="/arm/nlist">고객센터</a></li>       
+		      <% if(loginUser != null){ %>
+		     	 <% if(admin != null) {%>
+		        <li class="topMenuLi"><a class="menuLink" href="/arm/ailist">상품관리</a></li>
+		       	<li class="topMenuLi"><a class="menuLink" href="/arm/amlist">회원관리</a></li>
+		       	<li class="topMenuLi"><a class="menuLink" href="/arm/QnaListViewServlet">Q&A 관리</a></li>
+		     	 <% }else{%>
+		        <li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">장바구니</a></li>
+		        <li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">MyPage</a></li>
+		        <% } %>
+		        <li class="topMenuLi"><a class="menuLink" href="/arm/logout">로그아웃</a></li>
+		        <li class="topMenuLi">환영합니다! <%=loginUser.getUserName() %>님</li>
+		      <% }else{ %>
+		        <li class="topMenuLi"><a class="menuLink" onclick="nologinCart();">장바구니</a></li>
+		        <li class="topMenuLi"><a class="menuLink" href="/arm/member/MemberJoin.jsp">회원가입</a></li>
+		        <li class="topMenuLi"><a class="menuLink" href="/arm/member/Login.jsp">로그인</a></li>
+		      <% } %>
+		        </ul>
+	   </nav>
+ 	</div>
+	<!-- 퀵바 -->
+	<button id="qBtn" class="hidden-xs"><span class="glyphicon glyphicon-chevron-up"></span></button>
+	<div id="quick_bar" class="hidden-xs">
+		<button id="mypage" class="btn btn-default" onclick="goMyinfo();">
+			<span class="glyphicon glyphicon-user"></span> MY PAGE
+		</button>
+		<!-- 그냥 장바구니 페이지로 이동하도록. -->
+		<button id="cart" class="btn btn-default" onclick="goCart();">
+			<span class="glyphicon glyphicon-shopping-cart"></span> 장바구니 &nbsp;
+		</button><br>
+		<button id="recent" class="btn btn-default">최근 본 상품</button>
+		<div id="recent_list">
+			<!-- 동적으로 추가됨 -->
 		</div>
-	<button id = "recent" class="btn btn-default">최근 본 상품</button>
-	<div id = "recent_list">
-		<table cellpadding = "0" cellspacing = "0" border = "1px">
-		<tr>
-			<td><a href="#">이미지1</a></td>
-		</tr>
-		<tr>
-			<td><a href="#">이미지2</a></td>
-		</tr>
-		<tr>
-			<td><a href="#">이미지3</a></td>
-		</tr>
-		</table>
 	</div>
-	<button>◀</button> 1/5 <button>▶</button>
- </div>
 <!-- 배너 -->
  <div id ="banner">
 	<!-- 배너클릭시 시작페이지로! -->
-	<a href="/arm/Main.jsp"><img src="/arm/img/banner.png" alt = "시작페이지로"></a>
+	<a href="/arm/mainlist"><img src="/arm/img/banner.png" alt = "시작페이지로"></a>
  </div>
 <!-- 카테고리 ~ item 목록 -->
  <div id="wrapper">
 
  	<div id = "fix_menu">
-	<div id ="category">
-		<ul class = "navi">
-			<li><a href ="">손</a>
-				<ul>
-					<li><a href ="">반지</a></li>
-					<li><a href ="">의료/건강</a></li>
-				</ul>
-			</li><!-- 손 -->
+			<div id="category">
+				<ul class="navi">
+					<li><a id ="cat_100" href="/arm/catlist?categoryno=100">손</a>
+					<!-- 100 -->
+						<ul>
+							<li><a href="/arm/catlist?categoryno=110">반지</a></li>
+							<li><a href="/arm/catlist?categoryno=120">의료/건강</a></li>
+						</ul></li>
+					<!-- 손 -->
 
-			<li><a href ="">손목</a>
-				<ul>
-					<li><a href ="">팔찌/시계</a></li>
-					<li><a href ="">의료/건강</a></li>
-				</ul>
-			</li><!-- 손목 -->
-			<li><a href ="">팔목</a>
-				<ul>
-					<li><a href ="">팔찌/시계</a></li>
-					<li><a href ="">의료/건강</a></li>
-				</ul>
-			</li><!-- 팔목 -->
-			<li><a href ="">어깨</a>
-				<ul>
-					<li><a href ="">의류</a></li>
-					<li><a href ="">의료/건강</a></li>
-				</ul>
-			</li><!-- 어깨 -->
+					<li><a id ="cat_200" href="/arm/catlist?categoryno=200">손목</a>
+					<!-- 200 -->
+						<ul>
+							<li><a href="/arm/catlist?categoryno=210">팔찌/시계</a></li>
+							<li><a href="/arm/catlist?categoryno=220">의료/건강</a></li>
+						</ul></li>
+					<!-- 손목 -->
+					<li><a id ="cat_300" href="/arm/catlist?categoryno=300">팔목</a>
+					<!-- 300 -->
+						<ul>
+							<li><a href="/arm/catlist?categoryno=310">팔찌/시계</a></li>
+							<li><a href="/arm/catlist?categoryno=320">의료/건강</a></li>
+						</ul></li>
+					<!-- 팔목 -->
+					<li><a id ="cat_400" href="/arm/catlist?categoryno=400">어깨</a>
+					<!-- 400 -->
+						<ul>
+							<li><a href="/arm/catlist?categoryno=410">의류</a></li>
+							<li><a href="/arm/catlist?categoryno=420">의료/건강</a></li>
+						</ul></li>
+					<!-- 어깨 -->
 
-			<li><a id = "sch">검색</a></li>
-		</ul>
-	</div><!-- 카테고리 -->
+					<li><a id="sch">검색</a></li>
+				</ul>
+			</div>
 	<div id = "searchbox">
-	<form>
-	<input type="text" id = "search" name = "search" placeholder = "검색하세요!">&nbsp;&nbsp;<input type="image" id = "schBtn" src = "/arm/img/search2_small.png" width ="25px" height = "25px";>
-	</form>
+		<form action="/arm/isearch" method="post">
+			<input type="text" id="search" name="keyword" placeholder="검색하세요!">&nbsp;&nbsp;
+			<input type="image" id="schBtn" src="/arm/img/search2_small.png"
+				width="25px" height="25px">
+		</form>
 	</div><!-- 검색 -->
 
 	<div id = "sort">
-	<a href="#">인기도순</a>&nbsp;&nbsp;
-	<a href="#">가격높은순</a>&nbsp;&nbsp;
-	<a href="#">가격낮은순</a>&nbsp;&nbsp;
+		<a href="isort?status=<%=status%>&keyword=<%= keyword %>&sortno=1">최신등록순</a>&nbsp;&nbsp; 
+		<a href="isort?status=<%=status%>&keyword=<%= keyword %>&sortno=2">높은조회순</a>&nbsp;&nbsp;
+		<a href="isort?status=<%=status%>&keyword=<%= keyword %>&sortno=3">높은가격순</a>&nbsp;&nbsp;
+		<a href="isort?status=<%=status%>&keyword=<%= keyword %>&sortno=4">낮은가격순</a>&nbsp;&nbsp;
 	</div><!-- sort -->
 	
 	</div><!-- fix_menu(카테고리+검색+정렬) -->
 	
+	
      <div class="contents">
+           <%
+           if(list != null){
+           for(Item i : list){ %>
             <section class="item_box">
 			<!-- 클릭시 상세 페이지로 이동하도록. -->
-                <a href = "/arm/ItemDetailViewServlet?itemNo=1"><table>
-                    <tr> <td class="item_img"><img src="items/01.jpg"><td></tr>
-                    <tr> <td class="item_name">아이템 이름1<td></tr>
-                    <tr> <td class="item_price">Price1<td></tr>
+                <a href = "/arm/ItemDetailViewServlet?itemNo=<%= i.getItemNo() %>"><table>
+                    <tr> <td class="item_img"><img src=<%= i.getItemTH() %>><td></tr>
+                    <tr> <td class="item_name"><%= i.getItemName() %><td></tr>
+					<% if (loginUser != null) {%>
+						<tr><td class="item_price" style = "color : black; font-weight : 600; text-decoration : line-through;">
+						<%=i.getItemPrice()%>원<td></tr>
+						<tr><td class="item_price" style = "color : red; font-weight : 800;">
+						<%= Math.round(i.getItemPrice()*(1-loginUser.getDiscount())) %>원<td></tr>
+						<% } else {%>
+						<tr><td class="item_price"><%=i.getItemPrice()%>원<td></tr>
+						<% } %>
                 </table></a>
             </section>
-            <section class="item_box"">
-                <table>
-                    <tr> <td><img src="items/02.jpg"><td></tr>
-                    <tr> <td class="item_name">아이템 이름2<td></tr>
-                    <tr> <td class="item_price">Price2<td></tr>
-                </table>
-            </section>
-            <section class="item_box"">
-                <table>
-                    <tr> <td><img src="items/03.jpg"><td></tr>
-                    <tr> <td class="item_name">아이템 이름3<td></tr>
-                    <tr> <td class="item_price">Price3<td></tr>
-                </table>
-            </section>
-        </section>
-        <section class="item_box"">
-            <table>
-                <tr> <td><img src="items/04.jpg"><td></tr>
-                <tr> <td class="item_name">아이템 이름4<td></tr>
-                <tr> <td class="item_price">Price4<td></tr>
-            </table>
-        </section>
-        <section class="item_box"">
-            <table>
-                <tr> <td><img src="items/05.jpg"><td></tr>
-                <tr> <td class="item_name">아이템 이름5<td></tr>
-                <tr> <td class="item_price">Price5<td></tr>
-            </table>
-        </section>
-        <section class="item_box"">
-            <table>
-                <tr> <td><img src="items/06.jpg"><td></tr>
-                <tr> <td class="item_name">아이템 이름6<td></tr>
-                <tr> <td class="item_price">Price6<td></tr>
-            </table>
-        </section>
-        <section class="item_box"">
-            <table>
-                <tr> <td><img src="items/07.jpg"><td></tr>
-                <tr> <td class="item_name">아이템 이름7<td></tr>
-                <tr> <td class="item_price">Price7<td></tr>
-            </table>
-        </section>
-        <section class="item_box"">
-            <table>
-                <tr> <td><img src="items/08.jpg"><td></tr>
-                <tr> <td class="item_name">아이템 이름8<td></tr>
-                <tr> <td class="item_price">Price8<td></tr>
-            </table>
-        </section>
+            <% }
+            }else{ %>
+            
+            <h3><%= msg %></h3>
+            
+            <% } %>
+          <!-- 페이징처리할때 ------------------------------------------------------ -->
+			<div id = "pageNo"></div>
+		<!-- --------------------------------------------------------------요까지이슬----------------- -->
     </div><!-- contents-->
 
 
@@ -681,7 +855,7 @@
 		
 
 		<div class = "fd">
-		<h1><img src="images/전화기.png" width="50" height="40" border="0" alt="">&nbsp;1600-7000</h1>
+		<h1><img src="img/tel.png" width="50" height="50" border="0" alt="">&nbsp;1600-7000</h1>
 		</div>
 
 		<div class = "fd">
