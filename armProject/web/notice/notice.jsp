@@ -590,7 +590,7 @@
 				 
 		%>
 			
-		<tr class = "question"><td><input type="text" name="noticeno" value="<%=n.getNoticeNo() %>" readonly size="10"></td>
+		<tr class = "question"><td><input type = "text" name = "noticeno" value=<%=n.getNoticeNo() %> readonly size="15"></td>
 		<td><select name = "cate">
 						<option value="1">공지사항</option>
 						<option value="2">이벤트</option>
