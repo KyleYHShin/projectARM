@@ -40,7 +40,6 @@ public class PurchaseViewServlet extends HttpServlet {
 		response.setCharacterEncoding("text/html; charset=utf-8");
 
 		// 2.
-		// String userId = request.getParameter("userId");
 		HttpSession session = request.getSession();
 		User loginUser = (User) session.getAttribute("loginUser");
 		String userId = loginUser.getUserId();

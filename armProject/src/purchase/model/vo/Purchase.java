@@ -8,89 +8,119 @@ import payment.vo.Payment;
 
 public class Purchase implements java.io.Serializable{
 
-	private int purchase_no;
-	private String m_name;
-	private String grade_name;
-	private String m_phone;
-	private String m_email;
-	private int purchase_price;
+	private int purchaseNo;
+	private String gradeName;
+	private String userId;
+	private String name;
+	private String phone;
+	private String email;
+	private String zipcode;
+	private String address;
+	private int totalItemPrice;
 	private int delivery;
-	private Date purchase_date;
+	private Date purchaseDate;
+	private char paid;	
 	private ArrayList<Order> orderList;
-	private Payment payment;	
 	
 	public Purchase() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Purchase(int purchase_no, String m_name, String grade_name, String m_phone, String m_email, int purchase_price, int delivery,
-			Date purchase_date, ArrayList<Order> orderList, Payment payment) {
+	public Purchase(int purchaseNo, String gradeName, String userId, String name, String phone, String email, String zipcode, String address,
+			int totalItemPrice, int delivery, Date purchaseDate, char paid, ArrayList<Order> orderList) {
 		super();
-		this.purchase_no = purchase_no;
-		this.m_name = m_name;
-		this.grade_name = grade_name;
-		this.m_phone = m_phone;
-		this.m_email = m_email;
-		this.purchase_price = purchase_price;
+		this.purchaseNo = purchaseNo;
+		this.gradeName = gradeName;
+		this.userId = userId;
+		this.name = name;
+		this.phone = phone;
+		this.email = email;
+		this.zipcode = zipcode;
+		this.address = address;
+		this.totalItemPrice = totalItemPrice;
 		this.delivery = delivery;
-		this.purchase_date = purchase_date;
+		this.purchaseDate = purchaseDate;
+		this.paid = paid;
 		this.orderList = orderList;
-		this.payment = payment;
 	}
 
 	@Override
 	public String toString() {
-		return "Purchase [purchase_no=" + purchase_no + ", m_name=" + m_name + ", grade_name=" + grade_name + ", m_phone=" + m_phone + ", m_email="
-				+ m_email + ", purchase_price=" + purchase_price + ", delivery=" + delivery + ", purchase_date=" + purchase_date + ", orderList="
-				+ orderList + ", payment=" + payment + "]";
+		return "Purchase [purchaseNo=" + purchaseNo + ", gradeName=" + gradeName + ", userId=" + userId + ", name=" + name + ", phone=" + phone
+				+ ", email=" + email + ", zipcode=" + zipcode + ", address=" + address + ", totalItemPrice=" + totalItemPrice + ", delivery="
+				+ delivery + ", purchaseDate=" + purchaseDate + ", paid=" + paid + ", orderList=" + orderList + "]";
 	}
 
-	public int getPurchase_no() {
-		return purchase_no;
+	public int getPurchaseNo() {
+		return purchaseNo;
 	}
 
-	public void setPurchase_no(int purchase_no) {
-		this.purchase_no = purchase_no;
+	public void setPurchaseNo(int purchaseNo) {
+		this.purchaseNo = purchaseNo;
 	}
 
-	public String getM_name() {
-		return m_name;
+	public String getGradeName() {
+		return gradeName;
 	}
 
-	public void setM_name(String m_name) {
-		this.m_name = m_name;
+	public void setGradeName(String gradeName) {
+		this.gradeName = gradeName;
 	}
 
-	public String getGrade_name() {
-		return grade_name;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setGrade_name(String grade_name) {
-		this.grade_name = grade_name;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
-	public String getM_phone() {
-		return m_phone;
+	public String getName() {
+		return name;
 	}
 
-	public void setM_phone(String m_phone) {
-		this.m_phone = m_phone;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getM_email() {
-		return m_email;
+	public String getPhone() {
+		return phone;
 	}
 
-	public void setM_email(String m_email) {
-		this.m_email = m_email;
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
-	public int getPurchase_price() {
-		return purchase_price;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setPurchase_price(int purchase_price) {
-		this.purchase_price = purchase_price;
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getZipcode() {
+		return zipcode;
+	}
+
+	public void setZipcode(String zipcode) {
+		this.zipcode = zipcode;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public int getTotalItemPrice() {
+		return totalItemPrice;
+	}
+
+	public void setTotalItemPrice(int totalItemPrice) {
+		this.totalItemPrice = totalItemPrice;
 	}
 
 	public int getDelivery() {
@@ -101,12 +131,20 @@ public class Purchase implements java.io.Serializable{
 		this.delivery = delivery;
 	}
 
-	public Date getPurchase_date() {
-		return purchase_date;
+	public Date getPurchaseDate() {
+		return purchaseDate;
 	}
 
-	public void setPurchase_date(Date purchase_date) {
-		this.purchase_date = purchase_date;
+	public void setPurchaseDate(Date purchaseDate) {
+		this.purchaseDate = purchaseDate;
+	}
+
+	public char getPaid() {
+		return paid;
+	}
+
+	public void setPaid(char paid) {
+		this.paid = paid;
 	}
 
 	public ArrayList<Order> getOrderList() {
@@ -117,11 +155,4 @@ public class Purchase implements java.io.Serializable{
 		this.orderList = orderList;
 	}
 
-	public Payment getPayment() {
-		return payment;
-	}
-
-	public void setPayment(Payment payment) {
-		this.payment = payment;
-	}
 }

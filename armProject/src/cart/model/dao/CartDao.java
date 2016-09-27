@@ -134,4 +134,25 @@ public class CartDao {
 		return result;
 	}
 
+	public int deleteCartById(Connection con, String userId) {
+		int result = 0;
+
+		PreparedStatement pstmt = null;
+
+		String sql = "delete from cart where CART_M_ID = ?";
+
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, userId);
+
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
 }

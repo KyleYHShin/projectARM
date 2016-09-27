@@ -66,4 +66,27 @@ public class OrderDao {
 		return orderList;
 	}
 
+	public int insertOrder(Connection con, int purchaseNo, int item_sub_no, int quantity) {
+		int result = 0;
+
+		PreparedStatement pstmt = null;
+
+		String sql = "insert into orders values(seq_order_no.nextval, ?, ?, ?, null)";
+
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, purchaseNo);
+			pstmt.setInt(2, item_sub_no);
+			pstmt.setInt(3, quantity);
+
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
 }

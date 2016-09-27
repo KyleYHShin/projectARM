@@ -6,6 +6,7 @@
 	User loginUser = (User) session.getAttribute("loginUser");
 	ArrayList<Cart> cartList = (ArrayList<Cart>) request.getAttribute("cartList");
 	JSONArray jsonList = (JSONArray) request.getAttribute("jsonList");
+	String errorMsg = (String) request.getAttribute("errorMsg");
 %>
 <!doctype html>
 <html lang="ko">
@@ -129,42 +130,44 @@
 
 			//체크된 항목이 있으면
 			if (cartNo.length > 0) {
-				//1.post 방식
-				var form = document.createElement("form");
-				form.method = 'post';
-				form.action = "/arm/CartDeleteSelect";
+				if (confirm("선택한 제품 모두 삭제하시겠습니까?)")) {
+					//1.post 방식
+					var form = document.createElement("form");
+					form.method = 'post';
+					form.action = "/arm/CartDeleteSelect";
 
-				var input = document.createElement("input");
-				input.type = "hidden";
-				input.name = 'cartList';
-				input.value = cartNo.toString();
-				$(form).append(input);
-				$('#body').append(form);
+					var input = document.createElement("input");
+					input.type = "hidden";
+					input.name = 'cartList';
+					input.value = cartNo.toString();
+					$(form).append(input);
+					$('#body').append(form);
 
-				form.submit();
+					form.submit();
 
-				//2.ajax 방식
-				/* $.ajax({
-					url : "CartDeleteSelect",//현재 페이지 새로고침으로 구현중
-					type : "POST",
-					data : {
-						cartList : cartNo.toString()
-					},
-					success : function() {
-						//DB처리 완료시 
-						//(미구현)테이블 재작성
-						//(임시 처리)
-						for (var i = checkedItem.length - 1; i >= 0; i--) {
-							window.alert(i);
-							if (checkedItem[i].checked) {
-								window.alert(checkedItem[i].parent.parent);
+					//2.ajax 방식
+					/* $.ajax({
+						url : "CartDeleteSelect",//현재 페이지 새로고침으로 구현중
+						type : "POST",
+						data : {
+							cartList : cartNo.toString()
+						},
+						success : function() {
+							//DB처리 완료시 
+							//(미구현)테이블 재작성
+							//(임시 처리)
+							for (var i = checkedItem.length - 1; i >= 0; i--) {
+								window.alert(i);
+								if (checkedItem[i].checked) {
+									window.alert(checkedItem[i].parent.parent);
+								}
 							}
+						},
+						fail : function() {
+							window.alert('요청이 실패하였습니다. 다시 시도해주세요.');
 						}
-					},
-					fail : function() {
-						window.alert('요청이 실패하였습니다. 다시 시도해주세요.');
-					}
-				}); */
+					}); */
+				}
 			} else {
 				window.alert('선택한 제품이 없습니다.');
 			}
@@ -232,7 +235,7 @@
 				var form = document.createElement("form");
 				form.method = 'post';
 				form.action = "/arm/CartDelete";
-				
+
 				var input = document.createElement("input");
 				input.type = "hidden";
 				input.name = 'cartNo';
@@ -245,35 +248,20 @@
 		}
 		;
 
-		//(미구현)주문하기
+		//주문하기
 		$('#purchase_btn').on('click', function() {
-			<%-- var cartList =[];
-			<%for (int i = 0; i < cartList.size(); i++) {%>
-			cartList.push("<%=cartList.get(i).toString()%>
-	");
-<%}%>
-	;
-			window.alert(cartList.toString()); --%>
-			//2.ajax 방식
-			/* $.ajax({
-				url : "CartUpdate",
-				type : "POST",
-				data : {
-					cartNo : cartNo,
-					cartQty : cartQty
-				},
-				success : function() {
-					//(미구현)테이블 제작성
-					//reWriteTable();
-				},
-				fail : function() {
-					window.alert('수량 변경이 실패하였습니다.');
-					location.reload();
-				}
-			}); */
-		});
+			//1.post 방식
+			var form = document.createElement("form");
+			form.method = 'post';
+			form.action = '/arm/PurchaseCheck';
 
+			$('#body').append(form);
+			form.submit();
+
+			//2.ajax 방식
+		});
 		//장바구니 관련 메서드 끝---------------------------------------------------------------
+
 	});
 </script>
 <style type="text/css">
@@ -533,17 +521,17 @@ nav#topMenu {
 }
 
 button#continue_btn {
-	margin-top: 5px;
+	margin-top: 3%;
 	font-size: 1.4em;
 }
 
 #pay #purchase_btn {
-	margin-top: 5px;
+	margin-top: 3%;
 	border: 1px solid red;
 	background: red;
 	color: white;
 	float: right;
-	font-size: 1.5em;
+	font-size: 1.4em;
 	width: 150px;
 }
 
@@ -631,6 +619,15 @@ footer #fwrap {
 
 </head>
 <body>
+	<%
+		if (errorMsg != null) {
+	%>
+	<script>
+		window.alert('<%=errorMsg%>');
+	</script>
+	<%
+		}
+	%>
 	<!-- 최상단 기본메뉴 -->
 	<div id="top_menu">
 		<nav id="topMenu">
@@ -732,9 +729,8 @@ footer #fwrap {
 			<div id="t_cart">
 				<div id="pur_step">
 					<label class="step active">1. 장바구니</label> &nbsp;> &nbsp; <label
-						class="step">2. 주문확인</label> &nbsp;> &nbsp; <label class="step">3.
-						결&nbsp;&nbsp;&nbsp;&nbsp;제</label> &nbsp;> &nbsp; <label class="step">4.
-						완&nbsp;&nbsp;&nbsp;&nbsp;료</label>
+						class="step">2. 주문확인</label> &nbsp;> &nbsp; <label
+						class="step">3. 주문완료 및 결제</label>
 				</div>
 				<div id="cart_table">
 					<table id="cart_top">
@@ -772,7 +768,7 @@ footer #fwrap {
 							</td>
 							<td><input type="number" name="cart_qty" id="cart_qty"
 								class="cart_qty" min="1" max="99" value="<%=c.getQuantity()%>"></td>
-							<td><span class="item_price"><%=c.getItem_price()%></span>원</td>
+							<td><span class="item_price"><%=c.getItem_price()+c.getItem_sub_price()%></span>원</td>
 							<td><input type="button" name="cart_del_btn" value="x"></td>
 						</tr>
 						<%

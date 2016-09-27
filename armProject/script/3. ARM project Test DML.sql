@@ -68,17 +68,26 @@ insert into cart values(seq_cart_no.nextval, 'user02', 3, 6, 1);
 
 --1. 주문
 --매일 정시에 주문한지 특정기간이 지났는데도 결제가 없는 경우 자동 삭제 쿼리문 필요
-insert into purchase values(seq_purchase_no.nextval, 'user01', 23000, 2500, sysdate, null);
-insert into purchase values(seq_purchase_no.nextval, 'user02', 9900, 2500, sysdate, null);
+PURCHASE_NO
+PURCHASE_M_ID
+PURCHASE_NAME
+PURCHASE_PHONE
+PURCHASE_EMAIL
+PURCHASE_ZIPCODE
+PURCHASE_ADDRESS
+TOTAL_PRICE
+DELIVERY
+PURCHASE_DATE
+PAID
+insert into purchase values(seq_purchase_no.nextval, 'user02', '신연호', 
+'010-2222-2222', 's2y0h00@nate.com', '45632',
+'서울시 동대문 사가정로 65, 래미안 201동 1401호', 23900, 2500, sysdate, 'N');
+commit;
 
 --2. 주문 완료 : 해당 주문 상세 데이터 추가(java에서 service~dao 반복처리)
 insert into orders values(seq_order_no.nextval, 1, 1, 1, null);
 insert into orders values(seq_order_no.nextval, 1, 4, 2, null);
 insert into orders values(seq_order_no.nextval, 2, 5, 1, null);
-
---3. 결제 완료 : 해당 주문 정보 수정
-EXECUTE insert_payment(1, 'user01', '카드결제', '신한카드', 25500);
-EXECUTE insert_payment(2, 'user02', '계좌이체', '하나은행', 12400);
 
 ---------------------------------------------------------------------
 
@@ -147,20 +156,15 @@ order by cart_no desc;
 
 insert into cart values(seq_cart_no.nextval, 'user01', 1, 1, 10);
 insert into cart values(seq_cart_no.nextval, 'user01', 2, 4, 1);
-
-insert into cart values(seq_cart_no.nextval, 'user02', 1, 2, 3);
-insert into cart values(seq_cart_no.nextval, 'user02', 1, 2, 3);
 commit;
 
-delete from cart
-where cart_no = 9 or 
-cart_no = 10;
+insert into cart values(seq_cart_no.nextval, 'user02', 1, 2, 3);
+insert into cart values(seq_cart_no.nextval, 'user02', 3, 6, 1);
+commit;
 
 --purchase Test----------------------
-insert into purchase values(seq_purchase_no.nextval, 'user01', 23000, 2500, sysdate, null);
-insert into orders values(seq_order_no.nextval, 3, 6, 2, null);
-commit;
-
-delete from cart where CART_NO = 1 or CART_NO = 2;
-rollback;
-
+select purchase_no, g_name, PURCHASE_M_ID, PURCHASE_NAME, PURCHASE_PHONE, PURCHASE_EMAIL, PURCHASE_ZIPCODE, PURCHASE_ADDRESS, TOTAL_PRICE, DELIVERY, PURCHASE_DATE ,PAID
+from purchase
+left join member on(m_id = PURCHASE_M_ID)
+left join grade on(m_grade = g_no)
+where purchase_no = 6;
