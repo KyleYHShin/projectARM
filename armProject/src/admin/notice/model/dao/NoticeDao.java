@@ -91,15 +91,16 @@ public class NoticeDao {
 	public int updateNotice(Connection con, Notice notice) {
 		int result = 0;
 		PreparedStatement pstmt = null;
-		String query = "update notice set Notice_title = ?, NOtice_CONTENT = ?, notice_file = ? where NOtice_no = ?";
+		String query = "update notice set Notice_cat_no=?, Notice_title = ?, Notice_CONTENT = ?, notice_file = ? where Notice_no = ?";
 		System.out.println("수정 Dao 작동");
 		try {
 			pstmt = con.prepareStatement(query);
 			
-			pstmt.setString(1, notice.getNoticeTitle());
-			pstmt.setString(2, notice.getContent());
-			pstmt.setString(3, notice.getNoticeFile());
-			pstmt.setInt(4, notice.getNoticeNo());
+			pstmt.setInt(1, notice.getCatNo());
+			pstmt.setString(2, notice.getNoticeTitle());
+			pstmt.setString(3, notice.getContent());
+			pstmt.setString(4, notice.getNoticeFile());
+			pstmt.setInt(5, notice.getNoticeNo());
 			
 			
 			result = pstmt.executeUpdate();
@@ -200,7 +201,8 @@ public class NoticeDao {
 		Statement stmt = null;
 		ResultSet rset = null;
 		
-		String query = "select * from FAQ order by FAQ_no desc";
+		String query = "select * from FAQ Left join faq_category on (faq_cat_no = faq_category_no) "
+				+ "order by FAQ_no desc";
 		
 		try {
 			stmt = con.createStatement();
@@ -217,6 +219,7 @@ public class NoticeDao {
 			Faqnotice f = new Faqnotice();
 			f.setFaqNo(rset.getInt("faq_no"));
 			f.setFaqcatNo(rset.getInt("faq_cat_no"));
+			f.setFaqcatName(rset.getString("faq_category_name"));
 			f.setFaqTitle(rset.getString("faq_title"));
 			f.setFaqContent(rset.getString("faq_content"));
 			f.setFaqDate(rset.getDate("faq_date"));
@@ -235,11 +238,34 @@ public class NoticeDao {
 		return flist;
 	}
 
-	public int updateFAQ(Connection con, Faqnotice faq) {
+
+
+	public int faqDelete(Connection con, int faqNo) {
+		int result =0;
+		PreparedStatement pstmt = null;
+		
+		String query = "delete from faq where faq_no = ?";
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, faqNo);
+			
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
+	public int updateFaq(Connection con, Faqnotice faq) {
 		int result = 0;
 		PreparedStatement pstmt = null;
-		String query = "update FAQ set faq_cat_no = ?, faq_title = ?, faq_CONTENT = ? where faq_no = ?";
-		System.out.println("수정 Dao 작동");
+		
+		System.out.println("dao구동");
+		String query = "update FAQ set faq_cat_no=?, faq_title=?, faq_content = ? where faq_no = ?";
+		
 		try {
 			pstmt = con.prepareStatement(query);
 			
@@ -248,15 +274,14 @@ public class NoticeDao {
 			pstmt.setString(3, faq.getFaqContent());
 			pstmt.setInt(4, faq.getFaqNo());
 			
-			
 			result = pstmt.executeUpdate();
 			
-		} catch (Exception e) {
+			System.out.println("dao"+result);
+		}catch (Exception e) {
 			e.printStackTrace();
 		}finally {
 			close(pstmt);
 		}
-		
 		return result;
 	}
 

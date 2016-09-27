@@ -70,7 +70,7 @@ public class NoticeService {
 		return notice;
 	}
 	
-	//faq부분
+	//--------faq부분
 
 	public int insertNotice(Faqnotice faq) {
 		Connection con = getConnection();
@@ -95,11 +95,11 @@ public class NoticeService {
 	}
 
 	
-	public int updateFAQ(Faqnotice faq) {
-		// TODO Auto-generated method stub
+	
+
+	public int faqDelete(int faqNo) {
 		Connection con = getConnection();
-		int result = new NoticeDao().updateFAQ(con, faq);
-		System.out.println("서비스작동"+result);
+		int result = new NoticeDao().faqDelete(con, faqNo);
 		if(result > 0)
 			commit(con);
 		else
@@ -108,4 +108,17 @@ public class NoticeService {
 		return result;
 	}
 
-}
+	public int updateFAQ(Faqnotice faq) {
+		Connection con = getConnection();
+		int result = new NoticeDao().updateFaq(con, faq);
+		System.out.println("업데이트서비스구동");
+		if(result >0) 
+			commit(con);
+		else
+			rollback(con);
+		close(con);
+		
+		return result;
+		}
+	}
+

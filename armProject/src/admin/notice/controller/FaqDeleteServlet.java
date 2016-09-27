@@ -1,9 +1,6 @@
 package admin.notice.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,20 +8,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import admin.notice.model.service.NoticeService;
-import admin.notice.model.vo.Faqnotice;
-import admin.notice.model.vo.Notice;
 
 /**
- * Servlet implementation class NoticeListServlet
+ * Servlet implementation class FaqDeleteServlet
  */
-@WebServlet("/nlist")
-public class NoticeListServlet extends HttpServlet {
+@WebServlet("/fdel")
+public class FaqDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public NoticeListServlet() {
+    public FaqDeleteServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,36 +28,17 @@ public class NoticeListServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//공지글 전체 조회 처리용 컨트롤러
-		System.out.println("구동...");
+		System.out.println("삭제구동");
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html; charset=utf-8");
+		int faqNo = Integer.parseInt(request.getParameter("faqNo"));
 		
-		ArrayList<Notice> list = new NoticeService().selectAll();
-		ArrayList<Faqnotice> flist = new NoticeService().selectFaq();
+		int result = new NoticeService().faqDelete(faqNo);
 		
-		RequestDispatcher view = null;
-		
-		
-		
-		
-		
-		
-		if(list != null && flist!=null) {
-			view = request.getRequestDispatcher("notice/notice.jsp");
-			
-			request.setAttribute("list", list); 
-			request.setAttribute("flist", flist);
-			view.forward(request, response);
-		}else {
-			view = request.getRequestDispatcher("notice/noticeError.jsp");
-			request.setAttribute("code", "nlist");
-			view.forward(request, response);
-		}
-		
-		
-		
-
+		if(result>0) {
+			response.sendRedirect("/arm/nlist");
+		}else
+			System.out.println("삭제실패");
 	}
 
 	/**

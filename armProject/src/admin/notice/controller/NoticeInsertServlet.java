@@ -19,7 +19,7 @@ import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 import admin.notice.model.service.NoticeService;
-import admin.notice.model.vo.Faqnotice;
+
 import admin.notice.model.vo.Notice;
 
 /**
@@ -114,25 +114,7 @@ public class NoticeInsertServlet extends HttpServlet {
 			view.forward(request, response);
 		}
 		
-		//faq 입력부분
-		
-		int fcategory = Integer.parseInt(request.getParameter("fcate"));
-		String ftitle = request.getParameter("ftitle");
-		String fcontent = request.getParameter("fcontent");
-		
-		Faqnotice faq = new Faqnotice();
-		faq.setFaqcatNo(fcategory);
-		faq.setFaqTitle(ftitle);
-		faq.setFaqContent(fcontent);
-		
-		int result2 = new NoticeService().insertNotice(faq);
-		if(result2>0) {
-			response.sendRedirect("nlist");
-		}else {
-			System.out.println("faq입력실패");
-		}
-		
-		
+			
 	}
 
 	
