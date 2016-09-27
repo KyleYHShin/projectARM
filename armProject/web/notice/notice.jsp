@@ -606,7 +606,7 @@
 				첨부파일없음<br><input type="file" name="nfile">
 				
 					<%  }else{ //첨부파일이 있는 경우 %>
-						<a href="/arm/filedown?ofile=<%=n.getNoticeFile() %>"><%= n.getNoticeFile() %></a>&nbsp; &nbsp; &nbsp; &nbsp;
+						<a href="/arm/filedown?ofile=<%= n.getNoticeFile() %>"><%= n.getNoticeFile() %></a>&nbsp; &nbsp; &nbsp; &nbsp;
 						<input type="file" name="nfile">
 				
 					<%  } //첨부파일이있는경우 닫기%><br><br><input type="submit" value="수정하기">&nbsp;&nbsp;
@@ -628,7 +628,7 @@
 									%>첨부파일없음 
 				
 			<%  }else{ //첨부파일이 있는 경우 %>
-				<a href="/arm/filedown?rfile=<%=n.getNoticeFile() %>"><%= n.getNoticeFile() %></a>
+				<a href="/arm/filedown?ofile=<%=n.getNoticeFile() %>"><%= n.getNoticeFile() %></a>
 				
 				
 			<%  } %>

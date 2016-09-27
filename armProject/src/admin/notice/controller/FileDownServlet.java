@@ -30,17 +30,20 @@ public class FileDownServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		System.out.println("파일다운 연결...");
 		request.setCharacterEncoding("utf-8");
 		
 		String originalFileName = request.getParameter("ofile");
-		String renameFileName = request.getParameter("rfile");
-		
+		String path = request.getSession().getServletContext().getRealPath("/uploadFile/");
+		System.out.println(path + originalFileName);
 		ServletOutputStream downOut = response.getOutputStream();
-		File downfile = new File(renameFileName);
+		File downfile = new File(path + originalFileName);
+		
 		response.setContentType("text/plain; charset=utf-8");		
 		//한글 파일명 인코딩 처리
 		response.addHeader("Content-Disposition", "attachment; filename=\"" + 
-		 new String(originalFileName.getBytes("UTF-8"), "ISO-8859-1") + 
+		 new String((path+originalFileName).getBytes("UTF-8"), "ISO-8859-1") + 
 		 "\"");
 		response.setContentLength((int) downfile.length());
 
