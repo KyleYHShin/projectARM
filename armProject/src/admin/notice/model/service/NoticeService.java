@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import static common.JDBCTemplate.*;
 
 import admin.notice.model.dao.NoticeDao;
+import admin.notice.model.vo.Faqnotice;
 import admin.notice.model.vo.Notice;
 
 
@@ -26,7 +27,7 @@ public class NoticeService {
 	public int insertNotice(Notice notice) {
 		Connection con = getConnection();
 		int result = new NoticeDao().insertNotice(con, notice);
-		System.out.println("서비스..."+result);
+		
 		if(result > 0)
 			commit(con);
 		else
@@ -67,6 +68,44 @@ public class NoticeService {
 		
 		close(con);
 		return notice;
+	}
+	
+	//faq부분
+
+	public int insertNotice(Faqnotice faq) {
+		Connection con = getConnection();
+		int result = new NoticeDao().insertFaq(con, faq);
+		
+		if(result > 0)
+			commit(con);
+		else
+			rollback(con);
+		close(con);
+		return result;
+		
+	}
+
+	public ArrayList<Faqnotice> selectFaq() {
+		Connection con = getConnection();
+		ArrayList<Faqnotice> flist = new NoticeDao().selectFaq(con);
+		close(con);
+		System.out.println("서비스 구동");
+		
+		return flist;
+	}
+
+	
+	public int updateFAQ(Faqnotice faq) {
+		// TODO Auto-generated method stub
+		Connection con = getConnection();
+		int result = new NoticeDao().updateFAQ(con, faq);
+		System.out.println("서비스작동"+result);
+		if(result > 0)
+			commit(con);
+		else
+			rollback(con);
+		close(con);
+		return result;
 	}
 
 }

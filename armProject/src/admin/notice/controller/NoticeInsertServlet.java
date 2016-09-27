@@ -19,6 +19,7 @@ import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 import admin.notice.model.service.NoticeService;
+import admin.notice.model.vo.Faqnotice;
 import admin.notice.model.vo.Notice;
 
 /**
@@ -54,7 +55,7 @@ public class NoticeInsertServlet extends HttpServlet {
 			errorPage.forward(request, response);
 		}
 //		저장위치 설정
-		String savePath = "C:\\Users\\com\\workspace\\git\\projectARM\\armProject\\web\\uploadFile";	
+		String savePath = request.getSession().getServletContext().getRealPath("/uploadFile/");	
 		String originalFileName = null;
 		String renameFileName = null;
 		
@@ -112,8 +113,29 @@ public class NoticeInsertServlet extends HttpServlet {
 			request.setAttribute("code", "ninsert");
 			view.forward(request, response);
 		}
+		
+		//faq 입력부분
+		
+		int fcategory = Integer.parseInt(request.getParameter("fcate"));
+		String ftitle = request.getParameter("ftitle");
+		String fcontent = request.getParameter("fcontent");
+		
+		Faqnotice faq = new Faqnotice();
+		faq.setFaqcatNo(fcategory);
+		faq.setFaqTitle(ftitle);
+		faq.setFaqContent(fcontent);
+		
+		int result2 = new NoticeService().insertNotice(faq);
+		if(result2>0) {
+			response.sendRedirect("nlist");
+		}else {
+			System.out.println("faq입력실패");
+		}
+		
+		
 	}
 
+	
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */

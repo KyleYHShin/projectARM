@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import admin.notice.model.service.NoticeService;
+import admin.notice.model.vo.Faqnotice;
 import admin.notice.model.vo.Notice;
 
 /**
@@ -38,7 +39,7 @@ public class NoticeListServlet extends HttpServlet {
 		response.setContentType("text/html; charset=utf-8");
 		
 		ArrayList<Notice> list = new NoticeService().selectAll();
-		System.out.println(list);
+	
 		RequestDispatcher view = null;
 		if(list != null) {
 			view = request.getRequestDispatcher("notice/notice.jsp");
@@ -49,6 +50,20 @@ public class NoticeListServlet extends HttpServlet {
 			view = request.getRequestDispatcher("notice/noticeError.jsp");
 			request.setAttribute("code", "nlist");
 			view.forward(request, response);
+		}
+		
+		
+		
+		
+		ArrayList<Faqnotice> flist = new NoticeService().selectFaq();
+		RequestDispatcher fview = null;
+		System.out.println("fview는" + fview);
+		if(flist!=null) {
+			fview = request.getRequestDispatcher("notice/notice.jsp");
+			request.setAttribute("flist", flist);
+			fview.forward(request, response);
+		}else {
+			System.out.println("faq읽어오기실패");
 		}
 	}
 

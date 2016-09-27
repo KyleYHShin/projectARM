@@ -19,6 +19,7 @@ import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 import admin.notice.model.service.NoticeService;
+import admin.notice.model.vo.Faqnotice;
 import admin.notice.model.vo.Notice;
 
 /**
@@ -114,6 +115,22 @@ public class NoticeUpdateServlet extends HttpServlet {
 		if(result>0){
 			response.sendRedirect("/arm/nlist");
 		}else{
+			RequestDispatcher view = request.getRequestDispatcher("notice/noticeError.jsp");
+			request.setAttribute("code", "nupdate");
+			view.forward(request, response);
+		}
+		
+		int fcateno = Integer.parseInt(request.getParameter("fcate"));
+		String ftitle = request.getParameter("ftitle");
+		String fcontent = request.getParameter("fcontent");
+		
+		Faqnotice faq = new Faqnotice(fcateno, ftitle, fcontent);
+		
+		int result2 = new NoticeService().updateFAQ(faq);
+		
+		if(result2>0) {
+			response.sendRedirect("arm/nlist");
+		}else {
 			RequestDispatcher view = request.getRequestDispatcher("notice/noticeError.jsp");
 			request.setAttribute("code", "nupdate");
 			view.forward(request, response);

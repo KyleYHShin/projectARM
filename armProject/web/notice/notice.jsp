@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ page import="java.util.ArrayList, admin.notice.model.vo.Notice, member.model.vo.User" %>
+    <%@ page import="java.util.ArrayList, admin.notice.model.vo.*, member.model.vo.User" %>
     <%
     	ArrayList<Notice> list = (ArrayList<Notice>)request.getAttribute("list");
  		User loginUser = (User)session.getAttribute("loginUser");
  		String admin = (String)session.getAttribute("admin");
- 		
-    %>
+ 		ArrayList<Faqnotice> flist = (ArrayList<Faqnotice>)request.getAttribute("flist");
+ 	%>
 <!doctype html>
 <html lang="ko">
   <meta charset="utf-8">
@@ -585,13 +585,11 @@
 	<!-- 관리자일 경우 -->
 	<% if(admin != null){ %> 
 		<%
-		
 			for(Notice n:list){
-				 
 		%>
 		<form action="/arm/nupdate" method="post" enctype="multipart/form-data">
 		
-			<tr class = "question"><td><input type = "text" name = "noticeno" value=<%=n.getNoticeNo() %> size="10"></td>
+			<tr class = "question"><td><input type = "text" name = "noticeno" value="<%=n.getNoticeNo() %>" size="10" readonly></td>
 				<td><select name = "cate">
 						<option value="1">공지사항</option>
 						<option value="2">이벤트</option>
@@ -613,14 +611,12 @@
 					<button style="font-size: 14px; width: 80px; height: 25px;"
 						type="submit" formaction="ndel?noticeNo=<%= n.getNoticeNo() %>">삭제하기</button></td>
 		</tr>
-		</form>
+		
 				<% } %>
 		<!-- 일반회원일 경우 -->
 		<% }else{ %>
 			<%
-		
 				for(Notice n:list){
-				 
 			%>
 		<tr class = "question"><td><%=n.getNoticeNo() %></td><td><%if( n.getCatNo()==1 ){ %>[공지사항] <%}else{ %>[이벤트] <%} %><%=n.getNoticeTitle() %></td><td><%=String.valueOf(n.getNoticeDate())%></td></tr>
 		<tr class = "answer"><td></td><td colspan ="2"><%=n.getContent() %><br>
@@ -637,19 +633,19 @@
 		
 			<% } %>
 					
-		
+		</form>
 		<% } %>
 	
 		
 				</table>
-			
-		</div><br>
-		<!-- 관리자 공지사항입력 -->
+				<!-- 관리자 공지사항입력 -->
 			<% if(admin != null){ %>
 		<button onclick="window.open('notice/adminnotice.jsp');">글쓰기</button>
 	
 		<% }%>
-		
+		</div><br>
+	
+	<!--------------------------------- faq부분 ----------------------------------->	
 		
 		<div id = "faq">
 		<h1>자주 묻는 질문</h1>
@@ -657,14 +653,64 @@
 		<tr>
 			<th width = "10%">No.</th><th>FAQ</th>
 		</tr>
-		<tr class = "question"><td>2</td><td>[배송] 배송회사가 어딘가요?</td></tr>
-		<tr class = "answer"><td></td><td>질문답변2222</td></tr>
-		<tr class = "question"><td>1</td><td>[교환/환불] 교환은 언제까지 되나요?</td></tr>
-		<tr class = "answer"><td></td><td>질문답변11111</td></tr>
-		</table>
+	
+		<!-- 관리자일 경우 -->
+		<% if(admin != null){ %> 
+			<%
+				for(Faqnotice f:flist){
 		
+			%>
+		<form action="/arm/nupdate" method="post">
+			<tr class = "question"><td><input type = "text" name = "faqno" value="<%=f.getFaqNo() %>" size="10" readonly></td>
+				<td><select name = "fcate">
+						<option value="1">제품</option>
+						<option value="2">결제</option>
+						<option value="3">배송</option>
+						<option value="4">가입</option>
+						<option value="5">기타</option>
+					</select>&nbsp;&nbsp;<input type="text" name="ftitle" value="<%=f.getFaqTitle() %>" style="width:80%"></td>
+					<td><%=String.valueOf(f.getFaqDate())%></td>
+			</tr>
+		
+		<tr class = "answer"><td></td><td colspan ="2"><textarea name="fcontent" rows="5" cols="50"><%= f.getFaqContent() %></textarea>
+		<br><br><input type="submit" value="수정하기">&nbsp;&nbsp;
+					<button style="font-size: 14px; width: 80px; height: 25px;"
+						type="submit" formaction="ndel?noticeNo=<%= f.getFaqNo() %>">삭제하기</button></td>
+		</tr>
+		
+				<% } %>
+		<!-- 일반회원일 경우 -->
+		<% }else{ %>
+			<%
+		
+				for(Faqnotice f:flist){
+				 
+			%>
+		<tr class = "question"><td><%=f.getFaqNo() %></td><td><% String cate = null;
+		switch(f.getFaqcatNo()){
+		case 1 : cate = "[제품]"; break;
+		case 2 : cate = "[결제]"; break;
+		case 3 : cate = "[배송]"; break;
+		case 4 : cate = "[가입]"; break;
+		default : cate = "[기타]"; break;
+		}%><%=f.getFaqTitle() %></td><td><%=String.valueOf(f.getFaqDate())%></td></tr>
+		<tr class = "answer"><td></td><td colspan ="2"><%=f.getFaqContent() %><br></td>
+		</tr>
+		
+			<% } %>
+					
+		</form>
+		<% } %>
+	
+	
+		</table>
+			<!-- 관리자 FAQ 입력 -->
+			<% if(admin != null){ %>
+		<button onclick="window.open('notice/adminFaq.jsp');">글쓰기</button>
+	
+		<%} %>
 		</div>
-
+		
 		<div id = "direct_q">
 	
 		<h1>1:1문의</h1>

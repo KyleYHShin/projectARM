@@ -559,7 +559,7 @@
  <div id = "top_menu">
    <nav id="topMenu" >
         <ul>
-			<li class="topMenuLi"><a class="menuLink" href="nlist">고객센터</a></li>
+			<li class="topMenuLi"><a class="menuLink" href="/arm/nlist">고객센터</a></li>
 			
 			
 		<% if(loginUser != null){ %>
