@@ -576,7 +576,7 @@
 	<div id = "contents">
 		<div id = "notice">
 		<h1>공지사항/이벤트</h1> 
-			<form action="/arm/nupdate" method="post">
+			<form action="/arm/nupdate" method="post" enctype="multipart/form-data">
 		<table class = "notice" cellspacing ="0">
 		<tr>
 			<th width = "10%">No.</th><th>공지사항/이벤트</th><th width = "15%">작성일</th>
@@ -590,25 +590,26 @@
 				 
 		%>
 			
-		<tr class = "question">><td><input type="text" name="noticeno" value="<%=n.getNoticeNo() %>" readonly size="10"></td>
+		<tr class = "question"><td><input type="text" name="noticeno" value="<%=n.getNoticeNo() %>" readonly size="10"></td>
 		<td><select name = "cate">
 						<option value="1">공지사항</option>
 						<option value="2">이벤트</option>
-					</select><input type="text" name="ntitle" value="<%=n.getNoticeTitle() %>"></td>
+					</select>&nbsp;&nbsp;<input type="text" name="ntitle" value="<%=n.getNoticeTitle() %>" style="width:80%"></td>
 		<td><%=String.valueOf(n.getNoticeDate())%></td></tr>
 		
 		<tr class = "answer"><td></td><td colspan ="2"><textarea name="content" rows="5" cols="50"><%=n.getContent() %></textarea>
 		<br>첨부파일 : <%
 				if(n.getNoticeFile() == null){  //첨부파일이없는 경우
 			%>
+				첨부파일없음<br><input type="file" name="nfile">
 				
 			<%  }else{ //첨부파일이 있는 경우 %>
 				<a href="/arm/filedown?ofile=<%=n.getNoticeFile() %>"><%= n.getNoticeFile() %></a>&nbsp; &nbsp; &nbsp; &nbsp;
+				<input type="file" name="nfile">
 				
-				
-			<%  } %><br><input type="submit" value="수정하기">&nbsp;&nbsp;
-											<a href="ndel?noticeNo=<%= n.getNoticeNo() %>">삭제하기</a>
-											</td></tr>
+			<%  } %><br><br><input type="submit" value="수정하기">&nbsp;&nbsp;
+			<button style="font-size: 14px; width: 80px; height: 25px;"
+						type="submit" formaction="ndel?noticeNo=<%= n.getNoticeNo() %>">삭제하기</button></td></tr>
 		
 		<% } %>
 		<!-- 일반회원일 경우 -->

@@ -89,14 +89,15 @@ public class NoticeDao {
 	public int updateNotice(Connection con, Notice notice) {
 		int result = 0;
 		PreparedStatement pstmt = null;
-		String query = "update notice set Notice_title = ?, NOtice_CONTENT = ? where NOtice_no = ?";
-		System.out.println("Dao 작동");
+		String query = "update notice set Notice_title = ?, NOtice_CONTENT = ?, notice_file = ? where NOtice_no = ?";
+		System.out.println("수정 Dao 작동");
 		try {
 			pstmt = con.prepareStatement(query);
 			
 			pstmt.setString(1, notice.getNoticeTitle());
 			pstmt.setString(2, notice.getContent());
 			pstmt.setInt(3, notice.getNoticeNo());
+			pstmt.setString(4, notice.getNoticeFile());
 			
 			result = pstmt.executeUpdate();
 			
@@ -127,5 +128,40 @@ public class NoticeDao {
 		}
 		return result;
 	}
+
+	public Notice selectone(Connection con, int noticeNo) {
+		System.out.println("selectOne dao 구동");
+		
+		Notice notice = null;
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String query = "select* from notice where notice_no=?";
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, noticeNo);
+			
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				notice = new Notice();
+				notice.setNoticeNo(rset.getInt("notice_no"));
+				notice.setCatNo(rset.getInt("notice_cat_no"));
+				notice.setNoticeTitle(rset.getString("notice_title"));
+				notice.setContent(rset.getString("notice_content"));
+				notice.setNoticeFile(rset.getString("notice_file"));
+				notice.setNoticeDate(rset.getDate("notice_date"));
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		return notice;
+	}
+
+
 
 }
