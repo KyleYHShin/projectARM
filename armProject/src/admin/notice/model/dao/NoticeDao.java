@@ -96,8 +96,9 @@ public class NoticeDao {
 			
 			pstmt.setString(1, notice.getNoticeTitle());
 			pstmt.setString(2, notice.getContent());
-			pstmt.setInt(3, notice.getNoticeNo());
-			pstmt.setString(4, notice.getNoticeFile());
+			pstmt.setString(3, notice.getNoticeFile());
+			pstmt.setInt(4, notice.getNoticeNo());
+			
 			
 			result = pstmt.executeUpdate();
 			

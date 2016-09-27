@@ -77,7 +77,7 @@ public class NoticeUpdateServlet extends HttpServlet {
 		String webPath = "arm/web/uploadFile";
 		
 		if(onfile !=null) {
-			if(!ofile.getNoticeFile().equals(null)) {
+			if(ofile.getNoticeFile()!=null) {
 			String oldfileName = ofile.getNoticeFile().substring(ofile.getNoticeFile().indexOf(webPath)+webPath.length());
 			File oldFile = new File(savePath+ "\\" + oldfileName);
 			oldFile.delete();
