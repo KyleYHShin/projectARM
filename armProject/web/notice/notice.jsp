@@ -5,6 +5,8 @@
 User loginUser = (User)session.getAttribute("loginUser");
 ArrayList<Notice> list = (ArrayList<Notice>)request.getAttribute("list");
 String admin = (String)session.getAttribute("admin");
+
+String msg = (String)request.getAttribute("msg");
 %>    
 <!doctype html>
 <html lang="ko">
@@ -27,6 +29,7 @@ String admin = (String)session.getAttribute("admin");
   
   <script type="text/javascript" src = "js/jquery-3.1.0.min.js"></script>
   <script type="text/javascript">
+
 //--------------------------------------------------------------최근본 목록-----이슬작성-------
 		function viewRecentItem(){
 			//sessionStorage.clear();
@@ -121,6 +124,10 @@ String admin = (String)session.getAttribute("admin");
 			<% }%>
 		}
  	$(function(){
+  		<% if(msg != null){ %>
+			alert("<%= msg %>");
+		<% } %>
+		
 		//최근목록보기
 		viewRecentItem();
 		
@@ -162,6 +169,7 @@ String admin = (String)session.getAttribute("admin");
 			$(this).next().slideToggle();
 		});
 
+		$("#no_btn").css("background", "red").css("color","white");
 		$("#no_btn").click(function(){
 			$("#no_btn").css("background", "red").css("color","white");
 			$("#q_btn").css("background", "").css("color","");
@@ -755,7 +763,9 @@ String admin = (String)session.getAttribute("admin");
 	</tr>
 	<tr>
 		<th>이메일</th>
-		<td><input type="text" name="email"></td>
+		<td>
+		<input type="text" name="email">
+		</td>
 	</tr>
 	<tr>
 		<th>문의내용</th>

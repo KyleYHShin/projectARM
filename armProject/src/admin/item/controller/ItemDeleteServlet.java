@@ -38,11 +38,12 @@ public class ItemDeleteServlet extends HttpServlet {
 		int itemNo = Integer.parseInt(request.getParameter("itemno"));
 		
 		int result = new ItemService().deleteOne(itemNo);
-		
 		if(result > 0){
 			response.sendRedirect("ailist");
 		}else{
-			System.out.println("삭제실패..");
+			RequestDispatcher view = request.getRequestDispatcher("ailist");
+			request.setAttribute("almsg", "상품 삭제가 정상적으로 이루어지지 않았습니다.");
+			view.forward(request, response);
 		}
 	}
 

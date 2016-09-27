@@ -40,8 +40,8 @@ public class NoticeDeleteServlet extends HttpServlet {
 		if(result >0){
 			response.sendRedirect("/arm/nlist");
 		}else{
-			RequestDispatcher view = request.getRequestDispatcher("notice/noticeError.jsp");
-			request.setAttribute("code", "ndelete");
+			RequestDispatcher view = request.getRequestDispatcher("nlist");
+			request.setAttribute("msg", "공지사항 삭제가 정상적으로 이루어지지 않았습니다.");
 			view.forward(request, response);
 		}
 	}

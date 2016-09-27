@@ -45,8 +45,8 @@ public class NoticeListServlet extends HttpServlet {
 			request.setAttribute("list", list);
 			view.forward(request, response);
 		}else {
-			view = request.getRequestDispatcher("notice/noticeError.jsp");
-			request.setAttribute("code", "nlist");
+			view = request.getRequestDispatcher("mainlist");
+			request.setAttribute("msg", "공지사항 조회가 정상적으로 이루어지지 않았습니다.");
 			view.forward(request, response);
 		}
 	}

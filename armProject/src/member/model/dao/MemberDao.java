@@ -41,7 +41,7 @@ public class MemberDao {
 	}
 	public int insertMember(Connection con, Member member) {
 		int result = 0;
-		con = getConnection();
+
 		PreparedStatement pstmt = null;
 		
 		String query = "INSERT INTO MEMBER VALUES" + 
@@ -77,7 +77,7 @@ public class MemberDao {
 	
 	public Member selectUser(Connection con, String userId) {
 		Member member = null;
-		con = getConnection();
+
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
@@ -110,9 +110,9 @@ public class MemberDao {
 		}
 		return member;
 	}
-	public int memberDelete(Connection con, String userId) {
+	public int deleteMember(Connection con, String userId) {
 		int result = 0;
-		con = getConnection();
+
 		PreparedStatement pstmt = null;
 		String query = "delete from member where M_ID=?";
 		

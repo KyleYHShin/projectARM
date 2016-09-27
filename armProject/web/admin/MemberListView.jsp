@@ -3,6 +3,7 @@
 <%@ page import = "java.util.ArrayList, admin.member.model.vo.Member" %>
 <%
 	ArrayList<Member> list = (ArrayList<Member>)request.getAttribute("list");
+	String msg = (String)request.getAttribute("msg");
 %>
 <!DOCTYPE html>
 <html>
@@ -12,6 +13,11 @@
 <script type="text/javascript" src = "js/jquery-3.1.0.min.js"></script>
 <script type="text/javascript">
 	$(function(){
+		//에러메세지 출력
+		<% if(msg != null){ %>
+			alert("<%= msg %>");
+		<% } %>
+		
 		$("#title").show();
 		$("#writer").hide();
 		$("#noticDate").hide();
@@ -86,6 +92,7 @@
 		</tr>
 		
 		<%
+		if(list != null){
 			for(Member m:list){		
 		%>
 			<tr>
@@ -108,6 +115,9 @@
 				<td><%= m.getJoinDate() %></td>
 				<td width="50px"><a href="/arm/amdelete?id=<%= m.getUserId() %>">삭제</a>
 			</tr>
+		<% } 
+		} else {%>
+			<tr><td colspan ="11"><%= msg %></td></tr>
 		<% } %>
 	</table>
 <p/><a href = "/arm/mainlist">관리자 메인페이지</a> &nbsp; &nbsp;

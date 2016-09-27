@@ -50,12 +50,14 @@ public class MemberSearchServlet extends HttpServlet {
 		RequestDispatcher view = null;
 		
 		if(list != null){
-			view = request.getRequestDispatcher("admin/amlist.jsp");
+			view = request.getRequestDispatcher("admin/MemberListView.jsp");
 			request.setAttribute("list", list);
 			view.forward(request, response);
 			
 		}else{
-			// 에러페이지 출력
+			view = request.getRequestDispatcher("admin/MemberListView.jsp");
+			request.setAttribute("msg", "검색 결과가 존재하지 않습니다.");
+			view.forward(request, response);
 		}
 	}
 	}

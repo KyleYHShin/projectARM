@@ -112,15 +112,18 @@ public class EmailSendingServlet extends HttpServlet {
 		}
  
         String resultMessage = "";
- 
+        RequestDispatcher view = null;
         try {
-            EmailUtility.sendEmail(host, port, user, pass, recipient, subject,
-                    content, multipart);
+            EmailUtility.sendEmail(host, port, user, pass, recipient, subject, content, multipart);
             resultMessage = "The e-mail was sent successfully";
+            view = request.getRequestDispatcher("nlist");
+            request.setAttribute("msg", "1:1문의가 성공적으로 이루어졌습니다.");
+            
         } catch (Exception ex) {
             ex.printStackTrace();
+            request.setAttribute("msg", "1:1문의 실패");
         } finally {
-        	response.sendRedirect("nlist");
+        	view.forward(request, response);
         }
     }
 }

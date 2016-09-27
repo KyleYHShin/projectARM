@@ -1634,7 +1634,7 @@ table tr td { /*확인용*/
 
 			<div class="fd">
 				<h1>
-					<img src="images/전화기.png" width="50" height="40" border="0" alt="">&nbsp;1600-7000
+					<img src="img/tel.png" width="50" height="50" border="0" alt="">&nbsp;1600-7000
 				</h1>
 			</div>
 

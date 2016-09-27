@@ -56,14 +56,16 @@ public class ItemViewServlet extends HttpServlet {
 		ArrayList<Vender> vender=new ItemService().getVender();
 		
 		RequestDispatcher view = null;
-		if(list != null){
+		if(list != null && category != null && vender != null){
 			view = request.getRequestDispatcher("admin/ItemListView.jsp");
 			request.setAttribute("list", list);
 			request.setAttribute("category", category);
 			request.setAttribute("vender", vender);
 			view.forward(request, response);
 		}else{
-			// 에러페이지 출력
+			view = request.getRequestDispatcher("mainlist");
+			request.setAttribute("msg", "해당요청이 정상적으로 이루어지지 않았습니다.");
+			view.forward(request, response);
 		}
 	}
 }

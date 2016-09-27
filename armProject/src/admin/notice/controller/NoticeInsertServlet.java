@@ -54,7 +54,7 @@ public class NoticeInsertServlet extends HttpServlet {
 			errorPage.forward(request, response);
 		}
 //		저장위치 설정
-		String savePath = "C:\\Users\\com\\workspace\\git\\projectARM\\armProject\\web\\uploadFile";	
+		String savePath = request.getSession().getServletContext().getRealPath("/uploadFile/");	
 		String originalFileName = null;
 		String renameFileName = null;
 		
@@ -107,8 +107,8 @@ public class NoticeInsertServlet extends HttpServlet {
 		if(result>0) {
 			response.sendRedirect("nlist");
 		} else {
-			RequestDispatcher view = request.getRequestDispatcher("notice/noticeError.jsp");
-			request.setAttribute("code", "ninsert");
+			RequestDispatcher view = request.getRequestDispatcher("nlist");
+			request.setAttribute("msg", "공지사항 입력이 정상적으로 이루지지 않았습니다.");
 			view.forward(request, response);
 		}
 	}

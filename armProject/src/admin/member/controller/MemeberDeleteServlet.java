@@ -1,6 +1,8 @@
 package admin.member.controller;
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -28,8 +30,7 @@ public class MemeberDeleteServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		doPost(request,response);
 	}
 
 	/**
@@ -46,7 +47,9 @@ public class MemeberDeleteServlet extends HttpServlet {
 		if(result > 0){
 			response.sendRedirect("/arm/amlist");
 		}else{
-			// 에러
+			RequestDispatcher view = request.getRequestDispatcher("amlist");
+			request.setAttribute("msg", "회원 삭제가 정상적으로 이루어지지 않았습니다.");
+			view.forward(request, response);
 		}
 	}
 

@@ -1,6 +1,8 @@
 package admin.subitem.controller;
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -49,8 +51,9 @@ public class SubItemInsertServlet extends HttpServlet {
 		if(result > 0){
 			response.sendRedirect("aslist?itemNo="+itemNo);
 		}else{
-			//오류
-			System.out.println("상품추가오류");
+			RequestDispatcher view = request.getRequestDispatcher("aslist?itemNo="+itemNo);
+			request.setAttribute("almsg", "옵션 추가가 정상적으로 이루어지지 않았습니다.");
+			view.forward(request, response);
 		}
 	}
 

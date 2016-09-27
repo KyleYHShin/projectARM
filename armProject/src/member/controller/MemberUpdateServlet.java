@@ -56,10 +56,9 @@ public class MemberUpdateServlet extends HttpServlet {
 			response.sendRedirect("/arm/myinfo?userid="+userId);
 			
 		}else {
-			RequestDispatcher view = request.getRequestDispatcher("member/memberError.jsp");
-			request.setAttribute("code", "mupdate");
+			RequestDispatcher view = request.getRequestDispatcher("myinfo?userid="+userId);
+			request.setAttribute("almsg", "회원 탈퇴가 정상적으로 이루어지지 않았습니다");
 			view.forward(request, response);
-			
 		}
 		
 	}

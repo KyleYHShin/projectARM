@@ -1,6 +1,8 @@
 package admin.subitem.controller;
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -36,11 +38,12 @@ public class SubItemDeleteServlet extends HttpServlet {
 		int itemSubNo = Integer.parseInt(request.getParameter("subno"));
 		
 		int result = new SubItemService().deleteOne(itemSubNo);
-		
 		if(result > 0){
 			response.sendRedirect("aslist?itemNo="+itemNo);
 		}else{
-			System.out.println("삭제오류");
+			RequestDispatcher view = request.getRequestDispatcher("aslist?itemNo="+itemNo);
+			request.setAttribute("almsg", "옵션 삭제가 정상적으로 이루어지지 않았습니다.");
+			view.forward(request, response);
 		}
 	}
 

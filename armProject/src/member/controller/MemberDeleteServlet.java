@@ -39,15 +39,15 @@ public class MemberDeleteServlet extends HttpServlet {
 		
 		String userId = request.getParameter("userid");
 		
-		int result = new MemberService().memberDelete(userId);
+		int result = new MemberService().deleteMember(userId);
 		
 		if(result > 0){
 			response.sendRedirect("logout");
 			
 		}else{
-			RequestDispatcher error = request.getRequestDispatcher("member/memberError.jsp");
-			request.setAttribute("code", "mdel");
-			error.forward(request, response);
+			RequestDispatcher view = request.getRequestDispatcher("myinfo?userid="+userId);
+			request.setAttribute("almsg", "회원 탈퇴가 정상적으로 이루어지지 않았습니다");
+			view.forward(request, response);
 		}
 	}
 

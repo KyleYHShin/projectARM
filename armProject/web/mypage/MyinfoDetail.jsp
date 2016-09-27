@@ -3,6 +3,8 @@
    <%
    	User loginUser = (User)session.getAttribute("loginUser");
    Member member = (Member)request.getAttribute("member");
+   
+   String almsg = (String)request.getAttribute("almsg");
    %>
 <!doctype html>
 <html lang="ko">
@@ -143,6 +145,9 @@
 			location.href="/arm/myinfo?userid=<%= loginUser.getUserId() %>";
 		}
  	$(function(){
+ 		<% if(almsg != null){ %>
+			alert("<%= almsg %>");
+		<% } %>
 		//최근목록보기
 		viewRecentItem();
 		

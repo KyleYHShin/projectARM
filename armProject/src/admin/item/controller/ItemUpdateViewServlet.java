@@ -46,7 +46,9 @@ public class ItemUpdateViewServlet extends HttpServlet {
 			request.setAttribute("item", item);
 			view.forward(request, response);
 		}else{
-			System.out.println("수정view에뤄......");
+			view = request.getRequestDispatcher("ailist");
+			request.setAttribute("almsg", "해당 요청이 정상적으로 이루어지지 않았습니다.");
+			view.forward(request, response);
 		}
 	}
 

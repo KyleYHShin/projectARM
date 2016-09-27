@@ -5,7 +5,9 @@
 ArrayList<SubItem> list = (ArrayList<SubItem>)request.getAttribute("list");
 Item item = (Item)request.getAttribute("item");
 SubItem subItem = (SubItem)request.getAttribute("subitem");
+
 String msg = (String)request.getAttribute("msg");
+String almsg = (String)request.getAttribute("almsg");
 %>
 <!DOCTYPE html >
 <html>
@@ -15,6 +17,10 @@ String msg = (String)request.getAttribute("msg");
 <script type="text/javascript" src = "js/jquery-3.1.0.min.js"></script>
 <script type="text/javascript">
 	$(function(){
+		<% if(almsg != null){%>
+			alert("<%= almsg %>");
+		<% }%>
+		
 		$("#title").show();
 		$("#writer").hide();
 		$("#noticDate").hide();

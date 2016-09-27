@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -205,7 +207,9 @@ public class ItemUpdateServlet extends HttpServlet {
 		if(result > 0){
 			response.sendRedirect("/arm/ailist");
 		}else{
-			System.out.println("서블릿 ; 수정 에러..");
+			RequestDispatcher view = request.getRequestDispatcher("ailist");
+			request.setAttribute("almsg", "상품 수정이 정상적으로 이루어지지 않았습니다.");
+			view.forward(request, response);
 		}
 
 	}

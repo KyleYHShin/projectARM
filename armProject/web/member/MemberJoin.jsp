@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%
+String almsg = (String)request.getAttribute("almsg");
+%>
 <!doctype html>
 <html lang="ko">
 <meta charset="utf-8">
@@ -153,6 +156,9 @@
 		nologinCart();
 	}
 	$(function() {
+		<% if(almsg != null){ %>
+			alert("<%= almsg %>");
+		<% } %>
 		//최근목록보기
 		viewRecentItem();
 

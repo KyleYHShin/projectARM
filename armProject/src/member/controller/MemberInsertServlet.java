@@ -3,6 +3,7 @@ package member.controller;
 import java.io.IOException;
 import java.sql.Date;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -66,7 +67,9 @@ public class MemberInsertServlet extends HttpServlet {
 		if(result>0) {
 			response.sendRedirect("member/Login.jsp");
 		}else {
-			response.sendRedirect("member/MemberJoin.jsp");
+			RequestDispatcher view = request.getRequestDispatcher("member/MemberJoin.jsp");
+			request.setAttribute("almsg", "회원가입이 정상적으로 이루어지지 않았습니다.");
+			view.forward(request, response);
 		}
 	}
 

@@ -40,11 +40,13 @@ public class SubItemUpdateViewServlet extends HttpServlet {
 		
 		SubItem subItem = new SubItemService().selectOne(itemSubNo);
 		if(subItem != null){
-			RequestDispatcher view = request.getRequestDispatcher("SubItemViewServlet?itemNo="+itemNo);
+			RequestDispatcher view = request.getRequestDispatcher("aslist?itemNo="+itemNo);
 			request.setAttribute("subitem", subItem);
 			view.forward(request, response);
 		}else{
-			System.out.println("update view 서블릿 오류..");
+			RequestDispatcher view = request.getRequestDispatcher("aslist?itemNo="+itemNo);
+			request.setAttribute("almsg", "해당 요청이 정상적으로 이루어지지 않았습니다.");
+			view.forward(request, response);
 		}
 	}
 

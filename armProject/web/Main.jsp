@@ -9,6 +9,7 @@ ArrayList<Item> list = (ArrayList<Item>)request.getAttribute("list");
 int totalCount = (int)request.getAttribute("totalCount");
 int pageNo = (int)request.getAttribute("page");
 String status = (String)request.getAttribute("status");
+String msg =(String)request.getAttribute("msg");
 %>
 
 <!doctype html>
@@ -157,6 +158,11 @@ String status = (String)request.getAttribute("status");
 			<% }%>
 		}
 		$(function() {
+			//에러메세지 출력
+			<% if(msg != null){ %>
+				alert("<%= msg %>");
+			<% } %>
+			
 			//최근목록보기
 			viewRecentItem();
 			

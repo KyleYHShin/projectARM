@@ -36,7 +36,6 @@ public class MemberListViewServlet extends HttpServlet {
 	      response.setContentType("text/html; charset=utf-8");
 	      
 	      ArrayList<Member> list = new MemberService().memberAll();
-	      
 	      RequestDispatcher view = null;
 	      
 	      if(list != null){
@@ -44,7 +43,9 @@ public class MemberListViewServlet extends HttpServlet {
 	         request.setAttribute("list", list);
 	         view.forward(request, response);
 	      }else{
-	         // 에러페이지
+	    	  view = request.getRequestDispatcher("admin/MemberListView.jsp");
+		      request.setAttribute("msg", "회원 정보 조회가 정상적으로 이루어지지 않았습니다.");
+		      view.forward(request, response);
 	      }
 	}
 

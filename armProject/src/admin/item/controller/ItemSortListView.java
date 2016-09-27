@@ -69,21 +69,19 @@ public class ItemSortListView extends HttpServlet {
 			break;
 		}
 		
-		RequestDispatcher view = null;
-		view = request.getRequestDispatcher("admin/ItemListView.jsp");
-		
+		RequestDispatcher view = null;		
 		list = new ItemService().selectMainList(sort_col);
 		
 		if(list != null){
+			view = request.getRequestDispatcher("admin/ItemListView.jsp");
 			request.setAttribute("sortNo", sortNo);
 			request.setAttribute("category", category);
 	        request.setAttribute("vender", vender);
 	        request.setAttribute("list",list);
 	        view.forward(request, response);
-			
-		
 		}else{
 			request.setAttribute("sortNo", 0);
+			request.setAttribute("almsg","상품 정렬이 정상적으로 이루어지지 않았습니다.");
 		}
 	}
 

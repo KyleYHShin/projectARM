@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -189,11 +191,15 @@ public class ItemInsertServlet extends HttpServlet {
 			if(fresult > 0){
 				response.sendRedirect("/arm/ailist");
 			}else{
-				System.out.println("2차 update 실패..");
+				RequestDispatcher view = request.getRequestDispatcher("ailist");
+				request.setAttribute("almsg", "상품 추가가 정상적으로 이루어지지 않았습니다.");
+				view.forward(request, response);
 			}
 		}else{
 			//insert실패시
-			System.out.println("1차 insert 실패..");
+			RequestDispatcher view = request.getRequestDispatcher("ailist");
+			request.setAttribute("almsg", "상품 추가가 정상적으로 이루어지지 않았습니다.");
+			view.forward(request, response);
 		}
 	}
 

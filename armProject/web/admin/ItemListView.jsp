@@ -7,6 +7,7 @@ ArrayList<Category> category = (ArrayList<Category>)request.getAttribute("catego
 ArrayList<Vender> vender = (ArrayList<Vender>)request.getAttribute("vender");
 Item item = (Item)request.getAttribute("item");
 String msg = (String)request.getAttribute("msg");
+String almsg = (String)request.getAttribute("almsg");
 %>
 <!DOCTYPE html>
 <html>
@@ -19,6 +20,9 @@ String msg = (String)request.getAttribute("msg");
 		$("#item_add").slideToggle("fast");
 	}
 	$(function(){
+	<% if(almsg != null){%>
+		alert("<%= almsg %>");
+	<% }%>
 		$("#title").show();
 		$("#writer").hide();
 		$("#noticDate").hide();

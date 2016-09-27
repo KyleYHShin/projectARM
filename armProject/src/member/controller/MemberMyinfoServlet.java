@@ -39,16 +39,15 @@ public class MemberMyinfoServlet extends HttpServlet {
 		String userId = request.getParameter("userid");
 		
 		Member member = new MemberService().selectUser(userId);
-		RequestDispatcher rd = null;
 		
+		RequestDispatcher rd = null;
 		if(member != null) {
-			
 			rd = request.getRequestDispatcher("mypage/MyinfoDetail.jsp");
 			request.setAttribute("member", member);
 			rd.forward(request, response);
 		}else {
-			rd = request.getRequestDispatcher("member/memberError.jsp");
-			request.setAttribute("code", "myinfo");
+			rd = request.getRequestDispatcher("mainlist");
+			request.setAttribute("msg", "회원님의 정보를 불러올 수 없습니다.");
 			rd.forward(request, response);
 		}
 	}

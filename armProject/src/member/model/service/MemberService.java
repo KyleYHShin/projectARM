@@ -29,9 +29,9 @@ public class MemberService {
 		return member;
 	}
 
-	public int memberDelete(String userId) {
+	public int deleteMember(String userId) {
 		Connection con = getConnection();
-		int result = new MemberDao().memberDelete(con, userId);
+		int result = new MemberDao().deleteMember(con, userId);
 		if(result>0)
 			commit(con);
 		else
