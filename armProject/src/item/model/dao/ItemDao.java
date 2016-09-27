@@ -17,15 +17,15 @@ public class ItemDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
-		//ceil(rownum/9): 한페이지에 출력할 상품 갯수 9.
+		//ceil(rownum/30): 한페이지에 출력할 상품 갯수 9.
 		String query = "select * "
-				+ "from(select ceil(rownum/9) page,"
+				+ "from(select ceil(rownum/30) page,"
 					+ " item_no, item_name, item_cat_no, item_price, "
 					+ "item_count, item_update, item_img_mini, "
 					+ "item_img, item_img_detail "
 				+ "from (select * from product_main p left join item i on(p.PRM_ITEM_NO = i.ITEM_NO) order by prm_no)) where page = ?";
 		String sort =  "select * "
-				+ "from(select ceil(rownum/9) page,"
+				+ "from(select ceil(rownum/30) page,"
 				+ " item_no, item_name, item_cat_no, item_price, "
 				+ "item_count, item_update, item_img_mini, "
 				+ "item_img, item_img_detail "
@@ -86,7 +86,7 @@ public class ItemDao {
 			//categoryNo~ categoryNo+99
 		}
 		String query = "select * "
-				+ "from(select ceil(rownum/9) page,"
+				+ "from(select ceil(rownum/30) page,"
 					+ " item_no, item_name, item_cat_no, item_price, "
 					+ "item_count, item_update, item_img_mini, "
 					+ "item_img, item_img_detail "
@@ -140,7 +140,7 @@ public class ItemDao {
 		ResultSet rset = null;
 
 		String query = "select * "
-				+ "from(select ceil(rownum/9) page,"
+				+ "from(select ceil(rownum/30) page,"
 					+ " item_no, item_name, item_cat_no, item_price, "
 					+ "item_count, item_update, item_img_mini, "
 					+ "item_img, item_img_detail "

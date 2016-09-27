@@ -74,8 +74,10 @@ public class ItemDetailViewServlet extends HttpServlet {
 				reviewHContent = IS.selectReviewHeadContent();
 			
 			//해당 제품을 구매한 사람만 후기 작성할 수 있도록 구매목록 조회하여 리턴
-			orderedSubItemList = new OrderService().selectOrders(subItemList);
-			
+			//if문처리 (슬)
+			if(subItemList != null){
+				orderedSubItemList = new OrderService().selectOrders(subItemList);
+			}
 		}
 		
 		RequestDispatcher view = null;

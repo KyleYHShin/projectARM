@@ -30,7 +30,7 @@ String almsg = (String)request.getAttribute("almsg");
 		//sessionStorage.clear();
 		var rItems = "";
 		if (sessionStorage.length == 0) {
-			$("#recent_list").html("<div class='ritem'>최근 본 상품이 없습니다.</div>");
+			$("#recent_list").html("<div class='ritem' style='color : gray;'><br>최근 본 상품이 없습니다.</div>");
 		} else {
 			if (sessionStorage.length <= 4) {
 				//중복 값 지우기 위함.

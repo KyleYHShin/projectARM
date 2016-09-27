@@ -38,7 +38,7 @@ String keyword = (String)request.getAttribute("keyword");
 			//sessionStorage.clear();
 			var rItems = "";
 			if(sessionStorage.length==0){
-				$("#recent_list").html("<div class='ritem'>최근 본 상품이 없습니다.</div>");
+				$("#recent_list").html("<div class='ritem' style='color : gray;'><br>최근 본 상품이 없습니다.</div>");
 			}else{
 				if(sessionStorage.length <= 4){
 					//중복 값 지우기 위함.
@@ -98,8 +98,8 @@ String keyword = (String)request.getAttribute("keyword");
 //------------------------------------------------------------------------------------------이슬 끗
 	//전체 줄 수(reqeust로 전달받음)
 	var totalCount = <%= totalCount %>;
-	//페이지 수 : 한 페이지에 15줄 출력경우
-	var totalPage = Math.ceil(totalCount/9);
+	//페이지 수 : 한 페이지에 12줄 출력경우
+	var totalPage = Math.ceil(totalCount/30);
 	var PageNum;
 	//현재 페이지(request로 전달받음)
 	var page;

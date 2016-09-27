@@ -39,7 +39,7 @@ String msg =(String)request.getAttribute("msg");
 			//sessionStorage.clear();
 			var rItems = "";
 			if(sessionStorage.length==0){
-				$("#recent_list").html("<div class='ritem'>최근 본 상품이 없습니다.</div>");
+				$("#recent_list").html("<div class='ritem' style='color : gray;'><br>최근 본 상품이 없습니다.</div>");
 			}else{
 				if(sessionStorage.length <= 4){
 					//중복 값 지우기 위함.
@@ -99,8 +99,8 @@ String msg =(String)request.getAttribute("msg");
 	//-- ----------------------------------------------------------이슬작성----------------- -
 		//전체 줄 수(reqeust로 전달받음)
 		var totalCount = <%= totalCount %>;
-		//페이지 수 : 한 페이지에 9줄 출력경우
-		var totalPage = Math.ceil(totalCount/9);
+		//페이지 수 : 한 페이지에 30줄 출력경우
+		var totalPage = Math.ceil(totalCount/30);
 		var PageNum;
 		//현재 페이지(request로 전달받음)
 		var page;
@@ -392,9 +392,10 @@ String msg =(String)request.getAttribute("msg");
 	#quick_bar #recent_list .ritem{
 		width : 90px;
 		height : 90px;
-		border : 1px solid orange;
 		padding : 0;
-		margin : 1px auto;
+		margin : 2px auto;
+		test-align : center;
+		border : 1px solid orange;
 	}
 	#quick_bar #recent_list .ritem img{
 		width : 100%;

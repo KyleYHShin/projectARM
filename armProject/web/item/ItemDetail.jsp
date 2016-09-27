@@ -66,7 +66,7 @@ sessionStorage.setItem(getTimeStamp(), "<%= item.getItemNo() %>"+","+"<%= item.g
 		//sessionStorage.clear();
 		var rItems = "";
 		if(sessionStorage.length==0){
-			$("#recent_list").html("<div class='ritem'>최근 본 상품이 없습니다.</div>");
+			$("#recent_list").html("<div class='ritem' style='color : gray;'><br>최근 본 상품이 없습니다.</div>");
 		}else{
 			if(sessionStorage.length <= 4){
 				//중복 값 지우기 위함.
@@ -184,16 +184,16 @@ function nologinCart(){
 
 		//퀵바 토글 - 퀵바 고정위치를 클릭시마다 바뀌게 하면서 trasition효과
 		var onoff = 0;
-		$("#qBtn").click(function(){
-			if(onoff == 1){
-				$("#quick_bar").css("right","-122px").css("transition","all 0.5s");
-				$("#qBtn").css("right","-14px").css("transition","all 0.5s");
+		$("#qBtn").click(function() {
+			if (onoff == 1) {
+				$("#quick_bar").css("right", "-122px").css("transition", "all 0.5s");
+				$("#qBtn").css("right", "0px").css("transition", "all 0.5s");
 				onoff = 0;
-			}else if(onoff == 0){
-				$("#quick_bar").css("right","0").css("transition","all 0.5s");
-				$("#qBtn").css("right","106px").css("transition","all 0.5s");
+			} else if (onoff == 0) {
+				$("#quick_bar").css("right", "0").css("transition", "all 0.5s");
+				$("#qBtn").css("right", "118px").css("transition", "all 0.5s");
 				onoff = 1;
-			};
+			}
 		});
 		
 		//퀵바 장바구니, 최근 본 목록 슬라이드 처리
@@ -1181,7 +1181,7 @@ table tr td { /*확인용*/
 			<div class="product">
 				<form method="get" action="CartInsertServlet">
 					<div class="pImage">
-						<img src="<%=item.getItemImg()%>">
+						<img src="<%= item.getItemImg() %>">
 						<!-------------- pImage div에선 이 옆에만 수정 -------->
 					</div>
 					<!--pImage-->
@@ -1214,11 +1214,13 @@ table tr td { /*확인용*/
 						<table>
 							<tr height="40">
 								<td width="200">옵션 :</td>
-								<td id="opt1" width="300"><select name="p_opt_1"
+								<td id="opt1" width="300">
+								<select name="p_opt_1"
 									id="p_opt_1" class="p_opt_1" style="width: 95%;"
 									onchange="add_tr();">
 										<option>옵션을 선택하세요</option>
-										<%
+										<% //if문 처리를 해서 null일 때 처리해 보도록하자.----------------------------
+										if(subItemList != null){
 											for (SubItem sub : subItemList) {
 										%>
 										<option value="<%=sub.getItemSubName()%>">
@@ -1226,13 +1228,20 @@ table tr td { /*확인용*/
 										</option>
 										<%
 											}
+										}else{
 										%>
+										<option value="기본">기본</option>
+										<% } %>
 								</select> <%
- 	for (SubItem sub : subItemList) {
- %> <input type="hidden" id="<%=sub.getItemSubName()%>"
-									value="<%=sub.getItemSubPrice()%>"> <%
- 	}
- %></td>
+								if(subItemList != null){
+							 	for (SubItem sub : subItemList) {
+							 %> <input type="hidden" id="<%=sub.getItemSubName()%>"
+																value="<%=sub.getItemSubPrice()%>"> <%
+							 	}
+								}else{%>
+									<input type="hidden" id="기본" value="0">
+								<%}
+							 %></td>
 							</tr>
 
 							<tr height="60">
@@ -1282,7 +1291,7 @@ table tr td { /*확인용*/
 					</ul>
 					<div class="tab_container">
 						<div id="tab1" class="tab_content">
-							<img src="items_detail/01.jpg">
+							<img src="<%= item.getItemImgDt() %>">
 						</div>
 						<!-- #tab1 -->
 						<div id="tab2" class="tab_content">
@@ -1297,7 +1306,8 @@ table tr td { /*확인용*/
 											<td colspan="2" align="left"><select id="qna_select"
 												name="inquired_sub" onchange="get_inquired_sub">
 													<option value="0">문의할 옵션을 선택하세요</option>
-													<%
+													<%//----------------------------------------------------------
+														if(subItemList != null){
 														for (SubItem sub : subItemList) {
 													%>
 													<option value="<%=sub.getItemSubNo()%>">
@@ -1305,7 +1315,9 @@ table tr td { /*확인용*/
 													</option>
 													<%
 														}
-													%>
+														}else{%>
+														<option value="0">기본</option>
+														<% } %>
 											</select> <input type="hidden" name="inquired_item_no"
 												value="<%=item.getItemNo()%>"></td>
 										</tr>
