@@ -618,10 +618,10 @@ String status = (String)request.getAttribute("status");
 	
 	.item_box {
 		/*float: left;*/
-		max-width: 23%;
+		max-width: 19%;/*변경*/
 		margin: 0.5%;
 		padding: 0.5%;
-		background: white;
+		background: pink;
 		display: inline-block;
 	}
 	.item_box img {
@@ -910,9 +910,13 @@ String status = (String)request.getAttribute("status");
 						<% } %>
 					</table></a>
 			</section>
-			<% }
-				}
-			%>
+			<% } %>
+		 	<%-- <% if(list.size()%5 != 0) {
+				for(int j = 0; j < 5-(list.size()%5);j ++){%>
+				<section class="item_box"></section>
+				<% } 
+			} %> --%>
+			<% } %>
 			<!-- 페이징처리할때 ------------------------------------------------------ -->
 			<div id = "pageNo"></div>
 		<!-- --------------------------------------------------------------요까지이슬----------------- -->

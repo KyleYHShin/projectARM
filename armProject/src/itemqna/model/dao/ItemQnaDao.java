@@ -4,8 +4,11 @@ import static common.JDBCTemplate.close;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.Types;
+import java.util.ArrayList;
 
+import itemqna.model.vo.Answer;
 import itemqna.model.vo.Question;
 
 public class ItemQnaDao {
@@ -84,5 +87,54 @@ public class ItemQnaDao {
 		}
 		return result;
 	}
+	//문의내역
+	public ArrayList<Question> selectMylist(Connection con, String userId) {
+		ArrayList<Question> list = null;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String query = "select* from QUESTION Left join ITEM On(QUESTION_NO = ITEM_NO) "
+				+ "LEFT JOIN MEMBER ON(QUESTION_M_ID = M_ID)"
+				+ "LEFT JOIN ITEM_SUB ON(QUESTION_ITEM_SUB_NO = ITEM_SUB_NO)"
+				+ "LEFT JOIN ANSWER ON(ANSWER_QUESTION_NO = QUESTION_NO) "
+				+ "Where M_ID = ?"
+				+ "order by Question_NO desc";
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, userId);
+			rset = pstmt.executeQuery();
+			
+			boolean flag = true;
+			while(rset.next()) {
+				if(flag==true) {
+				list = new ArrayList<Question>();
+				flag = false;
+			}
+				
+			Question q = new Question();
+			q.setQuestion_no(rset.getInt("QUESTION_NO"));
+			q.setM_id(rset.getString("QUESTION_M_ID"));
+			q.setItem_name(rset.getString("ITEM_NAME"));
+			q.setItem_sub_name(rset.getString("ITEM_SUB_NAME"));
+			q.setContent(rset.getString("QUESTION_CONTENT"));
+			q.setDate(rset.getDate("QUESTION_DATE"));
+			Answer a = new Answer();
+			a.setAnswer_no(rset.getInt("ANSWER_NO"));
+			a.setContent(rset.getString("ANSWER_CONTENT"));
+			a.setDate(rset.getDate("ANSWER_DATE"));
+			
+			q.setAnswer(a);
+			
+			list.add(q);
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return list;
+		}
 
 }

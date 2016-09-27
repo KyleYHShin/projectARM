@@ -1,8 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import="member.model.vo.User"%>
-   <%
-   	User loginUser = (User)session.getAttribute("loginUser");
-   %>
+    pageEncoding="UTF-8" import="java.util.ArrayList, member.model.vo.User, item.model.vo.*, itemqna.model.vo.Question"%>
+<%
+  User loginUser = (User)session.getAttribute("loginUser");
+  Question question = (Question)session.getAttribute("itemlist");
+  
+  ArrayList<Question> list = (ArrayList<Question>)request.getAttribute("itemlist");
+  ArrayList<Answer> alist = (ArrayList<Answer>)request.getAttribute("answerList");
+  String msg = (String)request.getAttribute("msg");
+%>
 <!doctype html>
 <html lang="ko">
   <meta charset="utf-8">
@@ -114,6 +119,9 @@
 				$("#qBtn").css("right", "118px").css("transition", "all 0.5s");
 				onoff = 1;
 			}
+		});
+		$(".qna .question").click(function(){
+			$(this).next().slideToggle();
 		});
 
 	});
@@ -318,17 +326,53 @@
 	}
 
 	/*contents : 내용 wrapper*/
-	#contents {
-		width : 100%;
-		margin : 0 auto;
-		padding-top : 2%;
-		min-height : 600px;
-		/*background : #ffffcc;*/
+	/*contents : 내용 wrapper*/
+	#contents{
+	
 	}
-
 	/* -------------------------내용 css----------------------------------- */
 
-	/*소스를 여기에 입력해주세요*/
+
+	#qna {
+		display : none;
+		width :100%;
+		min-height : 600px;
+		
+		margin : 5px auto;
+		padding : 5px;
+	}
+	.qna {
+		margin:0 auto;
+		BORDER-TOP: 2px solid black;
+		BORDER-BOTTOM: 2px solid black;
+		background : white;
+
+		width : 80%;
+	}
+	
+	.qna tr th, .qna tr td{
+		BORDER-BOTTOM: 1px solid #d9d9d9;
+		padding : 10px;
+	}
+	.qna tr th {
+		text-align : center;
+	}
+	.qna tr td:nth-child(2n+1), .qna tr th:nth-child(2n+1){
+		background: #ebebeb;
+	}
+	.qna .question:hover {
+		cursor : pointer;
+		background : #ebebeb;
+	}
+	.qna .answer{
+		display : none;
+	}
+
+	@media all and (max-width: 1000px){
+		#wrapper{
+			font-size :
+		}
+	}
 
 /*---------------------------내용 부분 (wrapper+css)끝--------------------------------- */
 	/* 푸터 */
@@ -414,8 +458,8 @@
 		<ul class = "cs_navi">
 			<li><a href="/arm/mypage/MyinfoCart.jsp" id = "c_btn">장바구니</a></li>
 			<li><a href="/arm/mypage/MyinfoPurchase.jsp" id = "bl_btn">구매 내역</a></li>
-			<li><a href="/arm/mypage/MyinfoQuestion.jsp" id = "qa_btn">문의 내역</a></li>
-			<li><a href="../myinfo?userid=<%= loginUser.getUserId() %>" id = "u_btn">회원정보</a></li>
+			<li><a href="/arm/iqlist?userid=<%= loginUser.getUserId() %>" id = "qa_btn">문의 내역</a></li>
+			<li><a href="/arm/myinfo?userid=<%= loginUser.getUserId() %>" id = "u_btn">회원정보</a></li>
 		</ul>
 	</div><!-- cs_menu -->
 
@@ -423,8 +467,42 @@
 <div id = "contents">
 <!-- ---------------------------내용부분------------------------------------ -->
 <!-- 내용을 여기에 입력해 주세요 -->
-문의내역
-
+	<div class="qna">
+	<h1>MY 문의내역</h1>
+	<br>
+	
+	<form action="/arm/iqlist" method="post">	
+		<table class = "qna" cellspacing ="0">
+		<tr>
+			<th width = "10%">종류</th><th>상품 / 옵션</th><th width = "15%">작성일</th>
+		</tr>
+		
+		<%
+		if(list != null) {
+		for(Question q:list){	 
+		%>
+				
+		<tr class = "question">
+			<td>[문의]</td><td><span style="float:left; font-size:0.5em;">상품 : <%=q.getItem_name() %>&nbsp;&nbsp;/ 옵션 : <%=q.getItem_sub_name() %></span><br>
+			<%=q.getContent() %></td>
+			<td><%=String.valueOf(q.getDate())%><a href="ItemQnaDeleteServlet?q_no=<%= q.getQuestion_no() %>">삭제하기</a></td>
+			
+		</tr>
+		<tr class = "answer">
+			<td>[답변]</td><td colspan ="2"> <%if(q.getAnswer().getContent() !=null){ %><%=q.getAnswer().getContent() %>
+			<%}else{ %>답변을 준비중입니다<%} %></td>
+		</tr>
+		<% }
+		} else {%>		
+		<tr>
+			<td colspan="3"><%= msg %></td>
+		</tr>	
+		<% } %>
+		</table>
+		</form>
+		<br>
+	</div>		
+		
 <!-----------------------------------------------------내용 끝-->
 </div><!--contents끝-->
 </div><!--wrapper:menu+contents 끝-->

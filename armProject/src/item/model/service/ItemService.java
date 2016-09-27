@@ -161,5 +161,18 @@ public class ItemService {
 		
 		return result;
 	}
+	//리뷰 추가
+	public int insertReview(Review review) {
+		Connection con = getConnection();
+		int result = new ItemDao().insertReview(con, review);
+		
+		if(result > 0)
+			commit(con);
+		else
+			rollback(con);
+		close(con);
+		
+		return result;
+	}
 
 }

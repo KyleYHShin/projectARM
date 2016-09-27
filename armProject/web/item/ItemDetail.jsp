@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page
-	import="java.util.ArrayList, java.util.HashMap, java.util.Collections, item.model.vo.*, member.model.vo.User"%>
+	import="java.util.ArrayList, java.util.HashMap, java.util.Collections, item.model.vo.*, member.model.vo.User, order.vo.Order"%>
 <%
 	User loginUser = (User) session.getAttribute("loginUser");
 	String admin = (String)session.getAttribute("admin");
@@ -12,6 +12,8 @@
 	ArrayList<Answer> answerList = (ArrayList<Answer>) request.getAttribute("answerList");
 	ArrayList<Review> reviewList = (ArrayList<Review>) request.getAttribute("reviewList");
 	HashMap<Integer, String> reviewHContent = (HashMap<Integer, String>) request.getAttribute("reviewHContent");
+	
+	ArrayList<Order> orderedSubItemList = (ArrayList<Order>) request.getAttribute("orderedSubItemList");
 %>
 <!doctype html>
 <html lang="ko">
@@ -117,7 +119,7 @@ sessionStorage.setItem(getTimeStamp(), "<%= item.getItemNo() %>"+","+"<%= item.g
 			$("#recent_list").html(rItems);
 		}
 	}
-  function nologinCart(){
+function nologinCart(){
 		alert("로그인이 필요합니다");
 	}
 	function goCart(){
@@ -148,10 +150,6 @@ sessionStorage.setItem(getTimeStamp(), "<%= item.getItemNo() %>"+","+"<%= item.g
 		$("#quick_bar").css("top", qTop);
 		$("#qBtn").css("top", qbTop);
 		
-		$(document).on("hover",".menuLink", function(){
-			$(this).css("color","red").css("cursor","pointer");
-		});
-
 		//스크롤시 카테고리고정
 		var menupos = $("#fix_menu").offset().top;
 		$(window).scroll(function(){
@@ -183,19 +181,31 @@ sessionStorage.setItem(getTimeStamp(), "<%= item.getItemNo() %>"+","+"<%= item.g
 			}
 		});
 		
+
 		//퀵바 토글 - 퀵바 고정위치를 클릭시마다 바뀌게 하면서 trasition효과
 		var onoff = 0;
-		$("#qBtn").click(function() {
-			if (onoff == 1) {
-				$("#quick_bar").css("right", "-122px").css("transition", "all 0.5s");
-				$("#qBtn").css("right", "0").css("transition", "all 0.5s");
+		$("#qBtn").click(function(){
+			if(onoff == 1){
+				$("#quick_bar").css("right","-122px").css("transition","all 0.5s");
+				$("#qBtn").css("right","-14px").css("transition","all 0.5s");
 				onoff = 0;
-			} else if (onoff == 0) {
-				$("#quick_bar").css("right", "0").css("transition", "all 0.5s");
-				$("#qBtn").css("right", "118px").css("transition", "all 0.5s");
+			}else if(onoff == 0){
+				$("#quick_bar").css("right","0").css("transition","all 0.5s");
+				$("#qBtn").css("right","106px").css("transition","all 0.5s");
 				onoff = 1;
-			}
+			};
 		});
+		
+		//퀵바 장바구니, 최근 본 목록 슬라이드 처리
+		$("#recent").click(function(){
+			$("#recent_list").slideDown("fast");
+			$("#cart_list").slideUp("fast");
+		});
+		$("#cart").click(function(){
+			$("#recent_list").slideUp("fast");
+			$("#cart_list").slideDown("fast");
+		});
+
 		
 		/*탭 기능용 소스*/
 		$(".tab_content").hide();
@@ -217,6 +227,7 @@ sessionStorage.setItem(getTimeStamp(), "<%= item.getItemNo() %>"+","+"<%= item.g
 		
 /*--------------------16.09.24 아이템 상세 페이지에서 후기 수정 시 사용하도록 별점&별점 코멘트 부분 약간 수정하여 다시 추가--*/
 	    <% if(reviewHContent != null){ %>
+	    //후기 리스트 수정용 코멘트 및 별점 출력
 		$(".star_point a").click(function() {
 			$(this).nextAll(this).removeClass("on");
 			$(this).addClass("on").prevAll("a").addClass("on");
@@ -235,9 +246,41 @@ sessionStorage.setItem(getTimeStamp(), "<%= item.getItemNo() %>"+","+"<%= item.g
 			}
 			
 			$(this).parent().next().text(star_comment);
-			$(this).parent().siblings('#revew_score').val(star_num);
+			$(this).parent().siblings('#review_score').val(star_num);
 		});	
-	    <% } %>
+		
+	    //후기 입력 부분
+	    <% if (orderedSubItemList != null) { %>
+	 	//초기값을 3으로 넣어주고 시작
+	    $(document).ready(function(){
+	    	$("#input_score").val(3); 
+	    	$(".comment").text("<%= reviewHContent.get(3)%>");
+	   	 });
+	    
+	 	//사용자의 별점 선택에 따라 출력 코멘트 및 전송할 스코어 변화
+		$(".review_input .star_point a").click(function(){
+			$(".comment").text();
+			
+			var star_num =$(this).siblings('.star_point .on').length;
+			star_num = parseInt(star_num) + 1;
+			
+			var star_comment = "";
+			
+			switch(star_num){
+			case 1 : star_comment = "<%=reviewHContent.get(1)%>"; break;
+			case 2 : star_comment = "<%=reviewHContent.get(2)%>"; break;
+			case 3 : star_comment = "<%=reviewHContent.get(3)%>"; break;
+			case 4 : star_comment = "<%=reviewHContent.get(4)%>"; break;
+			case 5 : star_comment = "<%=reviewHContent.get(5)%>"; break;
+			}
+			
+			$(".comment").text(star_comment);
+			$("#input_score").val(star_num);
+		});
+	  <% 
+	    	}
+		}
+	   %>
 		
 	});	
 	
@@ -384,10 +427,9 @@ nav#topMenu {
 	}
 }
 
-.menuLink:hover {
-		color: red;
-		cursor: pointer;
-	}
+.topMenuLi:hover .menuLink {
+	color: red;
+}
 /*------------------- 최상단 메뉴 끝 -----------*/
 
 /*------------------- 배너-----------*/
@@ -420,7 +462,7 @@ nav#topMenu {
 		display: block;
 		border: 1px solid #ffcc00;
 		transform: rotate(270deg);
-		background: yellow;
+		background: #fed605;
 		font-size: 12pt;
 		border-radius : 3px;
 	}
@@ -910,14 +952,14 @@ ul.tabs li.active {
 }
 
 /*문의, 후기 공통 적용*/
-.inquiry_input, .p_Q, .p_A, .p_review {
+.inquiry_input, .review_input, .p_Q, .p_A, .p_review {
 	border: 1px solid red;
 	padding: 2%;
 	width: 90%;
 	height: 100%;
 }
 
-.inquiry_input table, .loaded_qna table, .p_reivew table {
+.inquiry_input table, .review_input table, .loaded_qna table, .p_reivew table {
 	width: 100%;
 	height: 80%;
 	border: 1px solid red;
@@ -1007,7 +1049,7 @@ table tr td { /*확인용*/
 }
 
 .star_point a {
-	font-size: 20px;
+	font-size: 15px;
 	letter-spacing: 0;
 	display: inline-block;
 	margin-left: 5px;
@@ -1035,8 +1077,9 @@ table tr td { /*확인용*/
 </head>
 <body>
 	<!--  최상단 기본메뉴 -->
+	<!--  최상단 기본메뉴 -->
 	<div id = "top_menu">
-	<nav id="topMenu" >
+	   	<nav id="topMenu" >
 	        <ul>
 		        <li class="topMenuLi"><a class="menuLink" href="/arm/nlist">고객센터</a></li>       
 		      <% if(loginUser != null){ %>
@@ -1057,7 +1100,7 @@ table tr td { /*확인용*/
 		        </ul>
 	   </nav>
  	</div>
-	<!-- 퀵바 -->
+		<!-- 퀵바 -->
 	<button id="qBtn" class="hidden-xs"><span class="glyphicon glyphicon-chevron-up"></span></button>
 	<div id="quick_bar" class="hidden-xs">
 		<button id="mypage" class="btn btn-default" onclick="goMyinfo();">
@@ -1084,33 +1127,29 @@ table tr td { /*확인용*/
 		<div id="fix_menu">
 			<div id="category">
 				<ul class="navi">
-					<li><a href="/arm/catlist?categoryno=100">손</a>
-					<!-- 100 -->
+					<li><a href="">손</a>
 						<ul>
-							<li><a href="/arm/catlist?categoryno=110">반지</a></li>
-							<li><a href="/arm/catlist?categoryno=120">의료/건강</a></li>
+							<li><a href="">반지</a></li>
+							<li><a href="">의료/건강</a></li>
 						</ul></li>
 					<!-- 손 -->
 
-					<li><a href="/arm/catlist?categoryno=200">손목</a>
-					<!-- 200 -->
+					<li><a href="">손목</a>
 						<ul>
-							<li><a href="/arm/catlist?categoryno=210">팔찌/시계</a></li>
-							<li><a href="/arm/catlist?categoryno=220">의료/건강</a></li>
+							<li><a href="">팔찌/시계</a></li>
+							<li><a href="">의료/건강</a></li>
 						</ul></li>
 					<!-- 손목 -->
-					<li><a href="/arm/catlist?categoryno=300">팔목</a>
-					<!-- 300 -->
+					<li><a href="">팔목</a>
 						<ul>
-							<li><a href="/arm/catlist?categoryno=310">팔찌/시계</a></li>
-							<li><a href="/arm/catlist?categoryno=320">의료/건강</a></li>
+							<li><a href="">팔찌/시계</a></li>
+							<li><a href="">의료/건강</a></li>
 						</ul></li>
 					<!-- 팔목 -->
-					<li><a href="/arm/catlist?categoryno=400">어깨</a>
-					<!-- 400 -->
+					<li><a href="">어깨</a>
 						<ul>
-							<li><a href="/arm/catlist?categoryno=410">의류</a></li>
-							<li><a href="/arm/catlist?categoryno=420">의료/건강</a></li>
+							<li><a href="">의류</a></li>
+							<li><a href="">의료/건강</a></li>
 						</ul></li>
 					<!-- 어깨 -->
 
@@ -1170,7 +1209,7 @@ table tr td { /*확인용*/
 
 						<table>
 							<tr height="40">
-								<td width="200">옵션1 :</td>
+								<td width="200">옵션 :</td>
 								<td id="opt1" width="300"><select name="p_opt_1"
 									id="p_opt_1" class="p_opt_1" style="width: 95%;"
 									onchange="add_tr();">
@@ -1320,7 +1359,7 @@ table tr td { /*확인용*/
 											</tr>
 											<tr>
 												<td colspan="4"><textarea name="q_content" rows=""
-														cols=""> <%=questionList.get(i).getqContent()%></textarea></td>
+														cols="" required> <%=questionList.get(i).getqContent()%></textarea></td>
 											</tr>
 											<%
 												} else {
@@ -1376,7 +1415,54 @@ table tr td { /*확인용*/
 						<!-- #tab3 -->
 
 						<div id="tab4" class="tab_content">
-
+						
+						<% 
+							if( loginUser!= null && orderedSubItemList != null ) { 	
+								for(int i = 0; i < orderedSubItemList.size(); i++){
+									if(loginUser.getUserId().equals(orderedSubItemList.get(i).getM_id())){
+						%>
+						<form action="/arm/ItemReviewInsertServlet" method="post"> 
+							<div class="review_input">
+								<table>
+								<tr>
+									<td width="50%" align="left">
+									옵션 : <input type="text" value="<%= orderedSubItemList.get(i).getItem_sub_name() %>">
+									</td>
+									<td width="150px">
+										<p class="star_point">
+											<a href="#" class="on" style="font-size: 20px">★</a>
+											<a href="#" class="on" style="font-size: 20px">★</a>
+											<a href="#" class="on" style="font-size: 20px">★</a>
+											<a href="#" style="font-size: 20px">★</a>
+											<a href="#" style="font-size: 20px">★</a>
+										</p>
+									</td>
+									<td align="left">
+										<p class="comment"></p>
+										<input type="hidden" name="input_score" id="input_score" value="">	
+									</td>
+								</tr>
+								</table>
+								<table>
+								<tr>
+									<td>
+										<textarea name="p_review_input" id="p_review_input" placeholder="후기를 입력해주세요!" required></textarea>
+									</td>
+									<td>
+										<input type="hidden" name="review_writer" value="<%= loginUser.getUserId()%>">
+										<input type="hidden" name="item_no" value="<%= item.getItemNo()%>">
+										<input type="hidden" name="item_sub_no" value="<%= orderedSubItemList.get(i).getItem_sub_no() %>">
+										<input type="submit" value="입력" class="btn btn-success">
+									</td>
+								</tr>
+								</table>
+							</div>
+							<!--review_input 끝-->
+							</form>
+							<hr>
+							<br>
+							<% }}} %>
+							
 							<%
 								if (reviewList != null) {
 									//최근 등록된 후기부터 출력되도록 리스트 역정렬
@@ -1435,13 +1521,14 @@ table tr td { /*확인용*/
 											</td>
 										</tr>
 										<tr>
-											<td colspan="3"><textarea name="review_content" rows=""
-													cols=""> <%=r.getReviewContent()%> </textarea></td>
+											<td colspan="3">
+												<textarea name="review_content" rows="" cols="" required> <%=r.getReviewContent()%> </textarea>
+											</td>
 											<td>
 												<p class="star_point">
 													<%
 														//등록된 별점에 따라 표시되는 별 갯수 변화
-																	if (r.getScore() == 1) {
+														if (r.getScore() == 1) {
 													%>
 													<a href="#" class="on">★</a> <a href="#">★</a> <a href="#">★</a>
 													<a href="#">★</a> <a href="#">★</a>
@@ -1471,9 +1558,8 @@ table tr td { /*확인용*/
 														}
 													%>
 												</p>
-												<p class="review_comment"></p> <input type="hidden"
-												name="review_score" id="review_score"
-												value="<%=r.getScore()%>">
+												<p class="review_comment"></p> 
+												<input type="hidden" name="review_score" id="review_score" value="<%=r.getScore()%>">
 											</td>
 										</tr>
 										<%
@@ -1544,7 +1630,7 @@ table tr td { /*확인용*/
 
 			<div class="fd">
 				<h1>
-					<img src="img/tel.png" width="50" height="50" border="0" alt="">&nbsp;1600-7000
+					<img src="images/전화기.png" width="50" height="40" border="0" alt="">&nbsp;1600-7000
 				</h1>
 			</div>
 

@@ -3,6 +3,7 @@ package itemqna.model.service;
 import static common.JDBCTemplate.*;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 
 import itemqna.model.dao.ItemQnaDao;
 import itemqna.model.vo.Question;
@@ -49,6 +50,14 @@ public class ItemQnaService {
 		close(con);
 		
 		return result;
+	}
+	//문의내역
+	public ArrayList<Question> selectMylist(String userId) {
+		Connection con = getConnection();
+		ArrayList<Question> list = new ItemQnaDao().selectMylist(con, userId);
+		System.out.println("서비스...");
+		
+		return list;
 	}
 
 }

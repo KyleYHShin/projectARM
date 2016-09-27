@@ -172,6 +172,25 @@ String keyword = (String)request.getAttribute("keyword");
 		$(document).on("hover",".menuLink", function(){
 			$(this).css("color","red").css("cursor","pointer");
 		});
+		
+		//카테고리 색상 바꾸기 및 검색시 키워드 띄우기
+		<% if(status.equals("search")){ %>
+			$("#sch").css("background", "red").css("color","white");
+			$("#searchbox").css("display","block");
+			$("#search").attr("value","<%= keyword %>");
+		<%}else if(!status.equals("main") && !status.equals("err")){
+			int categoryNo = Integer.parseInt(status);
+			if(categoryNo >= 100 && categoryNo < 200){%>
+			 $("#cat_100").css("background", "red").css("color","white");
+			<%}else if(categoryNo >= 200 && categoryNo < 300){%>
+			 $("#cat_200").css("background", "red").css("color","white");
+			<%}else if(categoryNo >= 300 && categoryNo < 400){%>
+			 $("#cat_300").css("background", "red").css("color","white");
+			<%}else if(categoryNo >= 400 && categoryNo < 500){%>
+			 $("#cat_400").css("background", "red").css("color","white");
+			<%}
+		}%>
+		
 //-- ----------------------------------------------------------이슬작성-끗---------------- -->
 		$(document).on("hover",".menuLink", function(){
 			$(this).css("color","red"),css("cursor","pointer");
@@ -238,7 +257,7 @@ String keyword = (String)request.getAttribute("keyword");
 	nav#topMenu {
             height: 30px;
 			width: 100%; 
-			background-color: yellow;  /*메인 메뉴 색깔 fc3*/
+			background-color: #fed605;  /*메인 메뉴 색깔 fc3*/
 			padding-right : 2%;
 			max-width: 100%;
     }
@@ -249,7 +268,7 @@ String keyword = (String)request.getAttribute("keyword");
 		
     }
     #topMenu ul li {           
-        background-color: yellow;  
+        background-color: #fed605;  
         float: right;
         line-height: 30px;
 		padding : 0 5px;
@@ -290,7 +309,7 @@ String keyword = (String)request.getAttribute("keyword");
 	/*상단 배너 크기*/
 	#banner a img {
 	 max-width:100%;
-	 max-height:100px;
+	 max-height:70px;
 	 border:0;
 	}
 	/*-------------- 퀵바 ----------------------*/
@@ -312,7 +331,7 @@ String keyword = (String)request.getAttribute("keyword");
 		display: block;
 		border: 1px solid #ffcc00;
 		transform: rotate(270deg);
-		background: yellow;
+		background: #fed605;
 		font-size: 12pt;
 		border-radius : 3px;
 	}
@@ -369,8 +388,8 @@ String keyword = (String)request.getAttribute("keyword");
 	}
 	#fix_menu #category	{
 		width : 100%;
-		height : 50px;
-		background : #ffff00;
+		height : 40px;/*수정*/
+		background : ##fed60500;
 	}
 	/* 메뉴구현 */
 	.navi {
@@ -383,15 +402,15 @@ String keyword = (String)request.getAttribute("keyword");
 		float : left;
 		position : relative;
 		padding : 0;
-		line-height : 40px;
+		line-height : 30px;/*수정*/
 		width : 20%;
-		background : rgba(255,255,0, 0.5);
+		background : #fed605;
 	}
 
 	.navi li a {
 		display : block;
 		font-weight:900;
-		font-size : 20px;
+		font-size : 16px;/*메뉴글자크기*/
 		padding : 5px 25px;
 		color : black;
 		text-decoration : none;
@@ -522,7 +541,7 @@ String keyword = (String)request.getAttribute("keyword");
 		width : auto;
 		padding : 1px;
 		background : white;
-		BORDER-BOTTOM : 1px solid yellow;
+		BORDER-BOTTOM : 1px solid #fed605;
 		text-align : right;
 		margin-bottom : 5px;
 		
@@ -549,7 +568,7 @@ String keyword = (String)request.getAttribute("keyword");
 	}
 	.item_box{
 		/*float: left;*/
-		max-width:23%;
+		max-width:19%;/*변경*/
 		margin:0.5%;
 		padding:0.5%;
 		background: white;
@@ -736,7 +755,7 @@ String keyword = (String)request.getAttribute("keyword");
  	<div id = "fix_menu">
 			<div id="category">
 				<ul class="navi">
-					<li><a href="/arm/catlist?categoryno=100">손</a>
+					<li><a id ="cat_100" href="/arm/catlist?categoryno=100">손</a>
 					<!-- 100 -->
 						<ul>
 							<li><a href="/arm/catlist?categoryno=110">반지</a></li>
@@ -744,21 +763,21 @@ String keyword = (String)request.getAttribute("keyword");
 						</ul></li>
 					<!-- 손 -->
 
-					<li><a href="/arm/catlist?categoryno=200">손목</a>
+					<li><a id ="cat_200" href="/arm/catlist?categoryno=200">손목</a>
 					<!-- 200 -->
 						<ul>
 							<li><a href="/arm/catlist?categoryno=210">팔찌/시계</a></li>
 							<li><a href="/arm/catlist?categoryno=220">의료/건강</a></li>
 						</ul></li>
 					<!-- 손목 -->
-					<li><a href="/arm/catlist?categoryno=300">팔목</a>
+					<li><a id ="cat_300" href="/arm/catlist?categoryno=300">팔목</a>
 					<!-- 300 -->
 						<ul>
 							<li><a href="/arm/catlist?categoryno=310">팔찌/시계</a></li>
 							<li><a href="/arm/catlist?categoryno=320">의료/건강</a></li>
 						</ul></li>
 					<!-- 팔목 -->
-					<li><a href="/arm/catlist?categoryno=400">어깨</a>
+					<li><a id ="cat_400" href="/arm/catlist?categoryno=400">어깨</a>
 					<!-- 400 -->
 						<ul>
 							<li><a href="/arm/catlist?categoryno=410">의류</a></li>
