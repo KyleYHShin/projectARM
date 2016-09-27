@@ -410,7 +410,7 @@ String keyword = (String)request.getAttribute("keyword");
 	.navi li a {
 		display : block;
 		font-weight:900;
-		font-size : 16px;/*메뉴글자크기*/
+		font-size : 16px;/*메뉴글자크기수정*/
 		padding : 5px 25px;
 		color : black;
 		text-decoration : none;
@@ -571,7 +571,6 @@ String keyword = (String)request.getAttribute("keyword");
 		max-width:19%;/*변경*/
 		margin:0.5%;
 		padding:0.5%;
-		background: white;
 		display : inline-block;
 	}
 	
@@ -598,12 +597,11 @@ String keyword = (String)request.getAttribute("keyword");
   @media all and (max-width: 1000px){
 	 .contents{
 		padding : 0.5%;
-		padding-left : 3.3%
+		padding-left : 3.3%;
 		padding-right : 0;
 	}
 	.item_box{
 		 max-width:31%;
-		 background: #ccffcc;
 	}
 	.item_name, .item_price{
 		font-size: 0.9em;
@@ -620,7 +618,6 @@ String keyword = (String)request.getAttribute("keyword");
 		max-width: 47%;
 		margin:0.8%;
 		padding:0.5%;
-		background: #ffccff;
 	}
 	.item_name, .item_price{
 		font-size: 1em;
@@ -632,7 +629,6 @@ String keyword = (String)request.getAttribute("keyword");
 		 max-width: 100%;
 		 margin:0;
 		 padding:0;
-		 background: #99ffff;
 	 }
 	.item_name, .item_price{
 		font-size: 0.7em;

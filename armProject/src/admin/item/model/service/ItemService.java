@@ -128,5 +128,14 @@ public class ItemService {
 		close(con);
 		return list;
 	}
+	//정렬
+	public ArrayList<Item> selectMainList(String sort_col) {
+		Connection con = getConnection();
+		
+		ArrayList<Item> list = new ItemDao().selectMainList(con, sort_col);
+		System.out.println("Service 실행");
+		close(con);
+		return list;
+	}
 
 }

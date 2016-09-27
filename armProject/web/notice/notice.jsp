@@ -194,7 +194,7 @@ String admin = (String)session.getAttribute("admin");
 	nav#topMenu {
             height: 30px;
 			width: 100%; 
-			background-color: yellow;  /*메인 메뉴 색깔 fc3*/
+			background-color: #fed605;  /*메인 메뉴 색깔 fc3*/
 			padding-right : 2%;
 			max-width: 100%;
     }
@@ -205,7 +205,7 @@ String admin = (String)session.getAttribute("admin");
 		
     }
     #topMenu ul li {           
-        background-color: yellow;  
+        background-color: #fed605;  
         float: right;
         line-height: 30px;
 		padding : 0 5px;
@@ -247,7 +247,7 @@ String admin = (String)session.getAttribute("admin");
 	/*상단 배너 크기*/
 	#banner a img {
 	 max-width:100%;
-	 max-height:100px;
+	 max-height:70px;/*변경*/
 	 border:0;
 	}
 
@@ -310,7 +310,7 @@ String admin = (String)session.getAttribute("admin");
 		display: block;
 		border: 1px solid #ffcc00;
 		transform: rotate(270deg);
-		background: yellow;
+		background: #fed605;
 		font-size: 12pt;
 		border-radius : 3px;
 	}
@@ -363,8 +363,8 @@ String admin = (String)session.getAttribute("admin");
 	}
 	#cs_menu{
 		width:100%;
-		height : 50px;
-		background : yellow;
+		height : 40px;/*변경*/
+		background : #fed605;
 		margin : 5px auto;
 	}
 
@@ -382,11 +382,11 @@ String admin = (String)session.getAttribute("admin");
 		line-height : 30px;
 	}
 	.cs_navi li a{
-		font-size : 20px;
+		font-size : 18px;
 		font-weight:900;
 		color : black;
 		text-decoration:none;
-		padding : 10px;
+		padding : 5px;/*변경*/
 		display : block;
 		
 	}
@@ -710,63 +710,63 @@ String admin = (String)session.getAttribute("admin");
 	<% if(admin != null){ %>
 		<button onclick="window.open('notice/adminnotice.jsp');">글쓰기</button>
 	<% }%>
-	</div><br>
+	</div>
 
-		<div id = "faq">
-		<h1>자주 묻는 질문</h1>
-		<table class = "faq" cellspacing ="0">
-		<tr>
-			<th width = "10%">No.</th><th>FAQ</th>
-		</tr>
-		<tr class = "question"><td>2</td><td>[배송] 배송회사가 어딘가요?</td></tr>
-		<tr class = "answer"><td></td><td>질문답변2222</td></tr>
-		<tr class = "question"><td>1</td><td>[교환/환불] 교환은 언제까지 되나요?</td></tr>
-		<tr class = "answer"><td></td><td>질문답변11111</td></tr>
-		</table>
-		</div>
+	<div id = "faq">
+	<h1>자주 묻는 질문</h1>
+	<table class = "faq" cellspacing ="0">
+	<tr>
+		<th width = "10%">No.</th><th>FAQ</th>
+	</tr>
+	<tr class = "question"><td>2</td><td>[배송] 배송회사가 어딘가요?</td></tr>
+	<tr class = "answer"><td></td><td>질문답변2222</td></tr>
+	<tr class = "question"><td>1</td><td>[교환/환불] 교환은 언제까지 되나요?</td></tr>
+	<tr class = "answer"><td></td><td>질문답변11111</td></tr>
+	</table>
+	</div>
 
-		<div id = "direct_q">
-	
-		<h1>1:1문의</h1>
-		<!-- 문의종류에 따라 이메일 선택 -->
-		 <form action="/arm/EmailSendingServlet" method="post">
-		<table class="direct_q" cellspacing ="0">
-		<tr>
-			<th>문의분류</th>
-			   <td>
-			    <select name="q_category" >
-						<option value="delivery" selected> 배송
-						<option value="product">상품
-						<option value="order">주문
-						<option value="payment">결제
-						<option value="ch/rfd">교환/환불
-						<option value="membership">회원
-						<option value="etc">기타
-				</select>
-              </td>
-		</tr>
-		<tr>
-			<th>제목</th>
-			<td><input type="text" name="subject"></td>
-		</tr>
-		<tr>
-			<th>연락처</th>
-			<td><input type="text" name="phone1" size="3"> - <input type="text" name="phone2" size="3"> - <input type="text" name="phone3" size ="3"></td>
-		</tr>
-		<tr>
-			<th>이메일</th>
-			<td><input type="text" name="email"></td>
-		</tr>
-		<tr>
-			<th>문의내용</th>
-			<td><textarea name="content"></textarea></td>
-		</tr>
-		</table><br>
-			<input type="submit" id = "dqBtn" value = "문의하기">
-			</form>
-		</div>
-	</div><!-- contents --------------------------------->
-	</div><!-- wrapper -->
+	<div id = "direct_q">
+
+	<h1>1:1문의</h1>
+	<!-- 문의종류에 따라 이메일 선택 -->
+	 <form action="/arm/EmailSendingServlet" method="post">
+	<table class="direct_q" cellspacing ="0">
+	<tr>
+		<th>문의분류</th>
+		   <td>
+		    <select name="q_category" >
+					<option value="delivery" selected> 배송
+					<option value="product">상품
+					<option value="order">주문
+					<option value="payment">결제
+					<option value="ch/rfd">교환/환불
+					<option value="membership">회원
+					<option value="etc">기타
+			</select>
+             </td>
+	</tr>
+	<tr>
+		<th>제목</th>
+		<td><input type="text" name="subject"></td>
+	</tr>
+	<tr>
+		<th>연락처</th>
+		<td><input type="text" name="phone1" size="3"> - <input type="text" name="phone2" size="3"> - <input type="text" name="phone3" size ="3"></td>
+	</tr>
+	<tr>
+		<th>이메일</th>
+		<td><input type="text" name="email"></td>
+	</tr>
+	<tr>
+		<th>문의내용</th>
+		<td><textarea name="content"></textarea></td>
+	</tr>
+	</table><br>
+		<input type="submit" id = "dqBtn" value = "문의하기">
+		</form>
+	</div>
+</div><!-- contents --------------------------------->
+</div><!-- wrapper -->
 <!-- ---------------------------내용 부분 끝---------------------------------- -->
 	<!-- top버튼 -->
 	<div style="position:fixed; bottom:10px; right:10px; z-index : 9999;">

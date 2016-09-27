@@ -41,6 +41,10 @@ String msg = (String)request.getAttribute("msg");
 	})
 </script>
 <style type="text/css">
+	#sort {
+		text-align : right;
+		padding-right : 50px;
+	}
 	#item_add{
 		display : none;
 	}
@@ -98,7 +102,6 @@ String msg = (String)request.getAttribute("msg");
 	<input type="text" name = "keyword" size = "30">
 	<input type = "submit" value="검색">&nbsp;&nbsp;<input type="button" onclick="addDiv()" id ="addbtn" value="추가">
 	</form><br>
-	
 	<div id = "item_add">
 	<form action="/arm/aiinsert" method="post" enctype="multipart/form-data">
 	<table id = "iaddTb" cellspacing = "0">
@@ -177,8 +180,13 @@ String msg = (String)request.getAttribute("msg");
 	</form>
 	</div>
 	<% } %>
-	
-	<br>
+	<div id="sort">
+		<a href="ItemSortListView?&sortNo=1">등록일내림차순</a>&nbsp;&nbsp;
+		<a href="ItemSortListView?&sortNo=2">등록일오름차순</a>&nbsp;&nbsp;
+		<a href="ItemSortListView?&sortNo=3">상품명내림차순</a>&nbsp;&nbsp;
+		<a href="ItemSortListView?&sortNo=4">상품명오름차순</a>&nbsp;&nbsp;
+	</div>
+	<!-- sort -->
 	<table id ="itemList" cellspacing = "0">
 		<tr>
 			<th>No.</th><th width="200px">상품 명</th><th>카테고리</th><th>기본가</th><th>조회수</th><th>등록일</th><th>판매처</th>

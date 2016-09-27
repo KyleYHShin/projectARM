@@ -621,7 +621,6 @@ String status = (String)request.getAttribute("status");
 		max-width: 19%;/*변경*/
 		margin: 0.5%;
 		padding: 0.5%;
-		background: pink;
 		display: inline-block;
 	}
 	.item_box img {
@@ -652,7 +651,6 @@ String status = (String)request.getAttribute("status");
 		}
 		.item_box {
 			max-width: 31%;
-			background: #ccffcc;
 		}
 		.item_name, .item_price {
 			font-size: 0.9em;
@@ -668,7 +666,6 @@ String status = (String)request.getAttribute("status");
 			max-width: 47%;
 			margin: 0.8%;
 			padding: 0.5%;
-			background: #ffccff;
 		}
 		.item_name, .item_price {
 			font-size: 1em;
@@ -680,7 +677,6 @@ String status = (String)request.getAttribute("status");
 			max-width: 100%;
 			margin: 0;
 			padding: 0;
-			background: #99ffff;
 		}
 		.item_name, .item_price {
 			font-size: 0.7em;

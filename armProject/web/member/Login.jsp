@@ -169,7 +169,7 @@
 	nav#topMenu {
             height: 30px;
 			width: 100%; 
-			background-color: yellow;  /*메인 메뉴 색깔 fc3*/
+			background-color: #fed605;  /*메인 메뉴 색깔 fc3*/
 			padding-right : 2%;
 			max-width: 100%;
     }
@@ -180,7 +180,7 @@
 		
     }
     #topMenu ul li {           
-        background-color: yellow;  
+        background-color: #fed605;  
         float: right;
         line-height: 30px;
 		padding : 0 5px;
@@ -221,7 +221,7 @@
 	/*상단 배너 크기*/
 	#banner a img {
 	 max-width:100%;
-	 max-height:100px;
+	 max-height:70px;
 	 border:0;
 	}
 	/*-------------- 퀵바 ----------------------*/
@@ -243,7 +243,7 @@
 		display: block;
 		border: 1px solid #ffcc00;
 		transform: rotate(270deg);
-		background: yellow;
+		background: #fed605;
 		font-size: 12pt;
 		border-radius : 3px;
 	}
@@ -300,8 +300,8 @@
 	}
 	#fix_menu #category	{
 		width : 100%;
-		height : 50px;
-		background : #ffff00;
+		height : 40px;
+		background : #fed605;
 	}
 	/* 메뉴구현 */
 	.navi {
@@ -314,15 +314,14 @@
 		float : left;
 		position : relative;
 		padding : 0;
-		line-height : 40px;
+		line-height : 30px;
 		width : 20%;
-		background : rgba(255,255,0, 0.5);
 	}
 
 	.navi li a {
 		display : block;
 		font-weight:900;
-		font-size : 20px;
+		font-size : 16px;
 		padding : 5px 25px;
 		color : black;
 		text-decoration : none;
@@ -453,7 +452,7 @@
 		width : auto;
 		padding : 1px;
 		background : white;
-		BORDER-BOTTOM : 1px solid yellow;
+		BORDER-BOTTOM : 1px solid #fed605;
 		text-align : right;
 		margin-bottom : 5px;
 		
@@ -625,13 +624,6 @@
 	<input type="text" id = "search" name = "search" placeholder = "검색하세요!">&nbsp;&nbsp;<input type="image" id = "schBtn" src = "/arm/img/search2_small.png" width ="25px" height = "25px";>
 	</form>
 	</div><!-- 검색 -->
-
-	<div id = "sort">
-	<a href="#">인기도순</a>&nbsp;&nbsp;
-	<a href="#">가격높은순</a>&nbsp;&nbsp;
-	<a href="#">가격낮은순</a>&nbsp;&nbsp;
-	</div><!-- sort -->
-	
 	</div><!-- fix_menu(카테고리+검색+정렬) -->
 
     <div class="contents">

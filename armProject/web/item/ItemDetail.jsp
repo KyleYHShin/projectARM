@@ -381,7 +381,7 @@ div {
 nav#topMenu {
 	height: 30px;
 	width: 100%;
-	background-color: yellow; /*메인 메뉴 색깔 fc3*/
+	background-color: #fed605; /*메인 메뉴 색깔 fc3*/
 	padding-right: 2%;
 	max-width: 100%;
 }
@@ -393,7 +393,7 @@ nav#topMenu {
 }
 
 #topMenu ul li {
-	background-color: yellow;
+	background-color: #fed605;
 	float: right;
 	line-height: 30px;
 	padding: 0 5px;
@@ -439,7 +439,7 @@ nav#topMenu {
 /*상단 배너 크기*/
 #banner a img {
 	max-width: 100%;
-	max-height: 100px;
+	max-height: 70px;
 	border: 0;
 }
 
@@ -521,8 +521,8 @@ nav#topMenu {
 
 #fix_menu #category {
 	width: 100%;
-	height: 50px;
-	background: #ffff00;
+	height: 40px;
+	background: #fed605;
 }
 
 /* 메뉴구현 */
@@ -536,15 +536,14 @@ nav#topMenu {
 	float: left;
 	position: relative;
 	padding: 0;
-	line-height: 40px;
+	line-height: 30px;
 	width: 20%;
-	background: rgba(255, 255, 0, 0.5);
 }
 
 .navi li a {
 	display: block;
 	font-weight: 900;
-	font-size: 20px;
+	font-size: 16px;
 	padding: 5px 25px;
 	color: black;
 	text-decoration: none;

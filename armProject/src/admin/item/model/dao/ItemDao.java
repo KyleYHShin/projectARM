@@ -420,5 +420,47 @@ public class ItemDao {
 		}
 		return list;
 	}
-
+	
+	public ArrayList<Item> selectMainList(Connection con, String sort_col) {
+		System.out.println("dao 실행");
+		ArrayList<Item> list = null;
+		Statement stmt = null;
+		ResultSet rset = null;
+		
+		String query = "select * from item " + sort_col;
+		
+		try {
+			stmt = con.createStatement();
+			rset = stmt.executeQuery(query);
+			
+			boolean flag = true;
+			while(rset.next()){
+				if(flag == true){
+					list = new ArrayList<Item>();
+					flag = false;
+				}
+				Item item = new Item();
+				item.setItemNo(rset.getInt("item_no"));
+				item.setItemName(rset.getString("item_name"));
+				item.setItemCatNo(rset.getInt("item_cat_no"));
+				item.setItemPrice(rset.getInt("item_price"));
+				item.setItemCount(rset.getInt("item_count"));
+				item.setItemUpdate(rset.getDate("item_update"));
+				item.setItemVender(rset.getInt("item_vender"));
+				item.setItemImgMini(rset.getString("item_img_mini"));
+				item.setItemImg(rset.getString("item_img"));
+				item.setItemImgDetail(rset.getString("item_img_detail"));
+				item.setItemTag(rset.getString("item_tag"));
+				
+				list.add(item);
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			close(rset);
+			close(stmt);
+		}
+		return list;
+	}
 }
