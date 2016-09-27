@@ -1,0 +1,26 @@
+emailForm.jsp에 문의에 필요한 정보를 입력하면 
+
+Servlet에서 그 String값을 request.getParameter에 담는다
+
+그 담은 정보를 다시 String 값을 메일형식에 맞게 
+
+ String mail_from =  m_name + "<" + m_email + ">";
+
+            String mail_to =    "admin<admin@83rpm.com>";
+
+            String title =      "hosting.83rpm.com 요청사항 :: " + m_title;
+
+            String contents =   "보낸 사람 :: " + m_name + "&lt;" + m_email + "&gt;<br><br>" + m
+
+
+
+
+이런식으로 정리한다음에 Session객체에 이메일 jsp를 사용하는 것에 대한 인증객체를 넣어준다
+
+
+이 값을 SMTPAuthenticaltor에 보내면 인증객체가 생성이되고 
+
+
+SMTPAuthenticaltor에 들어가있는 메일아이디와 비밀번호로 접속을해서 이 값을 servlet에 저장되있던
+
+메일주소로 보낸다 

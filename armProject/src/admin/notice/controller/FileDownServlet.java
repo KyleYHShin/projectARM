@@ -43,7 +43,7 @@ public class FileDownServlet extends HttpServlet {
 		response.setContentType("text/plain; charset=utf-8");		
 		//한글 파일명 인코딩 처리
 		response.addHeader("Content-Disposition", "attachment; filename=\"" + 
-		 new String((path+originalFileName).getBytes("UTF-8"), "ISO-8859-1") + 
+		 new String(originalFileName.getBytes("UTF-8"), "ISO-8859-1") + 
 		 "\"");
 		response.setContentLength((int) downfile.length());
 

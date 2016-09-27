@@ -194,8 +194,8 @@ String msg = (String)request.getAttribute("msg");
 		min-width : 240px;
    }
 	div { 
-	text-align : center;
-	vertical-align:middle;
+		text-align : center;
+		vertical-align:middle;
 	}
 
 	/* 기본메뉴(최상단) */
@@ -569,15 +569,13 @@ String msg = (String)request.getAttribute("msg");
 /*---------------------------내용 부분 끝--------------------------------- */
 	/* 푸터 */
 	footer {
-		BORDER-TOP : 1px solid gray;
-		BORDER-BOTTOM : 1px solid gray;
-		padding-top : 10px;
-		padding-bottom :10px;
-
-		width : 100%;
-		height : 150px;
-
-		display : table;
+		BORDER-TOP: 1px solid gray;
+		BORDER-BOTTOM: 1px solid gray;
+		padding-top: 10px;
+		padding-bottom: 10px;
+		width: 100%;
+		height: 150px;
+		display: table;
 		/* 세로 가운데 정렬을 위한. */
 	}
 	footer #fwrap{
@@ -801,19 +799,16 @@ String msg = (String)request.getAttribute("msg");
 				<li class="footMenu"><a href="#">BANK INFO</a></li>
 				<li class="footMenu"><a href="#">DELIVERY</a></li>
 		</ul>
-		</div>
-		
-
-		<div class = "fd">
-		<h1><img src="img/tel.png" width="50" height="50" border="0" alt="">&nbsp;1600-7000</h1>
-		</div>
-
-		<div class = "fd">
-		팔로 Follow Me <br>
-		copyright by take ARM<br>
-		All right reserved<br>
-		</div>
-		
+	</div>
+	<div class = "fd">
+	<h1><img src="img/tel.png" width="50" height="50" border="0" alt="">&nbsp;1600-7000</h1>
+	</div>
+	<div class = "fd">
+	팔로 Follow Me <br>
+	copyright by take ARM<br>
+	All right reserved<br>
+	</div>
+	
 	</div>
 	</footer>
  </body>
