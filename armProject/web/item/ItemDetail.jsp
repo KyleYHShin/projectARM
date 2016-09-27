@@ -1126,29 +1126,33 @@ table tr td { /*확인용*/
 		<div id="fix_menu">
 			<div id="category">
 				<ul class="navi">
-					<li><a href="">손</a>
+					<li><a href="/arm/catlist?categoryno=100">손</a>
+					<!-- 100 -->
 						<ul>
-							<li><a href="">반지</a></li>
-							<li><a href="">의료/건강</a></li>
+							<li><a href="/arm/catlist?categoryno=110">반지</a></li>
+							<li><a href="/arm/catlist?categoryno=120">의료/건강</a></li>
 						</ul></li>
 					<!-- 손 -->
 
-					<li><a href="">손목</a>
+					<li><a href="/arm/catlist?categoryno=200">손목</a>
+					<!-- 200 -->
 						<ul>
-							<li><a href="">팔찌/시계</a></li>
-							<li><a href="">의료/건강</a></li>
+							<li><a href="/arm/catlist?categoryno=210">팔찌/시계</a></li>
+							<li><a href="/arm/catlist?categoryno=220">의료/건강</a></li>
 						</ul></li>
 					<!-- 손목 -->
-					<li><a href="">팔목</a>
+					<li><a href="/arm/catlist?categoryno=300">팔목</a>
+					<!-- 300 -->
 						<ul>
-							<li><a href="">팔찌/시계</a></li>
-							<li><a href="">의료/건강</a></li>
+							<li><a href="/arm/catlist?categoryno=310">팔찌/시계</a></li>
+							<li><a href="/arm/catlist?categoryno=320">의료/건강</a></li>
 						</ul></li>
 					<!-- 팔목 -->
-					<li><a href="">어깨</a>
+					<li><a href="/arm/catlist?categoryno=400">어깨</a>
+					<!-- 400 -->
 						<ul>
-							<li><a href="">의류</a></li>
-							<li><a href="">의료/건강</a></li>
+							<li><a href="/arm/catlist?categoryno=410">의류</a></li>
+							<li><a href="/arm/catlist?categoryno=420">의료/건강</a></li>
 						</ul></li>
 					<!-- 어깨 -->
 
@@ -1157,12 +1161,13 @@ table tr td { /*확인용*/
 			</div>
 			<!-- 카테고리 -->
 			<div id="searchbox">
-				<form>
-					<input type="text" id="search" name="search" placeholder="검색하세요!">&nbsp;&nbsp;<input
-						type="image" id="schBtn" src="/arm/img/search2_small.png"
-						width="25px" height="25px";>
+				<form action="/arm/isearch" method="post">
+					<input type="text" id="search" name="keyword" placeholder="검색하세요!">&nbsp;&nbsp;
+					<input type="image" id="schBtn" src="/arm/img/search2_small.png"
+						width="25px" height="25px">
 				</form>
 			</div>
+			<!-- 검색 -->
 
 			<div id="category_detail">
 				<a href="#">홈</a> &nbsp;> &nbsp; <a href="#">카테고리</a> &nbsp;> &nbsp;
@@ -1281,7 +1286,7 @@ table tr td { /*확인용*/
 						</div>
 						<!-- #tab1 -->
 						<div id="tab2" class="tab_content">
-							<img src="images/caution.jpg">
+							<img src="/arm/img/caution.jpg">
 						</div>
 						<!-- #tab2 -->
 						<div id="tab3" class="tab_content">

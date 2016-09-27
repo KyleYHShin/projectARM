@@ -17,7 +17,7 @@ public class ItemDao {
 		Statement stmt = null;
 		ResultSet rset = null;
 		
-		String query = "select * from item";
+		String query = "select * from item order by item_no asc";
 		
 		try {
 			stmt = con.createStatement();
