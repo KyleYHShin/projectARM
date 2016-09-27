@@ -1,4 +1,4 @@
-package item.controller;
+package purchase.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,26 +10,27 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import item.model.service.ItemService;
-import item.model.vo.*;
-import member.model.vo.User;
+import item.model.vo.Answer;
+import item.model.vo.Item;
+import item.model.vo.Question;
+import item.model.vo.Review;
+import item.model.vo.SubItem;
 import order.service.OrderService;
 import order.vo.Order;
 
-
 /**
- * Servlet implementation class ItemDetailViewServlet
+ * Servlet implementation class GoForInsertReviewServlet
  */
-@WebServlet("/ItemDetailViewServlet")
-public class ItemDetailViewServlet extends HttpServlet {
+@WebServlet("/GoForInsertReviewServlet")
+public class GoForInsertReviewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ItemDetailViewServlet() {
+    public GoForInsertReviewServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -42,6 +43,12 @@ public class ItemDetailViewServlet extends HttpServlet {
 		response.setContentType("text/html; charset=utf-8");
 		
 		int itemNo = Integer.parseInt(request.getParameter("itemNo"));
+		
+		//구매내역에서 후기 작성 버튼을 눌러서 왔는지 확인하여 전달
+		boolean comeForReview = false;
+		if(request.getParameter("goForReview") != null){
+			comeForReview = true;
+		}
 		
 		// 조회수 증가 처리 변수
 		int result = new ItemService().addItemCount(itemNo);
@@ -78,8 +85,6 @@ public class ItemDetailViewServlet extends HttpServlet {
 			
 		}
 		
-		boolean comeForReview = false;
-		
 		RequestDispatcher view = null;
 		if (item != null) {
 			view = request.getRequestDispatcher("/item/ItemDetail.jsp");
@@ -100,17 +105,17 @@ public class ItemDetailViewServlet extends HttpServlet {
 			if(orderedSubItemList != null){
 				request.setAttribute("orderedSubItemList", orderedSubItemList);
 			}
+			
 			request.setAttribute("comeForReview", comeForReview);
+			
 			view.forward(request, response);
 		}
 	}
-	
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

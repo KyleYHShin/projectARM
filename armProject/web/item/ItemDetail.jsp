@@ -14,6 +14,9 @@
 	HashMap<Integer, String> reviewHContent = (HashMap<Integer, String>) request.getAttribute("reviewHContent");
 	
 	ArrayList<Order> orderedSubItemList = (ArrayList<Order>) request.getAttribute("orderedSubItemList");
+	
+	//구매내역 페이지에서 후기 작성 위해 이동했는지 체크
+	boolean comeForReview = ((Boolean)request.getAttribute("comeForReview")).booleanValue();
 %>
 <!doctype html>
 <html lang="ko">
@@ -66,7 +69,7 @@ sessionStorage.setItem(getTimeStamp(), "<%= item.getItemNo() %>"+","+"<%= item.g
 		//sessionStorage.clear();
 		var rItems = "";
 		if(sessionStorage.length==0){
-			$("#recent_list").html("<div class='ritem' style='color : gray;'><br>최근 본 상품이 없습니다.</div>");
+			$("#recent_list").html("<div class='ritem'>최근 본 상품이 없습니다.</div>");
 		}else{
 			if(sessionStorage.length <= 4){
 				//중복 값 지우기 위함.
@@ -184,16 +187,16 @@ function nologinCart(){
 
 		//퀵바 토글 - 퀵바 고정위치를 클릭시마다 바뀌게 하면서 trasition효과
 		var onoff = 0;
-		$("#qBtn").click(function() {
-			if (onoff == 1) {
-				$("#quick_bar").css("right", "-122px").css("transition", "all 0.5s");
-				$("#qBtn").css("right", "0px").css("transition", "all 0.5s");
+		$("#qBtn").click(function(){
+			if(onoff == 1){
+				$("#quick_bar").css("right","-122px").css("transition","all 0.5s");
+				$("#qBtn").css("right","-14px").css("transition","all 0.5s");
 				onoff = 0;
-			} else if (onoff == 0) {
-				$("#quick_bar").css("right", "0").css("transition", "all 0.5s");
-				$("#qBtn").css("right", "118px").css("transition", "all 0.5s");
+			}else if(onoff == 0){
+				$("#quick_bar").css("right","0").css("transition","all 0.5s");
+				$("#qBtn").css("right","106px").css("transition","all 0.5s");
 				onoff = 1;
-			}
+			};
 		});
 		
 		//퀵바 장바구니, 최근 본 목록 슬라이드 처리
@@ -208,8 +211,25 @@ function nologinCart(){
 
 		
 		/*탭 기능용 소스*/
-		$(".tab_content").hide();
-		$(".tab_content:first").show();
+/*------------------------------------------ 구매 내역 페이지에서 후기 작성 버튼 시 바로 이동하기 위해 아래 소스 수정 */		
+		//구매내역 페이지에서 후기 작성 버튼을 클릭하여 상세 페이지로 이동했을시 바로 후기 탭 출력
+		<% if (comeForReview) {%>
+			$(".tab_content").hide();
+			$(".tab_content:last-child").show();
+			$("ul.tabs li").removeClass("active").css("color", "#333");
+			$("ul.tabs li:last-child").addClass("active").css("color", "darkred");
+			var activeTab = $("ul.tabs li:last-child").attr("rel");
+			$("#" + activeTab).fadeIn();
+			
+			var position = $('#forInsertReview').offset();
+			var go = position.offset().top + (position.height() / 2);
+			$('html, body').animate({ scrollTop : go }, 400);
+			
+		<% } else {%>
+			$(".tab_content").hide();
+			$(".tab_content:first").show();
+		<% }%>
+/*----------------------------------수정 끝------------------------------------------------------*/		
 
 		$("ul.tabs li").click(function () {
 			$("ul.tabs li").removeClass("active").css("color", "#333");
@@ -1085,6 +1105,7 @@ table tr td { /*확인용*/
 		     	 <% if(admin != null) {%>
 		        <li class="topMenuLi"><a class="menuLink" href="/arm/ailist">상품관리</a></li>
 		       	<li class="topMenuLi"><a class="menuLink" href="/arm/amlist">회원관리</a></li>
+		       	<li class="topMenuLi"><a class="menuLink" href="/arm/QnaListViewServlet">Q&A 관리</a></li>
 		     	 <% }else{%>
 		        <li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">장바구니</a></li>
 		        <li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">MyPage</a></li>
@@ -1126,33 +1147,29 @@ table tr td { /*확인용*/
 		<div id="fix_menu">
 			<div id="category">
 				<ul class="navi">
-					<li><a href="/arm/catlist?categoryno=100">손</a>
-					<!-- 100 -->
+					<li><a href="">손</a>
 						<ul>
-							<li><a href="/arm/catlist?categoryno=110">반지</a></li>
-							<li><a href="/arm/catlist?categoryno=120">의료/건강</a></li>
+							<li><a href="">반지</a></li>
+							<li><a href="">의료/건강</a></li>
 						</ul></li>
 					<!-- 손 -->
 
-					<li><a href="/arm/catlist?categoryno=200">손목</a>
-					<!-- 200 -->
+					<li><a href="">손목</a>
 						<ul>
-							<li><a href="/arm/catlist?categoryno=210">팔찌/시계</a></li>
-							<li><a href="/arm/catlist?categoryno=220">의료/건강</a></li>
+							<li><a href="">팔찌/시계</a></li>
+							<li><a href="">의료/건강</a></li>
 						</ul></li>
 					<!-- 손목 -->
-					<li><a href="/arm/catlist?categoryno=300">팔목</a>
-					<!-- 300 -->
+					<li><a href="">팔목</a>
 						<ul>
-							<li><a href="/arm/catlist?categoryno=310">팔찌/시계</a></li>
-							<li><a href="/arm/catlist?categoryno=320">의료/건강</a></li>
+							<li><a href="">팔찌/시계</a></li>
+							<li><a href="">의료/건강</a></li>
 						</ul></li>
 					<!-- 팔목 -->
-					<li><a href="/arm/catlist?categoryno=400">어깨</a>
-					<!-- 400 -->
+					<li><a href="">어깨</a>
 						<ul>
-							<li><a href="/arm/catlist?categoryno=410">의류</a></li>
-							<li><a href="/arm/catlist?categoryno=420">의료/건강</a></li>
+							<li><a href="">의류</a></li>
+							<li><a href="">의료/건강</a></li>
 						</ul></li>
 					<!-- 어깨 -->
 
@@ -1161,13 +1178,12 @@ table tr td { /*확인용*/
 			</div>
 			<!-- 카테고리 -->
 			<div id="searchbox">
-				<form action="/arm/isearch" method="post">
-					<input type="text" id="search" name="keyword" placeholder="검색하세요!">&nbsp;&nbsp;
-					<input type="image" id="schBtn" src="/arm/img/search2_small.png"
-						width="25px" height="25px">
+				<form>
+					<input type="text" id="search" name="search" placeholder="검색하세요!">&nbsp;&nbsp;<input
+						type="image" id="schBtn" src="/arm/img/search2_small.png"
+						width="25px" height="25px";>
 				</form>
 			</div>
-			<!-- 검색 -->
 
 			<div id="category_detail">
 				<a href="#">홈</a> &nbsp;> &nbsp; <a href="#">카테고리</a> &nbsp;> &nbsp;
@@ -1181,12 +1197,11 @@ table tr td { /*확인용*/
 			<div class="product">
 				<form method="get" action="CartInsertServlet">
 					<div class="pImage">
-						<img src="<%= item.getItemImg() %>">
-						<!-------------- pImage div에선 이 옆에만 수정 -------->
+						<img src="<%=item.getItemImg()%>">	<!-------------- pImage div에선 이 옆에만 수정 -------->
 					</div>
 					<!--pImage-->
 
-					<!-------------------- 이 밑으로는 표시한 부분까지 다 수정함  ------------------------------------------------------------->
+<!-------------------- 이 밑으로는 표시한 부분까지 다 수정함  ------------------------------------------------------------->
 					<div class="pTable">
 						<table>
 							<tr height="50">
@@ -1214,13 +1229,11 @@ table tr td { /*확인용*/
 						<table>
 							<tr height="40">
 								<td width="200">옵션 :</td>
-								<td id="opt1" width="300">
-								<select name="p_opt_1"
+								<td id="opt1" width="300"><select name="p_opt_1"
 									id="p_opt_1" class="p_opt_1" style="width: 95%;"
 									onchange="add_tr();">
 										<option>옵션을 선택하세요</option>
-										<% //if문 처리를 해서 null일 때 처리해 보도록하자.----------------------------
-										if(subItemList != null){
+										<%
 											for (SubItem sub : subItemList) {
 										%>
 										<option value="<%=sub.getItemSubName()%>">
@@ -1228,20 +1241,13 @@ table tr td { /*확인용*/
 										</option>
 										<%
 											}
-										}else{
 										%>
-										<option value="기본">기본</option>
-										<% } %>
 								</select> <%
-								if(subItemList != null){
-							 	for (SubItem sub : subItemList) {
-							 %> <input type="hidden" id="<%=sub.getItemSubName()%>"
-																value="<%=sub.getItemSubPrice()%>"> <%
-							 	}
-								}else{%>
-									<input type="hidden" id="기본" value="0">
-								<%}
-							 %></td>
+ 	for (SubItem sub : subItemList) {
+ %> <input type="hidden" id="<%=sub.getItemSubName()%>"
+									value="<%=sub.getItemSubPrice()%>"> <%
+ 	}
+ %></td>
 							</tr>
 
 							<tr height="60">
@@ -1291,11 +1297,11 @@ table tr td { /*확인용*/
 					</ul>
 					<div class="tab_container">
 						<div id="tab1" class="tab_content">
-							<img src="<%= item.getItemImgDt() %>">
+							<img src="items_detail/01.jpg">
 						</div>
 						<!-- #tab1 -->
 						<div id="tab2" class="tab_content">
-							<img src="/arm/img/caution.jpg">
+							<img src="images/caution.jpg">
 						</div>
 						<!-- #tab2 -->
 						<div id="tab3" class="tab_content">
@@ -1306,8 +1312,7 @@ table tr td { /*확인용*/
 											<td colspan="2" align="left"><select id="qna_select"
 												name="inquired_sub" onchange="get_inquired_sub">
 													<option value="0">문의할 옵션을 선택하세요</option>
-													<%//----------------------------------------------------------
-														if(subItemList != null){
+													<%
 														for (SubItem sub : subItemList) {
 													%>
 													<option value="<%=sub.getItemSubNo()%>">
@@ -1315,15 +1320,13 @@ table tr td { /*확인용*/
 													</option>
 													<%
 														}
-														}else{%>
-														<option value="0">기본</option>
-														<% } %>
+													%>
 											</select> <input type="hidden" name="inquired_item_no"
 												value="<%=item.getItemNo()%>"></td>
 										</tr>
 										<tr>
 											<td id="td1"><textarea name="p_inquiry" id="p_inquiry"
-													placeholder="로그인 후 문의하실 수 있습니다"></textarea></td>
+													placeholder="로그인 후 문의하실 수 있습니다" required></textarea></td>
 											<%
 												if (loginUser != null) {
 											%>
@@ -1438,13 +1441,16 @@ table tr td { /*확인용*/
 									if(loginUser.getUserId().equals(orderedSubItemList.get(i).getM_id())){
 						%>
 						<form action="/arm/ItemReviewInsertServlet" method="post"> 
+<!--------------------------------- 구매내역 페이지에서 후기 작성 버튼 누를 경우 바로 후기 입력 부분으로 오기 위해 아래 한줄 추가함  -->
+						<p id="forInsertReview"></p>
 							<div class="review_input">
 								<table>
 								<tr>
-									<td width="50%" align="left">
-									옵션 : <input type="text" value="<%= orderedSubItemList.get(i).getItem_sub_name() %>">
+									<td width="30%" align="left">
+									옵션 : <span><%= orderedSubItemList.get(i).getItem_sub_name() %></span>
+
 									</td>
-									<td width="150px">
+									<td width="20%">
 										<p class="star_point">
 											<a href="#" class="on" style="font-size: 20px">★</a>
 											<a href="#" class="on" style="font-size: 20px">★</a>
@@ -1614,7 +1620,6 @@ table tr td { /*확인용*/
 				<!--tabArea-->
 			</div>
 			<!-- 탭메뉴 영역 끝-->
-
 		</div>
 		<!--content-->
 
@@ -1646,7 +1651,7 @@ table tr td { /*확인용*/
 
 			<div class="fd">
 				<h1>
-					<img src="img/tel.png" width="50" height="50" border="0" alt="">&nbsp;1600-7000
+					<img src="images/전화기.png" width="50" height="40" border="0" alt="">&nbsp;1600-7000
 				</h1>
 			</div>
 
@@ -1654,7 +1659,6 @@ table tr td { /*확인용*/
 				팔로 Follow Me <br> copyright by take ARM<br> All right
 				reserved<br>
 			</div>
-
 		</div>
 	</footer>
 

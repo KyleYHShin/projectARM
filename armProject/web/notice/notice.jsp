@@ -663,7 +663,6 @@ String msg = (String)request.getAttribute("msg");
 	</div><!-- cs_menu -->
 
 	<div id = "contents">
-	<div id = "contents">
 		<div id = "notice">
 		<h1>공지사항/이벤트</h1> 
 			

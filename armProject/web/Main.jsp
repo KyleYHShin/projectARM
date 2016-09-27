@@ -763,6 +763,7 @@ String msg =(String)request.getAttribute("msg");
 		        <li class="topMenuLi"><a class="menuLink" href="/arm/nlist">고객센터</a></li>       
 		      <% if(loginUser != null){ %>
 		     	 <% if(admin != null) {%>
+		     	<li class="topMenuLi"><a class="menuLink" href="/arm/QnaListViewServlet">고객문의</a></li>
 		        <li class="topMenuLi"><a class="menuLink" href="/arm/ailist">상품관리</a></li>
 		       	<li class="topMenuLi"><a class="menuLink" href="/arm/amlist">회원관리</a></li>
 		     	 <% }else{%>
