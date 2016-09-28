@@ -47,7 +47,6 @@ public class ItemSearchServlet extends HttpServlet {
 		RequestDispatcher view = null;
 		if(list != null){
 			//조회된 내용이 있을 때
-			
 			int totalCount = new ItemService().getSearchCount(keyword);
 
 			view = request.getRequestDispatcher("SubPage.jsp");

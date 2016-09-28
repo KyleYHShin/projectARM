@@ -205,7 +205,7 @@ String almsg = (String)request.getAttribute("almsg");
 				$("#fix_menu").css("position", "fixed").css("top", "0");
 				$("#fix_menu").width($("#wrapper").width());
 				//스크롤시 fix_menu에 가려지는 부분 응급처리
-				$("body").css("position", "relative").css("top", "65px");
+				$("body").css("position", "relative").css("top", "45px");
 			} else {
 				$("#fix_menu").css("position", "relative").css("top", "");
 				$("body").css("position", "relative").css("top", "0");
@@ -631,7 +631,7 @@ nav#topMenu {
 
 #joinTb th {
 	text-align: center;
-	width: 150px;
+	max-width: 150px;
 	background: #d9d9d9;
 }
 
@@ -671,6 +671,16 @@ nav#topMenu {
 	#joinTb {
 		font-size: 9pt;
 	}
+	#joinTb th {
+		width: 100px;
+	}
+	#joinTb td {
+		width: 300px;
+	}
+	#joinTb #address,
+	#joinTb #address2{
+		width : 220px;
+	}
 }
 
 @media all and (max-width: 300px) {
@@ -681,7 +691,11 @@ nav#topMenu {
 		width: 100px;
 	}
 	#joinTb td {
-		width: 200px;
+		width: 150px;
+	}
+	#joinTb #address,
+	#joinTb #address2{
+		width : 200px;
 	}
 }
 
@@ -831,13 +845,13 @@ footer #fwrap {
 					<tr>
 						<th>우편번호</th>
 						<td><input type="text" id="zcode" name="zcode"
-							placeholder="우편번호"> <input type="button"
+							placeholder="우편번호" readonly> <input type="button"
 							onclick="getPostcode()" value="우편번호 찾기"></td>
 					</tr>
 					<tr>
 						<th rowspan="2">주&nbsp; &nbsp; 소</th>
 						<td><input type="text" id="address" name="address"
-							placeholder="기본주소" size="45"></td>
+							placeholder="기본주소" size="45" readonly></td>
 					</tr>
 					<tr>
 						<td><input type="text" id="address2" name="address2"
@@ -852,9 +866,9 @@ footer #fwrap {
 				</table>
 			</form>
 		</div>
+		</div>
 		<!-- top버튼 -->
-		<div
-			style="position: fixed; bottom: 10px; right: 10px; z-index: 9999;">
+		<div style="position: fixed; bottom: 10px; right: 10px; z-index: 9999;">
 			<a href="#top"><img src="/arm/img/top3.png" width="51"
 				height="51" border="0" title="위로 이동"></a>
 			<!-- 위에있는 이름 top에 있는 위치로 이동함 -->

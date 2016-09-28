@@ -461,6 +461,10 @@
 	 	#infoTb {
 	 		font-size : 9pt;
 	 	}
+	 	#infoTb #address,
+	 	#infoTb #address2{
+	 		width : 230px;
+	 	}
 
 	 }
 
@@ -472,6 +476,10 @@
 	 		width : 100px;
 	 	}
 	 	#infoTb td{
+	 		width : 200px;
+	 	}
+	 	#infoTb #address,
+	 	#infoTb #address2{
 	 		width : 200px;
 	 	}
 	}

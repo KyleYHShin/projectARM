@@ -4,7 +4,6 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 import order.vo.Order;
-import payment.vo.Payment;
 
 public class Purchase implements java.io.Serializable{
 

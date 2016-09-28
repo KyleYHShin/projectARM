@@ -7,9 +7,7 @@ import java.util.ArrayList;
 
 import cart.model.dao.CartDao;
 import cart.model.vo.Cart;
-import member.model.vo.User;
 import order.dao.OrderDao;
-import payment.dao.PaymentDao;
 import purchase.model.dao.PurchaseDao;
 import purchase.model.vo.Purchase;
 

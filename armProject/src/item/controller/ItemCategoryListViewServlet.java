@@ -46,7 +46,6 @@ public class ItemCategoryListViewServlet extends HttpServlet {
 		
 		ArrayList<Item> list = new ItemService().selectCategoryList(categoryNo, sort_col, page);
 		
-		
 		RequestDispatcher view = null;
 		if(list != null){
 			//조회성공시

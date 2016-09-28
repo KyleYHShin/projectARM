@@ -85,7 +85,12 @@ function viewRecentItem(){
 function nologinCart(){
 	alert("로그인이 필요합니다");
 };
-
+function goCart(){
+	location.href="/arm/CartView";
+}
+function goMyinfo(){
+	location.href="/arm/myinfo?userid=<%= loginUser.getUserId() %>";
+}
 	$(function() {
 		//최근목록보기
 		viewRecentItem();
@@ -698,7 +703,7 @@ footer #fwrap {
 				%>
 				<li class="topMenuLi"><a class="menuLink" href="/arm/CartView">장바구니</a></li>
 				<li class="topMenuLi"><a class="menuLink"
-					href="//arm/myinfo?userid=<%= loginUser.getUserId() %>">MyPage</a></li>
+					href="/arm/myinfo?userid=<%= loginUser.getUserId() %>">MyPage</a></li>
 				<li class="topMenuLi"><a class="menuLink" href="logout">로그아웃</a></li>
 				<li class="topMenuLi fd hidden-xs">환영합니다! <%=loginUser.getUserName()%>님
 				</li>

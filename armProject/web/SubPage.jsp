@@ -2,15 +2,18 @@
     pageEncoding="UTF-8"%>
 <%@ page import = "java.util.ArrayList, item.model.vo.Item, member.model.vo.User"%>
 <% 
-User loginUser = (User)session.getAttribute("loginUser");
-String admin = (String)session.getAttribute("admin");
-ArrayList<Item> list = (ArrayList<Item>)request.getAttribute("list");
-String msg = (String)request.getAttribute("msg");
-String status = (String)request.getAttribute("status");
-int totalCount = (int)request.getAttribute("totalCount");
-int pageNo = (int)request.getAttribute("page");
-int sortNo = (int)request.getAttribute("sortNo");
-String keyword = (String)request.getAttribute("keyword");
+	User loginUser = (User)session.getAttribute("loginUser");
+	String admin = (String)session.getAttribute("admin");
+	
+	ArrayList<Item> list = (ArrayList<Item>)request.getAttribute("list");
+	String msg = (String)request.getAttribute("msg");
+	
+	String status = (String)request.getAttribute("status");
+	String keyword = (String)request.getAttribute("keyword");
+	
+	int totalCount = (int)request.getAttribute("totalCount");
+	int pageNo = (int)request.getAttribute("page");
+	int sortNo = (int)request.getAttribute("sortNo");
  %>
 <!doctype html>
 <html lang="ko">

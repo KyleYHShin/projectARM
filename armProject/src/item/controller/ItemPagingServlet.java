@@ -81,6 +81,7 @@ public class ItemPagingServlet extends HttpServlet {
 		}else if(status.equals("search")){
 			String keyword = (String)request.getParameter("keyword");
 			list = new ItemService().searchItem(keyword, sort_col, page);
+			totalCount = new ItemService().getSearchCount(keyword);
 			request.setAttribute("status", status);
 			request.setAttribute("keyword", keyword);
 		}else if(status.equals("err")){
@@ -93,14 +94,13 @@ public class ItemPagingServlet extends HttpServlet {
 		}
 	
 		if(list != null){
-			//총 줄 수
 			request.setAttribute("list", list);
-			//현제 페이지 전달
-			request.setAttribute("totalCount", totalCount);
+			request.setAttribute("sortNo", sortNo);
 			
 			//pagedraw에서 사용
+			//총 줄 수, 현재 페이지
+			request.setAttribute("totalCount", totalCount);
 			request.setAttribute("page", page);
-			request.setAttribute("sortNo", sortNo);
 			view.forward(request, response);
 		}else{
 			view = request.getRequestDispatcher("SubPage.jsp");

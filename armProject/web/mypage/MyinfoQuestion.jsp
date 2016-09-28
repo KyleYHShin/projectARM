@@ -472,9 +472,9 @@
 		%>
 				
 		<tr class = "question">
-			<td>[문의]</td><td><span style="float:left; font-size:0.5em;">상품 : <%=q.getItem_name() %>&nbsp;&nbsp;/ 옵션 : <%=q.getItem_sub_name() %></span><br>
+			<td>[문의]</td><td><span style="float:left; font-size:0.8em;">상품 : <%=q.getItem_name() %>&nbsp;&nbsp;/ 옵션 : <%=q.getItem_sub_name() %></span><br>
 			<%=q.getContent() %></td>
-			<td><%=String.valueOf(q.getDate())%><a href="ItemQnaDeleteServlet?q_no=<%= q.getQuestion_no() %>">삭제하기</a></td>
+			<td><%=String.valueOf(q.getDate())%><br><a href="ItemQnaDeleteServlet?q_no=<%= q.getQuestion_no() %>">삭제하기</a></td>
 			
 		</tr>
 		<tr class = "answer">

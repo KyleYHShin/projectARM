@@ -90,7 +90,12 @@ function viewRecentItem(){
 function nologinCart(){
 	alert("로그인이 필요합니다");
 };
-
+function goCart(){
+	location.href="/arm/CartView";
+}
+function goMyinfo(){
+	location.href="/arm/myinfo?userid=<%= loginUser.getUserId() %>";
+}
 	$(function() {
 		//최근목록보기
 		viewRecentItem();
@@ -186,14 +191,13 @@ function nologinCart(){
 						$(form).append(input);
 						
 						$('#body').append(form);
+						alert("결제가 완료되었습니다.\n구매내역 페이지로 이동합니다.")
 						form.submit();
 					} else {
 						msg = '결제에 실패하였습니다.';
 						msg += '에러내용 : ' + rsp.error_msg;
 					}
 			});
-
-			window.alert(msg);
 		});
 	});
 </script>
@@ -405,12 +409,14 @@ nav#topMenu {
 @media all and (max-width: 750px) {
 	.cs_navi li a {
 		font-size: 13px;
+		padding: 10px 0;
 	}
 }
 
 @media all and (max-width: 300px) {
 	.cs_navi li a {
 		font-size: 11px;
+		padding: 10px 0;
 	}
 }
 
@@ -618,6 +624,18 @@ footer #fwrap {
 	}
 }
 
+#fmenu {
+	list-style-type: none;
+}
+
+.footMenu a {
+	text-decoration: none;
+	color: black;
+}
+
+.footMenu a:hover {
+	text-decoration: underline;
+}
 </style>
 
 </head>

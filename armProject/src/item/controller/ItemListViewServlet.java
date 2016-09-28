@@ -33,7 +33,6 @@ public class ItemListViewServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//메인화면, 전체 상품목록보기
-		
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html; charset=utf-8");
 		
@@ -48,10 +47,10 @@ public class ItemListViewServlet extends HttpServlet {
 		RequestDispatcher view = null;
 		if(list != null){
 			//불러오는데 성공했을 경우
-
 			view = request.getRequestDispatcher("Main.jsp");
 			request.setAttribute("list", list);
 			request.setAttribute("status", "main");
+			request.setAttribute("sortNo", 0);
 			request.setAttribute("totalCount", totalCount);
 			request.setAttribute("page", page);
 			view.forward(request, response);

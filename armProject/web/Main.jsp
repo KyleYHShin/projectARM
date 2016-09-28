@@ -2,14 +2,16 @@
 	pageEncoding="UTF-8"%>
 <%@ page import="java.util.ArrayList, item.model.vo.Item, member.model.vo.User"%>
 <%
-User loginUser = (User)session.getAttribute("loginUser");
-String admin = (String)session.getAttribute("admin");
-
-ArrayList<Item> list = (ArrayList<Item>)request.getAttribute("list");
-int totalCount = (int)request.getAttribute("totalCount");
-int pageNo = (int)request.getAttribute("page");
-String status = (String)request.getAttribute("status");
-String msg =(String)request.getAttribute("msg");
+	User loginUser = (User)session.getAttribute("loginUser");
+	String admin = (String)session.getAttribute("admin");
+	
+	ArrayList<Item> list = (ArrayList<Item>)request.getAttribute("list");
+	String msg =(String)request.getAttribute("msg");
+	
+	String status = (String)request.getAttribute("status");
+	
+	int totalCount = (int)request.getAttribute("totalCount");
+	int pageNo = (int)request.getAttribute("page");
 %>
 
 <!doctype html>
@@ -58,7 +60,9 @@ String msg =(String)request.getAttribute("msg");
 						var key = sessionStorage.key(i);
 						var item = sessionStorage[key];
 						var values = item.split(",");
-						var rItem = "<div class='ritem'><a href='/arm/ItemDetailViewServlet?itemNo="+values[0]+"'><img src='"+values[1]+"'></a></div>";
+						var rItem = "<div class='ritem'>"
+						+"<a href='/arm/ItemDetailViewServlet?itemNo="+values[0]+"'>"
+								+"<img src='"+values[1]+"'></a></div>";
 						rItems += rItem;
 					}
 				} else {//최대 4개만 보여준다
@@ -78,7 +82,9 @@ String msg =(String)request.getAttribute("msg");
 						var key = sessionStorage.key(i);
 						var item = sessionStorage[key];
 						var values = item.split(",");
-						var rItem = "<div class='ritem'><a href='/arm/ItemDetailViewServlet?itemNo="+values[0]+"'><img src='"+values[1]+"'></a></div>";
+						var rItem = "<div class='ritem'>"
+						+"<a href='/arm/ItemDetailViewServlet?itemNo="+values[0]+"'>"
+								+"<img src='"+values[1]+"'></a></div>";
 						rItems += rItem;
 					}
 					if(sessionStorage.length > 10){
@@ -137,7 +143,6 @@ String msg =(String)request.getAttribute("msg");
 			$("#pageNo").empty();
 			$("#pageNo").append(prevStep);
 			for(var i=prev; i<=next; i++){
-				
 				PageNum = "<a href='/arm/ipage?status=<%= status %>&page="+i+"'>"+i+"</a>";
 				$("#pageNo").append(PageNum);
 			}
