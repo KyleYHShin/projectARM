@@ -611,6 +611,17 @@ td {
 	font-size: 1.4em;
 }
 
+#purName, #purPhone, #purEmail, #purAddr1, #purAddr2 {
+	width: 98%;
+}
+
+#purZipcode {
+	width: 39%;
+}
+
+#purZipcodeBtn {
+	width: 59%;
+}
 /*-------주문하기 끝-----------*/
 @media all and (max-width: 1000px) {
 	.cs_navi li a {
@@ -864,7 +875,8 @@ footer #fwrap {
 							<th>우편번호</th>
 							<td><input type="text" name="purZipcode" id="purZipcode"
 								value="<%=member.getZipCode()%>"><input type="button"
-								onclick="getPostcode()" value="우편번호 찾기"></td>
+								name="purZipcodeBtn" id="purZipcodeBtn" onclick="getPostcode()"
+								value="우편번호 찾기"></td>
 						</tr>
 						<%
 							} else {
@@ -873,7 +885,8 @@ footer #fwrap {
 							<th>우편번호</th>
 							<td><input type="text" name="purZipcode" id="purZipcode"
 								value="" placeholder="우편번호" readonly><input
-								type="button" onclick="getPostcode()" value="우편번호 찾기"></td>
+								type="button" name="purZipcodeBtn" id="purZipcodeBtn"
+								onclick="getPostcode()" value="우편번호 찾기"></td>
 						</tr>
 						<%
 							}

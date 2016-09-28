@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page
-	import="member.model.vo.User, java.util.ArrayList, purchase.model.vo.Purchase, order.vo.Order, payment.vo.Payment"%>
+	import="member.model.vo.User, java.util.ArrayList, purchase.model.vo.Purchase, order.vo.Order"%>
 <%
 	User loginUser = (User) session.getAttribute("loginUser");
 	ArrayList<Purchase> purchaseList = (ArrayList<Purchase>) request.getAttribute("purchaseList");
@@ -54,15 +54,15 @@
 			$("#cart_list").slideDown("fast");
 		});
 
-		//결제 관련 메서드
+		/* 결제 관련 메서드 시작---------------------------------- */
 		//주문 취소
-		$('.cancle_btn').on('click',function() {
+		$('.cancle_btn').on('click', function() {
 			var divContent = (this).parentElement.parentElement;
 			var purchaseNo = divContent.children[0].value;
-			alert(purchaseNo);
-		
-			//1.post 방식
-			/* var chk = window.confirm("주문을 취소할 경우 데이터가 모두 사라집니다.\n정말로 취소하시겠습니까?");
+			//alert(purchaseNo);
+
+			//post 방식
+			var chk = window.confirm("주문을 취소할 경우 데이터가 모두 사라집니다.\n정말로 취소하시겠습니까?");
 			if (chk) {
 				var form = document.createElement("form");
 				form.method = 'post';
@@ -76,41 +76,38 @@
 
 				$('#body').append(form);
 				form.submit();
-			} */
+			}
 		});
-		
 
-		$('.pay_btn').on(
-				'click',
-				function() {
-					var divContent = (this).parentElement.parentElement;
-					var purchaseNo = divContent.children[0].value;
-					var totalPrice = (this).parentElement.children[0].value;
-					
-					//form 형식으로 전달과 동시에 띄우기
-					var form = document.createElement("form");
-					var url = "/arm/mypage/Payment.jsp";
-					window.open('', 'popPayment',
-							'width=300, height=500, scrollbars=yes');
-					form.method = 'post';
-					form.action = url;
-					form.target = 'popPayment';
+		$('.pay_btn').on('click', function() {
+			var divContent = (this).parentElement.parentElement;
+			var purchaseNo = divContent.children[0].value;
+			//alert(purchaseNo);
 
-					var input = document.createElement("input");
-					input.type = "hidden";
-					input.name = 'purchaseNo';
-					input.value = purchaseNo;
-					$(form).append(input);
+			//post 방식
+			var chk = window.confirm("결제 페이지로 이동하시겠습니까?");
+			if (chk) {
+				var form = document.createElement("form");
+				form.method = 'post';
+				form.action = '/arm/PurchaseToPay';
+				
+				var input = document.createElement("input");
+				input.type = "hidden";
+				input.name = 'purchaseNo';
+				input.value = purchaseNo;
+				$(form).append(input);
 
-					var input = document.createElement("input");
-					input.type = "hidden";
-					input.name = 'totalPrice';
-					input.value = totalPrice;
-					$(form).append(input);
-
-					$('#body').append(form);
-					form.submit();
-				});
+				$('#body').append(form);
+				form.submit();
+			}
+		});
+		/* 결제 관련 메서드 끝----------------------------------- */
+		/* 슬라이드  시작----------------------------------------*/
+		$(".slide").each(function(){
+			var $this = $(this);
+			var $
+		});
+		/* 슬라이드  끝-----------------------------------------*/
 	});
 </script>
 <style type="text/css">
@@ -318,6 +315,27 @@ nav#topMenu {
 	min-height: 600px;
 	/*background : #ffffcc;*/
 }
+/* 슬라이드 처리 부분--------------------------*/
+.slide-viewer {
+	postion: relative;
+	overflow: hidden;
+}
+
+.slide-group {
+	width: 100%;
+	position: relative;
+}
+
+.slide {
+	width: 100%;
+	display: none;
+	position: absolute;
+}
+
+.slide:first-child {
+	display: block;
+}
+/* 슬라이드 처리 부분 끝--------------------------*/
 
 /* 영수증부분----------------------- */
 .bill {
@@ -640,11 +658,15 @@ footer #fwrap {
 
 		<div id="contents">
 			<!-- ---------------------------영수증부분------------------------------------ -->
+			<div class="slide-viewer">
+				<div class="slide-group">
 			<!-- bill의 개수에 따라 처리 -->
 			<%
-				for (Purchase p : purchaseList) {
+				if (purchaseList != null) {
+					for (Purchase p : purchaseList) {
 			%>
-			<div class="bill">
+			<div class="slide">
+				<div class="bill">
 				<input type="hidden" value="<%=p.getPurchaseNo()%>">
 				<table class="bill_head">
 					<tr>
@@ -684,23 +706,24 @@ footer #fwrap {
 						<td><%=o.getItem_name()%> - <%=o.getItem_sub_name()%></td>
 						<td><%=o.getOrder_qty()%></td>
 						<td><%=(int) (o.getOrder_price() * (1 - loginUser.getDiscount()))%></td>
-						<%//결제 정보가 있고
-						if (p.getPaid() == 'Y') {
-							//작성된 리뷰가 있는 경우
-							if (o.getOrder_review_no() > 0) {
+						<%
+							//결제 정보가 있고
+										if (p.getPaid() == 'Y') {
+											//작성된 리뷰가 있는 경우
+											if (o.getOrder_review_no() > 0) {
 						%>
 						<td style="text-align: center"><a href=""
 							style="color: #1b1b1b;">수정</a></td>
 						<%
 							//작성된 리뷰가 없는 경우
-							} else {							
+											} else {
 						%>
 						<td style="text-align: center;"><a href=""
 							style="color: red; font-weight: bold;">작성</a></td>
 						<%
 							}
-						//결제 정보가 없는 경우
-						} else {										
+											//결제 정보가 없는 경우
+										} else {
 						%>
 						<td style="text-align: center;"><a href=""
 							style="color: red; font-weight: bold;"></a></td>
@@ -713,12 +736,12 @@ footer #fwrap {
 					%>
 				</table>
 
-
 				<table class="bill_head">
 					<tr>
 						<th>배송 정보</th>
 					</tr>
 				</table>
+				
 				<table class="bill_pay">
 					<tr>
 						<th>수취인</th>
@@ -750,6 +773,7 @@ footer #fwrap {
 						<td><%=addr[1]%></td>
 					</tr>
 				</table>
+				
 				<table class="bill_third">
 					<tr>
 						<td>배송비&nbsp; <span><%=p.getDelivery()%>원</span>
@@ -789,13 +813,22 @@ footer #fwrap {
 				<%
 					}
 				%>
-				</div>
-				<%
-				}// end of for (Purchase p : purchaseList)
+				</div><!-- class="bill" -->
+			</div><!-- class="slide" -->
+			<%
+				} // end of for (Purchase p : purchaseList)
+			} //if(purchaseList != null)
+			else {
 			%>
+			<span id="noList">구매 정보가 없습니다.</span>
+			<%
+			}
+			%>
+			
+				</div><!-- class="slide-group" -->
+			</div><!-- class="slide-viewer" -->
 			<!-----------------------------------------------------bill 끝-->
-		</div>
-		<!--contents끝-->
+		</div><!-- id="contents" -->
 	</div>
 	<!--wrapper:menu+contents 끝-->
 

@@ -3,8 +3,6 @@ package purchase.model.dao;
 import java.sql.*;
 import java.util.ArrayList;
 
-import payment.vo.Payment;
-
 import static common.JDBCTemplate.*;
 
 import purchase.model.vo.Purchase;
