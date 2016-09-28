@@ -329,7 +329,7 @@
 	/* 미디어쿼리 */
 	@media all and (max-width: 1000px){
 		.navi li a {
-			font-size : 20px;
+			font-size : 16px;
 			padding : 5px 20px;
 		}
 	}
@@ -344,10 +344,10 @@
 	@media all and (max-width: 300px){
 		.navi li a {
 			font-size : 15px;
-			padding : 1px 0px;
+			padding : 0px;
 		}
 		.navi li {
-		line-height : 50px;
+		line-height : 40px;
 		}
 	}
 
@@ -538,18 +538,6 @@
 			font-size : 20pt;
 		}
 	}
-
-	#fmenu {
-		list-style-type : none;
-	}
-	.footMenu a {
-		text-decoration : none;
-		color : black;
-	}
-	.footMenu a:hover {
-		text-decoration : underline;
-	}
-
   </style>
   
  </head>
@@ -590,7 +578,7 @@
  <div id="wrapper">
 
  	<div id = "fix_menu">
-			<div id="category">
+		<div id="category">
 			<ul class="navi">
 				<li><a href="/arm/catlist?categoryno=100">손</a></li>
 				<!-- 손 -->
@@ -660,16 +648,6 @@
 	<!-- 푸터 -->
 	<footer>
 	<div id = "fwrap">
-	<div class = "fd hidden-xs"><!-- 스마트폰 크기에서는 안보이게 -->
-		<ul id="fmenu">
-				<li class="footMenu"><a href="#">GUIDE</a></li>
-				<li class="footMenu"><a href="#">CUSTOMER SERVICE</a></li>
-				<li class="footMenu"><a href="#">BANK INFO</a></li>
-				<li class="footMenu"><a href="#">DELIVERY</a></li>
-		</ul>
-		</div>
-		
-
 		<div class = "fd">
 		<h1><img src="/arm/img/tel.png" width="50" height="50" border="0" alt="">&nbsp;1600-7000</h1>
 		</div>

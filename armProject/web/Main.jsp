@@ -157,7 +157,7 @@ String msg =(String)request.getAttribute("msg");
 			nologinCart();
 			<% }%>
 		}
-		$(function() {
+		$(function() {			
 			//에러메세지 출력
 			<% if(msg != null){ %>
 				alert("<%= msg %>");
@@ -165,6 +165,14 @@ String msg =(String)request.getAttribute("msg");
 			
 			//최근목록보기
 			viewRecentItem();
+			
+			//페이지표시
+			$("#pageNo>a").each(function(){
+				if($(this).text() == "<%= pageNo %>"){
+					$(this).css("background", "red").css("color","white");
+				}
+				
+			});
 			
 			//퀵바 위치 조절
 			var winH = $(window).height();
@@ -740,19 +748,7 @@ String msg =(String)request.getAttribute("msg");
 			font-size: 20pt;
 		}
 	}
-	
-	#fmenu {
-		list-style-type: none;
-	}
-	
-	.footMenu a {
-		text-decoration: none;
-		color: black;
-	}
-	
-	.footMenu a:hover {
-		text-decoration: underline;
-	}
+
 	</style>
 </head>
 <body>
@@ -836,8 +832,8 @@ String msg =(String)request.getAttribute("msg");
 	<!-- 카테고리 ~ item 목록 -->
 	<div id="wrapper">
 
-		<div id="fix_menu">
-			<div id="category">
+	<div id="fix_menu">
+		<div id="category">
 			<ul class="navi">
 				<li><a href="/arm/catlist?categoryno=100">손</a></li>
 				<!-- 손 -->
@@ -912,20 +908,9 @@ String msg =(String)request.getAttribute("msg");
 	<!-- 푸터 -->
 	<footer>
 		<div id="fwrap">
-		
-			<div class="fd hidden-xs">
-				<!-- 스마트폰 크기에서는 안보이게 -->
-				<ul id="fmenu">
-					<li class="footMenu"><a href="#">GUIDE</a></li>
-					<li class="footMenu"><a href="#">CUSTOMER SERVICE</a></li>
-					<li class="footMenu"><a href="#">BANK INFO</a></li>
-					<li class="footMenu"><a href="#">DELIVERY</a></li>
-				</ul>
-			</div>
-			
 			<div class="fd">
 				<h1>
-					<img src="img/tel.png" width="50" height="50" border="0" alt="">&nbsp;1600-7000
+					<img src="/arm/img/tel.png" width="50" height="50" border="0" alt="">&nbsp;1600-7000
 				</h1>
 			</div>
 

@@ -49,7 +49,7 @@ public class EmailSendingServlet extends HttpServlet {
 		
 		switch(cat){
 		case "delivery": 
-			recipient="banila_ice@naver.com";	
+			recipient="huaruya@naver.com";	
 			cat_name="배송";
 			break;
 		case "product" : 

@@ -160,6 +160,24 @@ String keyword = (String)request.getAttribute("keyword");
 		//최근목록보기
 		viewRecentItem();
 		
+		//페이지표시
+		$("#pageNo>a").each(function(){
+			if($(this).text() == "<%= pageNo %>"){
+				$(this).css("background", "red").css("color","white");
+			}
+		});
+		//정렬표시
+		<% if(sortNo == 1){ %>
+			$("#sort1").css("color","red");
+		<% }else if(sortNo == 2){ %>
+			$("#sort2").css("color","red");
+		<% }else if(sortNo == 3){ %>
+			$("#sort3").css("color","red");
+		<% }else if(sortNo == 4){ %>
+			$("#sort4").css("color","red");
+		<% } %>
+
+
 		//퀵바 위치 조절
 		var winH = $(window).height();
 		var qH = $("#quick_bar").height();
@@ -180,13 +198,13 @@ String keyword = (String)request.getAttribute("keyword");
 			$("#search").attr("value","<%= keyword %>");
 		<%}else if(!status.equals("main") && !status.equals("err")){
 			int categoryNo = Integer.parseInt(status);
-			if(categoryNo >= 100 && categoryNo < 200){%>
+			if(categoryNo == 100){%>
 			 $("#cat_100").css("background", "red").css("color","white");
-			<%}else if(categoryNo >= 200 && categoryNo < 300){%>
+			<%}else if(categoryNo == 200){%>
 			 $("#cat_200").css("background", "red").css("color","white");
-			<%}else if(categoryNo >= 300 && categoryNo < 400){%>
+			<%}else if(categoryNo == 300){%>
 			 $("#cat_300").css("background", "red").css("color","white");
-			<%}else if(categoryNo >= 400 && categoryNo < 500){%>
+			<%}else if(categoryNo == 400){%>
 			 $("#cat_400").css("background", "red").css("color","white");
 			<%}
 		}%>
@@ -693,17 +711,6 @@ String keyword = (String)request.getAttribute("keyword");
 		}
 	}
 
-	#fmenu {
-		list-style-type : none;
-	}
-	.footMenu a {
-		text-decoration : none;
-		color : black;
-	}
-	.footMenu a:hover {
-		text-decoration : underline;
-	}
-
   </style>
   
  </head>
@@ -758,13 +765,13 @@ String keyword = (String)request.getAttribute("keyword");
  	<div id = "fix_menu">
 		<div id="category">
 			<ul class="navi">
-				<li><a href="/arm/catlist?categoryno=100">손</a></li>
+				<li><a href="/arm/catlist?categoryno=100" id = "cat_100">손</a></li>
 				<!-- 손 -->
-				<li><a href="/arm/catlist?categoryno=200">손목</a></li>
+				<li><a href="/arm/catlist?categoryno=200" id = "cat_200">손목</a></li>
 				<!-- 손목 -->
-				<li><a href="/arm/catlist?categoryno=300">팔꿈치</a></li>
+				<li><a href="/arm/catlist?categoryno=300" id = "cat_300">팔꿈치</a></li>
 				<!-- 팔목 -->
-				<li><a href="/arm/catlist?categoryno=400">어깨</a></li>
+				<li><a href="/arm/catlist?categoryno=400" id = "cat_400">어깨</a></li>
 				<!-- 어깨 -->
 				<li><a id="sch">검색</a></li>
 			</ul>
@@ -779,10 +786,10 @@ String keyword = (String)request.getAttribute("keyword");
 	</div><!-- 검색 -->
 
 	<div id = "sort">
-		<a href="isort?status=<%=status%>&keyword=<%= keyword %>&sortno=1">최신등록순</a>&nbsp;&nbsp; 
-		<a href="isort?status=<%=status%>&keyword=<%= keyword %>&sortno=2">높은조회순</a>&nbsp;&nbsp;
-		<a href="isort?status=<%=status%>&keyword=<%= keyword %>&sortno=3">높은가격순</a>&nbsp;&nbsp;
-		<a href="isort?status=<%=status%>&keyword=<%= keyword %>&sortno=4">낮은가격순</a>&nbsp;&nbsp;
+		<a href="isort?status=<%=status%>&keyword=<%= keyword %>&sortno=1" id = "sort1">최신등록순</a>&nbsp;&nbsp; 
+		<a href="isort?status=<%=status%>&keyword=<%= keyword %>&sortno=2" id = "sort2">높은조회순</a>&nbsp;&nbsp;
+		<a href="isort?status=<%=status%>&keyword=<%= keyword %>&sortno=3" id = "sort3">높은가격순</a>&nbsp;&nbsp;
+		<a href="isort?status=<%=status%>&keyword=<%= keyword %>&sortno=4" id = "sort4">낮은가격순</a>&nbsp;&nbsp;
 	</div><!-- sort -->
 	
 	</div><!-- fix_menu(카테고리+검색+정렬) -->
@@ -829,18 +836,8 @@ String keyword = (String)request.getAttribute("keyword");
 	<!-- 푸터 -->
 	<footer>
 	<div id = "fwrap">
-	<div class = "fd hidden-xs"><!-- 스마트폰 크기에서는 안보이게 -->
-		<ul id="fmenu">
-				<li class="footMenu"><a href="#">GUIDE</a></li>
-				<li class="footMenu"><a href="#">CUSTOMER SERVICE</a></li>
-				<li class="footMenu"><a href="#">BANK INFO</a></li>
-				<li class="footMenu"><a href="#">DELIVERY</a></li>
-		</ul>
-		</div>
-		
-
-		<div class = "fd">
-		<h1><img src="img/tel.png" width="50" height="50" border="0" alt="">&nbsp;1600-7000</h1>
+	<div class = "fd">
+		<h1><img src="/arm/img/tel.png" width="50" height="50" border="0" alt="">&nbsp;1600-7000</h1>
 		</div>
 
 		<div class = "fd">

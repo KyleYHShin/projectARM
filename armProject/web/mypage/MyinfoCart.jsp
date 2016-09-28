@@ -473,7 +473,7 @@ nav#topMenu {
 
 #cs_menu {
 	width: 100%;
-	height: 40px;
+	height: 40px;/*여기*/
 	background: #fed605;
 	margin: 5px auto;
 }
@@ -507,6 +507,7 @@ nav#topMenu {
 	background: rgba(255, 0, 0, 0.8);
 	cursor: pointer;
 }
+
 
 #c_btn {
 	color: white;
@@ -627,14 +628,12 @@ button#continue_btn {
 @media all and (max-width: 750px) {
 	.cs_navi li a {
 		font-size: 13px;
-		padding: 10px 0;
 	}
 }
 
 @media all and (max-width: 400px) {
 	.cs_navi li a {
 		font-size: 11px;
-		padding: 10px 0;
 	}
 	#contents {
 		min-width: 200px;
@@ -675,18 +674,6 @@ footer #fwrap {
 	}
 }
 
-#fmenu {
-	list-style-type: none;
-}
-
-.footMenu a {
-	text-decoration: none;
-	color: black;
-}
-
-.footMenu a:hover {
-	text-decoration: underline;
-}
 </style>
 
 </head>
@@ -854,20 +841,9 @@ footer #fwrap {
 	<!-- 푸터 -->
 	<footer>
 		<div id="fwrap">
-			<div class="fd hidden-xs">
-				<!-- 스마트폰 크기에서는 안보이게 -->
-				<ul id="fmenu">
-					<li class="footMenu"><a href="#">GUIDE</a></li>
-					<li class="footMenu"><a href="#">CUSTOMER SERVICE</a></li>
-					<li class="footMenu"><a href="#">BANK INFO</a></li>
-					<li class="footMenu"><a href="#">DELIVERY</a></li>
-				</ul>
-			</div>
-
-
 			<div class="fd">
 				<h1>
-					<img src="images/전화기.png" width="50" height="40" border="0" alt="">&nbsp;1600-7000
+					<img src="/arm/img/tel.png" width="50" height="40" border="0" alt="">&nbsp;1600-7000
 				</h1>
 			</div>
 

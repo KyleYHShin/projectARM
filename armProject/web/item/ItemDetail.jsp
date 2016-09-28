@@ -760,19 +760,6 @@ footer #fwrap {
 	}
 }
 
-#fmenu {
-	list-style-type: none;
-}
-
-.footMenu a {
-	text-decoration: none;
-	color: black;
-}
-
-.footMenu a:hover {
-	text-decoration: underline;
-}
-
 /*상품 정보 출력 화면용------------------------------------------------*/
 .product {
 	text-align: center;
@@ -1627,20 +1614,9 @@ table tr td { /*확인용*/
 	<!-- 푸터 -->
 	<footer>
 		<div id="fwrap">
-			<div class="fd hidden-xs">
-				<!-- 스마트폰 크기에서는 안보이게 -->
-				<ul id="fmenu">
-					<li class="footMenu"><a href="#">GUIDE</a></li>
-					<li class="footMenu"><a href="#">CUSTOMER SERVICE</a></li>
-					<li class="footMenu"><a href="#">BANK INFO</a></li>
-					<li class="footMenu"><a href="#">DELIVERY</a></li>
-				</ul>
-			</div>
-
-
 			<div class="fd">
 				<h1>
-					<img src="img/tel.png" width="50" height="50" border="0" alt="">&nbsp;1600-7000
+					<img src="/arm/img/tel.png" width="50" height="50" border="0" alt="">&nbsp;1600-7000
 				</h1>
 			</div>
 

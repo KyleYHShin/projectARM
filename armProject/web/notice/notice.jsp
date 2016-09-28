@@ -695,16 +695,6 @@ String msg = (String)request.getAttribute("msg");
 		}
 	}
 
-	#fmenu {
-		list-style-type : none;
-	}
-	.footMenu a {
-		text-decoration : none;
-		color : black;
-	}
-	.footMenu a:hover {
-		text-decoration : underline;
-	}
   </style>
   
  </head>
@@ -807,8 +797,8 @@ String msg = (String)request.getAttribute("msg");
 		<% }else{
 				for(Notice n:list){	 %>
 		<tr class = "question"><td><%=n.getNoticeNo() %></td><td><%if( n.getCatNo()==1 ){ %>[공지사항] <%}else{ %>[이벤트] <%} %><%=n.getNoticeTitle() %></td><td><%=String.valueOf(n.getNoticeDate())%></td></tr>
-		<tr class = "answer"><td></td><td colspan ="2"><%=n.getContent() %>
-		<br><br><br><span style="float : left;">첨부파일 :
+		<tr class = "answer"><td></td><td colspan ="2"><textarea name="content" rows="5" cols="50" readonly style="border:0;"><%=n.getContent() %></textarea>
+		<br><span style="float : left;">첨부파일 :
 			<%	if(n.getNoticeFile() == null){  //첨부파일이없는 경우
 			%>첨부파일없음</span>
 			<%  }else{ //첨부파일이 있는 경우 %>
@@ -890,7 +880,8 @@ String msg = (String)request.getAttribute("msg");
 	<% }else{
 		for(Faqnotice f:flist){ %>
 		<tr class = "question"><td><%= f.getFaqNo() %></td><td>[<%=f.getFaqcatName() %>]&nbsp;&nbsp;<%=f.getFaqTitle() %></td></tr>
-		<tr class = "answer"><td></td><td colspan ="2"><%=f.getFaqContent() %><br></td>
+		<tr class = "answer"><td></td>
+		<td colspan ="2"><textarea name="content" rows="5" cols="95" readonly style="border:0;"><%=f.getFaqContent() %></textarea><br></td>
 		</tr>
 		<% } 
 		} //end of if %>
@@ -954,16 +945,9 @@ String msg = (String)request.getAttribute("msg");
 		<!-- 푸터 -->
 	<footer>
 	<div id = "fwrap">
-	<div class = "fd hidden-xs"><!-- 스마트폰 크기에서는 안보이게 -->
-		<ul id="fmenu">
-				<li class="footMenu"><a href="#">GUIDE</a></li>
-				<li class="footMenu"><a href="#">CUSTOMER SERVICE</a></li>
-				<li class="footMenu"><a href="#">BANK INFO</a></li>
-				<li class="footMenu"><a href="#">DELIVERY</a></li>
-		</ul>
-	</div>
+	
 	<div class = "fd">
-	<h1><img src="img/tel.png" width="50" height="50" border="0" alt="">&nbsp;1600-7000</h1>
+	<h1><img src="/arm/img/tel.png" width="50" height="50" border="0" alt="">&nbsp;1600-7000</h1>
 	</div>
 	<div class = "fd">
 	팔로 Follow Me <br>
