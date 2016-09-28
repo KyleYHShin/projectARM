@@ -44,8 +44,8 @@ Connection con = getConnection();
 	public Member selectOne(String userId){
 		Connection con = getConnection();
 		Member member = new MemberDao().selectOne(con, userId);
-		close(con);
-		
+
+		close(con);		
 		return member;		
 	}
 
