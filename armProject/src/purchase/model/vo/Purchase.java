@@ -4,9 +4,8 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 import order.vo.Order;
-import payment.vo.Payment;
 
-public class Purchase implements java.io.Serializable{
+public class Purchase implements java.io.Serializable {
 
 	private int purchaseNo;
 	private String gradeName;
@@ -19,9 +18,9 @@ public class Purchase implements java.io.Serializable{
 	private int totalItemPrice;
 	private int delivery;
 	private Date purchaseDate;
-	private char paid;	
+	private char paid;
 	private ArrayList<Order> orderList;
-	
+
 	public Purchase() {
 		// TODO Auto-generated constructor stub
 	}

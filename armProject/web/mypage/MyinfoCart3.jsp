@@ -186,14 +186,13 @@ function nologinCart(){
 						$(form).append(input);
 						
 						$('#body').append(form);
+						alert("결제가 완료되었습니다.\n구매내역 페이지로 이동합니다.")
 						form.submit();
 					} else {
 						msg = '결제에 실패하였습니다.';
 						msg += '에러내용 : ' + rsp.error_msg;
 					}
 			});
-
-			window.alert(msg);
 		});
 	});
 </script>

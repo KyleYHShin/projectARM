@@ -3,8 +3,6 @@ package purchase.model.dao;
 import java.sql.*;
 import java.util.ArrayList;
 
-import payment.vo.Payment;
-
 import static common.JDBCTemplate.*;
 
 import purchase.model.vo.Purchase;
@@ -14,7 +12,7 @@ public class PurchaseDao {
 	public PurchaseDao() {
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	public Purchase selectPurchase(Connection con, int purchaseNo) {
 		Purchase purchase = null;
 		PreparedStatement pstmt = null;
@@ -28,9 +26,9 @@ public class PurchaseDao {
 		try {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, purchaseNo);
-			
+
 			rset = pstmt.executeQuery();
-			if(rset.next()){
+			if (rset.next()) {
 				purchase = new Purchase();
 				purchase.setPurchaseNo(rset.getInt("purchase_no"));
 				purchase.setGradeName(rset.getString("g_name"));
@@ -52,7 +50,7 @@ public class PurchaseDao {
 		return purchase;
 	}
 
-	//수정필요
+	// 수정필요
 	public ArrayList<Purchase> selectAll(Connection con, String userId) {
 		ArrayList<Purchase> purchaseList = null;
 		PreparedStatement pstmt = null;
@@ -61,8 +59,7 @@ public class PurchaseDao {
 		String sql = "select purchase_no, g_name, PURCHASE_M_ID, PURCHASE_NAME, PURCHASE_PHONE, "
 				+ " PURCHASE_EMAIL, PURCHASE_ZIPCODE, PURCHASE_ADDRESS, TOTAL_PRICE, DELIVERY, "
 				+ " PURCHASE_DATE, PAID from purchase left join member on(m_id = PURCHASE_M_ID) "
-				+ " left join grade on(m_grade = g_no) where purchase_m_id = ? "
-				+ " order by purchase_no desc";
+				+ " left join grade on(m_grade = g_no) where purchase_m_id = ? " + " order by purchase_no desc";
 
 		try {
 			pstmt = con.prepareStatement(sql);
@@ -91,7 +88,7 @@ public class PurchaseDao {
 				purchase.setDelivery(rset.getInt("DELIVERY"));
 				purchase.setPurchaseDate(rset.getDate("PURCHASE_DATE"));
 				purchase.setPaid(rset.getString("PAID").charAt(0));
-				
+
 				purchaseList.add(purchase);
 			}
 		} catch (SQLException e) {
@@ -179,7 +176,7 @@ public class PurchaseDao {
 		}
 		return result;
 	}
-	
+
 	public int updatePurchase(Connection con, int purchaseNo) {
 		int result = 0;
 
@@ -202,5 +199,4 @@ public class PurchaseDao {
 		return result;
 	}
 
-	
 }

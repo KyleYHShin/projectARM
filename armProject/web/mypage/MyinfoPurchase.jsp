@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page
-	import="member.model.vo.User, java.util.ArrayList, purchase.model.vo.Purchase, order.vo.Order, payment.vo.Payment"%>
+	import="member.model.vo.User, java.util.ArrayList, purchase.model.vo.Purchase, order.vo.Order"%>
 <%
 	User loginUser = (User) session.getAttribute("loginUser");
 	ArrayList<Purchase> purchaseList = (ArrayList<Purchase>) request.getAttribute("purchaseList");
@@ -116,63 +116,130 @@ function nologinCart(){
 			}
 		});
 
-		//결제 관련 메서드
+		/* 결제 관련 메서드 시작---------------------------------- */
 		//주문 취소
 		$('.cancle_btn').on('click',function() {
 			var divContent = (this).parentElement.parentElement;
 			var purchaseNo = divContent.children[0].value;
-			alert(purchaseNo);
-		
-			//1.post 방식
-			/* var chk = window.confirm("주문을 취소할 경우 데이터가 모두 사라집니다.\n정말로 취소하시겠습니까?");
+			//alert(purchaseNo);
+			//post 방식
+			var chk = window.confirm("주문을 취소할 경우 데이터가 모두 사라집니다.\n정말로 취소하시겠습니까?");
 			if (chk) {
 				var form = document.createElement("form");
 				form.method = 'post';
 				form.action = '/arm/PurchaseDelete';
-				
 				var input = document.createElement("input");
 				input.type = "hidden";
 				input.name = 'purchaseNo';
 				input.value = purchaseNo;
 				$(form).append(input);
-
 				$('#body').append(form);
 				form.submit();
-			} */
+			}
 		});
 		
 
-		$('.pay_btn').on(
-				'click',
-				function() {
-					var divContent = (this).parentElement.parentElement;
-					var purchaseNo = divContent.children[0].value;
-					var totalPrice = (this).parentElement.children[0].value;
-					
-					//form 형식으로 전달과 동시에 띄우기
-					var form = document.createElement("form");
-					var url = "/arm/mypage/Payment.jsp";
-					window.open('', 'popPayment',
-							'width=300, height=500, scrollbars=yes');
-					form.method = 'post';
-					form.action = url;
-					form.target = 'popPayment';
-
-					var input = document.createElement("input");
-					input.type = "hidden";
-					input.name = 'purchaseNo';
-					input.value = purchaseNo;
-					$(form).append(input);
-
-					var input = document.createElement("input");
-					input.type = "hidden";
-					input.name = 'totalPrice';
-					input.value = totalPrice;
-					$(form).append(input);
-
-					$('#body').append(form);
-					form.submit();
+		$('.pay_btn').on('click', function() {
+			var divContent = (this).parentElement.parentElement;
+			var purchaseNo = divContent.children[0].value;
+			//alert(purchaseNo);
+			//post 방식
+			var chk = window.confirm("결제 페이지로 이동하시겠습니까?");
+			if (chk) {
+				var form = document.createElement("form");
+				form.method = 'post';
+				form.action = '/arm/PurchaseToPay';
+				var input = document.createElement("input");
+				input.type = "hidden";
+				input.name = 'purchaseNo';
+				input.value = purchaseNo;
+				$(form).append(input);
+				$('#body').append(form);
+				form.submit();
+			}
+		});
+		/* 결제 관련 메서드 끝----------------------------------- */
+		/* 슬라이드  시작----------------------------------------*/
+		$(".slide-viewer").each(function() {
+			var $this = $(this);
+			var $group = $this.find('.slide-group');
+			var $slides = $this.find('.slide');
+			var buttonArray = [];
+			var currentIndex = 0;
+			var timeout;
+			
+			var setTime = 10000;
+			var btnName = 1;
+			
+			function advance(){
+				clearTimeout(timeout);
+				timeout = setTimeout(function(){
+					if(currentIndex < ($slides.length-1)){
+						move(currentIndex + 1);
+					}else{
+						move(0);
+					}
+				}, setTime);
+			}
+			
+			//이동
+			function move(newIndex){
+				var animateLeft, slideLeft;
+				
+				advance();
+				
+				//현재 슬라이드가 보여지고 있거나, 애니메이션이 진행중이면 아무것도 X
+				if (currentIndex === newIndex || $group.is(':animated')) {
+					return;
+				}
+				buttonArray[currentIndex].removeClass('active');
+				buttonArray[newIndex].addClass('active');
+				//목록 좌우 재배치
+				if (newIndex > currentIndex) {
+					slideLeft = '100%';
+					animateLeft = '-100%';
+				} else {
+					slideLeft = '-100%';
+					animateLeft = '100%';
+				}
+				$slides.eq(newIndex).css({
+					left : slideLeft,
+					display : 'block'
 				});
+				$group.animate({
+					left : animateLeft
+				}, function() {
+					$slides.eq(currentIndex).css({
+						display : 'none'
+					});
+					$slides.eq(newIndex).css({
+						left : 0
+					});
+					$group.css({
+						left : 0
+					});
+					currentIndex = newIndex;
+				});
+			}//end of move()
+			
+			//버튼 생성
+			$.each($slides, function(index){
+				var btn = '<button type="button" class="slide-btn">'+btnName+'</button>';
+				var $button = $(btn);
+				btnName += 1;
+				
+				if(index === currentIndex){
+					$button.addClass('active');
+				}
+				$button.on('click', function(){
+					move(index);
+				}).appendTo('.slide-buttons');
+				buttonArray.push($button);
+			});
+			
+			advance();
+		});//end of $(".slide").each(function() 
+		/* 슬라이드  끝-----------------------------------------*/
 	});
 </script>
 <style type="text/css">
@@ -391,6 +458,55 @@ nav#topMenu {
 	min-height: 600px;
 	/*background : #ffffcc;*/
 }
+/* 슬라이드 처리 부분--------------------------*/
+.slide-viewer {
+	postion: relative;
+	margin-top: 2%;
+	margin-bottom: 15%;
+}
+.slide-group {
+	width: 100%;
+	position: relative;
+}
+.slide {
+	width: 100%;
+	display: none;
+	position: absolute;
+}
+.slide:first-child {
+	display: block;
+}
+.slide-btn {
+	margin: 5px;
+	background-color: green /* #44c767 */;
+	-moz-border-radius: 28px;
+	-webkit-border-radius: 28px;
+	border-radius: 28px;
+	border: 1px solid #18ab29;
+	display: inline-block;
+	cursor: pointer;
+	color: #ffffff;
+	font-size: 17px;
+	padding: 1px 9px;
+	text-decoration: none;
+	text-shadow: 0px 1px 0px #2f6627;
+	outline: none; /* 클릭후 버튼 잔상 제거 */
+}
+.slide-btn:hover {
+	background-color: white;
+	border: 1px solid #18ab29;
+	color: black;
+}
+.slide-btn:active {
+	background-color: red /* #44c767 */;
+	border: 1px solid red /* #18ab29 */;
+}
+@media all and (max-width: 300px) {
+	.slide-viewer {
+		margin-bottom: 30%;
+	}
+}
+/* 슬라이드 처리 부분 끝--------------------------*/
 
 /* 영수증부분----------------------- */
 .bill {
@@ -685,166 +801,185 @@ footer #fwrap {
 
 		<div id="contents">
 			<!-- ---------------------------영수증부분------------------------------------ -->
-			<% if (purchaseList != null){ %>
-			<!-- bill의 개수에 따라 처리 -->
-			<%
-				for (Purchase p : purchaseList) {
-			%>
-			<div class="bill">
-				<input type="hidden" value="<%=p.getPurchaseNo()%>">
-				<table class="bill_head">
-					<tr>
-						<th>주 문 내 역</th>
-					</tr>
-				</table>
-
-				<table class="bill_first">
-					<tr>
-						<th>주문번호</th>
-						<td><%=p.getPurchaseNo()%></td>
-					</tr>
-
-					<tr>
-						<th>주문일시</th>
-						<td><%=p.getPurchaseDate()%></td>
-					</tr>
-
-					<tr>
-						<th>주문자</th>
-						<td>[<%=p.getGradeName()%>]&nbsp;<%=p.getUserId()%></td>
-					</tr>
-				</table>
-
-
-				<table class="bill_second">
-					<tr>
-						<th>품목</th>
-						<th>수량</th>
-						<th>합계(원)</th>
-						<th>후기</th>
-					</tr>
+			<div class="slide-buttons"></div>
+			<div class="slide-viewer">
+				<div class="slide-group">
+					<!-- bill의 개수에 따라 처리 -->
 					<%
-						for (Order o : p.getOrderList()) {
+						if (purchaseList != null) {
+							int i = 1;
+							for (Purchase p : purchaseList) {
 					%>
-					<tr>
-						<td><%=o.getItem_name()%> - <%=o.getItem_sub_name()%></td>
-						<td><%=o.getOrder_qty()%></td>
-						<td><%=(int) (o.getOrder_price() * (1 - loginUser.getDiscount()))%></td>
-						<%//결제 정보가 있고
-						if (p.getPaid() == 'Y') {
-							//작성된 리뷰가 있는 경우
-							if (o.getOrder_review_no() > 0) {
-						%>
-						<td style="text-align: center"><a href=""
-							style="color: #1b1b1b;">수정</a></td>
-						<%
-							//작성된 리뷰가 없는 경우
-							} else {							
-						%>
-						<td style="text-align: center;"><a href=""
-							style="color: red; font-weight: bold;">작성</a></td>
-						<%
-							}
-						//결제 정보가 없는 경우
-						} else {										
-						%>
-						<td style="text-align: center;"><a href=""
-							style="color: red; font-weight: bold;"></a></td>
-						<%
-							}
-						%>
-					</tr>
+					<div class="slide">
+						<div class="bill">
+							<input type="hidden" value="<%=p.getPurchaseNo()%>">
+							<table class="bill_head">
+								<tr>
+									<th>주 문 내 역</th>
+								</tr>
+							</table>
+
+							<table class="bill_first">
+								<tr>
+									<th>주문번호</th>
+									<td><%=p.getPurchaseNo()%></td>
+								</tr>
+
+								<tr>
+									<th>주문일시</th>
+									<td><%=p.getPurchaseDate()%></td>
+								</tr>
+
+								<tr>
+									<th>주문자</th>
+									<td>[<%=p.getGradeName()%>]&nbsp;<%=p.getUserId()%></td>
+								</tr>
+							</table>
+
+
+							<table class="bill_second">
+								<tr>
+									<th>품목</th>
+									<th>수량</th>
+									<th>합계(원)</th>
+									<th>후기</th>
+								</tr>
+								<%
+									for (Order o : p.getOrderList()) {
+								%>
+								<tr>
+									<td><%=o.getItem_name()%> - <%=o.getItem_sub_name()%></td>
+									<td><%=o.getOrder_qty()%></td>
+									<td><%=(int) (o.getOrder_price() * (1 - loginUser.getDiscount()))%></td>
+									<%
+										//결제 정보가 있고
+													if (p.getPaid() == 'Y') {
+														//작성된 리뷰가 있는 경우
+														if (o.getOrder_review_no() > 0) {
+									%>
+									<td style="text-align: center"><a href=""
+										style="color: #1b1b1b;">수정</a></td>
+									<%
+										//작성된 리뷰가 없는 경우
+														} else {
+									%>
+									<td style="text-align: center;"><a href=""
+										style="color: red; font-weight: bold;">작성</a></td>
+									<%
+										}
+														//결제 정보가 없는 경우
+													} else {
+									%>
+									<td style="text-align: center;"><a href=""
+										style="color: red; font-weight: bold;"></a></td>
+									<%
+										}
+									%>
+								</tr>
+								<%
+									} //end of for (Order o : purchase.getOrderList())
+								%>
+							</table>
+
+							<table class="bill_head">
+								<tr>
+									<th>배송 정보</th>
+								</tr>
+							</table>
+
+							<table class="bill_pay">
+								<tr>
+									<th>수취인</th>
+									<td><%=p.getName()%></td>
+								</tr>
+
+								<tr>
+									<th>휴대전화</th>
+									<td><%=p.getPhone()%></td>
+								</tr>
+
+								<tr>
+									<th>이메일</th>
+									<td><%=p.getEmail()%></td>
+								</tr>
+								<tr>
+									<th>우편번호</th>
+									<td><%=p.getZipcode()%></td>
+								</tr>
+								<%
+									String[] addr = p.getAddress().split(",");
+								%>
+								<tr>
+									<th>주 &nbsp; 소</th>
+									<td><%=addr[0]%></td>
+								</tr>
+								<tr>
+									<th>상세주소</th>
+									<td><%=addr[1]%></td>
+								</tr>
+							</table>
+
+							<table class="bill_third">
+								<tr>
+									<td>배송비&nbsp; <span><%=p.getDelivery()%>원</span>
+									</td>
+								</tr>
+								<tr>
+									<td>총 주문금액&nbsp; <span><%=p.getDelivery() + p.getTotalItemPrice()%>원</span>
+									</td>
+								</tr>
+							</table>
+
+							<table class="bill_fourth">
+								<tr>
+									<td>거래상태</td>
+								</tr>
+								<tr>
+									<%
+										if (p.getPaid() == 'Y') {
+									%>
+									<td>결제완료</td>
+									<%
+										} else {
+									%>
+									<td>주문완료(미결제)</td>
+									<%
+										}
+									%>
+								</tr>
+							</table>
+							<%
+								if (p.getPaid() == 'N') {
+							%>
+							<div id="buttons">
+								<input type="button" class="cancle_btn" value="주문취소"> <input
+									type="button" class="pay_btn" value="결제하기">
+							</div>
+							<%
+								}
+							%>
+						</div>
+						<!-- class="bill" -->
+					</div>
+					<!-- class="slide" -->
 					<%
-						} //end of for (Order o : purchase.getOrderList())
+					i++;
+						} // end of for (Purchase p : purchaseList)
+						} //if(purchaseList != null)
+						else {
 					%>
-				</table>
-
-
-				<table class="bill_head">
-					<tr>
-						<th>배송 정보</th>
-					</tr>
-				</table>
-				<table class="bill_pay">
-					<tr>
-						<th>수취인</th>
-						<td><%=p.getName()%></td>
-					</tr>
-
-					<tr>
-						<th>휴대전화</th>
-						<td><%=p.getPhone()%></td>
-					</tr>
-
-					<tr>
-						<th>이메일</th>
-						<td><%=p.getEmail()%></td>
-					</tr>
-					<tr>
-						<th>우편번호</th>
-						<td><%=p.getZipcode()%></td>
-					</tr>
+					<span id="noList">구매 정보가 없습니다.</span>
 					<%
-						String[] addr = p.getAddress().split(",");
+						}
 					%>
-					<tr>
-						<th>주 &nbsp; 소</th>
-						<td><%=addr[0]%></td>
-					</tr>
-					<tr>
-						<th>상세주소</th>
-						<td><%=addr[1]%></td>
-					</tr>
-				</table>
-				<table class="bill_third">
-					<tr>
-						<td>배송비&nbsp; <span><%=p.getDelivery()%>원</span>
-						</td>
-					</tr>
-					<tr>
-						<td>총 주문금액&nbsp; <span><%=p.getDelivery() + p.getTotalItemPrice()%>원</span>
-						</td>
-					</tr>
-				</table>
 
-				<table class="bill_fourth">
-					<tr>
-						<td>거래상태</td>
-					</tr>
-					<tr>
-						<%
-							if (p.getPaid() == 'Y') {
-						%>
-						<td>결제완료</td>
-						<%
-							} else {
-						%>
-						<td>주문완료(미결제)</td>
-						<%
-							}
-						%>
-					</tr>
-				</table>
-				<%
-					if (p.getPaid() == 'N') {
-				%>
-				<div id="buttons">
-					<input type="button" class="cancle_btn" value="주문취소"> <input
-						type="button" class="pay_btn" value="결제하기">
 				</div>
-				<%
-					}
-				%>
-				</div>
-				<%
-				}// end of for (Purchase p : purchaseList)
-			}else{
-			%>
-			<span>구매 내역이 없습니다.</span>
-			<%} %>
+				<!-- class="slide-group" -->
+			</div>
+			<!-- class="slide-viewer" -->
 			<!-----------------------------------------------------bill 끝-->
 		</div>
-		<!--contents끝-->
+		<!-- id="contents" -->
 	</div>
 	<!--wrapper:menu+contents 끝-->
 

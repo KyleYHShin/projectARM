@@ -419,10 +419,11 @@ nav#topMenu {
 	max-height: auto;
 	padding: 3px;
 }
+
 .menuLink:hover {
-		color: red;
-		cursor: pointer;
-	}
+	color: red;
+	cursor: pointer;
+}
 /*------------------- 최상단 메뉴 끝 -----------*/
 #banner {
 	margin: 10px auto;
@@ -435,70 +436,73 @@ nav#topMenu {
 }
 
 /*-------------- 퀵바 ----------------------*/
-	#quick_bar {
-		width: 120px;
-		border: 1px solid orange;
-		border-radius:5px;
-		background: #feffd0;
-		background: white;
-		z-index: 9999;
-		position: fixed;
-		right: -122px;
-	}
-	
-	#qBtn {
-		position: fixed;
-		right: 0px;
-		z-index: 9999;
-		display: block;
-		border: 1px solid #ffcc00;
-		transform: rotate(270deg);
-		background: #fed605;
-		font-size: 12pt;
-		border-radius : 3px;
-	}
-	
-	#quick_bar a {
-		padding: 16px;
-		display: block;
-		transition: all 0.3s ease;
-		font-size: 15px;
-		position: relative;
-	}
+#quick_bar {
+	width: 120px;
+	border: 1px solid orange;
+	border-radius: 5px;
+	background: #feffd0;
+	background: white;
+	z-index: 9999;
+	position: fixed;
+	right: -122px;
+}
 
-	/*퀵바 내 칸당 크기 조절-----------------------------------0925*/
-	#quick_bar #recent_list .ritem{
-		width : 90px;
-		height : 90px;
-		padding : 0;
-		margin : 2px auto;
-		test-align : center;
-		border : 1px solid orange;
-	}
-	#quick_bar #recent_list .ritem img{
-		width : 100%;
-		height : 100%;
-		margin : 0 auto;
-		padding : 0;
-	}
-	#quick_bar #recent_list .ritem a{
-		margin : 0;
-		padding : 0;
-	}
-	/*=============------------------------------------*/
-	#quick_bar .btn {
-		width: 100%;
-		border : 0;
-		BORDER-BOTTOM : 1px solid orange;
-		border-radius : 0;
-		background: none;
-	}
-	
-	#quick_bar .btn:focus, #quick_bar .btn:hover, #quick_bar .btn:active:focus,
-		#quick_bar .btn.active:focus, #quick_bar .btn.focus, #quick_bar .btn:active.focus,
-		#quick_bar .btn.active.focus {
-		background: none;
-	}
+#qBtn {
+	position: fixed;
+	right: 0px;
+	z-index: 9999;
+	display: block;
+	border: 1px solid #ffcc00;
+	transform: rotate(270deg);
+	background: #fed605;
+	font-size: 12pt;
+	border-radius: 3px;
+}
+
+#quick_bar a {
+	padding: 16px;
+	display: block;
+	transition: all 0.3s ease;
+	font-size: 15px;
+	position: relative;
+}
+
+/*퀵바 내 칸당 크기 조절-----------------------------------0925*/
+#quick_bar #recent_list .ritem {
+	width: 90px;
+	height: 90px;
+	padding: 0;
+	margin: 2px auto;
+	test-align: center;
+	border: 1px solid orange;
+}
+
+#quick_bar #recent_list .ritem img {
+	width: 100%;
+	height: 100%;
+	margin: 0 auto;
+	padding: 0;
+}
+
+#quick_bar #recent_list .ritem a {
+	margin: 0;
+	padding: 0;
+}
+/*=============------------------------------------*/
+#quick_bar .btn {
+	width: 100%;
+	border: 0;
+	BORDER-BOTTOM: 1px solid orange;
+	border-radius: 0;
+	background: none;
+}
+
+#quick_bar .btn:focus, #quick_bar .btn:hover, #quick_bar .btn:active:focus,
+	#quick_bar .btn.active:focus, #quick_bar .btn.focus, #quick_bar .btn:active.focus,
+	#quick_bar .btn.active.focus {
+	background: none;
+}
+
 #wrapper {
 	margin: 0 auto;
 	max-width: 1000px;
@@ -681,6 +685,18 @@ td {
 	background: red;
 	color: white;
 	font-size: 1.4em;
+}
+
+#purName, #purPhone, #purEmail, #purAddr1, #purAddr2 {
+	width: 98%;
+}
+
+#purZipcode {
+	width: 39%;
+}
+
+#purZipcodeBtn {
+	width: 59%;
 }
 
 /*-------주문하기 끝-----------*/
@@ -906,7 +922,8 @@ footer #fwrap {
 							<th>우편번호</th>
 							<td><input type="text" name="purZipcode" id="purZipcode"
 								value="<%=member.getZipCode()%>"><input type="button"
-								onclick="getPostcode()" value="우편번호 찾기"></td>
+								name="purZipcodeBtn" id="purZipcodeBtn" onclick="getPostcode()"
+								value="우편번호 찾기"></td>
 						</tr>
 						<%
 							} else {
@@ -915,7 +932,8 @@ footer #fwrap {
 							<th>우편번호</th>
 							<td><input type="text" name="purZipcode" id="purZipcode"
 								value="" placeholder="우편번호" readonly><input
-								type="button" onclick="getPostcode()" value="우편번호 찾기"></td>
+								type="button" name="purZipcodeBtn" id="purZipcodeBtn"
+								onclick="getPostcode()" value="우편번호 찾기"></td>
 						</tr>
 						<%
 							}
