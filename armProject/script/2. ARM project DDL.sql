@@ -14,8 +14,8 @@
     - '2. ARM project DDL.sql' 파일을 열어
       테이블/시퀀스/프로시저 등의 정의(DDL)를 확인하다.
   
-  3. 모든 사항을 처리했는데도 문제가 해결되지 않을 경우
-    - 콘솔창에 무결성(Integrity)이나 삭제 참조(Refferences) 에러 출력과 같이 
+  4. 모든 사항을 처리했는데도 문제가 해결되지 않을 경우
+    - 콘솔창에 무결성(Integrity)이나 삭제 참조(References) 에러 출력과 같이 
       DDL 문장 자체에 오류가 존재하는 경우를 뜻한다.
       팀장에게 연락한다.
 
@@ -30,40 +30,31 @@ drop sequence seq_FAQ_no;
 drop table FAQ;
 drop table FAQ_category;
 
-drop sequence seq_review_no;
-drop table review;
-drop table review_head;
-
 drop sequence seq_answer_no;
 drop table answer;
 
 drop sequence seq_question_no;
 drop table question;
 
+drop procedure insert_review;
 drop trigger trigger_delete_order;
 drop trigger trigger_insert_order;
 drop sequence seq_order_no;
 drop table orders;
 
-DROP PROCEDURE insert_payment;
+drop sequence seq_review_no;
+drop table review;
+drop table review_head;
+
 drop sequence seq_purchase_no;
 drop table purchase;
-
-drop trigger trigger_update_payment;
-drop sequence seq_payment_no;
-drop table payment;
 
 drop sequence seq_cart_no;
 drop table cart;
 
-
 drop trigger trigger_update_users;
 drop trigger trigger_insert_users;
 drop table users;
-
-drop table member;
-
-drop table grade;
 
 drop procedure insert_item_sub;
 drop table item_bridge;
@@ -81,11 +72,15 @@ drop table item_category;
 drop sequence seq_vender_id;
 drop table vender;
 
+drop table member;
+
+drop table grade;
+
 commit;
 
 ------------------------------------------------------------------------
 --1.생성
-drop table vender;
+--drop table vender;
 create table vender(
   ven_id     number,
   ven_name   varchar2(20 char) not null,
@@ -101,7 +96,7 @@ COMMENT ON COLUMN vender.ven_name IS '공급업체 명';
 COMMENT ON COLUMN vender.ven_phone IS '공급업체 전화번호';
 
 --3.시퀀스
-drop sequence seq_vender_id;
+--drop sequence seq_vender_id;
 create sequence seq_vender_id
   start with 1
   increment by 1
@@ -113,7 +108,7 @@ create sequence seq_vender_id
 
 ------------------------------------------------------------------------
 --1.생성
-drop table item_category;
+--drop table item_category;
 create table item_category(
   item_category_no   number(3),
   item_category_name varchar2(15 char) not null,
@@ -135,11 +130,11 @@ insert into item_category values( 400, '어깨');
 
 ------------------------------------------------------------------------
 --1.생성
-drop table item;
+--drop table item;
 create table item(
   item_no          number, 
   item_name        varchar2(20 char) not null,
-  item_cat_no      number(3) not null,
+  item_cat_no      number(3),
   item_price       number not null,
   item_count       number default 0,
   item_update      date default sysdate,
@@ -170,7 +165,7 @@ COMMENT ON COLUMN item.item_img IS '메인 이미지 주소';
 COMMENT ON COLUMN item.item_img_detail IS '상품 설명 이미지 주소';
 
 --3-1.시퀀스
-drop sequence seq_item_no;
+--drop sequence seq_item_no;
 create sequence seq_item_no
   start with 1
   increment by 1
@@ -182,7 +177,7 @@ create sequence seq_item_no
 
 ------------------------------------------------------------------------
 --1.생성
-drop table product_main;
+--drop table product_main;
 create table product_main(
   prm_no      number(3),
   prm_item_no number,
@@ -198,7 +193,7 @@ COMMENT ON COLUMN product_main.prm_item_no IS '메인페이지 상품 ID';
 
 ------------------------------------------------------------------------
 --1.생성
-drop table item_sub;
+--drop table item_sub;
 create table item_sub(
   item_sub_no     number,
   item_sub_name   varchar2(20 char),
@@ -215,7 +210,7 @@ COMMENT ON COLUMN item_sub.item_sub_price IS '제품 가격';
 COMMENT ON COLUMN item_sub.quantity IS '재고 수량';
 
 --3.시퀀스
-drop sequence seq_item_sub_no;
+--drop sequence seq_item_sub_no;
 create sequence seq_item_sub_no
   start with 1
   increment by 1
@@ -229,7 +224,7 @@ create sequence seq_item_sub_no
 
 ------------------------------------------------------------------------
 --1.생성
-drop table item_bridge;
+--drop table item_bridge;
 create table item_bridge(
   item_no     number not null,
   item_sub_no number not null,
@@ -248,7 +243,7 @@ COMMENT ON COLUMN item_bridge.item_sub_no IS '제품 ID';
 COMMENT ON COLUMN item_bridge.item_no IS '상품 ID';
 
 --3.프로시저 : item_sub 데이터 입력시 사용
-drop procedure insert_item_sub;
+--drop procedure insert_item_sub;
 CREATE OR REPLACE PROCEDURE insert_item_sub
 (
     item_no         IN  NUMBER,
@@ -278,7 +273,7 @@ END;
 
 ------------------------------------------------------------------------
 --1.생성
-drop table grade;
+--drop table grade;
 create table grade(
   g_no        number(2),
   g_name      varchar2(10 char),
@@ -304,7 +299,7 @@ insert into grade values(6, '다이아몬드', 1000000, 0.05);
 
 ------------------------------------------------------------------------
 --1.생성
-drop table member;
+--drop table member;
 create table member(
   m_id        varchar2(15),--숫자,영문자,기호만 가능
   m_pw        varchar2(20) not null,--숫자,영문자,기호만 가능
@@ -314,7 +309,7 @@ create table member(
   m_phone     varchar2(15) not null,--숫자,기호
   m_email     varchar2(30) not null,--숫자,영문자,기호
   m_zipcode   varchar2(6), --숫자 6개 문자열로 입력
-  m_address   varchar2(40 char),
+  m_address   varchar2(80 char),
   m_grade     number(2) not null,
   m_joindate  date default sysdate,
   
@@ -339,7 +334,7 @@ COMMENT ON COLUMN member.m_joindate IS '가입 날짜';
 
 ------------------------------------------------------------------------
 --1.생성
-drop table users;
+--drop table users;
 create table users(
   user_id     varchar2(15),
   user_pw     varchar2(20) not null,
@@ -360,7 +355,7 @@ COMMENT ON COLUMN users.grade_name IS '등급';
 COMMENT ON COLUMN users.discount IS '할인율';
 
 --3.트리거 : users 입력
-drop trigger trigger_insert_users;
+--drop trigger trigger_insert_users;
 create or replace trigger trigger_insert_users
 after insert on member
 for each row
@@ -374,7 +369,7 @@ end;
 /
 
 --3.트리거2 : users 수정
-drop trigger trigger_update_users;
+--drop trigger trigger_update_users;
 create or replace trigger trigger_update_users
 before update on member
 for each row
@@ -393,7 +388,7 @@ end;
 --4.기본 데이터 입력(member, users 동시)
 insert into member values('admin','admin','관리자',sysdate,'M','010-7227-4569','shinpeach@naver.com','','',6, sysdate);
 insert into member values('user01','pwd01','테스트01',sysdate,'F','010-1111-1111','user01@nate.com','','',1, sysdate);
-insert into member values('user02','pwd02','테스트02',sysdate,'M','010-2222-2222','user02@daum.net','','',2, sysdate);
+insert into member values('user02','pwd02','테스트02',sysdate,'M','010-2222-2222','user02@daum.net','02512','서울 동대문구 겸재로 16,미경아파트 201동 101호',2, sysdate);
 insert into member values('user03','pwd03','테스트03',sysdate,'M','010-3333-3333','user03@daum.net','','',3, sysdate);
 
 --member 데이터 수정
@@ -404,7 +399,7 @@ insert into member values('user03','pwd03','테스트03',sysdate,'M','010-3333-3333
 
 ------------------------------------------------------------------------
 --1.생성
-drop table cart;
+--drop table cart;
 create table cart(
   cart_no           number(10),
   cart_m_id         varchar2(15) not null,
@@ -429,7 +424,7 @@ COMMENT ON COLUMN cart.cart_item_sub_no IS '하위 제품 ID';
 COMMENT ON COLUMN cart.cart_qty IS '제품 수량';
 
 --3.시퀀스
-drop sequence seq_cart_no;
+--drop sequence seq_cart_no;
 create sequence seq_cart_no
   start with 1
   increment by 1
@@ -446,88 +441,41 @@ insert into cart values
 
 ------------------------------------------------------------------------
 --1.생성
-drop table payment;
-create table payment(
-  payment_no      number(9),
-  payment_m_id    varchar2(15),
-  payment_m_name  varchar2(15 char) not null,
-  payment_m_phone varchar2(15) not null,
-  payment_method  varchar2(15 char) not null,
-  payment_company varchar2(20 char) not null,
-  payment_price   number(9) not null,
-  payment_date    date not null,
-  
-  constraint pk_payment primary key(payment_no),
-  constraint fk_payment_m_id foreign key(payment_m_id) 
-    References member(m_id) on delete set null
-    --사용자 정보가 삭제되어도 id값만 null로 바뀌고 payment 기록은 남으며
-    --후에 정보를 원하는 경우 이름과 전화번호로 확인 가능하다.
-);
- 
---2.코멘트
-COMMENT ON COLUMN payment.payment_no IS '결제 번호';
-COMMENT ON COLUMN payment.payment_m_id IS '결제자 ID';
-COMMENT ON COLUMN payment.payment_m_name IS '결제자 이름';
-COMMENT ON COLUMN payment.payment_m_phone IS '결제자 전화번호';
-COMMENT ON COLUMN payment.payment_method IS '결제 방법';
-COMMENT ON COLUMN payment.payment_company IS '결제사';
-COMMENT ON COLUMN payment.payment_price IS '결제 금액';
-COMMENT ON COLUMN payment.payment_date IS '결제 일자';
-
---3-1.시퀀스
-drop sequence seq_payment_no;
-create sequence seq_payment_no
-  start with 1
-  increment by 1
-  maxvalue 999999999
-  Minvalue 1
-  noCycle
-  nocache
-;
-
---3-2.트리거 : 사용자 정보 수정시 결제 정보 자동 수정
-drop trigger trigger_update_payment;
-create or replace trigger trigger_update_payment
-before update on member
-for each row
-begin
-  update payment
-  set
-    payment_m_name = :NEW.m_name, 
-    payment_m_phone = :NEW.m_phone
-  where
-    payment_m_id = :OLD.m_id;
-end;
-/
-
-------------------------------------------------------------------------
---1.생성
-drop table purchase;
+--drop table purchase;
 create table purchase(
   purchase_no         number(9),
-  purchase_m_id       varchar2(15),
+  purchase_m_id       varchar2(15) not null,
+  purchase_name       varchar2(15 char) not null,
+  purchase_phone      varchar2(15) not null,
+  purchase_email      varchar2(30) not null,
+  purchase_zipcode    varchar2(6) not null,
+  purchase_address    varchar2(80 char),
   total_price         number(9) not null,
   delivery            number(6) not null,
   purchase_date       date not null,
-  purchase_payment_no number(9),
+  paid                char(1),
   
   constraint pk_purchase primary key(purchase_no),
   constraint fk_purchase_m_id foreign key(purchase_m_id) 
     references member(m_id) on delete set null,
-  constraint fk_payment_no foreign key(purchase_payment_no) 
-    references payment(payment_no) on delete cascade
+  constraint paid_check check(paid in ('Y','N'))
 );
  
 --2.코멘트
 COMMENT ON COLUMN purchase.purchase_no IS '주문 번호';
 COMMENT ON COLUMN purchase.purchase_m_id IS '주문자 ID';
-COMMENT ON COLUMN purchase.delivery IS '배송비';
+COMMENT ON COLUMN purchase.purchase_name IS '배송비';
+COMMENT ON COLUMN purchase.purchase_phone IS '제품 총 가격(배송비 제외)';
+COMMENT ON COLUMN purchase.purchase_email IS '주문 날짜';
+COMMENT ON COLUMN purchase.purchase_zipcode IS '해당 주문 결제 번호';
+COMMENT ON COLUMN purchase.purchase_address IS '배송비';
 COMMENT ON COLUMN purchase.total_price IS '제품 총 가격(배송비 제외)';
-COMMENT ON COLUMN purchase.purchase_date IS '주문 날짜';
-COMMENT ON COLUMN purchase.purchase_payment_no IS '해당 주문 결제 번호';
+COMMENT ON COLUMN purchase.delivery IS '주문 날짜';
+COMMENT ON COLUMN purchase.purchase_date IS '해당 주문 결제 번호';
+COMMENT ON COLUMN purchase.paid IS '해당 주문 결제 번호';
 
 --3-1.시퀀스
-drop sequence seq_purchase_no;
+--drop sequence seq_purchase_no;
 create sequence seq_purchase_no
   start with 1
   increment by 1
@@ -537,198 +485,9 @@ create sequence seq_purchase_no
   nocache
 ;
 
---3-2.프로시저 : 결제완료 시 payment 생성 후 purchase update
-DROP PROCEDURE insert_payment;
-CREATE OR REPLACE PROCEDURE insert_payment
-(
-    origin_purchase_no  IN number,
-    payment_m_id        IN varchar2,
-    payment_method      IN varchar2,
-    payment_company     IN varchar2,
-    payment_price       IN number
-)
-IS        
-BEGIN
-    insert into payment values
-    (
-      seq_payment_no.nextval, 
-      payment_m_id, 
-      (select m_name from member where m_id = payment_m_id),
-      (select m_phone from member where m_id = payment_m_id),
-      payment_method,
-      payment_company,
-      payment_price,
-      sysdate
-    );
-    update purchase
-    set
-      purchase_payment_no = seq_payment_no.currval
-    where
-      purchase_no = origin_purchase_no;
-END;
-/
-
---결제 완료시 작성 구문 : 하단에 일괄 작성
-
 ------------------------------------------------------------------------
 --1.생성
-drop table orders;
-create table orders(
-  order_no          number(10),
-  order_purchase_no number(9) not null,
-  order_item_sub_no number,
-  order_qty         number(3) not null,
-  
-  constraint pk_orders primary key(order_no),
-  constraint fk_order_purchase_no foreign key(order_purchase_no) 
-    references purchase(purchase_no) on delete cascade,
-  constraint fk_order_item_sub_no foreign key(order_item_sub_no)
-    references item_sub(item_sub_no) on delete set null
-);
-
---2.코멘트
-COMMENT ON COLUMN orders.order_no IS '주문 상세 번호';
-COMMENT ON COLUMN orders.order_purchase_no IS '주문 번호';
-COMMENT ON COLUMN orders.order_item_sub_no IS '제품 ID';
-COMMENT ON COLUMN orders.order_qty IS '수량';
-
---3-1.시퀀스
-drop sequence seq_order_no;
-create sequence seq_order_no
-  start with 1
-  increment by 1
-  maxvalue 9999999999
-  Minvalue 1
-  noCycle
-  nocache
-;
-
---3-2.트리거 : 주문 완료 후에 재고수량 감소
-drop trigger trigger_insert_order;
-create or replace trigger trigger_insert_order
-after insert on orders
-for each row
-begin
-  update item_sub
-    set
-      QUANTITY = QUANTITY - :NEW.order_qty
-    where
-      item_sub_no = :NEW.order_item_sub_no;
-end;
-/
-
---3-3.트리거 : 주문 취소 후에 재고수량 추가
-drop trigger trigger_delete_order;
-create or replace trigger trigger_delete_order
-after delete on orders
-for each row
-begin
-  update item_sub
-    set
-      QUANTITY = QUANTITY + :OLD.order_qty
-    where
-      item_sub_no = :OLD.order_item_sub_no;
-end;
-/
-
-/*
---1.purchase 데이터 입력
-insert into purchase values
-(seq_purchase_no.nextval, m_id, total_price, delivery, sysdate, null);
- 
---2.주문완료 시 orders 데이터 입력(반복)
-insert into orders values
-(seq_order_no.nextval, purchase_no, item_sub_no, quantity);
-
---3.결제 완료 시 payment 데이터 입력과 동시에 purchase 데이터 수정 방법
-EXECUTE insert_payment
-(purchase_no, m_id, payment_method, payment_company, payment_price);
-*/
-
-------------------------------------------------------------------------
---1.생성
-drop table question;
-create table question(
-  question_no           number(9),
-  question_m_id         varchar2(15) not null,
-  question_item_no      number not null,
-  question_item_sub_no  number,
-  question_content      varchar2(600) not null,
-  question_date         date not null,
-  
-  constraint pk_question primary key(question_no),
-  constraint fk_question_m_id foreign key(question_m_id)
-    references member(m_id) on delete cascade,
-  constraint fk_question_item_no foreign key(question_item_no) 
-    references item(item_no) on delete cascade,
-  constraint fk_question_item_sub_no foreign key(question_item_sub_no) 
-    references item_sub(item_sub_no) on delete set null
-);
- 
---2.코멘트
-COMMENT ON COLUMN question.question_no IS '문의 번호';
-COMMENT ON COLUMN question.question_m_id IS '문의자 ID';
-COMMENT ON COLUMN question.question_item_no IS '문의 상품 ID';
-COMMENT ON COLUMN question.question_item_sub_no IS '문의 제품 ID';
-COMMENT ON COLUMN question.question_content IS '문의 내용';
-COMMENT ON COLUMN question.question_date IS '문의 날짜';
-
---3.시퀀스
-drop sequence seq_question_no;
-create sequence seq_question_no
-  start with 1
-  increment by 1
-  maxvalue 999999999
-  Minvalue 1
-  noCycle
-  nocache
-;
-
-/*--question 데이터 입력 방법(no, m_id, item_no, item_sub_no, content, date)
-insert into question values
-(seq_question_no.nextval, 'user02', 1, 1, '정말로 진짜 깁스 같나요?', sysdate);
-*/
-
-------------------------------------------------------------------------
---1.생성
-drop table answer;
-create table answer(
-  answer_no           number(9),
-  answer_question_no  number(9) not null,
-  answer_content      varchar2(600 char) not null,
-  answer_date         date not null,
-  
-  constraint pk_answer primary key(answer_no),
-  constraint fk_answer_question_no foreign key(answer_question_no) 
-    references question(question_no) on delete cascade
-    --질문 삭제시 답변 자동삭제
-);
- 
---2.코멘트
-COMMENT ON COLUMN answer.answer_no IS '답변 번호';
-COMMENT ON COLUMN answer.answer_question_no IS '해당 질문 번호';
-COMMENT ON COLUMN answer.answer_content IS '답변 내용';
-COMMENT ON COLUMN answer.answer_date IS '답변 날짜';
-
---3.시퀀스
-drop sequence seq_answer_no;
-create sequence seq_answer_no
-  start with 1
-  increment by 1
-  maxvalue 999999999
-  Minvalue 1
-  noCycle
-  nocache
-;
-
-/*--answer 데이터 입력 방법(answer_no, answer_question_no, answer_content, answer_date)
-insert into answer values
-(seq_answer_no.nextval, '1', '네. 실제 병원에서 사용하는 제품입니다^^', sysdate);
-*/
-
-------------------------------------------------------------------------
---1.생성
-drop table review_head;
+--drop table review_head;
 create table review_head(
   review_head_no      number(1),
   review_head_content varchar2(10 char),
@@ -750,7 +509,7 @@ insert into review_head values(5, '강추!!!');
 
 ------------------------------------------------------------------------
 --1.생성
-drop table review;
+--drop table review;
 create table review(
   review_no           number(9),
   review_m_id      varchar2(15) not null,
@@ -781,7 +540,7 @@ COMMENT ON COLUMN review.review_content IS '후기 내용';
 COMMENT ON COLUMN review.review_date IS '후기 작성 날짜';
 
 --3.시퀀스
-drop sequence seq_review_no;
+--drop sequence seq_review_no;
 create sequence seq_review_no
   start with 1
   increment by 1
@@ -793,7 +552,193 @@ create sequence seq_review_no
 
 ------------------------------------------------------------------------
 --1.생성
-drop table FAQ_category;
+--drop table orders;
+create table orders(
+  order_no          number(10),
+  order_purchase_no number(9) not null,
+  order_item_sub_no number,
+  order_qty         number(3) not null,
+  order_review_no   number(9),
+  
+  constraint pk_orders primary key(order_no),
+  constraint fk_order_purchase_no foreign key(order_purchase_no) 
+    references purchase(purchase_no) on delete cascade,
+  constraint fk_order_item_sub_no foreign key(order_item_sub_no)
+    references item_sub(item_sub_no) on delete set null,
+  constraint fk_order_review_no foreign key(order_review_no)
+    references review(review_no) on delete set null
+);
+
+--2.코멘트
+COMMENT ON COLUMN orders.order_no IS '주문 상세 번호';
+COMMENT ON COLUMN orders.order_purchase_no IS '주문 번호';
+COMMENT ON COLUMN orders.order_item_sub_no IS '제품 ID';
+COMMENT ON COLUMN orders.order_qty IS '수량';
+COMMENT ON COLUMN orders.order_review_no IS '후기 번호';
+
+--3-1.시퀀스
+--drop sequence seq_order_no;
+create sequence seq_order_no
+  start with 1
+  increment by 1
+  maxvalue 9999999999
+  Minvalue 1
+  noCycle
+  nocache
+;
+
+--3-2.트리거 : 주문 완료 후에 재고수량 감소
+--drop trigger trigger_insert_order;
+create or replace trigger trigger_insert_order
+after insert on orders
+for each row
+begin
+  update item_sub
+    set
+      QUANTITY = QUANTITY - :NEW.order_qty
+    where
+      item_sub_no = :NEW.order_item_sub_no;
+end;
+/
+
+--3-3.트리거 : 주문 취소 후에 재고수량 추가
+--drop trigger trigger_delete_order;
+create or replace trigger trigger_delete_order
+after delete on orders
+for each row
+begin
+  update item_sub
+    set
+      QUANTITY = QUANTITY + :OLD.order_qty
+    where
+      item_sub_no = :OLD.order_item_sub_no;
+end;
+/
+
+--3-4.프로시저 : 리뷰 insert + orders update
+--DROP PROCEDURE insert_review;
+CREATE OR REPLACE PROCEDURE insert_review
+(
+    new_order_no  IN number,
+    m_id          IN varchar2,
+    item_no       IN number,
+    item_sub_no   IN number,
+    score         IN number,
+    content       IN varchar2
+)
+IS        
+BEGIN
+    insert into review values
+    (
+      seq_review_no.nextval, 
+      m_id, 
+      item_no,
+      item_sub_no,
+      score,
+      content,
+      sysdate
+    );
+    update orders
+    set
+      order_review_no = seq_review_no.currval
+    where
+      order_no = new_order_no;
+END;
+/
+
+/*
+--1.purchase 데이터 입력
+insert into purchase values
+(seq_purchase_no.nextval, m_id, total_price, delivery, sysdate, null);
+ 
+--2.주문완료 시 orders 데이터 입력(반복)
+insert into orders values
+(seq_order_no.nextval, purchase_no, item_sub_no, quantity);
+*/
+------------------------------------------------------------------------
+--1.생성
+--drop table question;
+create table question(
+  question_no           number(9),
+  question_m_id         varchar2(15) not null,
+  question_item_no      number not null,
+  question_item_sub_no  number,
+  question_content      varchar2(600) not null,
+  question_date         date not null,
+  
+  constraint pk_question primary key(question_no),
+  constraint fk_question_m_id foreign key(question_m_id)
+    references member(m_id) on delete cascade,
+  constraint fk_question_item_no foreign key(question_item_no) 
+    references item(item_no) on delete cascade,
+  constraint fk_question_item_sub_no foreign key(question_item_sub_no) 
+    references item_sub(item_sub_no) on delete set null
+);
+ 
+--2.코멘트
+COMMENT ON COLUMN question.question_no IS '문의 번호';
+COMMENT ON COLUMN question.question_m_id IS '문의자 ID';
+COMMENT ON COLUMN question.question_item_no IS '문의 상품 ID';
+COMMENT ON COLUMN question.question_item_sub_no IS '문의 제품 ID';
+COMMENT ON COLUMN question.question_content IS '문의 내용';
+COMMENT ON COLUMN question.question_date IS '문의 날짜';
+
+--3.시퀀스
+--drop sequence seq_question_no;
+create sequence seq_question_no
+  start with 1
+  increment by 1
+  maxvalue 999999999
+  Minvalue 1
+  noCycle
+  nocache
+;
+
+/*--question 데이터 입력 방법(no, m_id, item_no, item_sub_no, content, date)
+insert into question values
+(seq_question_no.nextval, 'user02', 1, 1, '정말로 진짜 깁스 같나요?', sysdate);
+*/
+
+------------------------------------------------------------------------
+--1.생성
+--drop table answer;
+create table answer(
+  answer_no           number(9),
+  answer_question_no  number(9) not null,
+  answer_content      varchar2(600 char) not null,
+  answer_date         date not null,
+  
+  constraint pk_answer primary key(answer_no),
+  constraint fk_answer_question_no foreign key(answer_question_no) 
+    references question(question_no) on delete cascade
+    --질문 삭제시 답변 자동삭제
+);
+ 
+--2.코멘트
+COMMENT ON COLUMN answer.answer_no IS '답변 번호';
+COMMENT ON COLUMN answer.answer_question_no IS '해당 질문 번호';
+COMMENT ON COLUMN answer.answer_content IS '답변 내용';
+COMMENT ON COLUMN answer.answer_date IS '답변 날짜';
+
+--3.시퀀스
+--drop sequence seq_answer_no;
+create sequence seq_answer_no
+  start with 1
+  increment by 1
+  maxvalue 999999999
+  Minvalue 1
+  noCycle
+  nocache
+;
+
+/*--answer 데이터 입력 방법(answer_no, answer_question_no, answer_content, answer_date)
+insert into answer values
+(seq_answer_no.nextval, '1', '네. 실제 병원에서 사용하는 제품입니다^^', sysdate);
+*/
+
+------------------------------------------------------------------------
+--1.생성
+--drop table FAQ_category;
 create table FAQ_category(
   FAQ_category_no     number(2),
   FAQ_category_name   varchar2(10 char) not null,
@@ -815,7 +760,7 @@ insert into FAQ_category values(5, '기타');
 
 ------------------------------------------------------------------------
 --1.생성
-drop table FAQ;
+--drop table FAQ;
 create table FAQ(
   FAQ_no        number,
   FAQ_cat_no    number(2) not null,
@@ -836,7 +781,7 @@ COMMENT ON COLUMN FAQ.FAQ_content IS 'FAQ 글 내용';
 COMMENT ON COLUMN FAQ.FAQ_date IS 'FAQ 작성날짜';
 
 --3.시퀀스
-drop sequence seq_FAQ_no;
+--drop sequence seq_FAQ_no;
 create sequence seq_FAQ_no
   start with 1
   increment by 1
@@ -848,7 +793,7 @@ create sequence seq_FAQ_no
 
 ------------------------------------------------------------------------
 --1.생성
-drop table notice_category;
+--drop table notice_category;
 create table notice_category(
   notice_category_no    number(2),
   notice_category_name  varchar2(10 char) not null,
@@ -869,7 +814,7 @@ insert into notice_category values(4, '시스템');
 
 ------------------------------------------------------------------------
 --1.생성
-drop table notice;
+--drop table notice;
 create table notice(
   notice_no       number,
   notice_cat_no   number(2) not null,
@@ -892,7 +837,7 @@ COMMENT ON COLUMN notice.notice_file IS '공지 첨부파일 주소';
 COMMENT ON COLUMN notice.notice_date IS '공지 작성날짜';
 
 --3.시퀀스
-drop sequence seq_notice_no;
+--drop sequence seq_notice_no;
 create sequence seq_notice_no
   start with 1
   increment by 1
