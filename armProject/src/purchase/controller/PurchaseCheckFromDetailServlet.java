@@ -18,16 +18,16 @@ import member.model.vo.Member;
 import member.model.vo.User;
 
 /**
- * Servlet implementation class PurchaseCheckServlet
+ * Servlet implementation class PurchaseCheckFromDetailServlet
  */
-@WebServlet("/PurchaseCheck")
-public class PurchaseCheckServlet extends HttpServlet {
+@WebServlet("/PurchaseCheckFD")
+public class PurchaseCheckFromDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public PurchaseCheckServlet() {
+	public PurchaseCheckFromDetailServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -41,28 +41,34 @@ public class PurchaseCheckServlet extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("text/html; charset=utf-8");
 
-		// 2.	
+		// 2. 데이터 생성
 		HttpSession session = request.getSession();
 		User loginUser = (User) session.getAttribute("loginUser");
 		String userId = loginUser.getUserId();
 
-		// 3.사용자의 장바구니 목록 전체 반환
-		ArrayList<Cart> cartList = new CartService().selectAll(userId);
+		int itemNo = Integer.parseInt(request.getParameter("itemNo"));
+		String[] itemSubNoList = request.getParameter("subNoList").split(",");
+		String[] itemQtyList = request.getParameter("qtyList").split(",");
+
+		// 3. 임시 Cart 데이터를 생성하여 cartList에 저장
+		ArrayList<Cart> cartList = new ArrayList<Cart>();
+		for(int i =0; i<itemSubNoList.length; i++){
+			Cart c = new Cart();
+			c.setCart_no(0); //임시 카트번호
+			c.setItem_no(itemNo);
+			c.setItem_sub_no(Integer.parseInt(itemSubNoList[i]));
+			c.setQuantity(Integer.parseInt(itemQtyList[i]));
+			cartList.add(c);			
+		}
+		new CartService().reloadCart(cartList);
 
 		// 4.사용자 정보 반환
 		Member member = new MemberService().selectUser(userId);
 
 		// 5.
-		RequestDispatcher view = null;
-		if (cartList != null) {
-			view = request.getRequestDispatcher("/mypage/MyinfoCart2.jsp");
-			request.setAttribute("member", member);
-			System.out.println("장바구니 Check 성공");
-		} else {
-			view = request.getRequestDispatcher("/mypage/MyinfoCart.jsp");
-			System.out.println("장바구니 Check 실패");
-			request.setAttribute("errorMsg", "주문 목록이 없습니다.");
-		}
+		System.out.println("바로구매 기능 성공");
+		RequestDispatcher view = request.getRequestDispatcher("/mypage/MyinfoCart2.jsp");
+		request.setAttribute("member", member);
 		request.setAttribute("cartList", cartList);
 		view.forward(request, response);
 	}

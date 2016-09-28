@@ -60,7 +60,7 @@ public class PurchaseDao {
 				+ " PURCHASE_EMAIL, PURCHASE_ZIPCODE, PURCHASE_ADDRESS, TOTAL_PRICE, DELIVERY, "
 				+ " PURCHASE_DATE, PAID from purchase left join member on(m_id = PURCHASE_M_ID) "
 				+ " left join grade on(m_grade = g_no) where purchase_m_id = ? " + " order by purchase_no desc";
-
+				//PURCHASE_DATE
 		try {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, userId);
@@ -182,7 +182,7 @@ public class PurchaseDao {
 
 		PreparedStatement pstmt = null;
 
-		String sql = "update purchase set PAID = ? where PURCHASE_NO = ?";
+		String sql = "update purchase set PAID = ?, PURCHASE_DATE = sysdate where PURCHASE_NO = ?";
 
 		try {
 			pstmt = con.prepareStatement(sql);

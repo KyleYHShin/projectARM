@@ -134,6 +134,22 @@ null, sysdate);
 --개인용 DML(구문) 작성--
 
 
+insert into cart values(seq_cart_no.nextval, 'user01', 1, 1, 10);
+insert into cart values(seq_cart_no.nextval, 'user01', 2, 4, 1);
+commit;
+
+insert into cart values(seq_cart_no.nextval, 'user02', 1, 2, 3);
+insert into cart values(seq_cart_no.nextval, 'user02', 3, 6, 1);
+commit;
+
 
 
 commit;
+
+select item_name, item_img_mini, item_price, item_sub_name, item_sub_price
+from item_bridge
+left join item using(item_no)
+left join item_sub using(item_sub_no)
+where item_sub_no = 3;
+
+

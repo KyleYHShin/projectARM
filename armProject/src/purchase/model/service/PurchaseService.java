@@ -89,13 +89,16 @@ public class PurchaseService {
 					CartDao cDao = new CartDao();
 
 					for (Cart c : cartList) {
-						resultDeleteCart = cDao.deleteCart(con, c.getCart_no());
-						// 한번이라도 실패시 result = 0;
-						if (resultDeleteCart == 0) {
-							result = 0;
-							break;// 루틴종료
+						//바로구매하기 실행시 cart_no=0이므로 아래 코드를 피한다.
+						if (c.getCart_no() != 0) {
+							resultDeleteCart = cDao.deleteCart(con, c.getCart_no());
+							// 한번이라도 실패시 result = 0;
+							if (resultDeleteCart == 0) {
+								result = 0;
+								break;// 루틴종료
+							}
+							result = purchaseNo;
 						}
-						result = purchaseNo;
 					}
 				}
 			}

@@ -155,4 +155,61 @@ public class CartDao {
 		return result;
 	}
 
+	public int insertCart(Connection con, String userId, int itemNo, int itemSubNo, int qty) {
+		int result = 0;
+
+		PreparedStatement pstmt = null;
+		String sql = "insert into cart values(seq_cart_no.nextval, ?, ?, ?, ?)";
+
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, userId);
+			pstmt.setInt(2, itemNo);
+			pstmt.setInt(3, itemSubNo);
+			pstmt.setInt(4, qty);
+
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
+	public void reloadCart(Connection con, Cart c) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+
+		String sql = "select item_name, item_img_mini, item_price, item_sub_name, item_sub_price "
+				+ " from item_bridge "
+				+ " left join item using(item_no) "
+				+ " left join item_sub using(item_sub_no) "
+				+ " where item_sub_no = ?";
+
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, c.getItem_sub_no());
+
+			rset = pstmt.executeQuery();
+
+			if(rset.next()){ 
+				c.setItem_name(rset.getString("item_name"));
+				c.setItem_img_mini(rset.getString("item_img_mini"));
+				c.setItem_price(rset.getInt("item_price"));
+
+				c.setItem_sub_name(rset.getString("item_sub_name"));
+				c.setItem_sub_price(rset.getInt("item_sub_price"));
+
+				c.setTotal_price((c.getItem_price() + c.getItem_sub_price()) * c.getQuantity());
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+	}
+
 }

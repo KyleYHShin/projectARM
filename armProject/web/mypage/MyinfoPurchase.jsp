@@ -193,7 +193,10 @@ function nologinCart(){
 					return;
 				}
 				buttonArray[currentIndex].removeClass('active');
+				buttonArray[currentIndex].css("background-color","green").css("border","1px solid #18ab29");
 				buttonArray[newIndex].addClass('active');
+				buttonArray[newIndex].css("background-color","red").css("border","1px solid red");
+				
 				//목록 좌우 재배치
 				if (newIndex > currentIndex) {
 					slideLeft = '100%';
@@ -303,9 +306,9 @@ nav#topMenu {
 }
 
 .menuLink:hover {
-		color: red;
-		cursor: pointer;
-	}
+	color: red;
+	cursor: pointer;
+}
 /*------------------- 최상단 메뉴 끝 -----------*/
 #banner {
 	margin: 10px auto;
@@ -318,80 +321,82 @@ nav#topMenu {
 }
 
 /*-------------- 퀵바 ----------------------*/
-	#quick_bar {
-		width: 120px;
-		border: 1px solid orange;
-		border-radius:5px;
-		background: #feffd0;
-		background: white;
-		z-index: 9999;
-		position: fixed;
-		right: -122px;
-	}
-	
-	#qBtn {
-		position: fixed;
-		right: 0px;
-		z-index: 9999;
-		display: block;
-		border: 1px solid #ffcc00;
-		transform: rotate(270deg);
-		background: #fed605;
-		font-size: 12pt;
-		border-radius : 3px;
-	}
-	
-	#quick_bar a {
-		padding: 16px;
-		display: block;
-		transition: all 0.3s ease;
-		font-size: 15px;
-		position: relative;
-	}
+#quick_bar {
+	width: 120px;
+	border: 1px solid orange;
+	border-radius: 5px;
+	background: #feffd0;
+	background: white;
+	z-index: 9999;
+	position: fixed;
+	right: -122px;
+}
 
-	/*퀵바 내 칸당 크기 조절-----------------------------------0925*/
-	#quick_bar #recent_list .ritem{
-		width : 90px;
-		height : 90px;
-		padding : 0;
-		margin : 2px auto;
-		test-align : center;
-		border : 1px solid orange;
-	}
-	#quick_bar #recent_list .ritem img{
-		width : 100%;
-		height : 100%;
-		margin : 0 auto;
-		padding : 0;
-	}
-	#quick_bar #recent_list .ritem a{
-		margin : 0;
-		padding : 0;
-	}
-	/*=============------------------------------------*/
-	#quick_bar .btn {
-		width: 100%;
-		border : 0;
-		BORDER-BOTTOM : 1px solid orange;
-		border-radius : 0;
-		background: none;
-	}
-	
-	#quick_bar .btn:focus, #quick_bar .btn:hover, #quick_bar .btn:active:focus,
-		#quick_bar .btn.active:focus, #quick_bar .btn.focus, #quick_bar .btn:active.focus,
-		#quick_bar .btn.active.focus {
-		background: none;
-	}
+#qBtn {
+	position: fixed;
+	right: 0px;
+	z-index: 9999;
+	display: block;
+	border: 1px solid #ffcc00;
+	transform: rotate(270deg);
+	background: #fed605;
+	font-size: 12pt;
+	border-radius: 3px;
+}
+
+#quick_bar a {
+	padding: 16px;
+	display: block;
+	transition: all 0.3s ease;
+	font-size: 15px;
+	position: relative;
+}
+
+/*퀵바 내 칸당 크기 조절-----------------------------------0925*/
+#quick_bar #recent_list .ritem {
+	width: 90px;
+	height: 90px;
+	padding: 0;
+	margin: 2px auto;
+	test-align: center;
+	border: 1px solid orange;
+}
+
+#quick_bar #recent_list .ritem img {
+	width: 100%;
+	height: 100%;
+	margin: 0 auto;
+	padding: 0;
+}
+
+#quick_bar #recent_list .ritem a {
+	margin: 0;
+	padding: 0;
+}
+/*=============------------------------------------*/
+#quick_bar .btn {
+	width: 100%;
+	border: 0;
+	BORDER-BOTTOM: 1px solid orange;
+	border-radius: 0;
+	background: none;
+}
+
+#quick_bar .btn:focus, #quick_bar .btn:hover, #quick_bar .btn:active:focus,
+	#quick_bar .btn.active:focus, #quick_bar .btn.focus, #quick_bar .btn:active.focus,
+	#quick_bar .btn.active.focus {
+	background: none;
+}
 /*---------------------------내용 부분------------------------------------ */
 #wrapper {
 	margin: 0 auto;
 	max-width: 1000px;
-	height: auto;
+	height: auto; 
 }
 
 #cs_menu {
 	width: 100%;
-	height: 40px;/*여기*/
+	height: 40px; /*여기*/
 	background: #fed605;
 	margin: 5px auto;
 }
@@ -452,30 +457,35 @@ nav#topMenu {
 }
 
 #contents {
-	width: 100%;
 	margin: 0 auto;
+	width: 100%;
+	min-height : 800px;
 	padding-top: 2%;
-	min-height: 600px;
 	/*background : #ffffcc;*/
 }
+
 /* 슬라이드 처리 부분--------------------------*/
 .slide-viewer {
 	postion: relative;
 	margin-top: 2%;
 	margin-bottom: 15%;
 }
+
 .slide-group {
 	width: 100%;
 	position: relative;
 }
+
 .slide {
 	width: 100%;
 	display: none;
 	position: absolute;
 }
+
 .slide:first-child {
 	display: block;
 }
+
 .slide-btn {
 	margin: 5px;
 	background-color: green /* #44c767 */;
@@ -492,15 +502,18 @@ nav#topMenu {
 	text-shadow: 0px 1px 0px #2f6627;
 	outline: none; /* 클릭후 버튼 잔상 제거 */
 }
+
+.slide-btn:first-child {
+	background-color: red;
+	border: 1px solid red;
+}
+
 .slide-btn:hover {
 	background-color: white;
 	border: 1px solid #18ab29;
 	color: black;
 }
-.slide-btn:active {
-	background-color: red /* #44c767 */;
-	border: 1px solid red /* #18ab29 */;
-}
+
 @media all and (max-width: 300px) {
 	.slide-viewer {
 		margin-bottom: 30%;
@@ -519,6 +532,7 @@ nav#topMenu {
 @media all and (max-width: 750px) {
 	.bill {
 		width: 90%;
+		margin-bottom: 30%;
 	}
 }
 
