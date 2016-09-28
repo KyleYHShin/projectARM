@@ -38,8 +38,25 @@ public class NoticeListServlet extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html; charset=utf-8");
 		
-		ArrayList<Notice> list = new NoticeService().selectAll();
-		ArrayList<Faqnotice> flist = new NoticeService().selectFaq();
+		String status = request.getParameter("status");
+		String spage = request.getParameter("page");
+		int page = 1;
+		if(spage != null){
+			page = Integer.parseInt(spage);
+		}
+		ArrayList<Notice> list = null;
+		ArrayList<Faqnotice> flist = null;
+		if(status==null){
+			page = 1;
+			list = new NoticeService().selectAll(page);
+			flist = new NoticeService().selectFaq(page);
+		}else if(status.equals("notice")){
+			list = new NoticeService().selectAll(page);
+			flist = new NoticeService().selectFaq(1);
+		}else if(status.equals("faq")){
+			list = new NoticeService().selectAll(1);
+			flist = new NoticeService().selectFaq(page);
+		}
 		
 		RequestDispatcher view = null;
 
@@ -48,6 +65,8 @@ public class NoticeListServlet extends HttpServlet {
 			
 			request.setAttribute("list", list); 
 			request.setAttribute("flist", flist);
+			request.setAttribute("page", page);
+			request.setAttribute("status", status);
 			view.forward(request, response);
 		}else {
 			view = request.getRequestDispatcher("mainlist");

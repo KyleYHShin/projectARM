@@ -192,6 +192,21 @@
 		});
 
 	});
+ 	 // 비밀번호 설정 동녕부분
+	function pwdCheck(){
+		var password = document.getElementById("userpwd1").value;
+		
+	var chk=0;
+	if (password.search(/[0-9]/g) != -1) chk ++;
+	if (password.search(/[a-z]/ig) != -1) chk ++;
+	if (password.search(/[!@#$%^&*()?_~]/g) != -1) chk ++;
+	if(chk<2){
+		alert("영어, 숫자, 특수문자를 두가지 이상 혼용해야합니다");
+		$('#userpwd1').val('');
+		return false;
+		}
+
+	}
 		
   </script>
   <style type="text/css">
@@ -566,7 +581,7 @@
 		<th>아 이 디</th><td><input type="text" name="userid" value="<%= member.getUserId() %>" readonly></td>
 	</tr>
 	<tr>
-		<th>비밀번호</th><td><input type = "password" id="userpwd1" name="password" required></td>
+		<th>비밀번호</th><td><input type = "password" id="userpwd1" name="password" required placeholder="4~16글자 사이의 수" onblur="pwdCheck()">영문, 숫자, 특수문자중 2가지이상</td>
 	</tr>
 	<tr>
 		<th>비밀번호확인</th><td><input type = "password" id="userpwd2" name="password1" required> <span id="ckpwd"></span></td>

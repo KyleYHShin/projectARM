@@ -16,9 +16,9 @@ public class NoticeService {
 		
 	}
 
-	public ArrayList<Notice> selectAll() {
+	public ArrayList<Notice> selectAll(int page) {
 		Connection con = getConnection();
-		ArrayList<Notice> list = new NoticeDao().selectAll(con);
+		ArrayList<Notice> list = new NoticeDao().selectAll(con, page);
 		close(con);
 		
 		return list;
@@ -82,9 +82,9 @@ public class NoticeService {
 		
 	}
 
-	public ArrayList<Faqnotice> selectFaq() {
+	public ArrayList<Faqnotice> selectFaq(int page) {
 		Connection con = getConnection();
-		ArrayList<Faqnotice> flist = new NoticeDao().selectFaq(con);
+		ArrayList<Faqnotice> flist = new NoticeDao().selectFaq(con, page);
 		close(con);
 		System.out.println("서비스 구동");
 		

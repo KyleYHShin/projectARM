@@ -13,16 +13,24 @@ public class NoticeDao {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ArrayList<Notice> selectAll(Connection con) {
+	public ArrayList<Notice> selectAll(Connection con, int page) {
 		ArrayList<Notice>list = null;
-		Statement stmt = null;
+		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
-		String query = "select * from notice order by notice_no desc";
+		//String query = "select * from notice order by notice_no desc";
+		
+		String query = "select * "+
+		"from ("+
+		"select ceil(rownum/7) page, notice_no, notice_cat_no, "+
+		"notice_title, notice_content, notice_file, notice_date "+
+		"from(select * from notice order by notice_no desc)) where page = ?";
 		
 		try {
-			stmt = con.createStatement();
-			rset = stmt.executeQuery(query);
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, page);
+			
+			rset = pstmt.executeQuery();
 			
 			boolean flag = true;
 			while(rset.next()) {
@@ -44,7 +52,7 @@ public class NoticeDao {
 			e.printStackTrace();
 		}finally {
 			close(rset);
-			close(stmt);
+			close(pstmt);
 		}
 		return list;
 	}
@@ -185,17 +193,28 @@ public class NoticeDao {
 		
 		}
 
-		public ArrayList<Faqnotice> selectFaq(Connection con) {
+		public ArrayList<Faqnotice> selectFaq(Connection con, int page) {
 			ArrayList<Faqnotice>flist = null;
-			Statement stmt = null;
+			//Statement stmt = null;
+			PreparedStatement pstmt = null;
 			ResultSet rset = null;
 			
-			String query = "select * from FAQ Left join faq_category on (faq_cat_no = faq_category_no) "
-					+ "order by FAQ_no desc";
+			//String query = "select * from FAQ Left join faq_category on (faq_cat_no = faq_category_no) "
+					//+ "order by FAQ_no desc";
+			
+			String query = "select * "+
+			"from("+
+			"select ceil(rownum/7) page, faq_no, faq_cat_no, faq_title, faq_content, faq_date, faq_category_no, faq_category_name "+
+			"from(select * from FAQ Left join faq_category on (faq_cat_no = faq_category_no) "+
+			"order by FAQ_no desc)) where page = ?";
 			
 			try {
-				stmt = con.createStatement();
-				rset = stmt.executeQuery(query);
+				/*stmt = con.createStatement();
+				rset = stmt.executeQuery(query);*/
+				pstmt = con.prepareStatement(query);
+				pstmt.setInt(1, page);
+				
+				rset = pstmt.executeQuery();
 				
 				boolean flag = true;
 				while(rset.next()) {
@@ -220,7 +239,7 @@ public class NoticeDao {
 				e.printStackTrace();
 			}finally {
 				close(rset);
-				close(stmt);
+				close(pstmt);
 			}
 
 			return flist;

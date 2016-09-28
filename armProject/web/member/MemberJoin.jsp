@@ -248,6 +248,35 @@ String almsg = (String)request.getAttribute("almsg");
 					}
 				});
 	});
+	// 비밀번호 설정 동녕수정
+	function pwdCheck(){
+		var password = document.getElementById("userpwd1").value;
+		
+	var chk=0;
+	if (password.search(/[0-9]/g) != -1) chk ++;
+	if (password.search(/[a-z]/ig) != -1) chk ++;
+	if (password.search(/[!@#$%^&*()?_~]/g) != -1) chk ++;
+	if(chk<2){
+		alert("영어, 숫자, 특수문자를 두가지 이상 혼용해야합니다");
+		$('#userpwd1').val('');
+		return false;
+	
+	}
+	}
+	//아이디 설정
+	function idCheck(){
+		var id = document.getElementById("userid").value;
+		
+		var chk=0;
+		if (id.search(/[0-9]/g) != -1) chk ++;
+		if (id.search(/[a-z]/ig) != -1) chk ++;
+		
+		if(chk<1){
+			alert("한글, 특수문자는 사용하실수 없습니다");
+			$('#userid').val('');
+			return false;
+			}
+	}
 </script>
 <style type="text/css">
 body {
@@ -785,8 +814,8 @@ footer #fwrap {
 					</tr>
 					<tr>
 						<th>비밀번호</th>
-						<td><input type="password" id="userpwd1" name="userpwd"
-							required></td>
+		                <td><input type="password" id="userpwd1" name="userpwd"
+		                     required placeholder="4~16글자 사이의 수" onblur="pwdCheck()" maxlength="16">영문, 숫자, 특수문자중 2가지이상</td>
 					</tr>
 					<tr>
 						<th>비밀번호확인</th>
