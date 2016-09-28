@@ -144,7 +144,7 @@ String keyword = (String)request.getAttribute("keyword");
 	});
 	function goCart(){
 		<% if(loginUser != null) {%>
-		location.href="/arm/mypage/MyinfoCart.jsp";
+		location.href="/arm/CartView";
 		<% } else{ %>
 		nologinCart();
 		<% }%>
@@ -712,8 +712,8 @@ String keyword = (String)request.getAttribute("keyword");
 		        <li class="topMenuLi"><a class="menuLink" href="/arm/ailist">상품관리</a></li>
 		       	<li class="topMenuLi"><a class="menuLink" href="/arm/amlist">회원관리</a></li>
 		     	 <% }else{%>
-		        <li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">장바구니</a></li>
-		        <li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">MyPage</a></li>
+		        <li class="topMenuLi"><a class="menuLink" href="/arm/CartView">장바구니</a></li>
+		        <li class="topMenuLi"><a class="menuLink" href="/arm/myinfo?userid=<%= loginUser.getUserId() %>">MyPage</a></li>
 		        <% } %>
 		        <li class="topMenuLi"><a class="menuLink" href="/arm/logout">로그아웃</a></li>
 		        <li class="topMenuLi">환영합니다! <%=loginUser.getUserName() %>님</li>

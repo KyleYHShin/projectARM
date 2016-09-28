@@ -77,37 +77,99 @@
 					}
 				}).open();
 	}
-	$(function() {
-		//퀵바 토글 - 퀵바 고정위치를 클릭시마다 바뀌게 하면서 trasition효과
-		var onoff = 0;
-		$("#qBtn").click(
-				function() {
-					if (onoff == 1) {
-						$("#quick_bar").css("right", "-122px").css(
-								"transition", "all 0.5s");
-						$("#qBtn").css("right", "-14px").css("transition",
-								"all 0.5s");
-						onoff = 0;
-					} else if (onoff == 0) {
-						$("#quick_bar").css("right", "0").css("transition",
-								"all 0.5s");
-						$("#qBtn").css("right", "106px").css("transition",
-								"all 0.5s");
-						onoff = 1;
+	
+	function viewRecentItem(){
+		//sessionStorage.clear();
+		var rItems = "";
+		if(sessionStorage.length==0){
+			$("#recent_list").html("<div class='ritem' style='color : gray;'><br>최근 본 상품이 없습니다.</div>");
+		}else{
+			if(sessionStorage.length <= 4){
+				//중복 값 지우기 위함.
+				for(var i = sessionStorage.length-1; i >= 0; i--){
+					var key = sessionStorage.key(i);
+					var item = sessionStorage[key];
+					for(var j = i-1 ; j >=0; j--){
+						var key2 = sessionStorage.key(j);
+						var item2 = sessionStorage[key2];
+						if(item == item2){
+							sessionStorage.removeItem(key2);
+						}
 					}
-					;
-				});
+				}
+				for(var i = sessionStorage.length-1; i >= 0; i--){
+					var key = sessionStorage.key(i);
+					var item = sessionStorage[key];
+					var values = item.split(",");
+					var rItem = "<div class='ritem'><a href='/arm/ItemDetailViewServlet?itemNo="+values[0]+"'><img src='"+values[1]+"'></a></div>";
+					rItems += rItem;
+				}
+			} else {//최대 4개만 보여준다
+				//중복 값 지우기 위함.
+				for(var i = sessionStorage.length-1; i > sessionStorage.length-5; i--){
+					var key = sessionStorage.key(i);
+					var item = sessionStorage[key];
+					for(var j = i-1 ; j > sessionStorage.length-5; j--){
+						var key2 = sessionStorage.key(j);
+						var item2 = sessionStorage[key2];
+						if(item == item2){
+							sessionStorage.removeItem(key2);
+						}
+					}
+				}
+				for(var i = sessionStorage.length-1; i > sessionStorage.length-5; i--){
+					var key = sessionStorage.key(i);
+					var item = sessionStorage[key];
+					var values = item.split(",");
+					var rItem = "<div class='ritem'><a href='/arm/ItemDetailViewServlet?itemNo="+values[0]+"'><img src='"+values[1]+"'></a></div>";
+					rItems += rItem;
+				}
+				if(sessionStorage.length > 10){
+					for(var i = sessionStorage.length-10; i >= 0; i--){
+						var key = sessionStorage.key(i);
+						sessionStorage.removeItem(key);
+						//10개이상은 지우기 위홤 >> 5개는 여분
+					}
+				}
+			}
+			$("#recent_list").html(rItems);
+		}
+	}
+	//------------------------------------------------------------------------끗---------
+	function nologinCart(){
+		alert("로그인이 필요합니다");
+	};
 
-		//퀵바 장바구니, 최근 본 목록 슬라이드 처리
-		$("#recent").click(function() {
-			$("#recent_list").slideDown("fast");
-			$("#cart_list").slideUp("fast");
-		});
-		$("#cart").click(function() {
-			$("#recent_list").slideUp("fast");
-			$("#cart_list").slideDown("fast");
-		});
+		$(function() {
+			//최근목록보기
+			viewRecentItem();
+			
+			//퀵바 위치 조절
+			var winH = $(window).height();
+			var qH = $("#quick_bar").height();
+			var qbH = $("#qBtn").height();
+			var qTop = (winH-qH)/2;
+			var qbTop = (winH-qbH)/2;
+			$("#quick_bar").css("top", qTop);
+			$("#qBtn").css("top", qbTop);
+			
+			$(document).on("hover",".menuLink", function(){
+				$(this).css("color","red").css("cursor","pointer");
+			});
 
+			//퀵바 토글 - 퀵바 고정위치를 클릭시마다 바뀌게 하면서 trasition효과
+			var onoff = 0;
+			$("#qBtn").click(function() {
+				if (onoff == 1) {
+					$("#quick_bar").css("right", "-122px").css("transition", "all 0.5s");
+					$("#qBtn").css("right", "0px").css("transition", "all 0.5s");
+					onoff = 0;
+				} else if (onoff == 0) {
+					$("#quick_bar").css("right", "0").css("transition", "all 0.5s");
+					$("#qBtn").css("right", "118px").css("transition", "all 0.5s");
+					onoff = 1;
+				}
+			});
 		//주문하기 관련 메서드		
 		$('.cancle_btn').on('click', function() {
 			//1.post 방식
@@ -341,9 +403,6 @@ nav#topMenu {
 	}
 }
 
-.topMenuLi:hover .menuLink {
-	color: red;
-}
 /* 수정부분 */
 #pur_step {
 	font-size: 1.7em;
@@ -360,7 +419,10 @@ nav#topMenu {
 	max-height: auto;
 	padding: 3px;
 }
-
+.menuLink:hover {
+		color: red;
+		cursor: pointer;
+	}
 /*------------------- 최상단 메뉴 끝 -----------*/
 #banner {
 	margin: 10px auto;
@@ -368,65 +430,75 @@ nav#topMenu {
 /*상단 배너 크기*/
 #banner a img {
 	max-width: 100%;
-	max-height: 100px;
+	max-height: 70px;
 	border: 0;
 }
 
 /*-------------- 퀵바 ----------------------*/
-#quick_bar {
-	width: 120px;
-	height: auto;
-	border: 1px solid yellow;
-	background: #feffd0;
-	background: white;
-	z-index: 9999;
-	position: fixed;
-	right: -122px;
-	top: 170px;
-}
+	#quick_bar {
+		width: 120px;
+		border: 1px solid orange;
+		border-radius:5px;
+		background: #feffd0;
+		background: white;
+		z-index: 9999;
+		position: fixed;
+		right: -122px;
+	}
+	
+	#qBtn {
+		position: fixed;
+		right: 0px;
+		z-index: 9999;
+		display: block;
+		border: 1px solid #ffcc00;
+		transform: rotate(270deg);
+		background: #fed605;
+		font-size: 12pt;
+		border-radius : 3px;
+	}
+	
+	#quick_bar a {
+		padding: 16px;
+		display: block;
+		transition: all 0.3s ease;
+		font-size: 15px;
+		position: relative;
+	}
 
-#qBtn {
-	position: fixed;
-	right: -14px;
-	bottom: 310px;
-	z-index: 9999;
-	display: block;
-	border: 1px solid orange;
-	transform: rotate(270deg);
-	background: yellow;
-	font-size: 12pt;
-}
-
-#quick_bar a {
-	padding: 16px;
-	display: block;
-	transition: all 0.3s ease;
-	font-size: 15px;
-	position: relative;
-}
-
-#quick_bar #cart_list {
-	display: none;
-}
-
-#quick_bar #cart_list table {
-	margin: 3px auto;
-}
-
-#quick_bar #recent_list table {
-	margin: 3px auto;
-}
-
-#quick_bar .btn {
-	width: 100%;
-}
-
-#quick_bar .btn:focus, #quick_bar .btn:hover, #quick_bar .btn:active:focus,
-	#quick_bar .btn.active:focus, #quick_bar .btn.focus, #quick_bar .btn:active.focus,
-	#quick_bar .btn.active.focus {
-	background: white;
-}
-
+	/*퀵바 내 칸당 크기 조절-----------------------------------0925*/
+	#quick_bar #recent_list .ritem{
+		width : 90px;
+		height : 90px;
+		padding : 0;
+		margin : 2px auto;
+		test-align : center;
+		border : 1px solid orange;
+	}
+	#quick_bar #recent_list .ritem img{
+		width : 100%;
+		height : 100%;
+		margin : 0 auto;
+		padding : 0;
+	}
+	#quick_bar #recent_list .ritem a{
+		margin : 0;
+		padding : 0;
+	}
+	/*=============------------------------------------*/
+	#quick_bar .btn {
+		width: 100%;
+		border : 0;
+		BORDER-BOTTOM : 1px solid orange;
+		border-radius : 0;
+		background: none;
+	}
+	
+	#quick_bar .btn:focus, #quick_bar .btn:hover, #quick_bar .btn:active:focus,
+		#quick_bar .btn.active:focus, #quick_bar .btn.focus, #quick_bar .btn:active.focus,
+		#quick_bar .btn.active.focus {
+		background: none;
+	}
 #wrapper {
 	margin: 0 auto;
 	max-width: 1000px;
@@ -435,7 +507,7 @@ nav#topMenu {
 
 #cs_menu {
 	width: 100%;
-	height: 50px;
+	height: 40px;
 	background: yellow;
 	margin: 5px auto;
 }
@@ -456,11 +528,11 @@ nav#topMenu {
 }
 
 .cs_navi li a {
-	font-size: 20px;
+	font-size: 18px;
 	font-weight: 900;
 	color: black;
 	text-decoration: none;
-	padding: 10px;
+	padding: 5px;
 	display: block;
 }
 
@@ -692,11 +764,9 @@ footer #fwrap {
 					if (loginUser != null) {
 				%>
 				<li class="topMenuLi"><a class="menuLink" href="/arm/CartView">장바구니</a></li>
-				<li class="topMenuLi"><a class="menuLink"
-					href="/arm/mypage/MyinfoDetail.jsp">MyPage</a></li>
-				<li class="topMenuLi"><a class="menuLink" href="logout">로그아웃</a></li>
-				<li class="topMenuLi">환영합니다! <%=loginUser.getUserName()%>님
-				</li>
+				<li class="topMenuLi"><a class="menuLink" href="/arm/myinfo?userid=<%= loginUser.getUserId() %>">MyPage</a></li>
+	            <li class="topMenuLi"><a class="menuLink" href="/arm/logout">로그아웃</a></li>
+	            <li class="topMenuLi">환영합니다! <%=loginUser.getUserName() %>님</li>
 				<%
 					} else {
 				%>
@@ -715,62 +785,34 @@ footer #fwrap {
 
 	</div>
 	<!-- 퀵바 -->
-	<button id="qBtn" class="hidden-xs">Quick</button>
+	<button id="qBtn" class="hidden-xs"><span class="glyphicon glyphicon-chevron-up"></span></button>
 	<div id="quick_bar" class="hidden-xs">
-		<button class="btn btn-default">
+		<button id="mypage" class="btn btn-default" onclick="goMyinfo();">
 			<span class="glyphicon glyphicon-user"></span> MY PAGE
 		</button>
 		<!-- 그냥 장바구니 페이지로 이동하도록. -->
-		<button id="cart" class="btn btn-default">
+		<button id="cart" class="btn btn-default" onclick="goCart();">
 			<span class="glyphicon glyphicon-shopping-cart"></span> 장바구니 &nbsp;
-		</button>
-		<br>
-		<div id="cart_list">
-			<table cellpadding="0" cellspacing="0" border="1px">
-				<tr>
-					<td><a href="#">이미지1</a></td>
-				</tr>
-				<tr>
-					<td><a href="#">이미지2</a></td>
-				</tr>
-				<tr>
-					<td><a href="#">이미지3</a></td>
-				</tr>
-			</table>
-		</div>
+		</button><br>
 		<button id="recent" class="btn btn-default">최근 본 상품</button>
 		<div id="recent_list">
-			<table cellpadding="0" cellspacing="0" border="1px">
-				<tr>
-					<td><a href="#">이미지1</a></td>
-				</tr>
-				<tr>
-					<td><a href="#">이미지2</a></td>
-				</tr>
-				<tr>
-					<td><a href="#">이미지3</a></td>
-				</tr>
-			</table>
+			<!-- 동적으로 추가됨 -->
 		</div>
-		<button>◀</button>
-		1/5
-		<button>▶</button>
 	</div>
 	<!-- 배너 -->
 	<div id="banner">
 		<!-- 배너클릭시 시작페이지로! -->
-		<a href="/arm/Main.jsp"><img src="/arm/img/banner.png"
+		<a href="/arm/mainlist"><img src="/arm/img/banner.png"
 			alt="시작페이지로"></a>
 	</div>
 	<div id="wrapper">
 		<div id="cs_menu">
 			<ul class="cs_navi">
 				<!-- ---------------------------수정------------------------------------ -->
-				<li><a href="/arm/mypage/MyinfoDetail.jsp" id="u_btn">회원정보</a></li>
+				<li><a href="/arm/myinfo?userid=<%= loginUser.getUserId() %>" id = "u_btn">회원정보</a></li>
 				<li><a href="/arm/CartView" id="c_btn">장바구니</a></li>
 				<li><a href="/arm/PurchaseView" id="bl_btn">구매 내역</a></li>
-				<li><a href="/arm/mypage/MyinfoQuestion.jsp" id="qa_btn">문의
-						내역</a></li>
+				<li><a href="/arm/iqlist?userid=<%= loginUser.getUserId() %>" id = "qa_btn">문의 내역</a></li>
 				<!-- ---------------------------수정 끝------------------------------------ -->
 			</ul>
 		</div>
@@ -945,7 +987,7 @@ footer #fwrap {
 
 			<div class="fd">
 				<h1>
-					<img src="images/전화기.png" width="50" height="40" border="0" alt="">&nbsp;1600-7000
+					<img src="img/tel.png" width="50" height="50" border="0" alt="">&nbsp;1600-7000
 				</h1>
 			</div>
 

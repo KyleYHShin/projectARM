@@ -139,7 +139,7 @@
 	        }).open();
 	      }
 		function goCart(){
-			location.href="/arm/mypage/MyinfoCart.jsp";
+			location.href="/arm/CartView";
 		}
 		function goMyinfo(){
 			location.href="/arm/myinfo?userid=<%= loginUser.getUserId() %>";
@@ -515,7 +515,8 @@
    <nav id="topMenu" >
         <ul>
 			<li class="topMenuLi"><a class="menuLink" href="/arm/nlist">고객센터</a></li>
-			<li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">장바구니</a></li>
+			<li class="topMenuLi"><a class="menuLink" href="/arm/CartView">장바구니</a></li>
+			<li class="topMenuLi"><a class="menuLink" href="/arm/myinfo?userid=<%= loginUser.getUserId() %>">MyPage</a></li>
             <li class="topMenuLi"><a class="menuLink" href="/arm/logout">로그아웃</a></li>
             <li class="topMenuLi">환영합니다! <%=loginUser.getUserName() %>님</li>
         </ul>
@@ -546,10 +547,10 @@
 <div id="wrapper">
 	<div id = "cs_menu">
 		<ul class = "cs_navi">
-			<li><a href="/arm/mypage/MyinfoCart.jsp" id = "c_btn">장바구니</a></li>
-			<li><a href="/arm/mypage/MyinfoPurchase.jsp" id = "bl_btn">구매 내역</a></li>
-			<li><a href="/arm/iqlist?userid=<%= loginUser.getUserId() %>" id = "qa_btn">문의 내역</a></li>
 			<li><a href="/arm/myinfo?userid=<%= loginUser.getUserId() %>" id = "u_btn">회원정보</a></li>
+				<li><a href="/arm/CartView" id="c_btn">장바구니</a></li>
+				<li><a href="/arm/PurchaseView" id="bl_btn">구매 내역</a></li>
+				<li><a href="/arm/iqlist?userid=<%= loginUser.getUserId() %>" id = "qa_btn">문의 내역</a></li>
 		</ul>
 	</div><!-- cs_menu -->
 <div id = "contents">

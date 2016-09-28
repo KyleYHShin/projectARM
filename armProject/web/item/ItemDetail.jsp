@@ -40,6 +40,19 @@
 
 <script type="text/javascript" src="js/jquery-3.1.0.min.js"></script>
 <script type="text/javascript">
+/*-------------------------------------------textarea 입력 글자수 제한------*/
+$(document).ready(function(){
+   $("textarea").keyup(function(){
+      var input = $(this).val().length;
+      var max = 600;
+      if (input > max){
+         alert("입력 가능한 글자수를 초과하였습니다.");
+         this.value = this.value.substring(0, max);
+         this.focus();
+      }
+         
+   });
+});
 function leadingZeros(n, digits){
 	  var zero = '';
 	  n = n.toString();
@@ -127,7 +140,7 @@ function nologinCart(){
 	}
 	function goCart(){
 		<% if(loginUser != null) {%>
-		location.href="/arm/mypage/MyinfoCart.jsp";
+		location.href="/arm/CartView";
 		<% } else{ %>
 		nologinCart();
 		<% }%>
@@ -1106,8 +1119,8 @@ table tr td { /*확인용*/
 		       	<li class="topMenuLi"><a class="menuLink" href="/arm/amlist">회원관리</a></li>
 		       	<li class="topMenuLi"><a class="menuLink" href="/arm/QnaListViewServlet">Q&A 관리</a></li>
 		     	 <% }else{%>
-		        <li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">장바구니</a></li>
-		        <li class="topMenuLi"><a class="menuLink" href="/arm/mypage/MyinfoCart.jsp">MyPage</a></li>
+		        <li class="topMenuLi"><a class="menuLink" href="/arm/CartView">장바구니</a></li>
+		        <li class="topMenuLi"><a class="menuLink" href="/arm/myinfo?userid=<%= loginUser.getUserId() %>">MyPage</a></li>
 		        <% } %>
 		        <li class="topMenuLi"><a class="menuLink" href="/arm/logout">로그아웃</a></li>
 		        <li class="topMenuLi">환영합니다! <%=loginUser.getUserName() %>님</li>

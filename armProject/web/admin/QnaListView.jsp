@@ -13,6 +13,19 @@
 <title>Item list</title>
 <script type="text/javascript" src = "js/jquery-3.1.0.min.js"></script>
 <script type="text/javascript">
+/*-------------------------------------------textarea 입력 글자수 제한------*/
+$(document).ready(function(){
+   $("textarea").keyup(function(){
+      var input = $(this).val().length;
+      var max = 600;
+      if (input > max){
+         alert("입력 가능한 글자수를 초과하였습니다.");
+         this.value = this.value.substring(0, max);
+         this.focus();
+      }
+         
+   });
+});
 	function addDiv(){
 		$("#item_add").slideToggle("fast");
 	}
