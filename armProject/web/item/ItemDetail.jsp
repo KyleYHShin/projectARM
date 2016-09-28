@@ -172,7 +172,7 @@ function nologinCart(){
 			if($(window).scrollTop() >= menupos){
 				$("#fix_menu").css("position","fixed").css("top","0");
 				$("#fix_menu").width($("#wrapper").width());
-				$("body").css("position","relative").css("top","70px");
+				$("body").css("position","relative").css("top","45 px");
 			}else{
 				$("#fix_menu").css("position", "relative").css("top","");
 				$("body").css("position","relative").css("top","0");
@@ -1123,7 +1123,7 @@ table tr td { /*확인용*/
 		        <li class="topMenuLi"><a class="menuLink" href="/arm/myinfo?userid=<%= loginUser.getUserId() %>">MyPage</a></li>
 		        <% } %>
 		        <li class="topMenuLi"><a class="menuLink" href="/arm/logout">로그아웃</a></li>
-		        <li class="topMenuLi">환영합니다! <%=loginUser.getUserName() %>님</li>
+		        <li class="topMenuLi fd hidden-xs">환영합니다! <%=loginUser.getUserName() %>님</li>
 		      <% }else{ %>
 		        <li class="topMenuLi"><a class="menuLink" onclick="nologinCart();">장바구니</a></li>
 		        <li class="topMenuLi"><a class="menuLink" href="/arm/member/MemberJoin.jsp">회원가입</a></li>
@@ -1155,43 +1155,20 @@ table tr td { /*확인용*/
 	</div>
 	<!-- 카테고리 ~ item 목록 -->
 	<div id="wrapper">
-
 		<div id="fix_menu">
 			<div id="category">
-				<ul class="navi">
-					<li><a href="/arm/catlist?categoryno=100">손</a>
-					<!-- 100 -->
-						<ul>
-							<li><a href="/arm/catlist?categoryno=110">반지</a></li>
-							<li><a href="/arm/catlist?categoryno=120">의료/건강</a></li>
-						</ul></li>
-					<!-- 손 -->
-
-					<li><a href="/arm/catlist?categoryno=200">손목</a>
-					<!-- 200 -->
-						<ul>
-							<li><a href="/arm/catlist?categoryno=210">팔찌/시계</a></li>
-							<li><a href="/arm/catlist?categoryno=220">의료/건강</a></li>
-						</ul></li>
-					<!-- 손목 -->
-					<li><a href="/arm/catlist?categoryno=300">팔목</a>
-					<!-- 300 -->
-						<ul>
-							<li><a href="/arm/catlist?categoryno=310">팔찌/시계</a></li>
-							<li><a href="/arm/catlist?categoryno=320">의료/건강</a></li>
-						</ul></li>
-					<!-- 팔목 -->
-					<li><a href="/arm/catlist?categoryno=400">어깨</a>
-					<!-- 400 -->
-						<ul>
-							<li><a href="/arm/catlist?categoryno=410">의류</a></li>
-							<li><a href="/arm/catlist?categoryno=420">의료/건강</a></li>
-						</ul></li>
-					<!-- 어깨 -->
-
-					<li><a id="sch">검색</a></li>
-				</ul>
-			</div>
+			<ul class="navi">
+				<li><a href="/arm/catlist?categoryno=100">손</a></li>
+				<!-- 손 -->
+				<li><a href="/arm/catlist?categoryno=200">손목</a></li>
+				<!-- 손목 -->
+				<li><a href="/arm/catlist?categoryno=300">팔꿈치</a></li>
+				<!-- 팔목 -->
+				<li><a href="/arm/catlist?categoryno=400">어깨</a></li>
+				<!-- 어깨 -->
+				<li><a id="sch">검색</a></li>
+			</ul>
+		</div>
 			<!-- 카테고리 -->
 			<div id="searchbox">
 				<form>
@@ -1200,11 +1177,7 @@ table tr td { /*확인용*/
 						width="25px" height="25px";>
 				</form>
 			</div>
-
-			<div id="category_detail">
-				<a href="#">홈</a> &nbsp;> &nbsp; <a href="#">카테고리</a> &nbsp;> &nbsp;
-				<a href="#">상세분류</a>
-			</div>
+		<!-- 히스토리 지움 -->
 		</div>
 		<!-- fix_menu(카테고리+검색+정렬) -->
 

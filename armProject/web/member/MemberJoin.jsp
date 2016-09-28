@@ -748,36 +748,18 @@ footer #fwrap {
 
 		<div id="fix_menu">
 			<div id="category">
-				<ul class="navi">
-					<li><a href="/arm/catlist?categoryno=100">손</a> <!-- 100 -->
-						<ul>
-							<li><a href="/arm/catlist?categoryno=110">반지</a></li>
-							<li><a href="/arm/catlist?categoryno=120">의료/건강</a></li>
-						</ul></li>
-					<!-- 손 -->
-
-					<li><a href="/arm/catlist?categoryno=200">손목</a> <!-- 200 -->
-						<ul>
-							<li><a href="/arm/catlist?categoryno=210">팔찌/시계</a></li>
-							<li><a href="/arm/catlist?categoryno=220">의료/건강</a></li>
-						</ul></li>
-					<!-- 손목 -->
-					<li><a href="/arm/catlist?categoryno=300">팔목</a> <!-- 300 -->
-						<ul>
-							<li><a href="/arm/catlist?categoryno=310">팔찌/시계</a></li>
-							<li><a href="/arm/catlist?categoryno=320">의료/건강</a></li>
-						</ul></li>
-					<!-- 팔목 -->
-					<li><a href="/arm/catlist?categoryno=400">어깨</a> <!-- 400 -->
-						<ul>
-							<li><a href="/arm/catlist?categoryno=410">의류</a></li>
-							<li><a href="/arm/catlist?categoryno=420">의료/건강</a></li>
-						</ul></li>
-					<!-- 어깨 -->
-
-					<li><a id="sch">검색</a></li>
-				</ul>
-			</div>
+			<ul class="navi">
+				<li><a href="/arm/catlist?categoryno=100">손</a></li>
+				<!-- 손 -->
+				<li><a href="/arm/catlist?categoryno=200">손목</a></li>
+				<!-- 손목 -->
+				<li><a href="/arm/catlist?categoryno=300">팔꿈치</a></li>
+				<!-- 팔목 -->
+				<li><a href="/arm/catlist?categoryno=400">어깨</a></li>
+				<!-- 어깨 -->
+				<li><a id="sch">검색</a></li>
+			</ul>
+		</div>
 			<!-- 카테고리 -->
 			<div id="searchbox">
 				<form action="/arm/isearch" method="post">
@@ -877,7 +859,7 @@ footer #fwrap {
 
 				<div class="fd">
 					<h1>
-						<img src="img/tel.png" width="50" height="50" border="0" alt="">&nbsp;1600-7000
+						<img src="/arm/img/tel.png" width="50" height="50" border="0" alt="">&nbsp;1600-7000
 					</h1>
 				</div>
 

@@ -628,7 +628,7 @@ footer #fwrap {
 				<li class="topMenuLi"><a class="menuLink"
 					href="/arm/myinfo?userid=<%= loginUser.getUserId() %>">MyPage</a></li>
 				<li class="topMenuLi"><a class="menuLink" href="logout">로그아웃</a></li>
-				<li class="topMenuLi">환영합니다! <%=loginUser.getUserName()%>님
+				<li class="topMenuLi fd hidden-xs">환영합니다! <%=loginUser.getUserName()%>님
 				</li>
 				<%
 					} else {

@@ -86,35 +86,15 @@ public class EmailSendingServlet extends HttpServlet {
         
         StringBuilder sb = new StringBuilder();
        
-		/*sb.append("[연락처] : "+ request.getParameter("phone1") + "-"+request.getParameter("phone2") + 
-				"-"+ request.getParameter("phone3") + "\n[이메일] : "+request.getParameter("email") +
-				"\n"+request.getParameter("content")+"<img src=\"http://localhost:8880/arm/echeck?userId=001\"/>");
-		String content = sb.toString();*/
-		
 		sb.append("[연락처] : "+ request.getParameter("phone1") + "-"+request.getParameter("phone2") + 
-				"-"+ request.getParameter("phone3") + "<br>[이메일] : "+request.getParameter("email") +
-				"<br>"+request.getParameter("content")+"<br><img src=\"http://localhost:8880/arm/echeck?userId=001\"/>");
+				"-"+ request.getParameter("phone3") + "\n[이메일] : "+request.getParameter("email") +
+				"\n"+request.getParameter("content"));
 		String content = sb.toString();
-		
-        Multipart multipart = new MimeMultipart();
-		
-		 // 메일 내용을 Setting
-		String html = "<img src=\"http://localhost:8880/arm/echeck?userId=001\" width=\"0\" height=\"0\"/>";
-
-		try {
-			MimeBodyPart messageBodyPart = new MimeBodyPart();
-			messageBodyPart.setContent(content,
-			"text/html;charset=" + "utf-8");// html형식
-			multipart.addBodyPart(messageBodyPart);
-		} catch (MessagingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
  
         String resultMessage = "";
         RequestDispatcher view = null;
         try {
-            EmailUtility.sendEmail(host, port, user, pass, recipient, subject, content, multipart);
+            EmailUtility.sendEmail(host, port, user, pass, recipient, subject, content);
             resultMessage = "The e-mail was sent successfully";
             view = request.getRequestDispatcher("nlist");
             request.setAttribute("msg", "1:1문의가 성공적으로 이루어졌습니다.");

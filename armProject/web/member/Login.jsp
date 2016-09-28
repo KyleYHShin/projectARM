@@ -117,7 +117,7 @@
 				$("#fix_menu").css("position","fixed").css("top","0");
 				$("#fix_menu").width($("#wrapper").width());
 				//스크롤시 fix_menu에 가려지는 부분 응급처리
-				$("body").css("position","relative").css("top","65px");
+				$("body").css("position","relative").css("top","30px");
 			}else{
 				$("#fix_menu").css("position", "relative").css("top","");
 				$("body").css("position","relative").css("top","0");
@@ -468,8 +468,12 @@
 	/* 로그인 */
 	div#loginDiv{
 		text-align : left;
-		width : 200pt;
+		width : 290px;
 		margin : 0 auto;
+		margin-bottom : 20px;s
+	}
+	.contents img {
+		margin-top : 20px;
 	}
 	label#ckauto {
 		font-size : 11pt;
@@ -487,6 +491,7 @@
 	#sch_id {
 		background : white;
 		border : 1px solid green;
+		border-right : 0px;
 		color : black;
 	}
 	#sch_pwd {
@@ -497,6 +502,7 @@
 	#join_btn{
 		background :white;
 		border : 1px solid green;
+		border-top : 0px;
 		color : black;
 	}
 	#loginTb td{
@@ -585,40 +591,18 @@
 
  	<div id = "fix_menu">
 			<div id="category">
-				<ul class="navi">
-					<li><a href="/arm/catlist?categoryno=100">손</a>
-					<!-- 100 -->
-						<ul>
-							<li><a href="/arm/catlist?categoryno=110">반지</a></li>
-							<li><a href="/arm/catlist?categoryno=120">의료/건강</a></li>
-						</ul></li>
-					<!-- 손 -->
-
-					<li><a href="/arm/catlist?categoryno=200">손목</a>
-					<!-- 200 -->
-						<ul>
-							<li><a href="/arm/catlist?categoryno=210">팔찌/시계</a></li>
-							<li><a href="/arm/catlist?categoryno=220">의료/건강</a></li>
-						</ul></li>
-					<!-- 손목 -->
-					<li><a href="/arm/catlist?categoryno=300">팔목</a>
-					<!-- 300 -->
-						<ul>
-							<li><a href="/arm/catlist?categoryno=310">팔찌/시계</a></li>
-							<li><a href="/arm/catlist?categoryno=320">의료/건강</a></li>
-						</ul></li>
-					<!-- 팔목 -->
-					<li><a href="/arm/catlist?categoryno=400">어깨</a>
-					<!-- 400 -->
-						<ul>
-							<li><a href="/arm/catlist?categoryno=410">의류</a></li>
-							<li><a href="/arm/catlist?categoryno=420">의료/건강</a></li>
-						</ul></li>
-					<!-- 어깨 -->
-
-					<li><a id="sch">검색</a></li>
-				</ul>
-			</div><!-- 카테고리 -->
+			<ul class="navi">
+				<li><a href="/arm/catlist?categoryno=100">손</a></li>
+				<!-- 손 -->
+				<li><a href="/arm/catlist?categoryno=200">손목</a></li>
+				<!-- 손목 -->
+				<li><a href="/arm/catlist?categoryno=300">팔꿈치</a></li>
+				<!-- 팔목 -->
+				<li><a href="/arm/catlist?categoryno=400">어깨</a></li>
+				<!-- 어깨 -->
+				<li><a id="sch">검색</a></li>
+			</ul>
+		</div><!-- 카테고리 -->
 	<div id = "searchbox">
 	<form>
 	<input type="text" id = "search" name = "search" placeholder = "검색하세요!">&nbsp;&nbsp;<input type="image" id = "schBtn" src = "/arm/img/search2_small.png" width ="25px" height = "25px";>
@@ -627,9 +611,9 @@
 	</div><!-- fix_menu(카테고리+검색+정렬) -->
 
     <div class="contents">
-    <h1>로 그 인</h1>
+    <img src = "/arm/img/login.png">
     <% if(msg != null){ %>
-    <span style = "text-align:center; color : red; font-size:9pt;"><%= msg %></span>
+    <br><span style = "text-align:center; color : red; font-size:9pt;"><%= msg %></span>
     <% } %>
 	<div id = "loginDiv" class="form">
     <form action = "/arm/login" method="post">
@@ -639,8 +623,6 @@
 	  </td></tr>
 	<tr><td>
       <input type="password" style="width:200pt; height:30pt" name = "userpwd" placeholder="비 밀 번 호"/><br>
-	  <label id = "ckauto"><input type="checkbox" align="left"> 자동 로그인</label><br>
-	  <span>개인 PC가 아닐 경우 주의하세요!</span><br>
 	  </td></tr>
 	    <tr><td>
 		</td></tr>
@@ -657,13 +639,13 @@
     </form>
 	
 	</div>
-	<br><br><br><br>
+<!-- 	<br><br><br><br>
 	<form>
 	<a href="http://www.naver.com"><img src="images/button.jpg" width="300" height="300" border="0" alt="">
 	<a href="http://www.naver.com"><img src="images/button.jpg" width="300" height="300" border="0" alt="">
 	<a href="http://www.naver.com"><img src="images/button.jpg" width="300" height="300" border="0" alt="">
 	<a href="http://www.naver.com"><img src="images/button.jpg" width="300" height="300" border="0" alt="">
-	</form>
+	</form> -->
 
     </div><!-- contents-->
 
@@ -689,7 +671,7 @@
 		
 
 		<div class = "fd">
-		<h1><img src="img/tel.png" width="50" height="50" border="0" alt="">&nbsp;1600-7000</h1>
+		<h1><img src="/arm/img/tel.png" width="50" height="50" border="0" alt="">&nbsp;1600-7000</h1>
 		</div>
 
 		<div class = "fd">

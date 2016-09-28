@@ -1,12 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.util.ArrayList, admin.notice.model.vo.Notice, member.model.vo.User" %>
+<%@ page import="java.util.ArrayList, admin.notice.model.vo.*, member.model.vo.*" %>
 <%
 User loginUser = (User)session.getAttribute("loginUser");
 ArrayList<Notice> list = (ArrayList<Notice>)request.getAttribute("list");
 String admin = (String)session.getAttribute("admin");
+ArrayList<Faqnotice> flist = (ArrayList<Faqnotice>)request.getAttribute("flist");
 
 String msg = (String)request.getAttribute("msg");
+
+String test = "테스트";
 %>    
 <!doctype html>
 <html lang="ko">
@@ -91,7 +94,55 @@ String msg = (String)request.getAttribute("msg");
 //------------------------------------------------------------------------끗---------
  	function nologinCart(){
 		alert("로그인이 필요합니다");
-	}	
+	}
+//------------------------------------------페이징----
+//전체 줄 수(reqeust로 전달받음)
+		var totalCount =21;<%-- <%= totalCount %> --%>
+		//페이지 수 : 한 페이지에 30줄 출력경우
+		var totalPage = Math.ceil(totalCount/7);
+		var PageNum;
+		//현재 페이지(request로 전달받음)
+		var page;
+	
+		//페이지 넘버링 출력
+		$(function drawPage(goTo){
+			if(goTo *= null){
+				page = goTo;
+			}else{
+				page = 1;<%--  <%= pageNo %> --%>
+			}
+			//페이지 그룹 넘버링 : 한번에 보여줄 페이지 넘버의 갯수
+			var pageGroup = Math.ceil(page/10);
+			var next = pageGroup*10;
+			var prev = next-9;
+			
+			var goNext = next+1;
+			if(prev-1<=0){
+				var goPrev = 1;
+			}else{
+				var goPrev = prev-1;
+			}
+			
+			if(next>totalPage){
+				var goNext = totalPage;
+				next = totalPage;
+			}else{
+				var goNext = next+1;
+			}
+			
+			var prevStep = "<a href='javascript:drawPage("+goPrev+");'>"+"<<"+"</a>";
+			var nextStep = "<a href='javascript:drawPage("+goNext+");'>"+">>"+"</a>";
+			
+			$("#pageNo").empty();
+			$("#pageNo").append(prevStep);
+			for(var i=prev; i<=next; i++){
+				
+				PageNum = "<a href='#'>"+i+"</a>";
+				$("#pageNo").append(PageNum);
+			}
+			$("#pageNo").append(nextStep);
+		});
+//--------------------------------------------------
   //고객센터 메뉴 클릭시 보이는 div 처리 (두가지방법)
 		function showNotice(){
 			$("#notice").show();
@@ -185,8 +236,6 @@ String msg = (String)request.getAttribute("msg");
 			$("#q_btn").css("background", "").css("color","");
 			$("#dq_btn").css("background", "red").css("color","white");
 		});
-
-
 	});
   </script>
   <style type="text/css">
@@ -259,46 +308,7 @@ String msg = (String)request.getAttribute("msg");
 	 border:0;
 	}
 
-	/*----광고----------------------------------*/
-
-	.adv-img {
-		width: 100%; /* 이미지 크기 반응형으로 작성 */
-	}
-
-	#ad {
-		margin: 5px auto;
-		width: 100%;
-		max-width: 700px;
-	}
-
-	.carousel-indicators {
-	  bottom: 2px;
-	}
-	.carousel-indicators li {
-	  width: 11px;
-	  height: 11px;
-	  border: 2px solid rgba(255, 255, 255, 0.3);
-	}
-	.carousel-indicators .active {
-	  width: 14px;
-	  height: 14px;
-	  border: 0px;
-	  background-color: rgba(255, 255, 255, 0.7);
-	}
-
-	/* None:hidden, Hover:visible */
-	.carousel .carousel-control{
-		visibility: hidden;
-	}
-	.carousel-indicators{
-		visibility: hidden;
-	}
-	.carousel:hover .carousel-control{
-		visibility: visible;
-	}
-	.carousel:hover .carousel-indicators{
-		visibility: visible;
-	}
+	
 	/*-------------- 퀵바 ----------------------*/
 	#quick_bar {
 		width: 120px;
@@ -429,7 +439,11 @@ String msg = (String)request.getAttribute("msg");
 		margin : 5px auto;
 		padding : 5px;
 	}
+
 	/* 공지사항,이벤트 스타일*/
+	.answer {
+		text-align : left;
+	}
 	.notice {
 		margin:0 auto;
 		BORDER-TOP: 2px solid black;
@@ -564,8 +578,27 @@ String msg = (String)request.getAttribute("msg");
 			font-size : 20pt
 		}
 	}
-
-	
+/* 페이징부분------------------------------------------------------------------ */
+	#pageNo{
+			margin : 10px auto;
+			display : table;
+			border-spacing : 2px;
+		}
+		#pageNo a{
+			display : table-cell;
+			vertical-align : middle;
+			text-align : center;
+			border : 1px solid red;
+			color : red;
+			background : white;
+			text-decoration : none;
+			width : 30px;
+			height : 30px;
+		}
+		#pageNo a:hover{
+			color : white;
+			background : red;
+		}
 /*---------------------------내용 부분 끝--------------------------------- */
 	/* 푸터 */
 	footer {
@@ -618,18 +651,19 @@ String msg = (String)request.getAttribute("msg");
 		     	 <% if(admin != null) {%>
 		        <li class="topMenuLi"><a class="menuLink" href="/arm/ailist">상품관리</a></li>
 		       	<li class="topMenuLi"><a class="menuLink" href="/arm/amlist">회원관리</a></li>
+		       	<li class="topMenuLi"><a class="menuLink" href="/arm/QnaListViewServlet">Q&A관리</a></li>
 		     	 <% }else{%>
 		        <li class="topMenuLi"><a class="menuLink" href="/arm/CartView">장바구니</a></li>
 		        <li class="topMenuLi"><a class="menuLink" href="/arm/myinfo?userid=<%= loginUser.getUserId() %>">MyPage</a></li>
 		        <% } %>
 		        <li class="topMenuLi"><a class="menuLink" href="/arm/logout">로그아웃</a></li>
-		        <li class="topMenuLi">환영합니다! <%=loginUser.getUserName() %>님</li>
+		        <li class="topMenuLi fd hidden-xs">환영합니다! <%=loginUser.getUserName() %>님</li>
 		      <% }else{ %>
 		        <li class="topMenuLi"><a class="menuLink" onclick="nologinCart();">장바구니</a></li>
 		        <li class="topMenuLi"><a class="menuLink" href="/arm/member/MemberJoin.jsp">회원가입</a></li>
 		        <li class="topMenuLi"><a class="menuLink" href="/arm/member/Login.jsp">로그인</a></li>
 		      <% } %>
-		        </ul>
+		    </ul>
 	   </nav>
  	</div>
 	<!-- 퀵바 -->
@@ -676,7 +710,7 @@ String msg = (String)request.getAttribute("msg");
 		for(Notice n:list){
 		%>
 		<form action="/arm/nupdate" method="post" enctype="multipart/form-data">
-		<tr class = "question"><td><input type = "text" name = "noticeno" value=<%=n.getNoticeNo() %> size="10"></td>
+		<tr class = "question"><td><input type = "text" name = "noticeno" value=<%=n.getNoticeNo() %> size="10" readonly></td>
 			<td><select name = "cate">
 					<% if(n.getCatNo() == 1){ %>
 					<option value="1" selected>공지사항</option>
@@ -689,7 +723,7 @@ String msg = (String)request.getAttribute("msg");
 			<td><%=String.valueOf(n.getNoticeDate())%></td>
 		</tr>
 		<tr class = "answer"><td></td><td colspan ="2"><textarea name="content" rows="5" cols="50"><%=n.getContent() %></textarea>
-		<br><span style="float : left;">첨부파일 : <%
+		<br><br><br><span style="float : left;">첨부파일 : <%
 						if(n.getNoticeFile() == null){  //첨부파일이없는 경우
 					%>첨부파일없음</span><br><input type="file" name="nfile">
 					<%  }else{ //첨부파일이 있는 경우 %>
@@ -704,11 +738,10 @@ String msg = (String)request.getAttribute("msg");
 				<% } %>
 		<!-- 일반회원일 경우 -->
 		<% }else{
-				for(Notice n:list){	 
-			%>
+				for(Notice n:list){	 %>
 		<tr class = "question"><td><%=n.getNoticeNo() %></td><td><%if( n.getCatNo()==1 ){ %>[공지사항] <%}else{ %>[이벤트] <%} %><%=n.getNoticeTitle() %></td><td><%=String.valueOf(n.getNoticeDate())%></td></tr>
 		<tr class = "answer"><td></td><td colspan ="2"><%=n.getContent() %>
-		<br><span style="float : left;">첨부파일 :
+		<br><br><br><span style="float : left;">첨부파일 :
 			<%	if(n.getNoticeFile() == null){  //첨부파일이없는 경우
 			%>첨부파일없음</span>
 			<%  }else{ //첨부파일이 있는 경우 %>
@@ -723,23 +756,86 @@ String msg = (String)request.getAttribute("msg");
 		<% if(admin != null){ %>
 		<br><button onclick="window.open('notice/adminnotice.jsp');">글쓰기</button>
 		<% }%>
+		<br><div id ="pageNo"></div>
 		</div>
 
 	<div id = "faq">
-	<h1>자주 묻는 질문</h1>
-	<table class = "faq" cellspacing ="0">
-	<tr>
-		<th width = "10%">No.</th><th>FAQ</th>
-	</tr>
-	<tr class = "question"><td>2</td><td>[배송] 배송회사가 어딘가요?</td></tr>
-	<tr class = "answer"><td></td><td>질문답변2222</td></tr>
-	<tr class = "question"><td>1</td><td>[교환/환불] 교환은 언제까지 되나요?</td></tr>
-	<tr class = "answer"><td></td><td>질문답변11111</td></tr>
-	</table>
+		<h1>자주 묻는 질문</h1>
+		<table class = "faq" cellspacing ="0">
+		<tr>
+			<th width = "10%">No.</th><th>FAQ</th>
+		</tr>
+		<!-- 관리자일 경우 -->
+		<% if(admin != null){
+			for(Faqnotice f:flist){ %>
+		<form action="/arm/faqupdate" method="post">
+			<tr class = "question"><td><input type = "text" name = "faqno" value="<%=f.getFaqNo() %>" size="10" readonly></td>
+				<td><select name = "fcate">
+				<% switch(f.getFaqcatNo()){
+					case 1 : %>
+              			<option value="1" selected>제품</option>
+              			<option value="2">결제</option>
+              			<option value="3">배송</option>
+						<option value="4">가입</option>
+						<option value="5">기타</option>
+					<%break;
+					case 2: %>
+						<option value="1" >제품</option>
+              			<option value="2" selected>결제</option>
+              			<option value="3">배송</option>
+						<option value="4">가입</option>
+						<option value="5">기타</option>
+					<%break;
+					case 3: %>
+						<option value="1" >제품</option>
+              			<option value="2" >결제</option>
+              			<option value="3"selected>배송</option>
+						<option value="4">가입</option>
+						<option value="5">기타</option>
+					<%break;
+					case 4: %>
+						<option value="1" >제품</option>
+              			<option value="2" >결제</option>
+              			<option value="3">배송</option>
+						<option value="4" selected>가입</option>
+						<option value="5">기타</option>
+					<% break; 
+					default : %>
+						<option value="1" >제품</option>
+              			<option value="2" >결제</option>
+              			<option value="3">배송</option>
+						<option value="4">가입</option>
+						<option value="5" selected>기타</option>
+					<% break;
+					}%>
+			</select>&nbsp;&nbsp;<input type="text" name="ftitle" value="<%=f.getFaqTitle() %>" style="width:80%"></td>
+				
+			</tr>
+		
+		<tr class = "answer"><td></td><td colspan ="2"><textarea name="fcontent" rows="5" cols="85"><%= f.getFaqContent() %></textarea>
+		<br><br><input type="submit" value="수정하기">&nbsp;&nbsp;
+					<button style="font-size: 14px; width: 80px; height: 25px;"
+						type="submit" formaction="fdel?faqNo=<%= f.getFaqNo() %>">삭제하기</button></td>
+		</tr>
+		</form>	
+		<% } %>
+		<!-- 일반회원일 경우 -->
+	<% }else{
+		for(Faqnotice f:flist){ %>
+		<tr class = "question"><td><%= f.getFaqNo() %></td><td>[<%=f.getFaqcatName() %>]&nbsp;&nbsp;<%=f.getFaqTitle() %></td></tr>
+		<tr class = "answer"><td></td><td colspan ="2"><%=f.getFaqContent() %><br></td>
+		</tr>
+		<% } 
+		} //end of if %>
+		</table>
+		<!-- 관리자 FAQ 입력 -->
+		<% if(admin != null){ %>
+		<button onclick="window.open('notice/adminFaq.jsp');">글쓰기</button>
+		<%} %>
+		
 	</div>
-
+		
 	<div id = "direct_q">
-
 	<h1>1:1문의</h1>
 	<!-- 문의종류에 따라 이메일 선택 -->
 	 <form action="/arm/mailsend" method="post">

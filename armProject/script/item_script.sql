@@ -1,27 +1,33 @@
+update item set ITEM_IMG_MINI = '/arm/img/item/01_mini.png', ITEM_IMG = '/arm/img/item/01.png', ITEM_IMG_DETAIL = '/arm/img/item/01_detail.png'
+where item_no = 1;
+update item set ITEM_IMG_MINI = '/arm/img/item/02_mini.jpg', ITEM_IMG = '/arm/img/item/02.jpg', ITEM_IMG_DETAIL = '/arm/img/item/02_detail.jpg'
+where item_no = 2;
+update item set ITEM_IMG_MINI = '/arm/img/item/03_mini.jpg', ITEM_IMG = '/arm/img/item/03.jpg', ITEM_IMG_DETAIL = '/arm/img/item/03_detail.jpg'
+where item_no = 3;
 insert into item values
 (seq_item_no.nextval, '블링블링 손톱깎이set', 100, 3000, 0, sysdate, 1, '손,손톱,깎이,블링,일상',
-'섬네일 이미지 주소', '메인 이미지 주소', '설명 이미지 주소');
+'/arm/img/item/04_mini.jpg', '/arm/img/item/04.jpg', '/arm/img/item/04_detail.jpg');
 insert into item values
 (seq_item_no.nextval, '실로 만든 반지', 100, 12900, 0, sysdate, 2, '반지,커플,실,손,손가락,악세사리',
-'섬네일 이미지 주소', '메인 이미지 주소', '설명 이미지 주소');
+'/arm/img/item/05_mini.jpg', '/arm/img/item/05.jpg', '/arm/img/item/05_detail.jpg');
 insert into item values
 (seq_item_no.nextval, '반지 시계', 100, 21000, 0, sysdate, 2, '반지,시계,우정,커플,악세사리,소품',
-'섬네일 이미지 주소', '메인 이미지 주소', '설명 이미지 주소');
+'/arm/img/item/06_mini.jpg', '/arm/img/item/06.jpg', '/arm/img/item/06_detail.jpg');
 insert into item values
 (seq_item_no.nextval, 'would you 팔찌', 200, 4900, 0, sysdate, 3, '손목,팔찌,구슬,악세사리,커플',
-'섬네일 이미지 주소', '메인 이미지 주소', '설명 이미지 주소');
+'/arm/img/item/07_mini.jpg', '/arm/img/item/07.jpg', '/arm/img/item/07_detail.jpg');
 insert into item values
 (seq_item_no.nextval, '아대', 200, 4900, 0, sysdate, 3, '의료,아대,손목,고정,건강,부모님',
-'섬네일 이미지 주소', '메인 이미지 주소', '설명 이미지 주소');
+'/arm/img/item/08_mini.jpg', '/arm/img/item/08.jpg', '/arm/img/item/08_detail.jpg');
 insert into item values
 (seq_item_no.nextval, '마마스 고무장갑10set', 200, 11000, 0, sysdate, 2, '고무,장갑,고무장갑,세트',
-'섬네일 이미지 주소', '메인 이미지 주소', '설명 이미지 주소');
+'/arm/img/item/09_mini.jpg', '/arm/img/item/09.jpg', '/arm/img/item/09_detail.jpg');
 insert into item values
 (seq_item_no.nextval, '어깨용 타투1', 400, 10500, 0, sysdate, 2, '타투,문신,어깨,해변,소품',
-'섬네일 이미지 주소', '메인 이미지 주소', '설명 이미지 주소');
+'/arm/img/item/10_mini.jpg', '/arm/img/item/10.jpg', '/arm/img/item/10_detail.jpg');
 insert into item values
 (seq_item_no.nextval, '긴 가방끈', 400, 6800, 0, sysdate, 1, '어깨,가방,끈,가방끈,보호',
-'섬네일 이미지 주소', '메인 이미지 주소', '설명 이미지 주소');
+'/arm/img/item/11_mini.jpg', '/arm/img/item/11.jpg', '/arm/img/item/11_detail.jpg');
 
 commit;
 insert into product_main values(4, 8);
@@ -229,95 +235,97 @@ insert into product_main values(41, 36);
 
 commit;
 
-EXECUTE insert_item_sub(12, '4mm', 1000, 100);
-EXECUTE insert_item_sub(12, '5mm', 2000, 100);
+EXECUTE insert_item_sub(12, '이니셜 추가', 25000, 120);
+EXECUTE insert_item_sub(12, '숫자 추가', 25000, 130);
 
-EXECUTE insert_item_sub(13, '빨강색', 3000, 123);
-EXECUTE insert_item_sub(13, '주황색', 3000, 30);
+EXECUTE insert_item_sub(13, '4mm', 1000, 100);
+EXECUTE insert_item_sub(13, '5mm', 2000, 100);
 
-EXECUTE insert_item_sub(14, '어린이용', 1000, 100);
-EXECUTE insert_item_sub(14, '어른용', 2000, 100);
+EXECUTE insert_item_sub(14, '빨강색', 3000, 123);
+EXECUTE insert_item_sub(14, '주황색', 3000, 30);
 
-EXECUTE insert_item_sub(15, '검정색', 3000, 50);
-EXECUTE insert_item_sub(15, '남색', 3000, 50);
+EXECUTE insert_item_sub(15, '어린이용', 1000, 100);
+EXECUTE insert_item_sub(15, '어른용', 2000, 100);
 
-EXECUTE insert_item_sub(16, '하늘색', 4900, 100);
-EXECUTE insert_item_sub(16, '바다색', 4900, 100);
+EXECUTE insert_item_sub(16, '검정색', 3000, 50);
+EXECUTE insert_item_sub(16, '남색', 3000, 50);
 
-EXECUTE insert_item_sub(17, '검정색', 1000, 100);
-EXECUTE insert_item_sub(17, '고무고무총난타', 2000, 150);
+EXECUTE insert_item_sub(17, '하늘색', 4900, 100);
+EXECUTE insert_item_sub(17, '바다색', 4900, 100);
 
-EXECUTE insert_item_sub(18, '손등 타투', 10500, 40);
-EXECUTE insert_item_sub(18, '팔등 타투', 10500, 40);
+EXECUTE insert_item_sub(18, '검정색', 1000, 100);
+EXECUTE insert_item_sub(18, '고무고무총난타', 2000, 150);
 
-EXECUTE insert_item_sub(19, '다니엘웰링턴_AD001', 1800000, 10);
-EXECUTE insert_item_sub(19, '다니엘웰링턴_AD002', 1800000, 10);
+EXECUTE insert_item_sub(19, '손등 타투', 10500, 40);
+EXECUTE insert_item_sub(19, '팔등 타투', 10500, 40);
 
-EXECUTE insert_item_sub(20, '손수건 파랑', 2500, 300);
-EXECUTE insert_item_sub(20, '손수건 노랑', 2500, 300);
+EXECUTE insert_item_sub(20, '다니엘웰링턴_AD001', 1800000, 10);
+EXECUTE insert_item_sub(20, '다니엘웰링턴_AD002', 1800000, 10);
 
-EXECUTE insert_item_sub(21, '아령 5kg', 9000, 250);
-EXECUTE insert_item_sub(21, '아령 8kg', 12000, 250);
+EXECUTE insert_item_sub(21, '손수건 파랑', 2500, 300);
+EXECUTE insert_item_sub(21, '손수건 노랑', 2500, 300);
 
-EXECUTE insert_item_sub(22, '꽈베기 빨강', 12000, 100);
-EXECUTE insert_item_sub(22, '꽈베기 보라', 12000, 100);
+EXECUTE insert_item_sub(22, '아령 5kg', 9000, 250);
+EXECUTE insert_item_sub(22, '아령 8kg', 12000, 250);
 
-EXECUTE insert_item_sub(23, '어른용 악력기', 18000, 200);
-EXECUTE insert_item_sub(23, '어린이용 악력기', 18000, 200);
+EXECUTE insert_item_sub(23, '꽈베기 빨강', 12000, 100);
+EXECUTE insert_item_sub(23, '꽈베기 보라', 12000, 100);
 
-EXECUTE insert_item_sub(24, '러닝글러브-검정', 24000, 90);
-EXECUTE insert_item_sub(24, '러닝글러브-파랑', 24000, 80);
+EXECUTE insert_item_sub(24, '어른용 악력기', 18000, 200);
+EXECUTE insert_item_sub(24, '어린이용 악력기', 18000, 200);
 
-EXECUTE insert_item_sub(25, '방수-초록', 12000, 100);
-EXECUTE insert_item_sub(25, '방수-파랑', 12000, 100);
+EXECUTE insert_item_sub(25, '러닝글러브-검정', 24000, 90);
+EXECUTE insert_item_sub(25, '러닝글러브-파랑', 24000, 80);
 
-EXECUTE insert_item_sub(26, '핸드크림_300mg', 17000, 100);
-EXECUTE insert_item_sub(26, '핸드크림_400mg', 18000, 100);
+EXECUTE insert_item_sub(26, '방수-초록', 12000, 100);
+EXECUTE insert_item_sub(26, '방수-파랑', 12000, 100);
 
-EXECUTE insert_item_sub(27, '검정색', 12000, 200);
-EXECUTE insert_item_sub(27, '노랑색', 12000, 200);
+EXECUTE insert_item_sub(27, '핸드크림_300mg', 17000, 100);
+EXECUTE insert_item_sub(27, '핸드크림_400mg', 18000, 100);
 
-EXECUTE insert_item_sub(28, '후크선장 도끼', 2000, 150);
-EXECUTE insert_item_sub(28, '후크선장 전기톱', 2000, 150);
+EXECUTE insert_item_sub(28, '검정색', 12000, 200);
+EXECUTE insert_item_sub(28, '노랑색', 12000, 200);
+
+EXECUTE insert_item_sub(29, '후크선장 도끼', 2000, 150);
+EXECUTE insert_item_sub(29, '후크선장 전기톱', 2000, 150);
 
 commit;
-EXECUTE insert_item_sub(29, '초록색', 2000, 190);
-EXECUTE insert_item_sub(29, '검은색', 2000, 200);
+EXECUTE insert_item_sub(30, '초록색', 2000, 190);
+EXECUTE insert_item_sub(30, '검은색', 2000, 200);
 
-EXECUTE insert_item_sub(30, '오징어발', 4000, 110);
-EXECUTE insert_item_sub(30, '지렁이발', 4000, 110);
+EXECUTE insert_item_sub(31, '오징어발', 4000, 110);
+EXECUTE insert_item_sub(31, '지렁이발', 4000, 110);
 
-EXECUTE insert_item_sub(31, '파워암 팔꿈치', 37000, 50);
-EXECUTE insert_item_sub(31, '파워암 어깨', 37000, 50);
+EXECUTE insert_item_sub(32, '파워암 팔꿈치', 37000, 50);
+EXECUTE insert_item_sub(32, '파워암 어깨', 37000, 50);
 
-EXECUTE insert_item_sub(32, '말가죽', 26800, 110);
-EXECUTE insert_item_sub(32, '소가죽', 30000, 110);
+EXECUTE insert_item_sub(33, '말가죽', 26800, 110);
+EXECUTE insert_item_sub(33, '소가죽', 30000, 110);
 
-EXECUTE insert_item_sub(33, '에센스 빨강', 28000, 300);
-EXECUTE insert_item_sub(33, '에센스 노랑', 28000, 300);
+EXECUTE insert_item_sub(34, '에센스 빨강', 28000, 300);
+EXECUTE insert_item_sub(34, '에센스 노랑', 28000, 300);
 
-EXECUTE insert_item_sub(34, '카카오 라이언', 17500, 200);
-EXECUTE insert_item_sub(34, '카카오 오리', 17500, 200);
+EXECUTE insert_item_sub(35, '카카오 라이언', 17500, 200);
+EXECUTE insert_item_sub(35, '카카오 오리', 17500, 200);
 
-EXECUTE insert_item_sub(35, '핸드타투 손용', 10000, 900);
-EXECUTE insert_item_sub(35, '핸드타투 팔용', 10000, 900);
+EXECUTE insert_item_sub(36, '핸드타투 손용', 10000, 900);
+EXECUTE insert_item_sub(36, '핸드타투 팔용', 10000, 900);
 
-EXECUTE insert_item_sub(36, '타투 어깨', 7000, 120);
-EXECUTE insert_item_sub(36, '타투 가슴', 7000, 130);
+EXECUTE insert_item_sub(37, '타투 어깨', 7000, 120);
+EXECUTE insert_item_sub(37, '타투 가슴', 7000, 130);
 
-EXECUTE insert_item_sub(37, '장갑 - 무지개', 1000, 80);
-EXECUTE insert_item_sub(37, '장갑 - 보라색', 1000, 90);
+EXECUTE insert_item_sub(38, '장갑 - 무지개', 1000, 80);
+EXECUTE insert_item_sub(38, '장갑 - 보라색', 1000, 90);
 
-EXECUTE insert_item_sub(38, '장갑 - 고양이', 10000, 300);
-EXECUTE insert_item_sub(38, '장갑 - 강아지', 10000, 300);
+EXECUTE insert_item_sub(39, '장갑 - 고양이', 10000, 300);
+EXECUTE insert_item_sub(39, '장갑 - 강아지', 10000, 300);
 
-EXECUTE insert_item_sub(39, '티쏘 - 악마', 1890000, 10);
-EXECUTE insert_item_sub(39, '티쏘 - 신', 1890000, 10);
+EXECUTE insert_item_sub(40, '티쏘 - 악마', 1890000, 10);
+EXECUTE insert_item_sub(40, '티쏘 - 신', 1890000, 10);
 
-EXECUTE insert_item_sub(40, '행성 - 별', 15000, 200);
-EXECUTE insert_item_sub(40, '행성 - 태양', 15000, 200);
+EXECUTE insert_item_sub(41, '행성 - 별', 15000, 200);
+EXECUTE insert_item_sub(41, '행성 - 태양', 15000, 200);
 
-EXECUTE insert_item_sub(41, '이니셜 추가', 25000, 120);
-EXECUTE insert_item_sub(41, '숫자 추가', 25000, 130);
+
 
 commit;

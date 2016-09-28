@@ -389,119 +389,125 @@ String keyword = (String)request.getAttribute("keyword");
 	#fix_menu #category	{
 		width : 100%;
 		height : 40px;/*수정*/
-		background : ##fed60500;
+		background : #fed605;
 	}
 	/* 메뉴구현 */
 	.navi {
-	list-style-type : none;
-	padding : 0;
-	margin : 0;
+		list-style-type: none;
+		padding: 0;
+		margin: 0;
 	}
-
+	
 	.navi li {
-		float : left;
-		position : relative;
-		padding : 0;
-		line-height : 30px;/*수정*/
-		width : 20%;
-		background : #fed605;
+		float: left;
+		position: relative;
+		padding: 0;
+		line-height: 30px;/*메뉴 높이*/
+		width: 20%;
+		/* background: rgba(255, 255, 0, 0.5); */
 	}
-
+	
 	.navi li a {
-		display : block;
-		font-weight:900;
-		font-size : 16px;/*메뉴글자크기수정*/
-		padding : 5px 25px;
-		color : black;
-		text-decoration : none;
+		display: block;
+		font-weight: 900;
+		font-size: 16px;/*메뉴글자크기*/
+		padding: 5px 25px;
+		color: black;
+		text-decoration: none;
 	}
 	/* 미디어쿼리 */
-	@media all and (max-width: 1000px){
+	@media all and (max-width: 1000px) {
 		.navi li a {
-			font-size : 20px;
-			padding : 5px 20px;
+			font-size: 16px;
+			padding: 5px 20px;
 		}
 	}
-
-	@media all and (max-width: 750px){
+	
+	@media all and (max-width: 750px) {
 		.navi li a {
-			font-size : 15px;
-			padding : 5px 0px;
+			font-size: 15px;
+			padding: 5px 0px;
 		}
 	}
-
-	@media all and (max-width: 300px){
+	
+	@media all and (max-width: 300px) {
 		.navi li a {
-			font-size : 15px;
-			padding : 1px 0px;
+			font-size: 15px;
+			padding: 1px 0px;
 		}
 		.navi li {
-		line-height : 50px;
+			line-height: 40px;
 		}
 	}
-
+	
 	.navi li a:hover {
-		color : #fff;
-		background : red;
+		color: #fff;
+		background: red;
 	}
-
+	
 	.navi li ul {
-		opacity : 0;
-		position : absolute;
-		left : 0;
-		width : 100%;
-		min-width : 102px;
+		opacity: 0;
+		position: absolute;
+		left: 0;
+		width: 100%;
+		min-width: 102px;
 		/*background : red;*/
-		list-style-type : none;
-		padding : 0;
-		margin : 0;
-
-		border : 1px solid red;
+		list-style-type: none;
+		padding: 0;
+		margin: 0;
+		border: 1px solid red;
 	}
+	
 	.navi li:hover ul {
-		opacity : 1;
+		opacity: 1;
 	}
+	
 	.navi li ul li {
-		float : none;
-		height : 0;
-		line-height : 0;
-		background : none;
-		width : 100%;
-		position : relative;
-		top : -10px;
+		float: none;
+		height: 0;
+		line-height: 0;
+		background: none;
+		width: 100%;
+		position: relative;
+		top: -10px;
 	}
-	.navi li:hover ul li{
-		height : auto;
-		line-height : 30px;
-		padding : 0;
-		position : relative;
-		top : 0;
+	
+	.navi li:hover ul li {
+		height: auto;
+		line-height: 30px;
+		padding: 0;
+		position: relative;
+		top: 0;
 	}
+	
 	.navi li ul li a {
-		background : white;
-		
-		font-weight : 900;
-		font-size : 15px;
-		color : #ff0000;
-		min-width : 100px;
+		background: white;
+		font-weight: 900;
+		font-size: 15px;
+		color: #ff0000;
+		min-width: 100px;
 	}
-	.navi li { 
+	
+	.navi li {
 		/*나타날때*/
-		transition : all 0.1s;
-		-webkit-transition : all 0.1s;
+		transition: all 0.1s;
+		-webkit-transition: all 0.1s;
 	}
+	
 	.navi li a {
-		transition : all 0.2s;
-		-webkit-transition : all 0.2s;
+		transition: all 0.2s;
+		-webkit-transition: all 0.2s;
 	}
+	
 	.navi li ul {
 		/*사라질 때*/
-		transition : all 0.1s;
-		-webkit-transition : all 0.1s;
+		transition: all 0.1s;
+		-webkit-transition: all 0.1s;
 	}
+	
 	.navi li ul li {
-		transition : all 0.2s;
-		-webkit-transition : all 0.2s;
+		transition: all 0.2s;
+		-webkit-transition: all 0.2s;
 	}
 	/* 검색 ---------------------------------------------*/
 	#fix_menu #searchbox {
@@ -711,12 +717,13 @@ String keyword = (String)request.getAttribute("keyword");
 		     	 <% if(admin != null) {%>
 		        <li class="topMenuLi"><a class="menuLink" href="/arm/ailist">상품관리</a></li>
 		       	<li class="topMenuLi"><a class="menuLink" href="/arm/amlist">회원관리</a></li>
+		       	<li class="topMenuLi"><a class="menuLink" href="/arm/QnaListViewServlet">Q&A관리</a></li>
 		     	 <% }else{%>
 		        <li class="topMenuLi"><a class="menuLink" href="/arm/CartView">장바구니</a></li>
 		        <li class="topMenuLi"><a class="menuLink" href="/arm/myinfo?userid=<%= loginUser.getUserId() %>">MyPage</a></li>
 		        <% } %>
 		        <li class="topMenuLi"><a class="menuLink" href="/arm/logout">로그아웃</a></li>
-		        <li class="topMenuLi">환영합니다! <%=loginUser.getUserName() %>님</li>
+		        <li class="topMenuLi fd hidden-xs">환영합니다! <%=loginUser.getUserName() %>님</li>
 		      <% }else{ %>
 		        <li class="topMenuLi"><a class="menuLink" onclick="nologinCart();">장바구니</a></li>
 		        <li class="topMenuLi"><a class="menuLink" href="/arm/member/MemberJoin.jsp">회원가입</a></li>
@@ -749,41 +756,20 @@ String keyword = (String)request.getAttribute("keyword");
  <div id="wrapper">
 
  	<div id = "fix_menu">
-			<div id="category">
-				<ul class="navi">
-					<li><a id ="cat_100" href="/arm/catlist?categoryno=100">손</a>
-					<!-- 100 -->
-						<ul>
-							<li><a href="/arm/catlist?categoryno=110">반지</a></li>
-							<li><a href="/arm/catlist?categoryno=120">의료/건강</a></li>
-						</ul></li>
-					<!-- 손 -->
-
-					<li><a id ="cat_200" href="/arm/catlist?categoryno=200">손목</a>
-					<!-- 200 -->
-						<ul>
-							<li><a href="/arm/catlist?categoryno=210">팔찌/시계</a></li>
-							<li><a href="/arm/catlist?categoryno=220">의료/건강</a></li>
-						</ul></li>
-					<!-- 손목 -->
-					<li><a id ="cat_300" href="/arm/catlist?categoryno=300">팔목</a>
-					<!-- 300 -->
-						<ul>
-							<li><a href="/arm/catlist?categoryno=310">팔찌/시계</a></li>
-							<li><a href="/arm/catlist?categoryno=320">의료/건강</a></li>
-						</ul></li>
-					<!-- 팔목 -->
-					<li><a id ="cat_400" href="/arm/catlist?categoryno=400">어깨</a>
-					<!-- 400 -->
-						<ul>
-							<li><a href="/arm/catlist?categoryno=410">의류</a></li>
-							<li><a href="/arm/catlist?categoryno=420">의료/건강</a></li>
-						</ul></li>
-					<!-- 어깨 -->
-
-					<li><a id="sch">검색</a></li>
-				</ul>
-			</div>
+		<div id="category">
+			<ul class="navi">
+				<li><a href="/arm/catlist?categoryno=100">손</a></li>
+				<!-- 손 -->
+				<li><a href="/arm/catlist?categoryno=200">손목</a></li>
+				<!-- 손목 -->
+				<li><a href="/arm/catlist?categoryno=300">팔꿈치</a></li>
+				<!-- 팔목 -->
+				<li><a href="/arm/catlist?categoryno=400">어깨</a></li>
+				<!-- 어깨 -->
+				<li><a id="sch">검색</a></li>
+			</ul>
+		</div>
+			
 	<div id = "searchbox">
 		<form action="/arm/isearch" method="post">
 			<input type="text" id="search" name="keyword" placeholder="검색하세요!">&nbsp;&nbsp;

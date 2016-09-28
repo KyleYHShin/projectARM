@@ -465,7 +465,7 @@ String msg =(String)request.getAttribute("msg");
 	/* 미디어쿼리 */
 	@media all and (max-width: 1000px) {
 		.navi li a {
-			font-size: 20px;
+			font-size: 16px;
 			padding: 5px 20px;
 		}
 	}
@@ -483,7 +483,7 @@ String msg =(String)request.getAttribute("msg");
 			padding: 1px 0px;
 		}
 		.navi li {
-			line-height: 50px;
+			line-height: 40px;
 		}
 	}
 	
@@ -763,21 +763,21 @@ String msg =(String)request.getAttribute("msg");
 		        <li class="topMenuLi"><a class="menuLink" href="/arm/nlist">고객센터</a></li>       
 		      <% if(loginUser != null){ %>
 		     	 <% if(admin != null) {%>
-		     	<li class="topMenuLi"><a class="menuLink" href="/arm/QnaListViewServlet">고객문의</a></li>
 		        <li class="topMenuLi"><a class="menuLink" href="/arm/ailist">상품관리</a></li>
 		       	<li class="topMenuLi"><a class="menuLink" href="/arm/amlist">회원관리</a></li>
+		       	<li class="topMenuLi"><a class="menuLink" href="/arm/QnaListViewServlet">Q&A관리</a></li>
 		     	 <% }else{%>
 		        <li class="topMenuLi"><a class="menuLink" href="/arm/CartView">장바구니</a></li>
 		        <li class="topMenuLi"><a class="menuLink" href="/arm/myinfo?userid=<%= loginUser.getUserId() %>">MyPage</a></li>
 		        <% } %>
 		        <li class="topMenuLi"><a class="menuLink" href="/arm/logout">로그아웃</a></li>
-		        <li class="topMenuLi">환영합니다! <%=loginUser.getUserName() %>님</li>
+		        <li class="topMenuLi fd hidden-xs">환영합니다! <%=loginUser.getUserName() %>님</li>
 		      <% }else{ %>
 		        <li class="topMenuLi"><a class="menuLink" onclick="nologinCart();">장바구니</a></li>
 		        <li class="topMenuLi"><a class="menuLink" href="/arm/member/MemberJoin.jsp">회원가입</a></li>
 		        <li class="topMenuLi"><a class="menuLink" href="/arm/member/Login.jsp">로그인</a></li>
 		      <% } %>
-		        </ul>
+		    </ul>
 	   </nav>
  	</div>
 		<!-- 퀵바 -->
@@ -838,40 +838,18 @@ String msg =(String)request.getAttribute("msg");
 
 		<div id="fix_menu">
 			<div id="category">
-				<ul class="navi">
-					<li><a href="/arm/catlist?categoryno=100">손</a>
-					<!-- 100 -->
-						<ul>
-							<li><a href="/arm/catlist?categoryno=110">반지</a></li>
-							<li><a href="/arm/catlist?categoryno=120">의료/건강</a></li>
-						</ul></li>
-					<!-- 손 -->
-
-					<li><a href="/arm/catlist?categoryno=200">손목</a>
-					<!-- 200 -->
-						<ul>
-							<li><a href="/arm/catlist?categoryno=210">팔찌/시계</a></li>
-							<li><a href="/arm/catlist?categoryno=220">의료/건강</a></li>
-						</ul></li>
-					<!-- 손목 -->
-					<li><a href="/arm/catlist?categoryno=300">팔목</a>
-					<!-- 300 -->
-						<ul>
-							<li><a href="/arm/catlist?categoryno=310">팔찌/시계</a></li>
-							<li><a href="/arm/catlist?categoryno=320">의료/건강</a></li>
-						</ul></li>
-					<!-- 팔목 -->
-					<li><a href="/arm/catlist?categoryno=400">어깨</a>
-					<!-- 400 -->
-						<ul>
-							<li><a href="/arm/catlist?categoryno=410">의류</a></li>
-							<li><a href="/arm/catlist?categoryno=420">의료/건강</a></li>
-						</ul></li>
-					<!-- 어깨 -->
-
-					<li><a id="sch">검색</a></li>
-				</ul>
-			</div>
+			<ul class="navi">
+				<li><a href="/arm/catlist?categoryno=100">손</a></li>
+				<!-- 손 -->
+				<li><a href="/arm/catlist?categoryno=200">손목</a></li>
+				<!-- 손목 -->
+				<li><a href="/arm/catlist?categoryno=300">팔꿈치</a></li>
+				<!-- 팔목 -->
+				<li><a href="/arm/catlist?categoryno=400">어깨</a></li>
+				<!-- 어깨 -->
+				<li><a id="sch">검색</a></li>
+			</ul>
+		</div>
 			<!-- 카테고리 -->
 			<div id="searchbox">
 				<form action="/arm/isearch" method="post">
@@ -915,11 +893,6 @@ String msg =(String)request.getAttribute("msg");
 					</table></a>
 			</section>
 			<% } %>
-		 	<%-- <% if(list.size()%5 != 0) {
-				for(int j = 0; j < 5-(list.size()%5);j ++){%>
-				<section class="item_box"></section>
-				<% } 
-			} %> --%>
 			<% } %>
 			<!-- 페이징처리할때 ------------------------------------------------------ -->
 			<div id = "pageNo"></div>

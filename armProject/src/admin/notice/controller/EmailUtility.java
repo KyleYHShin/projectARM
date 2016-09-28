@@ -24,7 +24,7 @@ import javax.mail.internet.MimeMultipart;
 public class EmailUtility {
     public static void sendEmail(String host, String port,
             final String userName, final String password, String toAddress,
-            String subject, String message, Multipart multipart) throws AddressException,
+            String subject, String message) throws AddressException,
             MessagingException {
  
         // sets SMTP server properties
@@ -53,8 +53,8 @@ public class EmailUtility {
         msg.setRecipients(Message.RecipientType.TO, toAddresses);
         msg.setSubject(subject);
         msg.setSentDate(new Date());
-        //msg.setText(message);
-        msg.setContent(multipart);
+        msg.setText(message);
+        
      
         // sends the e-mail
         Transport.send(msg);
