@@ -8,20 +8,19 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import purchase.model.service.PurchaseService;
 
 /**
- * Servlet implementation class PurchaseUpdateServlet
+ * Servlet implementation class PurchaseDeleteServlet
  */
-@WebServlet("/PurchaseUpdate")
-public class PurchaseUpdateServlet extends HttpServlet {
+@WebServlet("/PurchaseDelete")
+public class PurchaseDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public PurchaseUpdateServlet() {
+	public PurchaseDeleteServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -38,14 +37,17 @@ public class PurchaseUpdateServlet extends HttpServlet {
 		// 2.
 		int purchaseNo = Integer.parseInt(request.getParameter("purchaseNo"));
 
-		int result = new PurchaseService().updatePurchase(purchaseNo);
-
 		// 3.
+		int result = new PurchaseService().deletePurchase(purchaseNo);
+
+		// 4.
 		RequestDispatcher view = request.getRequestDispatcher("/PurchaseView");
+		//RequestDispatcher view = request.getRequestDispatcher("/Main.jsp");
 		if (result > 0) {
-			System.out.println("주문결제 Update 성공");
+			System.out.println("주문 delete 성공");
+
 		} else {
-			System.out.println("주문결제 Update 실패");
+			System.out.println("주문 delete 실패");
 		}
 		view.forward(request, response);
 	}

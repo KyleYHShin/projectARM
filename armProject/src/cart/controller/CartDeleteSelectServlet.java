@@ -1,9 +1,6 @@
 package cart.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,21 +8,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
+
 import cart.model.service.CartService;
-import cart.model.vo.Cart;
 import member.model.vo.User;
 
 /**
- * Servlet implementation class CartInsertServlet
+ * Servlet implementation class CartDeleteSelectServlet
  */
-@WebServlet("/CartInsertServlet")
-public class CartInsertServlet extends HttpServlet {
+@WebServlet("/CartDeleteSelect")
+public class CartDeleteSelectServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public CartInsertServlet() {
+	public CartDeleteSelectServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -40,22 +38,27 @@ public class CartInsertServlet extends HttpServlet {
 		response.setCharacterEncoding("text/html; charset=utf-8");
 
 		// 2.
-		// String userId = request.getParameter("userId");
-		HttpSession session = request.getSession();
-		User loginUser = (User) session.getAttribute("loginUser");
-		String userId = loginUser.getUserId();
+		// 선택 삭제 시 장바구니 번호 배열로 전달 받음
+		String get = request.getParameter("cartList");
+		String[] temp = get.split(",");
+		int cartNumbers[] = new int[temp.length];
+		for (int i = 0; i < temp.length; i++) {
+			cartNumbers[i] = Integer.parseInt(temp[i]);
+		}
+		int result = 0;
 
-		ArrayList<Cart> cartList = new CartService().selectAll(userId);
+		// 전달받은 장바구니 번호가 한개 이상일 경우만 동작
+		if (cartNumbers.length > 0) {
+			result = new CartService().deleteCartSelect(cartNumbers);
+		}
 
 		// 3.
-		RequestDispatcher view = request.getRequestDispatcher("/mypage/MyinfoCart.jsp");
-		if (cartList != null) {
-			System.out.println("Cart View Success");
+		if (result > 0) {
+			System.out.println("장바구니 DeleteSelect 성공");
 		} else {
-			System.out.println("Cart View Fail");
+			System.out.println("장바구니 DeleteSelect 실패");
 		}
-		request.setAttribute("cartList", cartList);
-		view.forward(request, response);
+		response.sendRedirect("/arm/CartView");
 	}
 
 }

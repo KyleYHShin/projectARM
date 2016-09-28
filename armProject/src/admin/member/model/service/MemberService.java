@@ -40,5 +40,12 @@ Connection con = getConnection();
 		close(con);
 		return result;
 	}
+	public Member selectOne(String userId){
+		Connection con = getConnection();
+		Member member = new MemberDao().selectOne(con, userId);
+		close(con);
+		
+		return member;		
+	}
 
 }

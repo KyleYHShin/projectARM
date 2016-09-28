@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page
-	import="member.model.vo.User, java.util.ArrayList, purchase.model.vo.Purchase, order.vo.Order, payment.vo.Payment"%>
+	import="member.model.vo.User, purchase.model.vo.Purchase, order.vo.Order, admin.member.model.vo.Member"%>
 <%
 	User loginUser = (User) session.getAttribute("loginUser");
-	ArrayList<Purchase> purchaseList = (ArrayList<Purchase>) request.getAttribute("purchaseList");
+	Purchase purchase = (Purchase) request.getAttribute("purchase");
+	Member member = (Member) request.getAttribute("member");
 %>
 <!doctype html>
 <html lang="ko">
@@ -22,6 +23,11 @@
 <script src="/arm/bootstrap/js/bootstrap.min.js"></script>
 
 <script type="text/javascript" src="/arm/js/jquery-3.1.0.min.js"></script>
+
+<!-- 아임포트 결제 API -->
+<script type="text/javascript"
+	src="https://service.iamport.kr/js/iamport.payment-1.1.1.js"></script>
+
 <script type="text/javascript">
 	$(function() {
 		//퀵바 토글 - 퀵바 고정위치를 클릭시마다 바뀌게 하면서 trasition효과
@@ -56,13 +62,9 @@
 
 		//결제 관련 메서드
 		//주문 취소
-		$('.cancle_btn').on('click',function() {
-			var divContent = (this).parentElement.parentElement;
-			var purchaseNo = divContent.children[0].value;
-			alert(purchaseNo);
-		
+		$('.cancle_btn').on('click', function() {
 			//1.post 방식
-			/* var chk = window.confirm("주문을 취소할 경우 데이터가 모두 사라집니다.\n정말로 취소하시겠습니까?");
+			var chk = window.confirm("주문을 취소할 경우 데이터가 모두 사라집니다.\n정말로 취소하시겠습니까?");
 			if (chk) {
 				var form = document.createElement("form");
 				form.method = 'post';
@@ -71,46 +73,67 @@
 				var input = document.createElement("input");
 				input.type = "hidden";
 				input.name = 'purchaseNo';
-				input.value = purchaseNo;
+				input.value = $(".pNo").val();
 				$(form).append(input);
-
+				
 				$('#body').append(form);
 				form.submit();
-			} */
+			}
 		});
-		
 
-		$('.pay_btn').on(
-				'click',
-				function() {
-					var divContent = (this).parentElement.parentElement;
-					var purchaseNo = divContent.children[0].value;
-					var totalPrice = (this).parentElement.children[0].value;
-					
-					//form 형식으로 전달과 동시에 띄우기
-					var form = document.createElement("form");
-					var url = "/arm/mypage/Payment.jsp";
-					window.open('', 'popPayment',
-							'width=300, height=500, scrollbars=yes');
-					form.method = 'post';
-					form.action = url;
-					form.target = 'popPayment';
+		//결제하기
+		$('.pay_btn').on('click', function() {			
+			var IMP = window.IMP;
+			IMP.init('imp05535836'); // 'iamport' 대신 부여받은 "가맹점 식별코드"
+			var msg = '';
+			IMP.request_pay({
+				pg : 'html5_inicis', // version 1.1.0부터 지원.
+				/*
+				'kakao':카카오페이,
+				'inicis':이니시스, 'html5_inicis':이니시스(웹표준결제),
+				'nice':나이스,
+				'jtnet':jtnet,
+				'uplus':LG유플러스,
+				'danal':다날
+				*/
+				pay_method : $("#pay_method option:selected").val(), // 'card':신용카드, 'trans':실시간계좌이체, 'vbank':가상계좌, 'phone':휴대폰소액결제
+				merchant_uid : 'merchant_'
+				+ new Date().getTime(),
+				name : '주문번호 : ' + $(".pNo").val(),
+				amount : $(".pPrice").val(),
+				buyer_email : $(".mEmail").val(),
+				buyer_name : $(".mName").val(),
+				buyer_tel : $(".mTel").val(),
+				buyer_addr : $(".mAddr").val(),
+				buyer_postcode : $(".mPost").val()
+				}, function(rsp) {
+					if (rsp.success) {
+						msg = '결제가 완료되었습니다.';
+						msg += '고유ID : ' + rsp.imp_uid;
+						msg += '상점 거래ID : ' + rsp.merchant_uid;
+						msg += '결제 금액 : ' + rsp.paid_amount;
+						msg += '카드 승인번호 : ' + rsp.apply_num;
 
-					var input = document.createElement("input");
-					input.type = "hidden";
-					input.name = 'purchaseNo';
-					input.value = purchaseNo;
-					$(form).append(input);
+						var form = document.createElement("form");
+						form.method = 'post';
+						form.action = '/arm/PurchaseUpdate';
+						
+						var input = document.createElement("input");
+						input.type = "hidden";
+						input.name = 'purchaseNo';
+						input.value = $(".pNo").val();
+						$(form).append(input);
+						
+						$('#body').append(form);
+						form.submit();
+					} else {
+						msg = '결제에 실패하였습니다.';
+						msg += '에러내용 : ' + rsp.error_msg;
+					}
+			});
 
-					var input = document.createElement("input");
-					input.type = "hidden";
-					input.name = 'totalPrice';
-					input.value = totalPrice;
-					$(form).append(input);
-
-					$('#body').append(form);
-					form.submit();
-				});
+			window.alert(msg);
+		});
 	});
 </script>
 <style type="text/css">
@@ -154,6 +177,16 @@ nav#topMenu {
 .topMenuLi a {
 	BORDER-LEFT: 1px solid black;
 	padding-left: 10px;
+}
+
+#pur_step {
+	font-size: 1.7em;
+	color: #bebebe;
+	padding-bottom: 5%;
+}
+
+#pur_step .active {
+	color: black;
 }
 
 @media all and (max-width: 1000px) {
@@ -286,7 +319,7 @@ nav#topMenu {
 	cursor: pointer;
 }
 
-#bl_btn {
+#c_btn {
 	color: white;
 	background: red;
 }
@@ -324,7 +357,6 @@ nav#topMenu {
 	margin: 0 auto;
 	max-width: 400px;
 	border: 1px solid #5263bd;
-	margin-bottom: 10%;
 }
 
 @media all and (max-width: 750px) {
@@ -466,15 +498,6 @@ td {
 	min-width: 80px;
 }
 
-.cancle_paid_btn {
-	margin-top: 5px;
-	float: left;
-	border: 1px solid green;
-	background: green;
-	color: white;
-	font-size: 1.4em;
-}
-
 .cancle_btn {
 	margin-top: 3%;
 	float: left;
@@ -491,7 +514,6 @@ td {
 	background: red;
 	color: white;
 	font-size: 1.4em;
-	float: right;
 }
 
 /*-------영수증 끝*/
@@ -639,13 +661,17 @@ footer #fwrap {
 
 
 		<div id="contents">
+			<div id="pur_step">
+				<label class="step">1. 장바구니</label> &nbsp;> &nbsp; <label
+					class="step">2. 주문확인</label> &nbsp;> &nbsp; <label
+					class="step active">3. 주문완료 및 결제</label> 
+			</div>
 			<!-- ---------------------------영수증부분------------------------------------ -->
-			<!-- bill의 개수에 따라 처리 -->
 			<%
-				for (Purchase p : purchaseList) {
+				if (purchase != null) {
 			%>
 			<div class="bill">
-				<input type="hidden" value="<%=p.getPurchaseNo()%>">
+				<input type="hidden" value="<%=purchase.getPurchaseNo()%>">
 				<table class="bill_head">
 					<tr>
 						<th>주 문 내 역</th>
@@ -655,17 +681,17 @@ footer #fwrap {
 				<table class="bill_first">
 					<tr>
 						<th>주문번호</th>
-						<td><%=p.getPurchaseNo()%></td>
+						<td><%=purchase.getPurchaseNo()%></td>
 					</tr>
 
 					<tr>
 						<th>주문일시</th>
-						<td><%=p.getPurchaseDate()%></td>
+						<td><%=purchase.getPurchaseDate()%></td>
 					</tr>
 
 					<tr>
 						<th>주문자</th>
-						<td>[<%=p.getGradeName()%>]&nbsp;<%=p.getUserId()%></td>
+						<td>[<%=purchase.getGradeName()%>]&nbsp;<%=purchase.getUserId()%></td>
 					</tr>
 				</table>
 
@@ -675,35 +701,36 @@ footer #fwrap {
 						<th>품목</th>
 						<th>수량</th>
 						<th>합계(원)</th>
-						<th>후기</th>
+						<!-- <th>후기</th> -->
 					</tr>
 					<%
-						for (Order o : p.getOrderList()) {
+						for (Order o : purchase.getOrderList()) {
 					%>
 					<tr>
 						<td><%=o.getItem_name()%> - <%=o.getItem_sub_name()%></td>
 						<td><%=o.getOrder_qty()%></td>
 						<td><%=(int) (o.getOrder_price() * (1 - loginUser.getDiscount()))%></td>
-						<%//결제 정보가 있고
-						if (p.getPaid() == 'Y') {
-							//작성된 리뷰가 있는 경우
-							if (o.getOrder_review_no() > 0) {
+						<%
+							//결제 정보가 있고
+									if (purchase.getPaid() == 'Y') {
+										//작성된 리뷰가 있는 경우
+										if (o.getOrder_review_no() > 0) {
 						%>
 						<td style="text-align: center"><a href=""
 							style="color: #1b1b1b;">수정</a></td>
 						<%
-							//작성된 리뷰가 없는 경우
-							} else {							
+							} else {
+											//작성된 리뷰가 없는 경우
 						%>
 						<td style="text-align: center;"><a href=""
 							style="color: red; font-weight: bold;">작성</a></td>
 						<%
 							}
-						//결제 정보가 없는 경우
-						} else {										
+									} else {
+										//결제 정보가 없는 경우
 						%>
-						<td style="text-align: center;"><a href=""
-							style="color: red; font-weight: bold;"></a></td>
+						<!-- <td style="text-align: center;"><a href=""
+							style="color: red; font-weight: bold;"></a></td> -->
 						<%
 							}
 						%>
@@ -722,24 +749,24 @@ footer #fwrap {
 				<table class="bill_pay">
 					<tr>
 						<th>수취인</th>
-						<td><%=p.getName()%></td>
+						<td><%=purchase.getName()%></td>
 					</tr>
 
 					<tr>
 						<th>휴대전화</th>
-						<td><%=p.getPhone()%></td>
+						<td><%=purchase.getPhone()%></td>
 					</tr>
 
 					<tr>
 						<th>이메일</th>
-						<td><%=p.getEmail()%></td>
+						<td><%=purchase.getEmail()%></td>
 					</tr>
 					<tr>
 						<th>우편번호</th>
-						<td><%=p.getZipcode()%></td>
+						<td><%=purchase.getZipcode()%></td>
 					</tr>
 					<%
-						String[] addr = p.getAddress().split(",");
+						String[] addr = purchase.getAddress().split(",");
 					%>
 					<tr>
 						<th>주 &nbsp; 소</th>
@@ -752,11 +779,11 @@ footer #fwrap {
 				</table>
 				<table class="bill_third">
 					<tr>
-						<td>배송비&nbsp; <span><%=p.getDelivery()%>원</span>
+						<td>배송비&nbsp; <span><%=purchase.getDelivery()%>원</span>
 						</td>
 					</tr>
 					<tr>
-						<td>총 주문금액&nbsp; <span><%=p.getDelivery() + p.getTotalItemPrice()%>원</span>
+						<td>총 주문금액&nbsp; <span><%=purchase.getDelivery() + purchase.getTotalItemPrice()%>원</span>
 						</td>
 					</tr>
 				</table>
@@ -767,7 +794,7 @@ footer #fwrap {
 					</tr>
 					<tr>
 						<%
-							if (p.getPaid() == 'Y') {
+							if (purchase.getPaid() == 'Y') {
 						%>
 						<td>결제완료</td>
 						<%
@@ -780,20 +807,41 @@ footer #fwrap {
 					</tr>
 				</table>
 				<%
-					if (p.getPaid() == 'N') {
+					if (purchase.getPaid() == 'N') {
 				%>
+				<table class="bill_pay">
+					<tr>
+						<th>결제방식</th>
+						<td><select id="pay_method">
+								<option value="card">카드결제</option>
+								<option value="trans">실시간계좌이체</option>
+								<option value="vbank">가상계좌</option>
+								<option value="phone">휴대폰소액결제</option>
+						</select></td>
+					</tr>
+				</table>
 				<div id="buttons">
 					<input type="button" class="cancle_btn" value="주문취소"> <input
 						type="button" class="pay_btn" value="결제하기">
 				</div>
+				<input type="hidden" class="pNo" value="<%= purchase.getPurchaseNo() %>">
+				<input type="hidden" class="pPrice" value="<%=purchase.getTotalItemPrice() + purchase.getDelivery()%>">
+				<input type="hidden" class="mEmail" value="<%=member.getEmail()%>">
+				<input type="hidden" class="mName" value="<%=member.getUserName()%>">
+				<input type="hidden" class="mTel" value="<%=member.getPhone()%>">
+				<input type="hidden" class="mAddr" value="<%=member.getAddress()%>">
+				<input type="hidden" class="mPost" value="<%=member.getZipCode()%>">
 				<%
 					}
 				%>
-				</div>
-				<%
-				}// end of for (Purchase p : purchaseList)
+			</div>
+			<br> <br>
+			<%
+				} //end of if (purchase != null)
 			%>
 			<!-----------------------------------------------------bill 끝-->
+
+			<br> <br> <br>
 		</div>
 		<!--contents끝-->
 	</div>
