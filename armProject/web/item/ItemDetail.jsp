@@ -369,6 +369,9 @@ function nologinCart(){
 /*--------------------16.09.24 아이템 상세 페이지에서 후기 수정 시 사용하도록 별점&별점 코멘트 부분 약간 수정하여 다시 추가--*/
 	    <% if(reviewHContent != null){ %>
 	    //후기 리스트 수정용 코멘트 및 별점 출력
+	    $(".star_point a").hover(function(){
+	    	$(this).css('cursor','pointer');
+	    });
 		$(".star_point a").click(function() {
 			$(this).nextAll(this).removeClass("on");
 			$(this).addClass("on").prevAll("a").addClass("on");
@@ -1240,17 +1243,19 @@ ul.tabs li.active {
 
 /*문의, 후기 공통 적용*/
 .inquiry_input, .review_input, .p_Q, .p_A, .p_review {
-	border: 1px solid red;
-	padding: 2%;
 	width: 90%;
 	height: 100%;
+	display : inline-block;
+	text-align: center;
 }
 
 .inquiry_input table, .review_input table, .loaded_qna table, .p_reivew table
 	{
 	width: 100%;
 	height: 80%;
-	border: 1px solid red;
+	border : 0px;
+	font-size: 0.8em;
+	
 }
 
 .tab_content input[type=submit] {
@@ -1281,7 +1286,7 @@ ul.tabs li.active {
 		display: block;
 	}
 	#qna_table tr {
-		border-bottom: 1px solid #ddd;
+	/* 	border-bottom: 1px solid #ddd; */
 	}
 	#qna_table th, #qna_table td {
 		border-top: none;
@@ -1292,7 +1297,7 @@ ul.tabs li.active {
 /*상품 문의 부분*/
 .p_A {
 	position: relative;
-	left: 100px;
+	left: 50px;
 }
 
 .loaded_qna #loaded_td1 {
@@ -1583,9 +1588,7 @@ table tr td { /*확인용*/
 									</table>
 								</form>
 							</div>
-							<hr>
-							<br>
-
+							<hr style="margin :5px auto;">
 							<div class="loaded_qna">
 								<%
 									if (questionList != null) {
@@ -1634,10 +1637,8 @@ table tr td { /*확인용*/
 											%>
 										</table>
 									</form>
-
 								</div>
 								<!--p_Q-->
-								<br>
 								<%
 									//문의번호와 answer객체의 문의번호가 일치할 시 바로 밑에 답변 출력
 											for (int j = 0; j < answerList.size(); j++) {
@@ -1694,11 +1695,11 @@ table tr td { /*확인용*/
 									</td>
 									<td width="20%">
 										<p class="star_point">
-											<a href="#" class="on" style="font-size: 20px">★</a>
-											<a href="#" class="on" style="font-size: 20px">★</a>
-											<a href="#" class="on" style="font-size: 20px">★</a>
-											<a href="#" style="font-size: 20px">★</a>
-											<a href="#" style="font-size: 20px">★</a>
+											<a class="on" style="font-size: 20px">★</a>
+											<a class="on" style="font-size: 20px">★</a>
+											<a class="on" style="font-size: 20px">★</a>
+											<a style="font-size: 20px">★</a>
+											<a style="font-size: 20px">★</a>
 										</p>
 									</td>
 									<td align="left">
@@ -1723,8 +1724,7 @@ table tr td { /*확인용*/
 							</div>
 							<!--review_input 끝-->
 							</form>
-							<hr>
-							<br>
+							<hr style="margin :5px auto;">
 							<% }}} %>
 							
 							<%
@@ -1761,7 +1761,7 @@ table tr td { /*확인용*/
 
 							<div class="p_review">
 								<form action="/arm/ItemReviewUpdateServlet" method="post">
-									<table border="1px solid gray" id="r_table">
+									<table id="r_table">
 										<tr>
 											<td id="review_td1"><input type="text" name="review_id"
 												value="<%=r.getmId()%>" readonly></td>
