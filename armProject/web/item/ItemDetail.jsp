@@ -56,6 +56,7 @@ $(document).ready(function(){
 	/* 장바구니 추가 + 바로구매 버튼 ------------------------ */
 	// 장바구니 추가
 	$('.addCart').on('click', function() {
+		<% if(loginUser != null) {%>
 		var $parent = $('.p_selection');
 		var $itemsNo = $parent.find('.subItemNo');
 		var $itemsQty = $parent.find('.Qty');
@@ -98,10 +99,14 @@ $(document).ready(function(){
 		}else{
 			alert('선택된 상품이 없습니다.');
 		}
+		<% } else{ %>
+		alert('로그인이 필요한 기능입니다.');
+		<% }%>
 	});
 
 	//바로구매
 	$('.directBuy').on('click', function() {
+		<% if(loginUser != null) {%>
 		var $parent = $('.p_selection');
 		var $itemsNo = $parent.find('.subItemNo');
 		var $itemsQty = $parent.find('.Qty');
@@ -151,6 +156,9 @@ $(document).ready(function(){
 		}else{
 			alert('선택된 상품이 없습니다.');
 		}
+		<% } else{ %>
+		alert('로그인이 필요한 기능입니다.');
+		<% }%>
 	});
 
 	/* 장바구니 추가 + 바로구매 버튼 끝 ---------------------- */
@@ -420,33 +428,42 @@ function nologinCart(){
 	/*--------------------------------- 16.09.23 옵션 선택에 따라 동적으로 선택된 상품 정보를 출력하는 함수 추가 --------------*/
 		//옵션 선택 시 p_selection 영역에 동적으로 행 추가
 	  function add_tr(){
-	      option = document.getElementById('p_selection');
-	      tr = option.insertRow(option.rows.length);
-
-	      td0 = tr.insertCell(0); //선택된 상품의 sub_item_no
-	      td1 = tr.insertCell(1); //선택된 상품명 입력열
-	      td2 = tr.insertCell(2); //input number 상자 입력열
-	      td3 = tr.insertCell(3); //삭제버튼 입력열
-	      td4 = tr.insertCell(4); //선택 옵션가 입력열
-	   
+	     
+		  option = document.getElementById('p_selection');
+		  
 	      var select = document.getElementById('p_opt_1');
 	      var selected_sub_no = select.options[select.selectedIndex].value; //선택옵션 item_sub_no
 	      var selected_sub = select.options[select.selectedIndex].text; //선택옵션명 가져옴
-	      var selected_sub_price = document.getElementById(selected_sub).value; //선택옵션가격 가져옴
-	      selected_sub_price = parseInt(selected_sub_price); //숫자형태로 변환
-	      var selected_price_sum = selected_sub_price + parseInt("<%=item.getItemPrice()%>");
-	      $(".p_selection tr td input[type=hidden]").each(function(){
-	    	  if($(this).val() == selected_sub_no){
-	    		  alert("이미 선택된 옵션 입니다.");
-	    		  tr.remove();
-	    	  }
-	      });
-	      td0.innerHTML = "<input type='hidden' id='subItemNo' class='subItemNo' name='subItemNo' value='"+selected_sub_no+ "'>";
-	      td1.innerHTML = selected_sub;
-	      td2.innerHTML = "<input type='number' id='Qty' class='Qty' name='Qty' min='1' width='10' value='1' onchange='update_sub_price(this);'>";
-	      td3.innerHTML = "<button class='remove_order'><img src ='/arm/img/delete.png'></button>";
-	      td4.innerHTML = selected_price_sum;
-	      td_sum();
+	      
+	      if(selected_sub != "옵션을 선택하세요"){
+	    	  var selected_sub_price = document.getElementById(selected_sub).value; //선택옵션가격 가져옴
+		      selected_sub_price = parseInt(selected_sub_price); //숫자형태로 변환
+		      var selected_price_sum = selected_sub_price + parseInt("<%=item.getItemPrice()%>");
+		      
+		      $(".p_selection tr td input[type=hidden]").each(function(){
+		    	  if($(this).val() == selected_sub_no){
+		    		  alert("이미 선택된 옵션 입니다.");
+		    		  $(this).parent().parent().chilren().remove();
+		    	  }
+		      });
+		      
+		      tr = option.insertRow(option.rows.length);
+		      //alert(option.rows.length);
+
+		      td0 = tr.insertCell(0); //선택된 상품의 sub_item_no
+		      td1 = tr.insertCell(1); //선택된 상품명 입력열
+		      td2 = tr.insertCell(2); //input number 상자 입력열
+		      td3 = tr.insertCell(3); //삭제버튼 입력열
+		      td4 = tr.insertCell(4); //선택 옵션가 입력열
+		   		      
+		      td0.innerHTML = "<input type='hidden' id='subItemNo' class='subItemNo' name='subItemNo' value='"+selected_sub_no+ "'>";
+		      td1.innerHTML = selected_sub;
+		      td2.innerHTML = "<input type='number' id='Qty' class='Qty' name='Qty' min='1' width='10' value='1' onchange='update_sub_price(this);'>";
+		      td3.innerHTML = "<button class='remove_order'><img src ='/arm/img/delete.png'></button>";
+		      td4.innerHTML = selected_price_sum;
+		      td_sum();
+		      
+	      }
      }
 	  
 	  //선택 제품의 수량 변화에 따라 제품 개별 구매금액 계산
@@ -1462,6 +1479,7 @@ table tr td { /*확인용*/
 								<td class="option2" id="opt1" ><select name="p_opt_1"
 									id="p_opt_1"
 									onchange="add_tr();">
+										<option value="default">옵션을 선택하세요</option>
 										<%
 											for (SubItem sub : subItemList) {
 										%>

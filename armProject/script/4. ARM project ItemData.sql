@@ -1,4 +1,4 @@
-update item set ITEM_IMG_MINI = '/arm/img/item/01_mini.png', ITEM_IMG = '/arm/img/item/01.png', ITEM_IMG_DETAIL = '/arm/img/item/01_detail.png'
+update item set ITEM_IMG_MINI = '/arm/img/item/01_mini.jpg', ITEM_IMG = '/arm/img/item/01.jpg', ITEM_IMG_DETAIL = '/arm/img/item/01_detail.jpg'
 where item_no = 1;
 update item set ITEM_IMG_MINI = '/arm/img/item/02_mini.jpg', ITEM_IMG = '/arm/img/item/02.jpg', ITEM_IMG_DETAIL = '/arm/img/item/02_detail.jpg'
 where item_no = 2;

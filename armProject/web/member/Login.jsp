@@ -608,7 +608,7 @@
 		</td></tr>
 	 <tr><td>
 	 <span style="color : blue;">아직 회원이 아니세요?</span>
-	  <input id = "join_btn" type="button" style="width: 200pt; height:30pt" value="회원가입" onClick="self.location='MemberJoin.jsp';">
+	  <input id = "join_btn" type="button" style="width: 200pt; height:30pt" value="회원가입" onClick="self.location='/arm/member/MemberJoin.jsp';">
 	   </td></tr>
 
 	 </table>

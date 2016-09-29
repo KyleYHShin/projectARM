@@ -388,7 +388,7 @@ end;
 --4.기본 데이터 입력(member, users 동시)
 insert into member values('admin','admin','관리자',sysdate,'M','010-7227-4569','shinpeach@naver.com','','',6, sysdate);
 insert into member values('user01','pwd01','테스트01',sysdate,'F','010-1111-1111','user01@nate.com','','',1, sysdate);
-insert into member values('user02','pwd02','테스트02',sysdate,'M','010-2222-2222','user02@daum.net','02512','서울 동대문구 겸재로 16,미경아파트 201동 101호',2, sysdate);
+insert into member values('user02','pwd02','테스트02',sysdate,'M','010-2222-2222','user02@daum.net','02512','서울 동대문구 겸재로 16,,미경아파트 201동 101호',2, sysdate);
 insert into member values('user03','pwd03','테스트03',sysdate,'M','010-3333-3333','user03@daum.net','','',3, sysdate);
 
 --member 데이터 수정
