@@ -42,7 +42,8 @@ insert into product_main values(1, 2);
 insert into product_main values(2, 3);
 insert into product_main values(3, 1);
 
---item_sub 테스트용 데이터
+--item_sub 테스트용 데이터 
+--EXECUTE insert_item_sub(item_no, item_sub_name, item_sub_price, quantity);
 EXECUTE insert_item_sub(1, '초록색', 0, 20);
 EXECUTE insert_item_sub(1, '흰색', 1000, 10);
 EXECUTE insert_item_sub(1, '검정색', 1000, 10);

@@ -233,110 +233,107 @@
       }
       ;
       //주문
-      $('.complete_btn')
-            .on(
-                  'click',
-                  function() {
-                     if (checkAll()) {
-                    	var chk = confirm("기입한 정보대로 주문하시겠습니까?");
-	                    	if(chk){
-	                        var cartNos = document.getElementsByClassName('cartNo');
-	                        var itemSubNos = document.getElementsByClassName('itemSubNo');
-	                        var itemQtys = document.getElementsByClassName('itemQty');
-	                        var itemTotalPrices = document.getElementsByClassName('itemTotalPrice');
+      $('.complete_btn').on('click',function() {
+	      if (checkAll()) {
+	     	var chk = confirm("기입한 정보대로 주문하시겠습니까?");
+	      	if(chk){
+	          var cartNos = document.getElementsByClassName('cartNo');
+	          var itemSubNos = document.getElementsByClassName('itemSubNo');
+	          var itemQtys = document.getElementsByClassName('itemQty');
+	          var itemTotalPrices = document.getElementsByClassName('itemTotalPrice');
 	
-	                        var cartNo = cartNos[0].value;
-	                        var itemSubNo = itemSubNos[0].value;
-	                        var itemQty = itemQtys[0].value;
-	                        var itemTotalPrice = itemTotalPrices[0].value;
+	          var cartNo = cartNos[0].value;
+	          var itemSubNo = itemSubNos[0].value;
+	          var itemQty = itemQtys[0].value;
+	          var itemTotalPrice = itemTotalPrices[0].value;
 	
-	                        if (cartNos.length > 1) {
-	                           for (var i = 1; i < cartNos.length; i++) {
-	                              cartNo += "," + cartNos[i].value;
-	                              itemSubNo += "," + itemSubNos[i].value;
-	                              itemQty += "," + itemQtys[i].value;
-	                              itemTotalPrice += ","
-	                                    + itemTotalPrices[i].value;
-	                           }
-	                        }
-	                        //alert(cartNo + "\n" +itemSubNo+"\n"+itemQty+"\n"+itemTotalPrice);
+	          if (cartNos.length > 1) {
+	             for (var i = 1; i < cartNos.length; i++) {
+	                cartNo += "," + cartNos[i].value;
+	                itemSubNo += "," + itemSubNos[i].value;
+	                itemQty += "," + itemQtys[i].value;
+	                itemTotalPrice += ","
+	                      + itemTotalPrices[i].value;
+	             }
+	          }
+	          //alert(cartNo + "\n" +itemSubNo+"\n"+itemQty+"\n"+itemTotalPrice);
 	
-	                        //post 방식
-	                        var form = document.createElement("form");
-	                        form.method = 'post';
-	                        form.action = "/arm/PurchaseInsert";
+	          //post 방식
+	          var form = document.createElement("form");
+	          form.method = 'post';
+	          form.action = "/arm/PurchaseInsert";
 	
-	                        var input = document.createElement("input");
-	                        input.type = "hidden";
-	                        input.name = 'cartNo';
-	                        input.value = cartNo;
-	                        $(form).append(input);
+	          var input = document.createElement("input");
+	          input.type = "hidden";
+	          input.name = 'cartNo';
+	          input.value = cartNo;
+	          $(form).append(input);
 	
-	                        var input = document.createElement("input");
-	                        input.type = "hidden";
-	                        input.name = 'itemSubNo';
-	                        input.value = itemSubNo;
-	                        $(form).append(input);
+	          var input = document.createElement("input");
+	          input.type = "hidden";
+	          input.name = 'itemSubNo';
+	          input.value = itemSubNo;
+	          $(form).append(input);
 	
-	                        var input = document.createElement("input");
-	                        input.type = "hidden";
-	                        input.name = 'itemQty';
-	                        input.value = itemQty;
-	                        $(form).append(input);
+	          var input = document.createElement("input");
+	          input.type = "hidden";
+	          input.name = 'itemQty';
+	          input.value = itemQty;
+	          $(form).append(input);
 	
-	                        var input = document.createElement("input");
-	                        input.type = "hidden";
-	                        input.name = 'itemTotalPrice';
-	                        input.value = itemTotalPrice;
-	                        $(form).append(input);
+	          var input = document.createElement("input");
+	          input.type = "hidden";
+	          input.name = 'itemTotalPrice';
+	          input.value = itemTotalPrice;
+	          $(form).append(input);
 	
-	                        var input = document.createElement("input");
-	                        input.type = "hidden";
-	                        input.name = 'delivery';
-	                        input.value = <%=delivery%>;
-	                        $(form).append(input);
+	          var input = document.createElement("input");
+	          input.type = "hidden";
+	          input.name = 'delivery';
+	          input.value = <%=delivery%>;
+	          $(form).append(input);
 	
-	                        var input = document.createElement("input");
-	                        input.type = "hidden";
-	                        input.name = 'purName';
-	                        input.value = $('#purName').val();
-	                        $(form).append(input);
+	          var input = document.createElement("input");
+	          input.type = "hidden";
+	          input.name = 'purName';
+	          input.value = $('#purName').val();
+	          $(form).append(input);
 	
-	                        var input = document.createElement("input");
-	                        input.type = "hidden";
-	                        input.name = 'purPhone';
-	                        input.value = $('#purPhone').val();
-	                        $(form).append(input);
+	          var input = document.createElement("input");
+	          input.type = "hidden";
+	          input.name = 'purPhone';
+	          input.value = $('#purPhone').val();
+	          $(form).append(input);
 	
-	                        var input = document.createElement("input");
-	                        input.type = "hidden";
-	                        input.name = 'purEmail';
-	                        input.value = $('#purEmail').val();
-	                        $(form).append(input);
+	          var input = document.createElement("input");
+	          input.type = "hidden";
+	          input.name = 'purEmail';
+	          input.value = $('#purEmail').val();
+	          $(form).append(input);
 	
-	                        var input = document.createElement("input");
-	                        input.type = "hidden";
-	                        input.name = 'purZipcode';
-	                        input.value = $('#purZipcode').val();
-	                        $(form).append(input);
+	          var input = document.createElement("input");
+	          input.type = "hidden";
+	          input.name = 'purZipcode';
+	          input.value = $('#purZipcode').val();
+	          $(form).append(input);
 	
-	                        var input = document.createElement("input");
-	                        input.type = "hidden";
-	                        input.name = 'purAddr1';
-	                        input.value = $('#purAddr1').val();
-	                        $(form).append(input);
+	          var input = document.createElement("input");
+	          input.type = "hidden";
+	          input.name = 'purAddr1';
+	          input.value = $('#purAddr1').val();
+	          $(form).append(input);
 	
-	                        var input = document.createElement("input");
-	                        input.type = "hidden";
-	                        input.name = 'purAddr2';
-	                        input.value = $('#purAddr2').val();
-	                        $(form).append(input);
+	          var input = document.createElement("input");
+	          input.type = "hidden";
+	          input.name = 'purAddr2';
+	          input.value = $('#purAddr2').val();
+	          $(form).append(input);
 	
-	                        $('#body').append(form);
-	                        form.submit();
-	                     }
-                     }
-                  });
+	          $('#body').append(form);
+	          form.submit();
+	       }
+	      }
+	   });
       //주문하기 관련 메서드 끝---------------------------------------------------------------
    });
 </script>

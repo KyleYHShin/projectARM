@@ -171,6 +171,7 @@ function nologinCart(){
 			var setTime = 10000;
 			var btnName = 1;
 			
+			//시간 초기화
 			function advance(){
 				clearTimeout(timeout);
 				timeout = setTimeout(function(){
@@ -193,9 +194,11 @@ function nologinCart(){
 					return;
 				}
 				buttonArray[currentIndex].removeClass('active');
-				buttonArray[currentIndex].css("background-color","green").css("border","1px solid #18ab29");
+				buttonArray[currentIndex].css("background-color","green")
+										 .css("border","1px solid #18ab29");
 				buttonArray[newIndex].addClass('active');
-				buttonArray[newIndex].css("background-color","red").css("border","1px solid red");
+				buttonArray[newIndex].css("background-color","red")
+									 .css("border","1px solid red");
 				
 				//목록 좌우 재배치
 				if (newIndex > currentIndex) {
@@ -227,7 +230,8 @@ function nologinCart(){
 			
 			//버튼 생성
 			$.each($slides, function(index){
-				var btn = '<button type="button" class="slide-btn">'+btnName+'</button>';
+				var btn = '<button type="button" class="slide-btn">'
+								+btnName+'</button>';
 				var $button = $(btn);
 				btnName += 1;
 				
@@ -854,7 +858,7 @@ footer #fwrap {
 									<th>품목</th>
 									<th>수량</th>
 									<th>합계(원)</th>
-									<th>후기</th>
+									<!-- <th>후기</th> -->
 								</tr>
 								<%
 									for (Order o : p.getOrderList()) {
@@ -863,7 +867,7 @@ footer #fwrap {
 									<td><%=o.getItem_name()%> - <%=o.getItem_sub_name()%></td>
 									<td><%=o.getOrder_qty()%></td>
 									<td><%=(int) (o.getOrder_price() * (1 - loginUser.getDiscount()))%></td>
-									<%
+									<%-- <%
 										//결제 정보가 있고
 													if (p.getPaid() == 'Y') {
 														//작성된 리뷰가 있는 경우
@@ -886,7 +890,7 @@ footer #fwrap {
 										style="color: red; font-weight: bold;"></a></td>
 									<%
 										}
-									%>
+									%> --%>
 								</tr>
 								<%
 									} //end of for (Order o : purchase.getOrderList())
