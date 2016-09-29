@@ -253,7 +253,7 @@
 	nav#topMenu {
 		height: 30px;
 		width: 100%;
-		background-color: #fed605; /*메인 메뉴 색깔 fc3*/
+		background-color: #fed605;  /*메인 메뉴 색깔 fc3*/
 		padding-right: 2%;
 		max-width: 100%;
 	}

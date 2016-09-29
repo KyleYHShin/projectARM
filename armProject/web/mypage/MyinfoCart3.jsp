@@ -619,18 +619,6 @@ footer #fwrap {
    }
 }
 
-#fmenu {
-   list-style-type: none;
-}
-
-.footMenu a {
-   text-decoration: none;
-   color: black;
-}
-
-.footMenu a:hover {
-   text-decoration: underline;
-}
 </style>
 
 </head>
@@ -903,7 +891,7 @@ footer #fwrap {
       <div id="fwrap">
          <div class="fd">
             <h1>
-               <img src="img/tel.png" width="50" height="50" border="0" alt="">&nbsp;1600-7000
+               <img src="/arm/img/tel.png" width="50" height="50" border="0" alt="">&nbsp;1600-7000
             </h1>
          </div>
 

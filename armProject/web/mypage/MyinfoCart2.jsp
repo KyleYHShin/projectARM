@@ -357,7 +357,7 @@ div {
 nav#topMenu {
    height: 30px;
    width: 100%;
-   background-color: yellow; /*메인 메뉴 색깔 fc3*/
+   background-color: #fed605; /*메인 메뉴 색깔 fc3*/
    padding-right: 2%;
    max-width: 100%;
 }
@@ -369,7 +369,7 @@ nav#topMenu {
 }
 
 #topMenu ul li {
-   background-color: yellow;
+   background-color: #fed605;
    float: right;
    line-height: 30px;
    padding: 0 5px;
@@ -512,7 +512,7 @@ nav#topMenu {
 #cs_menu {
    width: 100%;
    height: 40px;
-   background: yellow;
+   background: #fed605;
    margin: 5px auto;
 }
 
@@ -753,19 +753,6 @@ footer #fwrap {
       font-size: 20pt;
    }
 }
-
-#fmenu {
-   list-style-type: none;
-}
-
-.footMenu a {
-   text-decoration: none;
-   color: black;
-}
-
-.footMenu a:hover {
-   text-decoration: underline;
-}
 </style>
 
 </head>
@@ -992,20 +979,9 @@ footer #fwrap {
    <!-- 푸터 -->
    <footer>
       <div id="fwrap">
-         <div class="fd hidden-xs">
-            <!-- 스마트폰 크기에서는 안보이게 -->
-            <ul id="fmenu">
-               <li class="footMenu"><a href="#">GUIDE</a></li>
-               <li class="footMenu"><a href="#">CUSTOMER SERVICE</a></li>
-               <li class="footMenu"><a href="#">BANK INFO</a></li>
-               <li class="footMenu"><a href="#">DELIVERY</a></li>
-            </ul>
-         </div>
-
-
          <div class="fd">
             <h1>
-               <img src="img/tel.png" width="50" height="50" border="0" alt="">&nbsp;1600-7000
+               <img src="/arm/img/tel.png" width="50" height="50" border="0" alt="">&nbsp;1600-7000
             </h1>
          </div>
 

@@ -910,23 +910,26 @@ footer #fwrap {
 	margin: 0px auto;
 	top: 150px;
 	min-width: 102px;
-	dispaly : table;
+	dispaly: table;
 }
 
 .pImage, .pTable {
-	display : inline-block;
+	display: inline-block;
 	width: 49%;
 	min-width: 102px;
 	padding: 1%;
 }
-.pTable table{
-	margin : 0 auto;
+
+.pTable table {
+	margin: 0 auto;
 }
-.pTable th{
-	text-align : right;
-	width : 30%;
-	padding-right : 10px;
+
+.pTable th {
+	width: 20%;
+	padding-right: 10px;
+	text-align: right;
 }
+
 .pImage img {
 	min-width: 102px;
 	width: 100%;
@@ -955,11 +958,112 @@ footer #fwrap {
 	height: 15px;
 	width: 15px;
 }
+/* asdf */
+/* 상품명  */
+.itemName1 {
+	font-size: 1.3em;
+	color: #5d5d5d;
+	font-weight: 900;
+}
+/* 진상품명 */
+.itemName2 {
+	width: 80%;
+}
+
+.itemName2_1 {
+	color: black;
+	font-size: 1.8em;
+	font-weight: 700;
+}
+
+/* 가격 */
+.itemPrice1 {
+	font-size: 1.1em;
+	color: #5d5d5d;
+	font-weight: 900;
+	color: #5d5d5d;
+}
+/* 진가격 */
+.itemPrice2 {
+	max-width: 80%;
+	font-size: 1.4em;
+	font-weight: 700;
+	text-align: right;
+	padding-right: 40px;
+}
+
+/* 배송비 */
+.delPrice1 {
+	font-size: 1.1em;
+	color: #5d5d5d;
+	font-weight: 900;
+	color: #5d5d5d;
+}
+/* 진배송비 */
+.delPrice2 {
+	max-width: 80%;
+	font-size: 1em;
+	text-align: right;
+	padding-right: 40px;
+}
+
+/* 옵션 */
+.option1 {
+	font-size: 1.1em;
+	color: #5d5d5d;
+	font-weight: 900;
+	color: #5d5d5d;
+}
+/* 진옵션 */
+.option2 {
+	width: 80%;
+	padding-right: 40px;
+}
+
+.option2 select {
+	width: 60%;
+	height:28px;
+	float: right;
+}
+
+.selectedItems {
+	margin: 0 auto;
+	width: 80%;
+	height: 100px;
+	padding: 5px;
+	padding-right: 40px;
+	overflow: auto;
+	border: 1px solid #e0e0e0;
+	background-color : #f9f9f9;
+}
+
+/* 총금액 */
+.toPrice1 {
+	font-size: 1.3em;
+	color: #5d5d5d;
+	font-weight: 900;
+}
+/* 원가, 배송비 */
+.toPrice2, .toPrice4 {
+	font-size: 1.1em;
+	font-weight: 700;
+}
+/* 할인가 */
+.toPrice3 {
+	color: red;
+	font-size: 1.4em;
+	font-weight: 700;
+}
+/* 총합가 */
+.toPrice5 {
+	font-size: 1.7em;
+	color : black;
+	font-weight: 700;
+}
 
 /* 미디어쿼리 */
 @media all and (max-width: 1000px) {
 	.pImage, .pTable {
-		border: 1px solid red;
 		float: left;
 		/*height : 300px;*/
 		width: 50%;
@@ -974,7 +1078,6 @@ footer #fwrap {
 
 @media all and (max-width: 750px) {
 	.pImage, .pTable {
-		border: 1px solid red;
 		float: left;
 		/*height : 300px;*/
 		width: 100%;
@@ -1208,8 +1311,8 @@ ul.tabs li.active {
 
 table tr td { /*확인용*/
 	/* border: 1px solid orange; */
+	
 }
-
 
 /*상품 후기 부분*/
 .star_point {
@@ -1332,31 +1435,32 @@ table tr td { /*확인용*/
 					<div class="pTable">
 						<table>
 							<tr height="50">
-								<th><span style="font-size:1.9em; font-weight:900;">상품명</span></th>
-								<td id="pName" width="300"><input type="text" name="pName"
-									value="<%=item.getItemName()%>" readonly style="font-size:1.2em; font-weight:700;"></td>
+								<th><span class="itemName1">상품명</span></th>
+								<td id="pName" class="itemName2"><input type="text" name="pName"  class="itemName2_1"
+									value="<%=item.getItemName()%>" readonly ></td>
 							</tr>
 						</table>
 						<hr style="padding : 0; margin:5px auto;border : 1px solid black; width:90%;">
-						<table>
+						<table style="width:90%;">
 							<tr height="40">
-								<th><span style="font-size:1.8em; font-weight:900;">가격</span></th>
-								<td id="pPrice" width="300"><input type="text"
-									name="pPrice" value="<%=item.getItemPrice()%>" readonly style="font-size:1.1em; font-weight:700;">
+								<th><span class="itemPrice1">가격</span></th>
+								<td class="itemPrice2" id="pPrice"><input type="text"
+									name="pPrice" value="<%=item.getItemPrice()%>" readonly>
 								</td>
 							</tr>
 							<tr>
-								<th>배송비</th>
-								<td><input type="text" name="shippingCost" value="2500"
+								<th class="delPrice1">배송비</th>
+								<td class="delPrice2"><input type="text" name="shippingCost" value="2500"
 									readonly></td>
 							</tr>
 						</table>
 						<br>
-						<table>
+						<hr style="padding: 0; margin: 5px auto; width: 90%;">
+						<table style="width:90%;">
 							<tr height="40">
-								<th><span style="font-size:1.2em; font-weight : 600;">옵션</span></th>
-								<td id="opt1" width="300"><select name="p_opt_1"
-									id="p_opt_1" class="p_opt_1" style="width: 80%;"
+								<th><span class="option1" >옵션</span></th>
+								<td class="option2" id="opt1" ><select name="p_opt_1"
+									id="p_opt_1"
 									onchange="add_tr();">
 										<%
 											for (SubItem sub : subItemList) {
@@ -1374,27 +1478,25 @@ table tr td { /*확인용*/
  	}
  %></td>
 							</tr>
-
 							<tr height="60">
 								<td colspan="2">
-									<div style="width: 90%;margin:0 auto; padding: 5px;height: 100px; overflow: auto; border : 1px solid gray;">
+									<div class="selectedItems" >
 										<table class="p_selection" id="p_selection">
 											<!--옵션 선택 시 동적으로 행 추가되는 부분-->
 										</table>
 									</div>
 									<!--주문목록 길어질 경우 스크롤 달아주려고 만든 div-->
 							</tr>
-							<tr height="60">
-								<th><span style="font-size:1.2em; font-weight : 700;">총 금액</span></th>
+							<tr height="60" >
+								<th><span class="toPrice1" >총 금액</span></th>
 								<td align="center">
-									<span id="original_sum" style="font-size:1.3em; font-weight : 700;"></span> 
-									<span id="dc_sum" style="color: red; font-size:1.3em; font-weight : 700;"></span> &nbsp;
-									<span id="plus_shipping"></span>&nbsp;
-									<span id=grand_total style="font-weigh: bold; font-size: 17pt"></span>
+									<span id="original_sum" class="toPrice2"></span> 
+									<span id="dc_sum"  class="toPrice3"></span> &nbsp;
+									<span id="plus_shipping" class="toPrice4" ></span>&nbsp;
+									<span id=grand_total  class="toPrice5" ></span>
 								</td>
-
 							</tr>
-							<tr height="30">
+							<tr height="30" style="border-top : 2px solid black">
 								<td colspan="2" height="70" align="center"
 									style="padding-left: 5%; padding-right: 5%;">
 									<input type="button" class="addCart" value="장바구니">
