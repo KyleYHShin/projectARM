@@ -468,19 +468,19 @@ function nologinCart(){
 	  
 	  //선택 제품의 수량 변화에 따라 제품 개별 구매금액 계산
 	  function update_sub_price(obj){
-		  var qty = $(obj).val();
-		  qty = parseInt(qty);
-		 
-		  //선택된 행의 제품명을 이용해 hidden 텍스트 상자에 있는 제품가격 가져옴
-		  var selected_sub = $(obj).parent().siblings('td:first').text(); //선택된 행의 제품명
-		  var selected_sub_price = document.getElementById(selected_sub).value; //선택된 제품가격
-		  
-		  var unit_price = parseInt("<%=item.getItemPrice()%>") + parseInt(selected_sub_price); //상품 기본가격과 제품가격 합산
-		 
-		  var sum = unit_price * qty;
-		  $(obj).parent().siblings('td:last-child').text(sum);
-		  td_sum();
-	  }
+        var qty = $(obj).val();
+        qty = parseInt(qty);
+       
+        //선택된 행의 제품명을 이용해 hidden 텍스트 상자에 있는 제품가격 가져옴
+        var selected_sub = $(obj).parent().siblings('td:nth-child(2)').text(); //선택된 행의 제품명
+        var selected_sub_price = document.getElementById(selected_sub).value; //선택된 제품가격
+        
+        var unit_price = parseInt("<%=item.getItemPrice()%>") + parseInt(selected_sub_price); //상품 기본가격과 제품가격 합산
+       
+        var sum = unit_price * qty;
+        $(obj).parent().siblings('td:last-child').text(sum);
+        td_sum();
+     }
 		
 	  //제품 추가에 따라 총 주문금액 & 총결제액 계산
 	  function td_sum(){
