@@ -609,7 +609,7 @@
 	<%
 		String addr = member.getAddress();
 		if(addr != null){
-			String[] address = addr.split(",");
+			String[] address = addr.split(",,");
 	%>
 		<td><input type="text" id="address" name="address" value="<%= address[0] %>" size="45"></td>
 	</tr>

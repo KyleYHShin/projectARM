@@ -487,23 +487,11 @@
 		border : 1px solid red;
 		color : white;
 	}
-	
-	#sch_id {
-		background : white;
-		border : 1px solid green;
-		border-right : 0px;
-		color : black;
-	}
-	#sch_pwd {
-		background : white;
-		border : 1px solid green;
-		color : black;
-	}
+
 	#join_btn{
-		background :white;
+		background :green;
 		border : 1px solid green;
-		border-top : 0px;
-		color : black;
+		color : white;
 	}
 	#loginTb td{
 		padding : 10px;
@@ -618,8 +606,8 @@
       <input id = "login_btn" type="submit" style="WIDTH: 200pt; HEIGHT: 30pt" value="Log in"><br></td></tr>
 	    <tr><td>
 		</td></tr>
-	 <tr><td><input id = "sch_id" type="button" style="width: 100pt; height:20pt" value="ID 찾기"><input id = "sch_pwd" type="button" style="width: 100pt; height:20pt" value="비밀번호 찾기"><br>
-	
+	 <tr><td>
+	 <span style="color : blue;">아직 회원이 아니세요?</span>
 	  <input id = "join_btn" type="button" style="width: 200pt; height:30pt" value="회원가입" onClick="self.location='MemberJoin.jsp';">
 	   </td></tr>
 

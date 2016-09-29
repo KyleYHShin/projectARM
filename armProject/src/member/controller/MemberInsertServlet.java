@@ -49,7 +49,7 @@ public class MemberInsertServlet extends HttpServlet {
 		String zipcode = request.getParameter("zcode");
 		StringBuilder sb = new StringBuilder();
 
-		sb.append(request.getParameter("address") +","+request.getParameter("address2"));
+		sb.append(request.getParameter("address") +",,"+request.getParameter("address2"));
 		String address = sb.toString();
 
 		

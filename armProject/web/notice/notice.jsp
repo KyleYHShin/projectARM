@@ -895,7 +895,7 @@ String msg = (String)request.getAttribute("msg");
 		
 	<div id = "direct_q">
 	<h1>1:1문의</h1>
-	<!-- 문의종류에 따라 이메일 선택 -->
+	<span>담당자에게 이메일로 직접 문의 할 수 있습니다.</span>
 	 <form action="/arm/mailsend" method="post">
 	<table class="direct_q" cellspacing ="0">
 	<tr>

@@ -463,4 +463,24 @@ public class ItemDao {
 		}
 		return list;
 	}
+
+	public int deleteSubAll(Connection con, int itemNo) {
+		System.out.println("서브삭제 dao 구동...");
+		int result = 0;
+		PreparedStatement pstmt = null;
+		
+		String query = "delete from item_sub where item_sub_no in (select item_sub_no from item_bridge where item_no= ?)";
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, itemNo);
+			
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
 }

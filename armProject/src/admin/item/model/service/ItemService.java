@@ -138,4 +138,16 @@ public class ItemService {
 		return list;
 	}
 
+	public int deleteSubAll(int itemNo) {
+		Connection con = getConnection();
+		int result = new ItemDao().deleteSubAll(con, itemNo);
+		System.out.println("service : "+result);
+		if(result > 0){
+			commit(con);
+		}else{
+			rollback(con);
+		}
+		return result;
+	}
+
 }

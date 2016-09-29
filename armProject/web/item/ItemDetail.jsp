@@ -52,31 +52,132 @@ $(document).ready(function(){
       }
          
    });
+   
+	/* 장바구니 추가 + 바로구매 버튼 ------------------------ */
+	// 장바구니 추가
+	$('.addCart').on('click', function() {
+		var $parent = $('.p_selection');
+		var $itemsNo = $parent.find('.subItemNo');
+		var $itemsQty = $parent.find('.Qty');
+		var itemNo = <%= item.getItemNo() %>;
+		
+		if ($itemsNo.length > 0) {
+			//alert('상품 : '+$itemsNo.length +', 개수 : ' + $itemsQty.length);
+			var itemNoList = $itemsNo[0].value;
+			var itemQtyList = $itemsQty[0].value;
+			if ($itemsNo.length > 1) {
+				for (var i = 1; i < $itemsNo.length; i++) {
+					itemNoList += ","+$itemsNo[i].value;
+					itemQtyList += ","+$itemsQty[i].value;				
+				}
+			}
+			//alert('장바구니 추가 템 No : ' + itemNoList + '\n장바구니 추가 Qty : ' + itemQtyList);
+			$.ajax({
+				url : "CartInsert",
+				type : "POST",
+				data : {
+					itemNo : itemNo,
+					subNoList : itemNoList,
+					qtyList : itemQtyList
+				},
+				datatype : "json",
+				success : function(data) {
+					var chk = window.confirm(data.result);
+					if (chk) {
+						var form = document.createElement("form");
+						form.method = 'get';
+						form.action = "/arm/CartView";
+						$('#body').append(form);
+						form.submit();
+					}
+				},
+				fail : function(data) {
+					alert(data.result);
+				}
+			});
+		}else{
+			alert('선택된 상품이 없습니다.');
+		}
+	});
+
+	//바로구매
+	$('.directBuy').on('click', function() {
+		var $parent = $('.p_selection');
+		var $itemsNo = $parent.find('.subItemNo');
+		var $itemsQty = $parent.find('.Qty');
+		var itemNo = <%= item.getItemNo() %>;
+		
+		if ($itemsNo.length > 0) {
+			var chk = window.confirm("해당 제품을 바로 구매하시겠습니까?");
+			if (chk) {
+				//alert('상품 : '+$itemsNo.length +', 개수 : ' + $itemsQty.length);
+				var itemNoList = $itemsNo[0].value;
+				var itemQtyList = $itemsQty[0].value;
+				if ($itemsNo.length > 1) {
+					for (var i = 1; i < $itemsNo.length; i++) {
+						itemNoList += ","+$itemsNo[i].value;
+						itemQtyList += ","+$itemsQty[i].value;				
+					}
+				}
+				//alert('바로구매 템 No : ' + itemNoList + '\n바로구매 템 Qty : ' + itemQtyList);
+				
+				var form = document.createElement("form");
+				form.method = 'post';
+				form.action = "/arm/PurchaseCheckFD";
+
+				var input = document.createElement("input");
+				input.type = "hidden";
+				input.name = 'itemNo';
+				input.value = itemNo;
+				$(form).append(input);
+				$('#body').append(form);
+
+				var input = document.createElement("input");
+				input.type = "hidden";
+				input.name = 'subNoList';
+				input.value = itemNoList;
+				$(form).append(input);
+				$('#body').append(form);
+
+				var input = document.createElement("input");
+				input.type = "hidden";
+				input.name = 'qtyList';
+				input.value = itemQtyList ;
+				$(form).append(input);
+				$('#body').append(form);
+
+				form.submit();
+			}
+		}else{
+			alert('선택된 상품이 없습니다.');
+		}
+	});
+
+	/* 장바구니 추가 + 바로구매 버튼 끝 ---------------------- */
 });
-function leadingZeros(n, digits){
-	  var zero = '';
-	  n = n.toString();
-	  
-	  if(n.length < digits){
-		  for(i = 0; i < digits - n.length; i++){
-			  zero += '0';
-		  }
-	  }
-	  return zero + n;
-}
-function getTimeStamp(){
-	  var d = new Date();
-	  
-	  var s = leadingZeros(d.getFullYear(), 4)+
-	  leadingZeros(d.getMonth() + 1, 2)+
-	  leadingZeros(d.getDate(), 2)+
-	  leadingZeros(d.getHours(), 2)+
-	  leadingZeros(d.getMinutes(), 2)+
-	  leadingZeros(d.getSeconds(), 2);
-	  return s;
-}
-//세션 스토리지에 저장
-sessionStorage.setItem(getTimeStamp(), "<%= item.getItemNo() %>"+","+"<%= item.getItemTH() %>");
+	function leadingZeros(n, digits) {
+		var zero = '';
+		n = n.toString();
+
+		if (n.length < digits) {
+			for (i = 0; i < digits - n.length; i++) {
+				zero += '0';
+			}
+		}
+		return zero + n;
+	}
+	function getTimeStamp() {
+		var d = new Date();
+
+		var s = leadingZeros(d.getFullYear(), 4)
+				+ leadingZeros(d.getMonth() + 1, 2)
+				+ leadingZeros(d.getDate(), 2) + leadingZeros(d.getHours(), 2)
+				+ leadingZeros(d.getMinutes(), 2)
+				+ leadingZeros(d.getSeconds(), 2);
+		return s;
+	}
+	//세션 스토리지에 저장
+	sessionStorage.setItem(getTimeStamp(), "<%= item.getItemNo() %>"+","+"<%= item.getItemTH() %>");
 
 	function viewRecentItem(){
 		//sessionStorage.clear();
@@ -321,18 +422,26 @@ function nologinCart(){
 	  function add_tr(){
 	      option = document.getElementById('p_selection');
 	      tr = option.insertRow(option.rows.length);
-	   
-	      td1 = tr.insertCell(0); //선택된 상품명 입력열
-	      td2 = tr.insertCell(1); //input number 상자 입력열
-	      td3 = tr.insertCell(2); //삭제버튼 입력열
-	      td4 = tr.insertCell(3); //선택 옵션가 입력열
+
+	      td0 = tr.insertCell(0); //선택된 상품의 sub_item_no
+	      td1 = tr.insertCell(1); //선택된 상품명 입력열
+	      td2 = tr.insertCell(2); //input number 상자 입력열
+	      td3 = tr.insertCell(3); //삭제버튼 입력열
+	      td4 = tr.insertCell(4); //선택 옵션가 입력열
 	   
 	      var select = document.getElementById('p_opt_1');
+	      var selected_sub_no = select.options[select.selectedIndex].value; //선택옵션 item_sub_no
 	      var selected_sub = select.options[select.selectedIndex].text; //선택옵션명 가져옴
 	      var selected_sub_price = document.getElementById(selected_sub).value; //선택옵션가격 가져옴
 	      selected_sub_price = parseInt(selected_sub_price); //숫자형태로 변환
 	      var selected_price_sum = selected_sub_price + parseInt("<%=item.getItemPrice()%>");
-	      
+	      $(".p_selection tr td input[type=hidden]").each(function(){
+	    	  if($(this).val() == selected_sub_no){
+	    		  alert("이미 선택된 옵션 입니다.");
+	    		  tr.remove();
+	    	  }
+	      });
+	      td0.innerHTML = "<input type='hidden' id='subItemNo' class='subItemNo' name='subItemNo' value='"+selected_sub_no+ "'>";
 	      td1.innerHTML = selected_sub;
 	      td2.innerHTML = "<input type='number' id='Qty' class='Qty' name='Qty' min='1' width='10' value='1' onchange='update_sub_price(this);'>";
 	      td3.innerHTML = "<button class='remove_order'><img src ='/arm/img/delete.png'></button>";
@@ -476,69 +585,71 @@ nav#topMenu {
 }
 
 /*-------------- 퀵바 ----------------------*/
-	#quick_bar {
-		width: 120px;
-		border: 1px solid orange;
-		border-radius:5px;
-		background: #feffd0;
-		background: white;
-		z-index: 9999;
-		position: fixed;
-		right: -122px;
-	}
-	
-	#qBtn {
-		position: fixed;
-		right: 0px;
-		z-index: 9999;
-		display: block;
-		border: 1px solid #ffcc00;
-		transform: rotate(270deg);
-		background: #fed605;
-		font-size: 12pt;
-		border-radius : 3px;
-	}
-	
-	#quick_bar a {
-		padding: 16px;
-		display: block;
-		transition: all 0.3s ease;
-		font-size: 15px;
-		position: relative;
-	}
+#quick_bar {
+	width: 120px;
+	border: 1px solid orange;
+	border-radius: 5px;
+	background: #feffd0;
+	background: white;
+	z-index: 9999;
+	position: fixed;
+	right: -122px;
+}
 
-	/*퀵바 내 칸당 크기 조절-----------------------------------0925*/
-	#quick_bar #recent_list .ritem{
-		width : 90px;
-		height : 90px;
-		border : 1px solid orange;
-		padding : 0;
-		margin : 1px auto;
-	}
-	#quick_bar #recent_list .ritem img{
-		width : 100%;
-		height : 100%;
-		margin : 0 auto;
-		padding : 0;
-	}
-	#quick_bar #recent_list .ritem a{
-		margin : 0;
-		padding : 0;
-	}
-	/*=============------------------------------------*/
-	#quick_bar .btn {
-		width: 100%;
-		border : 0;
-		BORDER-BOTTOM : 1px solid orange;
-		border-radius : 0;
-		background: none;
-	}
-	
-	#quick_bar .btn:focus, #quick_bar .btn:hover, #quick_bar .btn:active:focus,
-		#quick_bar .btn.active:focus, #quick_bar .btn.focus, #quick_bar .btn:active.focus,
-		#quick_bar .btn.active.focus {
-		background: none;
-	}
+#qBtn {
+	position: fixed;
+	right: 0px;
+	z-index: 9999;
+	display: block;
+	border: 1px solid #ffcc00;
+	transform: rotate(270deg);
+	background: #fed605;
+	font-size: 12pt;
+	border-radius: 3px;
+}
+
+#quick_bar a {
+	padding: 16px;
+	display: block;
+	transition: all 0.3s ease;
+	font-size: 15px;
+	position: relative;
+}
+
+/*퀵바 내 칸당 크기 조절-----------------------------------0925*/
+#quick_bar #recent_list .ritem {
+	width: 90px;
+	height: 90px;
+	border: 1px solid orange;
+	padding: 0;
+	margin: 1px auto;
+}
+
+#quick_bar #recent_list .ritem img {
+	width: 100%;
+	height: 100%;
+	margin: 0 auto;
+	padding: 0;
+}
+
+#quick_bar #recent_list .ritem a {
+	margin: 0;
+	padding: 0;
+}
+/*=============------------------------------------*/
+#quick_bar .btn {
+	width: 100%;
+	border: 0;
+	BORDER-BOTTOM: 1px solid orange;
+	border-radius: 0;
+	background: none;
+}
+
+#quick_bar .btn:focus, #quick_bar .btn:hover, #quick_bar .btn:active:focus,
+	#quick_bar .btn.active:focus, #quick_bar .btn.focus, #quick_bar .btn:active.focus,
+	#quick_bar .btn.active.focus {
+	background: none;
+}
 /* 카테고리 ~ item창까지------------------------*/
 #wrapper {
 	margin: 0 auto;
@@ -760,24 +871,62 @@ footer #fwrap {
 	}
 }
 
+#fmenu {
+	list-style-type: none;
+}
+
+.footMenu a {
+	text-decoration: none;
+	color: black;
+}
+
+.footMenu a:hover {
+	text-decoration: underline;
+}
+
 /*상품 정보 출력 화면용------------------------------------------------*/
+.addCart {
+	width: 45%;
+	height: 40px;
+	float: left;
+	border: 1px solid green;
+	background: green;
+	font-size: 1.2em;
+	color: white;
+}
+
+.directBuy {
+	width: 45%;
+	height: 40px;
+	float: right;
+	border: 1px solid red;
+	background: red;
+	font-size: 1.2em;
+	color: white;
+}
+
 .product {
 	text-align: center;
 	margin: 0px auto;
 	top: 150px;
 	min-width: 102px;
+	dispaly : table;
 }
 
 .pImage, .pTable {
-	border: 1px solid red;
-	float: left;
-	/*height : 600px*/;
-	width: 50%;
-	/*margin-bottom : 50px;*/
+	display : inline-block;
+	width: 49%;
 	min-width: 102px;
 	padding: 1%;
 }
-
+.pTable table{
+	margin : 0 auto;
+}
+.pTable th{
+	text-align : right;
+	width : 30%;
+	padding-right : 10px;
+}
 .pImage img {
 	min-width: 102px;
 	width: 100%;
@@ -977,7 +1126,8 @@ ul.tabs li.active {
 	height: 100%;
 }
 
-.inquiry_input table, .review_input table, .loaded_qna table, .p_reivew table {
+.inquiry_input table, .review_input table, .loaded_qna table, .p_reivew table
+	{
 	width: 100%;
 	height: 80%;
 	border: 1px solid red;
@@ -1057,8 +1207,9 @@ ul.tabs li.active {
 }
 
 table tr td { /*확인용*/
-	border: 1px solid orange;
+	/* border: 1px solid orange; */
 }
+
 
 /*상품 후기 부분*/
 .star_point {
@@ -1181,38 +1332,36 @@ table tr td { /*확인용*/
 					<div class="pTable">
 						<table>
 							<tr height="50">
-								<td width="200">상품명 :</td>
+								<th><span style="font-size:1.9em; font-weight:900;">상품명</span></th>
 								<td id="pName" width="300"><input type="text" name="pName"
-									value="<%=item.getItemName()%>" readonly></td>
+									value="<%=item.getItemName()%>" readonly style="font-size:1.2em; font-weight:700;"></td>
 							</tr>
 						</table>
-						<hr>
+						<hr style="padding : 0; margin:5px auto;border : 1px solid black; width:90%;">
 						<table>
 							<tr height="40">
-								<td width="200">가격 :</td>
+								<th><span style="font-size:1.8em; font-weight:900;">가격</span></th>
 								<td id="pPrice" width="300"><input type="text"
-									name="pPrice" value="<%=item.getItemPrice()%>" readonly>
+									name="pPrice" value="<%=item.getItemPrice()%>" readonly style="font-size:1.1em; font-weight:700;">
 								</td>
 							</tr>
 							<tr>
-								<td>배송비 :</td>
+								<th>배송비</th>
 								<td><input type="text" name="shippingCost" value="2500"
 									readonly></td>
 							</tr>
 						</table>
 						<br>
-
 						<table>
 							<tr height="40">
-								<td width="200">옵션 :</td>
+								<th><span style="font-size:1.2em; font-weight : 600;">옵션</span></th>
 								<td id="opt1" width="300"><select name="p_opt_1"
-									id="p_opt_1" class="p_opt_1" style="width: 95%;"
+									id="p_opt_1" class="p_opt_1" style="width: 80%;"
 									onchange="add_tr();">
-										<option>옵션을 선택하세요</option>
 										<%
 											for (SubItem sub : subItemList) {
 										%>
-										<option value="<%=sub.getItemSubName()%>">
+										<option value="<%=sub.getItemSubNo()%>">
 											<%=sub.getItemSubName()%>
 										</option>
 										<%
@@ -1228,18 +1377,18 @@ table tr td { /*확인용*/
 
 							<tr height="60">
 								<td colspan="2">
-									<div style="width: 100%; height: 80px; overflow: auto">
-										<table class="p_selection" id="p_selection" align="center">
+									<div style="width: 90%;margin:0 auto; padding: 5px;height: 100px; overflow: auto; border : 1px solid gray;">
+										<table class="p_selection" id="p_selection">
 											<!--옵션 선택 시 동적으로 행 추가되는 부분-->
 										</table>
 									</div>
 									<!--주문목록 길어질 경우 스크롤 달아주려고 만든 div-->
 							</tr>
 							<tr height="60">
-								<td>총금액:</td>
+								<th><span style="font-size:1.2em; font-weight : 700;">총 금액</span></th>
 								<td align="center">
-									<span id="original_sum"></span> 
-									<span id="dc_sum" style="color: red; font-weigh: bold"></span> &nbsp;
+									<span id="original_sum" style="font-size:1.3em; font-weight : 700;"></span> 
+									<span id="dc_sum" style="color: red; font-size:1.3em; font-weight : 700;"></span> &nbsp;
 									<span id="plus_shipping"></span>&nbsp;
 									<span id=grand_total style="font-weigh: bold; font-size: 17pt"></span>
 								</td>
@@ -1247,12 +1396,9 @@ table tr td { /*확인용*/
 							</tr>
 							<tr height="30">
 								<td colspan="2" height="70" align="center"
-									style="padding-left: 5%; padding-right: 5%;"><input
-									type="submit" value="장바구니"
-									style="color: white; background: green; border: 1px solid green; width: 45%; height: 40px; font-size: 1.2em; float: left;">
-									<input type="submit" value="바로 구매하기"
-									onclick="form.action='주문화면 보여주는 jsp'"
-									style="color: white; background: red; border: 1px solid red; width: 45%; height: 40px; font-size: 1.2em; float: right;">
+									style="padding-left: 5%; padding-right: 5%;">
+									<input type="button" class="addCart" value="장바구니">
+									<input type="button" class="directBuy" value="바로 구매하기">
 								</td>
 							</tr>
 						</table>

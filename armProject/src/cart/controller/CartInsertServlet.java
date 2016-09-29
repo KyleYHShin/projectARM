@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
+
 import cart.model.service.CartService;
 import cart.model.vo.Cart;
 import member.model.vo.User;
@@ -18,7 +20,7 @@ import member.model.vo.User;
 /**
  * Servlet implementation class CartInsertServlet
  */
-@WebServlet("/CartInsertServlet")
+@WebServlet("/CartInsert")
 public class CartInsertServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -39,23 +41,29 @@ public class CartInsertServlet extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("text/html; charset=utf-8");
 
-		// 2.
-		// String userId = request.getParameter("userId");
+		// 2. 데이터 저장
 		HttpSession session = request.getSession();
 		User loginUser = (User) session.getAttribute("loginUser");
 		String userId = loginUser.getUserId();
+		
+		int itemNo = Integer.parseInt(request.getParameter("itemNo"));
+		String[] itemSubNoList = request.getParameter("subNoList").split(",");
+		String[] itemQtyList = request.getParameter("qtyList").split(",");
+		
+		//3. 입력
+		int result = new CartService().insertCart(userId, itemNo, itemSubNoList, itemQtyList);
 
-		ArrayList<Cart> cartList = new CartService().selectAll(userId);
-
-		// 3.
-		RequestDispatcher view = request.getRequestDispatcher("/mypage/MyinfoCart.jsp");
-		if (cartList != null) {
-			System.out.println("Cart View Success");
-		} else {
-			System.out.println("Cart View Fail");
+		//4. 결과 리턴
+		JSONObject obj = new JSONObject();
+		if(result > 0){
+			System.out.println("장바구니 insert 성공");
+			obj.put("result", "추가 완료.\n장바구니 페이지로 이동하시겠습니까?");
+		}else{
+			System.out.println("장바구니 insert 실패");
+			obj.put("result", "장바구니 추가 실패. 다시 시도해주세요.");
 		}
-		request.setAttribute("cartList", cartList);
-		view.forward(request, response);
+		response.setContentType("application/x-json; charset=UTF-8");
+		response.getWriter().print(obj);
 	}
 
 }

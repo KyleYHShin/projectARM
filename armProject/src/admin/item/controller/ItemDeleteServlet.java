@@ -36,10 +36,17 @@ public class ItemDeleteServlet extends HttpServlet {
 		response.setContentType("text/html; charset=utf-8");
 		
 		int itemNo = Integer.parseInt(request.getParameter("itemno"));
-		
-		int result = new ItemService().deleteOne(itemNo);
-		if(result > 0){
-			response.sendRedirect("ailist");
+		//itemsub삭제
+		int sresult = new ItemService().deleteSubAll(itemNo);
+		if(sresult > 0){
+			int result = new ItemService().deleteOne(itemNo);
+			if(result > 0){
+				response.sendRedirect("ailist");
+			}else{
+				RequestDispatcher view = request.getRequestDispatcher("ailist");
+				request.setAttribute("almsg", "상품 삭제가 정상적으로 이루어지지 않았습니다.");
+				view.forward(request, response);
+			}
 		}else{
 			RequestDispatcher view = request.getRequestDispatcher("ailist");
 			request.setAttribute("almsg", "상품 삭제가 정상적으로 이루어지지 않았습니다.");
