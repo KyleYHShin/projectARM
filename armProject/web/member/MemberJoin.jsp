@@ -808,7 +808,7 @@ footer #fwrap {
 				<table id="joinTb" border="1" align="center">
 					<tr>
 						<th>아 이 디</th>
-						<td><input type="text" id="userid" name="userid" required></td>
+						<td><input type="text" id="userid" name="userid" onblur="idCheck()" required></td>
 					</tr>
 					<tr>
 						<th>이&nbsp; &nbsp; 름</th>
