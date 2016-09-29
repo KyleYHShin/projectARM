@@ -7,6 +7,9 @@ ArrayList<Notice> list = (ArrayList<Notice>)request.getAttribute("list");
 String admin = (String)session.getAttribute("admin");
 ArrayList<Faqnotice> flist = (ArrayList<Faqnotice>)request.getAttribute("flist");
 int pageNo = (int)request.getAttribute("page");
+int totalCount = (int)request.getAttribute("totalCount");
+int ftotalCount = (int)request.getAttribute("ftotalCount");
+
 String status = (String)request.getAttribute("status");
 
 String msg = (String)request.getAttribute("msg");
@@ -98,7 +101,7 @@ String msg = (String)request.getAttribute("msg");
 	}
 //------------------------------------------페이징----
 //전체 줄 수(reqeust로 전달받음)
-		var totalCount =10;<%-- <%= totalCount %> --%>
+		var totalCount =<%= totalCount %>;
 		//페이지 수 : 한 페이지에 30줄 출력경우
 		var totalPage = Math.ceil(totalCount/7);
 		var PageNum;
@@ -144,7 +147,7 @@ String msg = (String)request.getAttribute("msg");
 			$("#npageNo").append(nextStep);
 		});
 		
-		var ftotalCount =6;<%-- <%= totalCount %> --%>
+		var ftotalCount =<%= ftotalCount %>;
 		//페이지 수 : 한 페이지에 30줄 출력경우
 		var ftotalPage = Math.ceil(ftotalCount/7);
 		var fPageNum;

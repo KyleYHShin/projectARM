@@ -115,5 +115,27 @@ public class NoticeService {
 		return result;
 	}
 
+	public int getNoticeCount() {
+		Connection con = getConnection();
+		int totalCount = new NoticeDao().getNoticeCount(con);
+		
+		System.out.println("공지사항 전체 줄 수 받아오기");
+		
+		close(con);
+		
+		return totalCount;
+	}
+
+	public int getFaqCount() {
+		Connection con = getConnection();
+		int ftotalCount = new NoticeDao().getFaqCount(con);
+		
+		System.out.println("faq 전체 줄 수 받아오기");
+		
+		close(con);
+		
+		return ftotalCount;
+	}
+
 
 }

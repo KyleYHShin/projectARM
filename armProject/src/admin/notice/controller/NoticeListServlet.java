@@ -57,6 +57,8 @@ public class NoticeListServlet extends HttpServlet {
 			list = new NoticeService().selectAll(1);
 			flist = new NoticeService().selectFaq(page);
 		}
+		int totalCount = new NoticeService().getNoticeCount();
+		int ftotalCount = new NoticeService().getFaqCount();
 		
 		RequestDispatcher view = null;
 
@@ -67,6 +69,8 @@ public class NoticeListServlet extends HttpServlet {
 			request.setAttribute("flist", flist);
 			request.setAttribute("page", page);
 			request.setAttribute("status", status);
+			request.setAttribute("totalCount", totalCount);
+			request.setAttribute("ftotalCount", ftotalCount);
 			view.forward(request, response);
 		}else {
 			view = request.getRequestDispatcher("mainlist");

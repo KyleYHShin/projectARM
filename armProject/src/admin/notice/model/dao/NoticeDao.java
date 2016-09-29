@@ -290,4 +290,55 @@ public class NoticeDao {
 			return result;
 		}
 
+		public int getNoticeCount(Connection con) {
+			int totalCount = 0;
+			Statement stmt = null;
+			ResultSet rset = null;
+			
+			String query = "select count(*) from notice";
+			
+			try {
+				stmt = con.createStatement();
+				
+				rset = stmt.executeQuery(query);
+				if(rset.next()){
+					totalCount = rset.getInt(1);
+				}
+				System.out.println("dao : "+totalCount);
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				close(rset);
+				close(stmt);
+			}
+			
+			return totalCount;
+		}
+
+		public int getFaqCount(Connection con) {
+			int ftotalCount = 0;
+			Statement stmt = null;
+			ResultSet rset = null;
+			
+			String query = "select count(*) from faq";
+			
+			try {
+				stmt = con.createStatement();
+				
+				rset = stmt.executeQuery(query);
+				if(rset.next()){
+					ftotalCount = rset.getInt(1);
+				}
+				System.out.println("dao : "+ftotalCount);
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				close(rset);
+				close(stmt);
+			}
+			
+			return ftotalCount;
+		}
+
 }
