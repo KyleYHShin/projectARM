@@ -858,7 +858,7 @@ footer #fwrap {
 									<th>품목</th>
 									<th>수량</th>
 									<th>합계(원)</th>
-									<!-- <th>후기</th> -->
+									<th>후기</th>
 								</tr>
 								<%
 									for (Order o : p.getOrderList()) {
@@ -867,19 +867,19 @@ footer #fwrap {
 									<td><%=o.getItem_name()%> - <%=o.getItem_sub_name()%></td>
 									<td><%=o.getOrder_qty()%></td>
 									<td><%=(int) (o.getOrder_price() * (1 - loginUser.getDiscount()))%></td>
-									<%-- <%
+									<%
 										//결제 정보가 있고
 													if (p.getPaid() == 'Y') {
 														//작성된 리뷰가 있는 경우
 														if (o.getOrder_review_no() > 0) {
 									%>
-									<td style="text-align: center"><a href=""
+									<td style="text-align: center"><a href="/arm/GoForInsertReviewServlet?itemNo=<%= o.getItem_no() %>"
 										style="color: #1b1b1b;">수정</a></td>
 									<%
 										//작성된 리뷰가 없는 경우
 														} else {
 									%>
-									<td style="text-align: center;"><a href=""
+									<td style="text-align: center;"><a href="/arm/GoForInsertReviewServlet?itemNo=<%= o.getItem_no() %>"
 										style="color: red; font-weight: bold;">작성</a></td>
 									<%
 										}
@@ -890,7 +890,7 @@ footer #fwrap {
 										style="color: red; font-weight: bold;"></a></td>
 									<%
 										}
-									%> --%>
+									%>
 								</tr>
 								<%
 									} //end of for (Order o : purchase.getOrderList())
